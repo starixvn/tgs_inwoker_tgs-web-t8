@@ -7,10 +7,11 @@ import Dialog from "@material-ui/core/Dialog";
 import Login from "./Login";
 import { AppHistory } from "../../history/History";
 import ForgotPasswordEmail from "./ForgotPasswordEmail";
-import Activation from "./Activation";
+
 import ResetPassword from "./ResetPassword";
 import ResetPasswordSuccess from "./ResetPasswordSuccess";
-import config from "../../config/config";
+import ErrorSwitcher from "../../utils/ErrorSwitcher";
+
 import { accountAction } from "../../api-services/actions/accountAction";
 import { walletAction } from "../../api-services/actions/walletAction";
 import { gameAction } from "../../api-services/actions/gameAction";
@@ -21,36 +22,24 @@ import { SHOWING_DIALOG } from "../../api-services/constant/actionType";
 import { SHOW_LOGIN } from "../../api-services/constant/actionType";
 
 import Register from "./Register";
-
+import Activation from "./Activation";
 import { withSnackbar } from "notistack";
-import ForgotPasswordPhone from "./ForgotPasswordPhone";
-import BlowFishEncryption from "../../utils/BlowFishEncryption";
+
 import i18n from "../../utils/i18n";
-const Container = styled.div`
-  height: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-`;
+import config from "../../config/config";
+import ForgotPasswordPhone from "./ForgotPasswordPhone";
+const Container = styled.div``;
 const BtnLoginRegister = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 89px;
-  padding: 0 10px
-  min-height: 32px;
-  border-radius: 3.8px;
-  color: #fff;
   float: right;
-  margin-right: 5px;
-  border-radius: 6px;
-  border: solid 1px ${({ theme }) => theme.primary};
-  color: ${({ theme }) => theme.primary};
+  font-size: 17px;
+  text-align: center;
+  color: #f6f6f6;
+
   &:hover {
+    color: #fde73f;
     cursor: pointer;
   }
 `;
-
 const BtnRegister = styled(BtnLoginRegister)`
   margin-left: 5px;
   margin-right: 10px;
@@ -67,7 +56,7 @@ const BtnSpliter = styled.div`
 const BtnLoginRegisterLabel = styled.span`
   text-align: center;
   display: block;
-  white-space: nowrap;
+  margin-top: 7px;
 `;
 const StyledDialog = withStyles({
   root: {
@@ -110,6 +99,8 @@ class GuestContainer extends Component {
         case "register_auth":
           this.onhandleRegister();
           break;
+        default:
+          break;
       }
     }
   }
@@ -146,6 +137,16 @@ class GuestContainer extends Component {
       ...this.state,
       openDialog: true,
       openDialogName: "register",
+    });
+    this.props.showLogin(false);
+  };
+  onhandleActivation = (username = "", pass = "") => {
+    this.setState({
+      ...this.state,
+      openDialog: true,
+      openDialogName: "activation",
+      username: username,
+      pass: pass,
     });
     this.props.showLogin(false);
   };
@@ -241,9 +242,12 @@ class GuestContainer extends Component {
             openDialogName: "resetpasswordsuccess",
           });
         } else {
-          this.props.enqueueSnackbar(response.info, {
-            variant: "error",
-          });
+          this.props.enqueueSnackbar(
+            ErrorSwitcher.getTranslation(response.info),
+            {
+              variant: "error",
+            }
+          );
         }
       }
     );
@@ -328,17 +332,6 @@ class GuestContainer extends Component {
     }
   };
 
-  onhandleActivation = (username = "", pass = "") => {
-    this.setState({
-      ...this.state,
-      openDialog: true,
-      openDialogName: "activation",
-      username: username,
-      pass: pass,
-    });
-    this.props.showLogin(false);
-  };
-
   handleLoginClick = async (username, password) => {
     if (username === "") {
       this.props.enqueueSnackbar(i18n.t("web.login.errorMsg.emptyUsername"), {
@@ -355,7 +348,6 @@ class GuestContainer extends Component {
     const result = await this.props.accountLogin(username, password);
 
     //TODO: Temporary fix modal close when found wrong password.
-
     if (result.code === 101 && result.IsSuccess === false) {
       this.props.showLogin(true);
     } else if (result.code === 210) {
@@ -366,7 +358,7 @@ class GuestContainer extends Component {
     if (result.IsSuccess) {
       this.handleLoginSuccess(result.data);
     } else {
-      this.props.enqueueSnackbar(result.info, {
+      this.props.enqueueSnackbar(ErrorSwitcher.getTranslation(result.info), {
         variant: "warning",
       });
 
@@ -391,11 +383,11 @@ class GuestContainer extends Component {
   handleLoginSuccess = (token) => {
     let urlParams = new URLSearchParams(this.props.location.search);
     if (urlParams.has("return_url")) {
-      const returnValue = urlParams.get("return_url");
-      if (returnValue) {
-        window.location.href =
-          returnValue + "?token=" + BlowFishEncryption.Encrypt(token);
-      }
+      // const returnValue = urlParams.get("return_url");
+      // if (returnValue) {
+      //   window.location.href =
+      //     returnValue + "?token=" + BlowFishEncryption.Encrypt(token);
+      // }
     } else {
       // this.props.checkGame();
 
@@ -403,6 +395,7 @@ class GuestContainer extends Component {
       this.props.getMessageList(i18n.language, 0, 99);
       this.props.getBankCardList();
       this.props.getBalanceList();
+      this.props.getAutoTransferStatus();
       this.props.game.providerList
         .filter((item) => item.status === 0 && item.transferwallet === true)
         .map((a) => {
@@ -429,17 +422,6 @@ class GuestContainer extends Component {
   render() {
     return (
       <Container>
-        <BtnLogin onClick={() => this.handleClickOpenDialog("login")}>
-          <BtnLoginRegisterLabel>
-            {i18n.t("common.login")}
-          </BtnLoginRegisterLabel>
-        </BtnLogin>
-        <BtnRegister onClick={() => this.onhandleRegister()}>
-          <BtnLoginRegisterLabel>
-            {i18n.t("common.register")}
-          </BtnLoginRegisterLabel>
-        </BtnRegister>
-
         {config.features.SMSVerification && (
           <React.Fragment>
             <BtnRegister onClick={() => this.onhandleActivation()}>
@@ -450,7 +432,17 @@ class GuestContainer extends Component {
             <BtnSpliter> | </BtnSpliter>
           </React.Fragment>
         )}
-
+        <BtnRegister onClick={() => this.onhandleRegister()}>
+          <BtnLoginRegisterLabel>
+            {i18n.t("common.register")}
+          </BtnLoginRegisterLabel>
+        </BtnRegister>
+        <BtnSpliter> | </BtnSpliter>
+        <BtnLogin onClick={() => this.handleClickOpenDialog("login")}>
+          <BtnLoginRegisterLabel>
+            {i18n.t("common.login")}
+          </BtnLoginRegisterLabel>
+        </BtnLogin>
         <StyledDialog
           open={this.state.openDialog || this.props.ui.showLogin}
           onClose={this.onhandleCloseDialog}
@@ -571,6 +563,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(
         generalAction.getPlayerPromotionList(language, 1, 99, true, "", true)
       ),
+    getAutoTransferStatus: () => dispatch(walletAction.getAutoTransferStatus()),
   };
 };
 const mapStateToProps = (state) => {

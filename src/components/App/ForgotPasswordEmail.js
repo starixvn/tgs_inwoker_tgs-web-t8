@@ -4,11 +4,12 @@ import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
 import LoginBGPNG from "../../assets/images/login-bg.png";
 import IconLoginClosePNG from "../../assets/images/icon-login-close.png";
-import CloseIcon from "@material-ui/icons/Close";
+
 import TextField from "@material-ui/core/TextField";
 import { withSnackbar } from "notistack";
 import {AccountService} from "../../api-services/services/AccountService";
 import i18n from "../../utils/i18n";
+import ErrorSwitcher from "../../utils/ErrorSwitcher";
 const Container = styled.div`
   width: 506px;
   height: 360px;
@@ -157,9 +158,12 @@ class ForgotPasswordEmail extends Component {
               this.setState({ ...this.state, countdown: 60 });
               this.checkCountdown();
             } else {
-              this.props.enqueueSnackbar(response.info, {
-                variant: "error",
-              });
+              this.props.enqueueSnackbar(
+                ErrorSwitcher.getTranslation(response.info),
+                {
+                  variant: "error",
+                }
+              );
               // if (response.code === 201) {
               //   this.props.enqueueSnackbar(i18n.t("error.ERR201"), {
               //     variant: "error",

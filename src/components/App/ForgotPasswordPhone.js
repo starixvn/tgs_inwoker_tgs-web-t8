@@ -6,9 +6,8 @@ import LoginBGPNG from "../../assets/images/login-bg.png";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconMobilePNG from "../../assets/images/icon-mobile.png";
-import IconInboxSelectedPNG from "../../assets/images/icon-inbox-selected.png";
+
 import IconInputVerifyCodePNG from "../../assets/images/icon-input-verifycode.png";
-import { makeStyles } from "@material-ui/core/styles";
 import { withSnackbar } from "notistack";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
@@ -40,13 +39,7 @@ const TitleContainer = styled.div`
 
   color: ${({ theme }) => theme.secondary};
 `;
-const SubTitleContainer = styled.div`
-  text-align: center;
 
-  font-size: 18px;
-
-  color: ${({ theme }) => theme.secondary};
-`;
 const FormContainer = styled.div`
   margin: 10px 78px 0 78px;
   padding: 0 3px;

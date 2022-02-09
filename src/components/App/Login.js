@@ -81,11 +81,11 @@ const CustomText = withStyles({
 
 const ButtonLogin = styled.div`
   margin-top: 35px;
-  margin-bottom: 15px;
   width: 350px;
   height: 51px;
   color: #fff;
   font-size: 20px;
+
   border-radius: 6px;
 
   border: solid 1px #ffffff;

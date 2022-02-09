@@ -5,7 +5,7 @@ import TextField from "../../Share/TextField";
 import Button from "../../Share/Button";
 import {AccountService} from "../../../api-services/services/AccountService";
 import {UPDATE_INFO} from "../../../api-services/constant/actionType";
-
+import ErrorSwitcher from "../../../utils/ErrorSwitcher";
 import { withSnackbar } from "notistack";
 const Container = styled.div`
   width: 100%;
@@ -58,9 +58,12 @@ class NameVerification extends Component {
             variant: "success",
           });
         } else {
-          this.props.enqueueSnackbar(response.msg, {
-            variant: "error",
-          });
+          this.props.enqueueSnackbar(
+            ErrorSwitcher.getTranslation(response.msg),
+            {
+              variant: "error",
+            }
+          );
         }
       }
     );

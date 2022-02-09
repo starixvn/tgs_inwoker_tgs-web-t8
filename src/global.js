@@ -13,19 +13,50 @@ const languageSwitcher = (language) => {
       return `'Noto Sans TC', Tahoma, Helvetica, Arial, sans-serif, '微軟正黑粗'`;
     case "th-TH":
       return ``;
+    default:
+      return `Tahoma, Helvetica, Arial, sans-serif`;
   }
 };
-
 export const GlobalStyles = createGlobalStyle`
-* {
-  font-family: ${languageSwitcher(i18n.language)};
-}
- 
-
+  * {
+    font-family: ${languageSwitcher(i18n.language)};
+  }
+  
   body {
-    background: ${({ theme }) => theme.bodyBackground};
+    background: ${({ theme }) => theme.body};
     background-size: 100%;
   }
+
+  .headerSubmenu .slick-track,
+  .headerSubmenu .slick-slider .slick-list {
+    height: auto;
+  }
+  
+  .headerSubmenu .slick-slide > div {
+    display: flex;
+    align-items: center;
+  }
+  
+  .headerSubmenu .slick-prev {
+    left: 0;
+    top: 90px;
+  }
+  
+  .headerSubmenu .slick-next {
+    right: 0;
+    top: 90px;
+  }
+  .headerSubmenu.slick-slider .slick-track,
+  .headerSubmenu.slick-slider .slick-list {
+    margin-left: 25px;
+    margin-right: 35px;
+  }
+  
+  .headerSubmenu .slick-prev::before,
+  .headerSubmenu .slick-next::before {
+    color: ${({ theme }) => theme.primary};
+  }
+  
 
 
 `;

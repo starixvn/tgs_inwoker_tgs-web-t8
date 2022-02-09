@@ -17,8 +17,10 @@ import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import InterceptorService from "./api-services/services/InterceptorService";
 import JoinGame from "./components/Share/JoinGame";
+import Deposit from "./components/Share/Deposit";
 import RedirectPage from "./components/Share/Redirect";
 import JoinLobbyGame from "./components/Share/JoinLobbyGame";
+import Maintenance from "./components/Share/Maintenance";
 // import IPRestrict from "./components/App/IPRestrict";
 // import CS from "./components/App/CS";
 // import AboutUs from "./components/AboutUs/index";
@@ -44,7 +46,7 @@ import { ThemeProvider } from "styled-components";
 import { themeList } from "./theme";
 import { GlobalStyles } from "./global";
 import JoinLotteryGame from "./components/App/Lottery/JoinLotteryGame";
-import Deposit from "./components/Share/Deposit";
+import featureList from "./config/features";
 import FeatureGetter from "./components/Share/feature-getter";
 require("es6-promise").polyfill();
 const store = createStore(rootReducer, applyMiddleware(thunk));
@@ -79,12 +81,12 @@ Config.isPC = isMobileOnly ? 1 : 0;
 
 document.getElementById("title").innerHTML = i18n
   .t("common.title")
-  .replace(/{brand}/g, Config.brand);
+  .replace(/{brand}/g, Config.brandName);
 document
   .getElementById("description")
   .setAttribute(
     "content",
-    i18n.t("common.title").replace(/{brand}/g, Config.brand)
+    i18n.t("common.title").replace(/{brand}/g, Config.brandName)
   );
 // if (
 //   process.env.REACT_APP_CUSTOM_NODE_ENV !== "development" &&
@@ -114,7 +116,9 @@ if (i18n.language === "zh-CN") {
   fontFamily = "'Sarabun', sans-serif";
 }
 document.getElementById("root").style.fontFamily = fontFamily;
-var muiThemeMode = themeList[Config.theme] || themeList["default"];
+var muiThemeMode = isMobileOnly
+  ? themeList[Config.brand] || themeList[Config.theme]
+  : themeList[Config.theme];
 muiThemeMode.lang = i18n.language;
 const muiTheme = createMuiTheme({
   palette: {
@@ -151,24 +155,23 @@ const muiTheme = createMuiTheme({
     MuiTabs: {
       // Name of the rule
       root: {
-        backgroundColor: muiThemeMode.body,
-        color: muiThemeMode.secondary,
+        backgroundColor: muiThemeMode.secondary,
         height: "74px",
         overflow: "visible",
         "& .MuiTabs-indicator": {
-          backgroundColor: muiThemeMode.primary,
+          backgroundColor: "#FDE740",
           height: "5px",
         },
-        //   "& .MuiTabs-indicator:before": {
-        //     content: "'\\A'",
-        //     borderStyle: "solid",
-        //     borderWidth: "0 10px 10px 10px",
-        //     borderColor: `transparent transparent ${muiThemeMode.primary} transparent`,
-        //     position: "absolute",
-        //     left: "50%",
-        //     top: "-6px",
-        //     transform: "translateX(-50%)",
-        //   },
+        "& .MuiTabs-indicator:before": {
+          content: "'\\A'",
+          borderStyle: "solid",
+          borderWidth: "0 10px 10px 10px",
+          borderColor: "transparent transparent #FDE740 transparent",
+          position: "absolute",
+          left: "50%",
+          top: "-6px",
+          transform: "translateX(-50%)",
+        },
         "& .MuiTabs-flexContainer": {
           overflow: "visible",
         },
@@ -181,11 +184,11 @@ const muiTheme = createMuiTheme({
       root: {
         fontSize: "24px",
         maxWidth: "375px",
-        color: "#ffffff",
+        color: "#ffffff !important",
         minWidth: "210px",
         height: "64px",
         "&.Mui-selected": {
-          color: muiThemeMode.primary,
+          color: "#FDE740  !important",
         },
       },
     },
@@ -218,7 +221,7 @@ const AppWrapper = () => {
                 <Dismiss onClick={onClickDismiss(key)}>x</Dismiss>
               )}
               maxSnack={3}
-              autoHideDuration={1000}
+              autoHideDuration={3000}
               anchorOrigin={{
                 vertical: "top",
                 horizontal: "center",
@@ -244,19 +247,30 @@ const AppWrapper = () => {
                   />
                   <Route
                     exact
-                    path={Common.baseRouteUrl + "/joinlottery/:brand"}
-                    component={JoinLotteryGame}
+                    path={Common.baseRouteUrl + "/redirect/:url"}
+                    component={RedirectPage}
                   />
                   <Route
                     exact
-                    path={Common.baseRouteUrl + "/redirect/:url"}
-                    component={RedirectPage}
+                    path={Common.baseRouteUrl + "/joinlottery/:brand"}
+                    component={JoinLotteryGame}
                   />
                   <Route
                     exact
                     path={Common.baseRouteUrl + "/joinlobbygame/:type/:params"}
                     component={JoinLobbyGame}
                   />
+                  {(() => {
+                    if (!isMobileOnly) {
+                      return (
+                        <Route
+                          exact
+                          path={Common.baseRouteUrl + "/maintenance"}
+                          render={(props) => <Maintenance />}
+                        />
+                      );
+                    }
+                  })()}
                   <Route
                     path={Common.baseRouteUrl + "/"}
                     render={(props) => (isMobileOnly ? <Wap /> : <Web />)}

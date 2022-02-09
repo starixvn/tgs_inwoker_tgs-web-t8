@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import QRCode from "qrcode.react";
 import { connect } from "react-redux";
 
-import {generalAction} from "../../../api-services/actions/generalAction";
 
+import {generalAction} from "../../../api-services/actions/generalAction";
 import PanelUserPNG from "../../../assets/images/panel/01-1.png";
 import PanelCSPNG from "../../../assets/images/panel/02-1.png";
 import PanelUserPNG2 from "../../../assets/images/panel/01-3.png";
@@ -122,6 +122,8 @@ const CustomModal = styled(Dialog)`
   .MuiBackdrop-root {
     background: transparent;
   }
+  .MuiDialog-scrollPaper {
+  }
 
   .MuiDialog-paper {
     min-width: 900px;
@@ -199,7 +201,6 @@ const QRCodeHolder = styled.div`
 const QRCodeTextContainer = styled.div`
   display: flex;
   flex-direction: column;
-
   align-items: center;
 `;
 
@@ -210,9 +211,9 @@ const QRCodeText = styled.div`
 `;
 
 const CSButtonContainer = styled.div`
-  padding: 5px;
+  padding: 10px;
   text-align: center;
-  margin: 5px;
+  margin: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -229,25 +230,11 @@ const IconHolder = styled.img`
   width: 75px;
 `;
 
-const QRCodeWrapper = styled.div`
-  position: relative;
-`;
-const Overlay = styled.div`
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  background: rgba(255, 255, 255, 0.9);
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-`;
-
 const Icons = styled.img`
   margin-bottom: 10px;
-  cursor: pointer;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 const AnotherFloatPanel = (props) => {
   const [supportModal, setSupportModal] = useState(false);
@@ -319,7 +306,6 @@ const AnotherFloatPanel = (props) => {
               />
 
               <Text active={csModal}>
-                {" "}
                 {config.features.FloatPanel_CustomTranslation
                   ? i18n.t("mess888.panel.cs")
                   : i18n.t("panel.cs")}
@@ -327,6 +313,7 @@ const AnotherFloatPanel = (props) => {
             </RotateBack>
           </SidePanel>
         )}
+
         <SidePanel
           active={supportModal}
           onClick={() => {
@@ -348,6 +335,7 @@ const AnotherFloatPanel = (props) => {
             </Text>
           </RotateBack>
         </SidePanel>
+
         {config.features.HaveDownloadFeature && (
           <SidePanel
             active={supportModal}
@@ -366,7 +354,7 @@ const AnotherFloatPanel = (props) => {
               <Text active={supportModal}>
                 {config.features.FloatPanel_CustomTranslation
                   ? i18n.t("mess888.panel.download")
-                  : i18n.t("download.title")}
+                  : i18n.t("download.title")}{" "}
               </Text>
             </RotateBack>
           </SidePanel>
@@ -381,7 +369,7 @@ const AnotherFloatPanel = (props) => {
         <QRCodeContainer>
           {props.general.brandsSupport.map((data, index) => {
             return (
-              <QRCodeHolder>
+              <QRCodeHolder key={index}>
                 {data.qrcodeurl ? (
                   <QRCodeTextContainer>
                     <QRCode value={data.qrcodeurl} bgColor={"#f6f8f7"} />

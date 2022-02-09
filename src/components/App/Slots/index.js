@@ -3,10 +3,6 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { AppHistory } from "../../../history/History";
 
-import BGSlotJPG from "../../../assets/images/slot/bg-slot.jpg";
-import BGTigerJPG from "../../../assets/images/slot/bg-tiger.jpg";
-import BGFishJPG from "../../../assets/images/slot/bg-fish.jpg";
-
 import {GameService} from "../../../api-services/services/GameService";
 import {gameAction} from "../../../api-services/actions/gameAction";
 import {GameTypeEnum,SlotFilterType} from "../../../api-services/utils/Enum";
@@ -27,18 +23,15 @@ import SlotFishGamePNG from "../../../assets/images/slot-fishgame.png";
 import SlotFishGameActivePNG from "../../../assets/images/slot-fishgame-active.png";
 import SlotHistoryGamePNG from "../../../assets/images/slot-history.png";
 import SlotHistoryGameActivePNG from "../../../assets/images/slot-history-active.png";
-import SlotSearchPNG from "../../../assets/images/slot-search.png";
 
 import SlotBookmark1PNG from "../../../assets/images/slot-bookmark-1.png";
 import SlotBookmark2PNG from "../../../assets/images/slot-bookmark-2.png";
 
-import SlotMoreGamePNG from "../../../assets/images/slot-moregame.png";
 import Loading from "../../../components/App/Loading";
 
 import i18n from "../../../utils/i18n";
 import config from "../../../config/config";
 import Common from "../../../utils/Common";
-import Button from "../../../custom/button";
 
 const Container = styled.div`
   width: 100%;
@@ -47,22 +40,18 @@ const Container = styled.div`
 `;
 
 const InnerWrap = styled.div`
-  width: 1280px;
+  width: 1007px;
   min-height: 580px;
+  border-radius: 30px;
 
-  background: rgba(255, 255, 255);
-  box-shadow: 2px 2px 7px 7.5px rgba(79, 95, 120, 0.29);
+  background: rgba(255, 255, 255, 0.8);
 
-  margin: 660px auto 50px auto;
+  margin: 130px auto 50px auto;
   padding: 16px 46px;
   box-sizing: border-box;
   overflow-y: auto;
 `;
-const GameTabContainer = styled.div`
-  display: flex;
-  height: 100px;
-  align-items: center;
-`;
+const GameTabContainer = styled.div``;
 const GameTab = styled.div`
   background: url(${(props) =>
       process.env.PUBLIC_URL +
@@ -81,6 +70,23 @@ const GameTab = styled.div`
   left: 50%;
   transform: translateY(-50%) translateX(-50%);
 `;
+
+const DisabledOverlay = styled.div`
+  height: 100%;
+  width: 100&;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.75);
+  position: relative;
+  color: white;
+  font-weight: bold;
+  pointer-event: none;
+  text-transform: capitalize;
+  z-index: 3;
+  cursor: not-allowed;
+`;
+
 const GameTabButton = styled.div`
   width: 141px;
   height: 76px;
@@ -99,6 +105,7 @@ const GameTabButton = styled.div`
       ${({ theme }) => theme.primary}
     );
   }
+
   &:hover ${GameTab} {
     background: url(${(props) =>
         process.env.PUBLIC_URL +
@@ -119,6 +126,24 @@ const GameTabButton = styled.div`
         props.theme.primary +
         `);`
       : `  background-color: #EEEEEE;`};
+
+  ${({ maintenance }) => {
+    return maintenance
+      ? `
+          pointer-events: none !important;
+        ${DisabledOverlay}{
+          display: flex; 
+          pointer-events: none !important;
+          cursor: not-allowed;
+        }
+    
+        ${GameTab}{
+          pointer-events: none;
+         
+        }
+        `
+      : ``;
+  }}
 `;
 const GameTabAll = styled(GameTabButton)`
   ${(props) =>
@@ -145,10 +170,11 @@ const GameTabAll = styled(GameTabButton)`
 
 const GameSubFilterContainer = styled.div`
   padding-left: 20px;
-  width: 1280;
+  width: 908px;
   height: 42px;
-
-  margin: 0px 0 25px 0;
+  border-top: 1px solid #36437d;
+  border-bottom: 1px solid #36437d;
+  margin: 25px 0 15px 0;
 `;
 
 const CategoryContainer = styled.div`
@@ -167,7 +193,7 @@ margin-top: 6px
    
   ${(props) =>
     props.active
-      ? ` color:  ${props.theme.primary};`
+      ? ` color:  ${({ theme }) => theme.primary};`
       : ` color: ` + props.theme.secondary + `;`};
 `;
 const CategoryText = styled.div`
@@ -244,37 +270,11 @@ const SearchFilterItemInput = styled.input`
     color: #9e9e9e;
   }
 `;
-const SearchButton = styled.div`
-  background: url(${SlotSearchPNG}) no-repeat center;
-  width: 20px;
-  height: 20px;
-  float: right;
-  margin: 4px 8px 0 0;
-  &:hover {
-    cursor: pointer;
-  }
-`;
 
 const GameListContainer = styled.div`
+  width: 908px;
   padding: 6px;
   background-color: #eaeaea;
-`;
-const ButtonMore = styled.div`
-  background: url(${SlotMoreGamePNG}) center no-repeat;
-  background-color: #3a4754;
-  border: solid 2px #34434f;
-  color: #fff;
-  border-radius: 33px;
-  font-weight: bold;
-  width: 179px;
-  height: 45px;
-  margin: 80px auto;
-  font-size: 20px;
-  padding-top: 16px;
-  text-align: center;
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 const GameHoverSelection = styled.div`
@@ -374,21 +374,13 @@ const Spliter = styled.div`
   margin: 7px 0 10px 0;
 `;
 
-const GameButtonBlock = styled.div`
-  ${({ maintenance }) => {
-    return maintenance
-      ? "filter: brightness(40%) grayscale(200%); pointer-events: none;"
-      : "";
-  }}
-`;
-
 class Slots extends Component {
   constructor(props) {
     super(props);
 
     const type = this.getType();
-
     this.state = {
+      favGame: [],
       firstLoad: true,
       filterGame: 0,
       keyword: "",
@@ -397,7 +389,6 @@ class Slots extends Component {
       limit: 25,
       total: 0,
       type: type,
-      favGame: [],
       platformList: [],
       loading: true,
       platform: this.props.match.params.platform
@@ -411,18 +402,6 @@ class Slots extends Component {
     if (this.props.token !== null && this.props.token !== "") {
       this.getFav();
     }
-  }
-  getFav(type = this.state.type) {
-    var result = GameService.GetFavoriteGame(type);
-    result.then((response) => {
-      if (response.IsSuccess) {
-        var data = response.data;
-        this.setState({
-          ...this.state,
-          favGame: data,
-        });
-      }
-    });
   }
   componentDidUpdate(prevProps, prevState) {
     if (
@@ -456,6 +435,7 @@ class Slots extends Component {
         this.getGameList();
       }
     }
+
     if (prevProps.token !== this.props.token && this.props.token !== null) {
       this.getFav();
     }
@@ -468,9 +448,23 @@ class Slots extends Component {
         ? GameTypeEnum.SLOT
         : this.props.match.url.indexOf("fish") >= 0
         ? GameTypeEnum.FISH
-        : GameTypeEnum.TIGERSLOT;
+        : GameTypeEnum.SLOT;
     return type;
   }
+
+  getFav(type = this.state.type) {
+    var result = GameService.GetFavoriteGame(type);
+    result.then((response) => {
+      if (response.IsSuccess) {
+        var data = response.data;
+        this.setState({
+          ...this.state,
+          favGame: data,
+        });
+      }
+    });
+  }
+
   getGameList(
     page = this.state.page,
     platform = this.state.platform,
@@ -598,9 +592,10 @@ class Slots extends Component {
   };
 
   genCategoryItem(category, text) {
-    if (this.props.token == null && category === 3) {
+    if (this.props.token === null && category === 3) {
       return null;
     }
+
     return (
       <CategoryContainer
         onClick={() => this.handleFilterGameClick(category)}
@@ -657,6 +652,7 @@ class Slots extends Component {
                   active={this.state.filterGame === category}
                 ></BookmarkFilterItem>
               );
+
             default:
               return null;
           }
@@ -666,8 +662,6 @@ class Slots extends Component {
       </CategoryContainer>
     );
   }
-
-  path = window.location.pathname.split("/");
 
   handleToggleFavorite = (match, id, match2) => {
     if (this.props.token !== null && this.props.token !== "") {
@@ -704,7 +698,7 @@ class Slots extends Component {
               return a.tag.new === true;
             } else if (this.state.filterGame === SlotFilterType.Recommend) {
               return a.tag.recommend === true;
-            } else if (this.state.filterGame === "fav") {
+            } else if (this.state.filterGame === SlotFilterType.Bookmark) {
               return this.state.favGame.indexOf(a.id) > -1;
             }
           }
@@ -733,17 +727,15 @@ class Slots extends Component {
             <GameDesc>
               <GameProvider>{el.gpcode}</GameProvider>
               <Spliter></Spliter>
-              {this.props.token !== null && this.props.token !== "" && (
-                <Bookmark
-                  bookmark={this.state.favGame.indexOf(el.id) > -1}
-                  onClick={() =>
-                    this.handleToggleFavorite(
-                      this.state.favGame.indexOf(el.id) > -1,
-                      el.id
-                    )
-                  }
-                ></Bookmark>
-              )}
+              <Bookmark
+                bookmark={this.state.favGame.indexOf(el.id) > -1}
+                onClick={() =>
+                  this.handleToggleFavorite(
+                    this.state.favGame.indexOf(el.id) > -1,
+                    el.id
+                  )
+                }
+              ></Bookmark>
             </GameDesc>
             <GameHoverSelection
               onClick={() => this.handleJoinGameClick(el.gpcode, el.id)}
@@ -759,34 +751,26 @@ class Slots extends Component {
       <Container
         style={{
           background: `url(${
-            process.env.PUBLIC_URL +
-            `/assets/images/pcGamePage/${
-              this.props.match.url.indexOf("fish") >= 0
-                ? "fish"
-                : this.props.match.url.indexOf("slots") >= 0
-                ? "slots"
-                : "electron"
-            }/${i18n.language}/bg.jpg`
-          })
-            no-repeat center top,
-          ${
-            this.props.match.url.indexOf("fish") >= 0
-              ? "#f1f5fe"
-              : this.props.match.url.indexOf("slots") >= 0
-              ? "#c0c5cd"
-              : "#f1f5fe"
-          }`,
+            process.env.PUBLIC_URL
+          }/assets/images/pcGamePage/slots/bg-${
+            this.state.type === GameTypeEnum.TABLEGAME
+              ? "electron"
+              : this.state.type === GameTypeEnum.SLOT
+              ? "slot"
+              : this.state.type === GameTypeEnum.FISH
+              ? config.features.GamePage_SpecificBackground
+                ? "fish-hk28"
+                : "fish"
+              : "slot"
+          }.jpg) no-repeat center top, #E3E3E3`,
         }}
       >
-        <InnerWrap>
+        <InnerWrap type={this.state.type}>
           <GameTabContainer>
-            <Button
+            <GameTabAll
               active={this.state.platform == ""}
-              click={() => this.handleParentClick("")}
-              text="All"
-              variant="2"
-              fontSize="12px"
-            ></Button>
+              onClick={() => this.handleParentClick("")}
+            ></GameTabAll>
 
             {this.props.game.homePageGameList
 
@@ -796,28 +780,21 @@ class Slots extends Component {
 
               .map((row, index) => {
                 return (
-                  <GameButtonBlock maintenance={row.status != 0}>
-                    <Button
-                      key={index}
+                  <GameTabButton
+                    key={index}
+                    img={row.abbreviation.toLowerCase()}
+                    active={this.state.platform == row.abbreviation}
+                    onClick={() => this.handleParentClick(row.abbreviation)}
+                    maintenance={row.status != 0}
+                  >
+                    <DisabledOverlay>
+                      {i18n.t("transfer.maintenance")}
+                    </DisabledOverlay>
+                    <GameTab
+                      img={row.abbreviation.toLowerCase()}
                       active={this.state.platform == row.abbreviation}
-                      click={() => this.handleParentClick(row.abbreviation)}
-                      text={
-                        row.abbreviation +
-                        " " +
-                        i18n.t(
-                          `common.${
-                            this.props.match.url.indexOf("fish") >= 0
-                              ? "fish"
-                              : this.props.match.url.indexOf("slots") >= 0
-                              ? "slot"
-                              : "electron"
-                          }`
-                        )
-                      }
-                      variant="2"
-                      fontSize="12px"
-                    />
-                  </GameButtonBlock>
+                    ></GameTab>
+                  </GameTabButton>
                 );
               })}
           </GameTabContainer>
@@ -829,11 +806,6 @@ class Slots extends Component {
               SlotFilterType.Recommend,
               i18n.t("slot.recommendGame")
             )}
-            {this.genCategoryItem(
-              SlotFilterType.Bookmark,
-              i18n.t("slot.bookmarkGame")
-            )}
-
             {/* {this.genCategoryItem(
               SlotFilterType.Bookmark,
               i18n.t("slot.bookmarkGame")
@@ -842,17 +814,19 @@ class Slots extends Component {
               SlotFilterType.History,
               i18n.t("slot.historyGame")
             )} */}
-            {
-              //   <SearchFilterItemContainer>
-              //     <SearchFilterItemInput
-              //       type="text"
-              //       maxLength="15"
-              //       autocomplete="off"
-              //       placeholder={i18n.t("slot.search")}
-              //       onChange={this.handleKeywordChange}
-              //     ></SearchFilterItemInput>
-              //   </SearchFilterItemContainer>
-            }
+            {this.genCategoryItem(
+              SlotFilterType.Bookmark,
+              i18n.t("slot.bookmarkGame")
+            )}
+            <SearchFilterItemContainer>
+              <SearchFilterItemInput
+                type="text"
+                maxLength="15"
+                autocomplete="off"
+                placeholder={i18n.t("slot.search")}
+                onChange={this.handleKeywordChange}
+              ></SearchFilterItemInput>
+            </SearchFilterItemContainer>
           </GameSubFilterContainer>
           <GameListContainer>{list}</GameListContainer>
           {/* <ButtonMore

@@ -248,10 +248,9 @@ const NewAppBar = styled.div`
   background: ${({ theme }) => theme.appbar};
   color: white;
   display: flex;
-  justify-content: center;
-  flex-direction: column;
-
-  padding: 0px 0px 0px 30px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 40px;
 `;
 
 const LogoHolder = styled.div`
@@ -318,7 +317,8 @@ const BackButton = styled.div`
 `;
 const TheContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const PhoneHolder = styled.div`
@@ -326,7 +326,7 @@ const PhoneHolder = styled.div`
 
   padding-bottom: 10px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
 `;
 
@@ -340,11 +340,6 @@ const Icon = styled.div`
     return `url(${src}) no-repeat center /
 contain;`;
   }};
-`;
-
-const MakeFloatCenter = styled.div`
-  display: flex;
-  align-items: center;
 `;
 
 class Home extends Component {
@@ -766,81 +761,78 @@ class Home extends Component {
           })()} */}
           {this.state.scene === 1 ? (
             <NewAppBar>
-              <div>
-                <TheContainer>
-                  <LogoHolder
-                    img={
-                      this.props.general.brand &&
-                      this.props.general.brand.mobileLogoUrl
-                    }
-                  />
-                  {(() => {
-                    if (!this.props.account.token) {
-                      return (
-                        <MakeFloatCenter>
-                          <CustomButtonContainer>
-                            <CustomColoredButton
-                              onClick={this.handleSignupClick}
-                            >
-                              {i18n.t("common.login")}
-                            </CustomColoredButton>
-                            <CustomColoredButton
-                              primary
-                              onClick={this.handleRegisterClick}
-                            >
-                              {i18n.t("common.register")}
-                            </CustomColoredButton>
-                          </CustomButtonContainer>
-                        </MakeFloatCenter>
-                      );
-                    } else {
-                      return (
-                        <MakeFloatCenter>
-                          <CustomButtonContainer>
-                            <UsernameContainer>
-                              {this.props.account.info.member_username}
-                            </UsernameContainer>
-                            <CustomColoredButton
-                              primary
-                              onClick={this.handleLogout}
-                            >
-                              {i18n.t("common.exit")}
-                            </CustomColoredButton>
-                          </CustomButtonContainer>
-                        </MakeFloatCenter>
-                      );
-                    }
-                  })()}
-                </TheContainer>
-              </div>
-              {config.features.DisplayPhone &&
-                this.props.general.brandsSupport.length > 0 && (
-                  <PhoneHolder>
-                    <Icon
-                      src={
-                        process.env.PUBLIC_URL + `/assets/images/wapp/phone.png`
-                      }
-                    ></Icon>
-                    {this.props.general.brandsSupport &&
-                      this.props.general.brandsSupport.length > 0 &&
-                      this.props.general.brandsSupport[0].phone}
+              <TheContainer>
+                <LogoHolder
+                  img={
+                    this.props.general.brand &&
+                    this.props.general.brand.mobileLogoUrl
+                  }
+                />
+                {config.features.DisplayPhone &&
+                  this.props.general.brandsSupport.length > 0 && (
+                    <PhoneHolder>
+                      <Icon
+                        src={
+                          process.env.PUBLIC_URL +
+                          `/assets/images/wapp/phone.png`
+                        }
+                      ></Icon>
+                      {this.props.general.brandsSupport &&
+                        this.props.general.brandsSupport.length > 0 &&
+                        this.props.general.brandsSupport[0].phone}
 
-                    {this.props.account.token && config.features.CustomVIP && (
-                      <React.Fragment>
-                        <Icon
-                          style={{ marginLeft: "10px" }}
-                          src={
-                            process.env.PUBLIC_URL +
-                            `/assets/images/wapp/vip.png`
-                          }
-                        ></Icon>
-                        {this.getVIPName(
-                          this.props.account.info.member_level_id
-                        )}
-                      </React.Fragment>
-                    )}
-                  </PhoneHolder>
-                )}
+                      {this.props.account.token && config.features.CustomVIP && (
+                        <React.Fragment>
+                          <Icon
+                            style={{ marginLeft: "10px" }}
+                            src={
+                              process.env.PUBLIC_URL +
+                              `/assets/images/wapp/vip.png`
+                            }
+                          ></Icon>
+                          {this.getVIPName(
+                            this.props.account.info.member_level_id
+                          )}
+                        </React.Fragment>
+                      )}
+                    </PhoneHolder>
+                  )}
+              </TheContainer>
+              {(() => {
+                if (!this.props.account.token) {
+                  return (
+                    <TheContainer>
+                      <CustomButtonContainer>
+                        <CustomColoredButton onClick={this.handleSignupClick}>
+                          {i18n.t("common.login")}
+                        </CustomColoredButton>
+                        <CustomColoredButton
+                          primary
+                          onClick={this.handleRegisterClick}
+                        >
+                          {i18n.t("common.register")}
+                        </CustomColoredButton>
+                      </CustomButtonContainer>
+                    </TheContainer>
+                  );
+                } else {
+                  return (
+                    <TheContainer>
+                      <CustomButtonContainer>
+                        <UsernameContainer>
+                          {this.props.account.info.member_username}
+                        </UsernameContainer>
+                        <CustomColoredButton
+                          primary
+                          onClick={this.handleLogout}
+                        >
+                          {i18n.t("common.exit")}
+                        </CustomColoredButton>
+                      </CustomButtonContainer>
+                    </TheContainer>
+                  );
+                }
+              })()}
             </NewAppBar>
           ) : (
             <NewAppBar>

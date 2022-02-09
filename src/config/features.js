@@ -23,8 +23,9 @@ const featureList = {
     HaveAffiliateFeature: false,
     ChangesNotAllowed: false,
     HomePage_CustomSection: false,
+    ICVerificationUpload: false,
     Profile_CustomIdentityPageTranslation: false,
-    HaveAffiliateFeature: false,
+    CustomVIP: false,
     Deposit_EnglishName: false,
   },
 };

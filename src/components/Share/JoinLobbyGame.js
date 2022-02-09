@@ -2,8 +2,9 @@ import React, { Component } from "react";
 
 import Loading from "../App/Loading";
 import {GameService} from "../../api-services/services/GameService";
-
+import { isMobileOnly } from "react-device-detect";
 import Maintenance from "./Maintenance";
+import MaintenanceMobile from "./MaintenanceMobile";
 
 class JoinLobbyGame extends Component {
   state = {
@@ -11,6 +12,11 @@ class JoinLobbyGame extends Component {
     maintenance: false,
   };
   componentDidMount() {
+    if (isMobileOnly) {
+      document
+        .getElementById("viewport")
+        .setAttribute("content", "width=750, user-scalable=no");
+    }
     const gameType = this.props.match.params.type;
 
     const gameCode = this.props.match.params.params.trim();
@@ -99,7 +105,11 @@ class JoinLobbyGame extends Component {
   };
   render() {
     if (this.state.maintenance) {
-      return <Maintenance isGameMaintenance={true}></Maintenance>;
+      if (isMobileOnly) {
+        return <MaintenanceMobile isGameMaintenance={true}></MaintenanceMobile>;
+      } else {
+        return <Maintenance isGameMaintenance={true}></Maintenance>;
+      }
     } else {
       return (
         <React.Fragment>

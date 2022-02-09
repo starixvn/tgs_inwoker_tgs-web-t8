@@ -15,7 +15,8 @@ import IconFavPNG from "../../../assets/images/icon-fav.png";
 import Maintenance from "../../Share/Maintenance";
 import { withSnackbar } from "notistack";
 import i18n from "../../../utils/i18n";
-import config from "../../../config/config";
+import ErrorSwitcher from "../../../utils/ErrorSwitcher";
+
 import { AppHistory } from "../../../history/History";
 const Container = styled.div`
   width: 100%;
@@ -249,15 +250,21 @@ class Play extends Component {
           this.myRef.current.src = response.data.url;
           this.setState({ ...this.state, loading: false });
         } else {
-          this.props.enqueueSnackbar(response.info, {
-            variant: "error",
-          });
+          this.props.enqueueSnackbar(
+            ErrorSwitcher.getTranslation(response.info),
+            {
+              variant: "error",
+            }
+          );
         }
       } else {
         this.setState({ ...this.state, maintenance: true });
-        this.props.enqueueSnackbar(response.info, {
-          variant: "error",
-        });
+        this.props.enqueueSnackbar(
+          ErrorSwitcher.getTranslation(response.info),
+          {
+            variant: "error",
+          }
+        );
       }
     });
   };

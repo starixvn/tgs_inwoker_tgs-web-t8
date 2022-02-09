@@ -5,20 +5,20 @@ import i18n from "../utils/i18n";
 import Promise from "promise-polyfill";
 import { isMobileOnly } from "react-device-detect";
 import ErrorSwitcher from "../utils/ErrorSwitcher";
-export default {
+const Interceptor = {
   setupInterceptors: (store) => {
     // Add a response interceptor
     axios.interceptors.request.use(
       function (config) {
         const client = localStorage.getItem("client-token");
-        if (client != null && client != "") {
+        if (client !== null && client !== "") {
           config.headers["Authorization"] = "bearer " + client;
         }
 
         const token = localStorage.getItem(
           "token" + (isMobileOnly ? "1" : "0")
         );
-        if (token != null && token != "") {
+        if (token !== null && token !== "") {
           config.headers["Token"] = token;
         }
         config.headers["Content-Type"] = "application/json";
@@ -77,6 +77,16 @@ export default {
         ) {
           newResponse.IsSuccess = true;
         }
+
+        if (
+          response.config.url.toUpperCase().indexOf("/GAME/BC") >= 0 &&
+          typeof response.data === "string"
+        ) {
+          newResponse.IsSuccess = true;
+        } else {
+          newResponse.IsSuccess = false;
+        }
+
         if (newResponse.code === 0) {
           newResponse.IsSuccess = true;
         } else if (
@@ -99,9 +109,9 @@ export default {
       function (error) {
         if (error.response) {
           if (
-            error.response.data.err == 102 ||
-            error.response.data.err == 101 ||
-            error.response.data.err == 210 ||
+            error.response.data.err === 102 ||
+            error.response.data.err === 101 ||
+            error.response.data.err === 210 ||
             error.response.data.errmsg ===
               "request platform is not matched with player login platform."
           ) {
@@ -111,7 +121,7 @@ export default {
             ) {
               localStorage.removeItem("token" + (isMobileOnly ? "1" : "0"));
               store.dispatch({ type: UNAUTHORIZE });
-              if (error.response.data.err == 210) {
+              if (error.response.data.err === 210) {
                 AppHistory.replace("/" + i18n.language + "/banned");
               } else {
                 AppHistory.replace("/" + i18n.language + "/");
@@ -137,3 +147,4 @@ export default {
     );
   },
 };
+export default Interceptor;

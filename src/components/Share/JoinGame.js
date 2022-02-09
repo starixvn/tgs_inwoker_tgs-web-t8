@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import Loading from "../App/Loading";
 import {GameService} from "../../api-services/services/GameService";
 import {GameTypeEnum} from "../../api-services/utils/Enum";
-
 import Maintenance from "./Maintenance";
 
 class JoinGame extends Component {

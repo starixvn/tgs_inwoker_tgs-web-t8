@@ -5,10 +5,10 @@ pipeline {
 	environment {
         TAG = sh(script: "echo `date +%Y-%m%d-%H%M`", returnStdout: true).trim()
         Registry = "registry.gitlab.com/rayprosoft/turnkey-gaming-system/"
-        GitUrl = "gitlab.com/inwoker/tgs/tgs-web-t5.git"
-        ImageTagUrl = "https://gitlab.com/api/v4/projects/20478010/registry/repositories/2272073/tags"
+        GitUrl = "gitlab.com/cjennhong/tgs-web.git"
+        ImageTagUrl = "https://gitlab.com/api/v4/projects/20478010/registry/repositories/2163343/tags"
         gitlab_user_pwd = credentials('gitlab-user-pwd')
-        Image = "lobby-t5"
+        Image = "lobby-t1"
     }
 	
     stages {		    	
@@ -21,7 +21,7 @@ pipeline {
                     {
                         case ['master', 'origin/master']:
                             env.kube_ns = "prod";
-                            env.k8s_config = 'stag-k8s-config';	
+                            env.k8s_config = 'stag-k8s-config';
                             sh "git config --file=.gitmodules submodule.src/components/Wap.branch master";
                             sh "git config --file=.gitmodules submodule.src/components/App/Account.branch master";
                             sh "git submodule sync";
@@ -36,12 +36,12 @@ pipeline {
                             sh "git submodule update --remote";
                             break;
                         default:
-                            env.kube_ns = "dev";
-                            env.k8s_config = 'k8s-kube-config' 
                             sh "git config --file=.gitmodules submodule.src/components/Wap.branch develop";
                             sh "git config --file=.gitmodules submodule.src/components/App/Account.branch develop";
                             sh "git submodule sync";
                             sh "git submodule update --remote";
+                            env.kube_ns = "dev";
+                            env.k8s_config = 'k8s-kube-config' 
                             break;
                     }
                     TAG = env.kube_ns + '-' + TAG
@@ -59,7 +59,7 @@ pipeline {
                         envItems.each { key, value -> 
                             env."tgs_${key}" = value;
                         }
-                        componentArray = "${env.tgs_lobby_t5_components}".split(",")
+                        componentArray = "${env.tgs_lobby_t1_components}".split(",")
                     }
                 }
 
@@ -84,6 +84,7 @@ pipeline {
                 script {			
                     withKubeConfig([credentialsId: env.k8s_config]) {
                         message += "\nComponent:"
+
                         for (i = 0;i < componentArray.length; i++) {
                             message += "\n    ${componentArray[i]}"
                             sh "kubectl set image deployment/${componentArray[i]} ${componentArray[i]}=${Registry}${Image}:${TAG} --record -n $env.kube_ns"

@@ -7,7 +7,6 @@ import { Dialog } from "@material-ui/core";
 import { connect } from "react-redux";
 import Common from "../../utils/Common";
 import {generalAction} from "../../api-services/actions/generalAction";
-import config from "../../config/config";
 import { withSnackbar } from "notistack";
 import { AppHistory } from "../../history/History";
 import IMHandler from "./IMHandler";
@@ -139,9 +138,7 @@ const Maintenance = (props) => {
   useEffect(() => {
     props.getLiveChatURL().then((e) => {
       if (e.IsSuccess) {
-        if (e.info === undefined) {
-          setLiveChat("");
-        } else {
+        if (e.data.setting) {
           setLiveChat(e.data.setting.url);
         }
       }
@@ -176,9 +173,7 @@ const Maintenance = (props) => {
     } else {
     }
   };
-  function copyText(text) {
-    navigator.clipboard.writeText(text);
-  }
+
   return (
     <Container>
       <MaintenanceTextContainer>
@@ -243,10 +238,10 @@ const Maintenance = (props) => {
               return (
                 <QRCodeHolder
                   onClick={() => {
-                    copyText(data.appid ? data.appid : data.phone);
-                    props.enqueueSnackbar(i18n.t("affiliate.copied"), {
-                      variant: "success",
-                    });
+                    //  copyText(data.appid ? data.appid : data.phone);
+                    //  props.enqueueSnackbar(i18n.t("affiliate.copied"), {
+                    //    variant: "success",
+                    //  });
                   }}
                 >
                   {data.qrcodeurl ? (

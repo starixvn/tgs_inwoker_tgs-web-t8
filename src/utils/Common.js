@@ -32,7 +32,7 @@ import PromoImage1 from "../assets/images/promotion/promo-1.jpg";
 import PromoImage2 from "../assets/images/promotion/promo-2.jpg";
 import PromoImage3 from "../assets/images/promotion/promo-3.jpg";
 import i18n from "./i18n";
-import config from "../config/config";
+
 function getCDNLanguagePrefix() {
   var prefix = "en-US";
   var arr = [
@@ -96,7 +96,7 @@ function GetBankImageByTitle(title) {
       break;
     }
   }
-  if (bank != null) {
+  if (bank !== null) {
     return bank.image;
   } else {
     return DefaultPNG;
@@ -156,8 +156,6 @@ const gameImageMapping = [
   { gcode: "PP", img: Provider8PNG },
   { gcode: "SABA", img: Provider9PNG },
   { gcode: "SBO", img: Provider10PNG },
-  { gcode: "WGFM", img: "" },
-  { gcode: "WGVIA", img: "" },
 ];
 
 const bankImageMapping = {
@@ -293,9 +291,9 @@ function PopupCenter(url, title, w, h) {
   }
 
   var dualScreenLeft =
-    window.screenLeft != undefined ? window.screenLeft : window.screenX;
+    window.screenLeft !== undefined ? window.screenLeft : window.screenX;
   var dualScreenTop =
-    window.screenTop != undefined ? window.screenTop : window.screenY;
+    window.screenTop !== undefined ? window.screenTop : window.screenY;
 
   var width = window.innerWidth
     ? window.innerWidth
@@ -390,7 +388,7 @@ function loadScript(url, cb) {
   if (scr.readyState) {
     // IE
     scr.onreadystatechange = function () {
-      if (scr.readyState == "loaded" || scr.readyState === "complete") {
+      if (scr.readyState === "loaded" || scr.readyState === "complete") {
         scr.onreadystatechange = null;
         cb();
       }
@@ -408,7 +406,7 @@ function GetPromoImg(index) {
   return promoImgMap[index % 3];
 }
 
-const baseRouteUrl = `/:locale(zh-CN|zh-TW|en-US|th-TH|vi-VN)`;
+const baseRouteUrl = `/:locale(en-US|zh-CN|zh-TW|th-TH|id-ID|vi-VN)`;
 
 const Common = {
   baseRouteUrl,

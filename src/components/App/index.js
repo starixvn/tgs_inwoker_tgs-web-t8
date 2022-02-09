@@ -6,6 +6,7 @@ import { Router, Route, Switch, Redirect } from "react-router";
 import { AppHistory } from "../../history/History";
 import { withSnackbar } from "notistack";
 import ErrorSwitcher from "../../utils/ErrorSwitcher";
+
 import { GeneralService } from "../../api-services/services/GeneralService";
 import { gameAction } from "../../api-services/actions/gameAction";
 import { walletAction } from "../../api-services/actions/walletAction";
@@ -15,13 +16,11 @@ import { accountAction } from "../../api-services/actions/accountAction";
 import { inboxAction } from "../../api-services/actions/inboxAction";
 import { SHOW_LOGIN } from "../../api-services/constant/actionType";
 
-import BlowFishEncryption from "../../utils/BlowFishEncryption";
 import LiveGame from "./LiveGame/index";
 import Slots from "./Slots/index";
 import SlotPlay from "./Slots/Play";
 import Qipai from "./Qipai/index";
 import Sports from "./Sports/index";
-import ESports from "./eSports/index";
 import SportsPlay from "./Sports/Play";
 import Lottery from "./Lottery/index";
 import LotteryPlay from "./Lottery/Play";
@@ -42,21 +41,21 @@ import Download from "./Download/index";
 // import VIP from "./VIP/index";
 
 import i18n from "../../utils/i18n";
-import Fishing from "./Fishing";
+
 import Maintenance from "../Share/Maintenance";
 import Banned from "./Banned";
 import AnotherFloatPanel from "./Home/AnotherFloatPanel";
-import config from "../../config/config";
+import eSports from "./eSports";
+
 const baseRouteUrl = Common.baseRouteUrl;
 const Main = styled.div`
   min-height: 600px;
 `;
 const EmptyHeader = styled.div`
-  height: 128px;
-  background-image: linear-gradient(to top, #060d0f, #1b213f, #29356c);
-  background: black;
+  height: 160px;
+  background: #000103;
 `;
-let csWindowTab = null;
+
 class App extends Component {
   state = {
     showCS: false,
@@ -64,17 +63,18 @@ class App extends Component {
     inbox: "",
   };
   async componentDidMount() {
-    if (this.props.general.token == "") {
+    if (this.props.general.token === "") {
       this.props.getSiteToken();
     } else {
       this.props.getBrandCommunicationList();
-      this.props.getMarquee(i18n.language);
-      this.props.getLiveChatURL();
-      this.props.getBrand();
       this.props.getBrandLanguage();
+      this.props.getMarquee(i18n.language);
       this.props.getBanner();
-    }
+      this.props.getBrand();
+      this.props.getLiveChatURL();
 
+      // this.props.getVIP();
+    }
     // if (response.IsSuccess) {
     //   localStorage.setItem("client-token", response.data.token);
     // }
@@ -109,12 +109,14 @@ class App extends Component {
           localStorage.removeItem("token0");
           break;
         case "login_token":
-          const decryptedToken = BlowFishEncryption.Decrypt(
-            urlParams.get("token")
-          );
+          // const decryptedToken = BlowFishEncryption.Decrypt(
+          //   urlParams.get("token")
+          // );
 
-          localStorage.setItem("token0", decryptedToken);
-          AppHistory.replace("/");
+          // localStorage.setItem("token0", decryptedToken);
+          // AppHistory.replace("/");
+          break;
+        default:
           break;
       }
     } else {
@@ -123,7 +125,10 @@ class App extends Component {
   }
   async componentDidUpdate(preProps) {
     if (preProps.general.token !== this.props.general.token) {
-      if (this.props.general.token == null || this.props.general.token == "") {
+      if (
+        this.props.general.token === null ||
+        this.props.general.token === ""
+      ) {
         this.props.getSiteToken();
       } else {
         localStorage.setItem("client-token", this.props.general.token);
@@ -131,7 +136,7 @@ class App extends Component {
         const localStorageToken = localStorage.getItem("token0");
         if (
           localStorageToken != null &&
-          this.props.account.token == null &&
+          this.props.account.token === null &&
           this.props.account.info.token === ""
         ) {
           const responseToken = await this.props.checkTokenIsValid();
@@ -140,6 +145,7 @@ class App extends Component {
             // this.props.checkGame();
             // this.props.getBankList();
             this.props.getBalanceList();
+
             this.props.getMessageList(i18n.language, 0, 99);
             this.props.getBankCardList();
             this.props.getAutoTransferStatus();
@@ -160,11 +166,13 @@ class App extends Component {
         });
         this.props.getHomePageGameList();
         this.props.getBrandCommunicationList();
-        this.props.getMarquee(i18n.language);
         this.props.getBrandLanguage();
-        this.props.getBrand();
+        this.props.getMarquee(i18n.language);
         this.props.getBanner();
+        this.props.getBrand();
         this.props.getLiveChatURL();
+
+        // this.props.getVIP();
       }
     }
     if (
@@ -200,9 +208,12 @@ class App extends Component {
       }
     }
   }
-  GetSupportUrl = (userid, name, question) => {
+  GetSupportUrl = (userid, name, question, email) => {
     var newURL = this.props.general.livechat
-      ? this.props.general.livechat.setting.url.replace("=name", "=" + name)
+      ? this.props.general.livechat.setting.url
+          .replace("{name}", name)
+          .replace("{lang}", i18n.language)
+          .replace("{email}", email || "")
       : "";
 
     if (newURL.length) {
@@ -215,20 +226,18 @@ class App extends Component {
     this.GetSupportUrl(
       this.props.account.info.member_id,
       this.props.account.info.member_username,
-      ""
+      "",
+      this.props.account.info.member_email
     );
   };
 
   handleDepositClick = () => {
-    if (this.props.account.token == null) {
+    if (this.props.account.token === null) {
       this.props.showLogin(true);
     } else {
       this.props.history.push("/" + i18n.language + "/account/deposit");
     }
   };
-
-  path = window.location.pathname.split("/");
-  maintenance = this.path[2] == "maintenance";
 
   render() {
     return (
@@ -236,8 +245,8 @@ class App extends Component {
         {(() => {
           if (
             (this.state.isIpRestrict ||
-              this.props.general.token == "" ||
-              this.props.general.token == null) &&
+              this.props.general.token === "" ||
+              this.props.general.token === null) &&
             this.props.general.isMaintenance === false
           ) {
             return <Loading show={true} opacity={1}></Loading>;
@@ -282,11 +291,13 @@ class App extends Component {
                       path={baseRouteUrl + "/sports"}
                       component={Sports}
                     />
-                    <Route
-                      exact
-                      path={baseRouteUrl + "/esports"}
-                      component={ESports}
-                    />
+                    {
+                      <Route
+                        exact
+                        path={baseRouteUrl + "/esports"}
+                        component={eSports}
+                      />
+                    }
                     <Route
                       exact
                       path={baseRouteUrl + "/sports/play/:params/:type"}
@@ -394,9 +405,11 @@ class App extends Component {
                     <Redirect to={"/" + i18n.language} />
                   </Switch>
                 </Main>
+
                 <AnotherFloatPanel
-                  onhandleShowCSClick={this.GetSupportUrl}
+                  onhandleShowCSClick={this.handleShowCSClick}
                 ></AnotherFloatPanel>
+
                 <Footer target={"_blank"}></Footer>
               </>
             );
@@ -422,6 +435,7 @@ const mapDispatchToProps = (dispatch) => {
     },
 
     checkTokenIsValid: () => dispatch(accountAction.checkTokenIsValid()),
+    getMarquee: (language) => dispatch(uiAction.getMarquee(language)),
 
     getBankCardList: () => dispatch(walletAction.getBankCardList()),
 
@@ -431,20 +445,20 @@ const mapDispatchToProps = (dispatch) => {
     getHomePageGameList: () => dispatch(gameAction.getHomePageGameList()),
 
     getSiteToken: () => dispatch(generalAction.getSiteToken()),
+    getBrand: () => dispatch(generalAction.getBrand()),
     getBrandCommunicationList: (language) =>
       dispatch(generalAction.getBrandCommunication()),
     getBrandLanguage: () => dispatch(generalAction.getBrandLanguage()),
-    getBrand: () => dispatch(generalAction.getBrand()),
+
     getBanner: () => {
       dispatch(generalAction.getBanner());
-    },
-    getMarquee: (language) => {
-      dispatch(uiAction.getMarquee(language));
     },
     getMessageList: (language, pages, limit) =>
       dispatch(inboxAction.getMessages(language, pages, limit, true, true)),
     getLiveChatURL: () => dispatch(generalAction.getLiveChatURL()),
     getAutoTransferStatus: () => dispatch(walletAction.getAutoTransferStatus()),
+
+    //  getVIP: () => dispatch(generalAction.getVIP()),
   };
 };
 

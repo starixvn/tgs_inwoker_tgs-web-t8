@@ -7,27 +7,30 @@ import Slider from "./Slider";
 import { withRouter } from "react-router-dom";
 
 import Marquee from "./Marquee";
-import FloatPanel from "./FloatPanel";
+
+
 import {SHOW_MODAL, SHOW_LOGIN} from "../../../api-services/constant/actionType";
 import {GameTypeEnum} from "../../../api-services/utils/Enum";
+
 import i18n from "../../../utils/i18n";
 import SecondSection from "./SecondSection";
 import ThirdSection from "./ThirdSection";
-import BGJPG from "../../../assets/images/home/section/sections-bg.jpg";
+import FourthSection from "./FourthSection";
+import BGJPG from "../../../assets/images/home/section/bg.jpg";
 import Section1ChessPNG from "../../../assets/images/home/section/section1-chess.png";
 import Section1FishPNG from "../../../assets/images/home/section/section1-fish.png";
 import Section1LotteryPNG from "../../../assets/images/home/section/section1-lottery.png";
 import Section1SlotPNG from "../../../assets/images/home/section/section1-slot.png";
-
-import TitleHotGames from "../../../assets/images/home/section/title-hot-game.png";
-import TitleCardGames from "../../../assets/images/home/section/title-card-game.png";
-
+import Section1ElectronPNG from "../../../assets/images/home/section/section1-electron.png";
+import Section1SportPNG from "../../../assets/images/home/section/section1-sport.png";
+import Section1LivePNG from "../../../assets/images/home/section/section1-live.png";
 import TextBgPNG from "../../../assets/images/home/section/text-bg.png";
 import ScrollAnimation from "react-animate-on-scroll";
-import { Grid, Container } from "@material-ui/core";
-import AnotherFloatPanel from "./AnotherFloatPanel";
-import FourthSection from "./FourthSection";
+import { Grid } from "@material-ui/core";
+
 import config from "../../../config/config";
+
+import PopupAnnouncement from "./PopupAnnouncement";
 const HomeContainer = styled.div`
   width: 100%;
   overflow: hidden;
@@ -37,21 +40,23 @@ const SliderContainer = styled.div`
 `;
 
 const MarqueeContainer = styled.div`
-  margin-top: 50px;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
 `;
 const SectionContainer = styled.div`
   background: url(${BGJPG}) no-repeat;
-  background-position: top;
-  background-position-y: -600px;
+  background-position: center;
+  background-size: cover;
   width: 100%;
 `;
 const FirstSection = styled.div`
   width: 1280px;
   margin: 0 auto;
-  height: 460px;
-  padding-top: 63px;
-  display: grid;
-  grid-template-columns: auto auto auto auto;
+  min-height: 460px;
+  padding-top: 110px;
+  overflow: auto;
 `;
 const FirstSectionItemBg2 = styled.div`
   background: url(${TextBgPNG}) no-repeat;
@@ -66,32 +71,31 @@ const FirstSectionItemBg2 = styled.div`
 const FirstSectionItemBg = styled(Grid)`
   position: absolute;
   bottom: 38px;
-  left: 16px;
-  height: 61px;
+  left: ${(props) => (i18n.language === "vi-VN" ? "0px" : "16px")};
+  height: 68px;
   width: 283px;
-  padding-left: 14px;
+  padding-left: 30px;
 `;
-const FirstSectionItemLabel = styled(Grid)``;
+const FirstSectionItemLabel = styled(Grid)`
+  text-transform: uppercase;
+`;
 const FirstSectionItem = styled(Grid)`
   background: url(${(props) => props.img}) no-repeat;
   background-size: contain;
-  background-position: center;
+  margin: 0 auto;
   width: 320px;
   height: 282px;
   color: #fff;
-  font-size: 1.8em;
+  font-size: ${(props) => (i18n.language === "vi-VN" ? "1.4em" : "1.6em")};
   padding-top: 215px;
   padding-left: 38px;
   position: relative;
   &:hover {
     cursor: pointer;
+    ${FirstSectionItemBg2} {
+      width: 283px;
+    }
   }
-`;
-
-const TitleSection = styled.div`
-  display: flex;
-  width: 1920px;
-  justify-content: center;
 `;
 
 class Home extends Component {
@@ -101,9 +105,10 @@ class Home extends Component {
     var displayGame = this.getHomePageDisplayGame();
     this.state = {
       marqueeText: [],
-
+      banner_list: [],
       wm: displayGame.wm,
       ky: displayGame.ky,
+      openAnnouncement: true,
     };
   }
 
@@ -198,89 +203,176 @@ class Home extends Component {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   };
 
-  gameMenu = [
-    {
-      img: Section1LotteryPNG,
-      type: "lottery",
-      name: i18n.t("web.home.Section1Lottery"),
-    },
-    {
-      img: Section1FishPNG,
-      type: "fish",
-      name: i18n.t("web.home.Section1FISHing"),
-    },
-    {
-      img: Section1SlotPNG,
-      type: "slots",
-      name: i18n.t("web.home.Section1Slot"),
-    },
-    {
-      img: Section1ChessPNG,
-      type: "chess",
-      name: i18n.t("web.home.Section1Chess"),
-    },
-  ];
-
   render() {
     return (
       <HomeContainer>
         <SliderContainer>
-          <Slider></Slider>
-
-          {
-            //   <AnotherFloatPanel
-            //     onhandleDepositClick={this.props.onhandleDepositClick}
-            //     onhandleShowCSClick={this.props.onhandleShowCSClick}
-            //     onDownloadClick={() =>
-            //       this.handleNavigateClick("/" + i18n.language + "/download")
-            //     }
-            //   ></AnotherFloatPanel>
-          }
-        </SliderContainer>
-        <SectionContainer>
+          <Slider list={this.props.ui.board_list}></Slider>
           <MarqueeContainer>
             <Marquee text={this.props.ui.marqueeText}></Marquee>
           </MarqueeContainer>
-          <FirstSection>
-            {this.gameMenu.map((data, index) => {
-              return (
-                <ScrollAnimation
-                  animateIn="fadeInLeft"
-                  duration={1}
-                  animateOnce={true}
-                  style={{ overflow: "visible" }}
-                >
-                  <FirstSectionItem
-                    item
-                    spacing={0}
-                    img={data.img}
-                    onClick={() => {
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                      this.props.history.push(`/${i18n.language}/${data.type}`);
-                    }}
-                  >
-                    <FirstSectionItemBg2></FirstSectionItemBg2>
-                    <FirstSectionItemBg
-                      container
-                      direction="row"
-                      justify="flex-start"
-                      alignItems="center"
-                    ></FirstSectionItemBg>
-                  </FirstSectionItem>
-                </ScrollAnimation>
-              );
-            })}
+        </SliderContainer>
+        <SectionContainer>
+          <FirstSection
+            style={{
+              display: "grid",
+              "grid-template-columns": config.features
+                .HomePage_FirstSection6Widget
+                ? "auto auto auto"
+                : "auto auto auto auto",
+            }}
+          >
+            {(() => {
+              const MenuItemList = [
+                {
+                  path: "sports",
+                  title: config.features.MenuItem_HeaderSportsTranslation2
+                    ? i18n.t("mess888.wap.sports")
+                    : i18n.t("web.home.Section1Sport"),
+                  img: Section1SportPNG,
+                  gameType: [GameTypeEnum.SPORTS, GameTypeEnum.ESPORTS],
+                  sortingHK28: 2,
+                  sorting: 1,
+                },
+                {
+                  path: "chess",
+                  title: i18n.t("web.home.Section1Chess"),
+                  img: Section1ChessPNG,
+                  gameType: [GameTypeEnum.QIPAILOBBY],
+                  sortingHK28: 3,
+                  sorting: 2,
+                },
+                {
+                  path: `slots`,
+                  title: i18n.t("web.home.Section1Slot"),
+                  img: Section1SlotPNG,
+                  gameType: [GameTypeEnum.SLOT],
+                  sortingHK28: 4,
+                  sorting: 3,
+                },
+                {
+                  path: `electron`,
+                  title: i18n.t("web.home.Section1Electron"),
+                  img: Section1ElectronPNG,
+                  gameType: [GameTypeEnum.TABLEGAME],
+                  sortingHK28: 6,
+                  sorting: 4,
+                },
+                {
+                  path: `fish`,
+                  title: i18n.t("web.home.Section1Fishing"),
+                  img: Section1FishPNG,
+                  gameType: [GameTypeEnum.FISH],
+                  sortingHK28: 5,
+                  sorting: 5,
+                },
+                {
+                  path: "lottery",
+                  title: i18n.t("web.home.Section1Lottery"),
+                  img: Section1LotteryPNG,
+                  gameType: [GameTypeEnum.LOTTERYLOBBY],
+                  sortingHK28: 7,
+                  sorting: 6,
+                },
+                {
+                  path: "live",
+                  title: i18n.t("web.home.Section1Live"),
+                  img: Section1LivePNG,
+                  gameType: [GameTypeEnum.LIVELOBBY],
+                  sortingHK28: 1,
+                  sorting: 7,
+                },
+              ];
+              var count = 0;
+              return MenuItemList.sort((a, b) => {
+                if (config.features.MenuItem_Sorting_HK28) {
+                  return a.sortingHK28 > b.sortingHK28 ? 1 : -1;
+                } else {
+                  return a.sorting > b.sorting ? 1 : -1;
+                }
+              }).map((item, index) => {
+                var list = this.props.game.homePageGameList.filter(
+                  (game) => item.gameType.indexOf(game.type) >= 0
+                );
+
+                if (
+                  list.length > 0 &&
+                  index < (config.features.PopupAnnouncement ? 6 : 4)
+                ) {
+                  count++;
+                  return (
+                    <ScrollAnimation
+                      animateIn="fadeInLeft"
+                      duration={1}
+                      animateOnce={true}
+                      style={{ overflow: "visible" }}
+                    >
+                      <FirstSectionItem
+                        item
+                        spacing={0}
+                        img={item.img}
+                        onClick={() => {
+                          window.scrollTo({ top: 0, behavior: "smooth" });
+                          this.props.history.push(
+                            `/${i18n.language}/${item.path}`
+                          );
+                        }}
+                      >
+                        <FirstSectionItemBg2></FirstSectionItemBg2>
+                        <FirstSectionItemBg
+                          container
+                          direction="row"
+                          justify="flex-start"
+                          alignItems="center"
+                        >
+                          <FirstSectionItemLabel item>
+                            {item.title}
+                          </FirstSectionItemLabel>
+                        </FirstSectionItemBg>
+                      </FirstSectionItem>
+                    </ScrollAnimation>
+                  );
+                }
+              });
+            })()}
           </FirstSection>
-          <TitleSection>
-            <img src={TitleHotGames} alt="hotgamestitle" />
-          </TitleSection>
           <SecondSection />
-          <ThirdSection />
-          <TitleSection>
-            <img src={TitleCardGames} alt="cardgametitle" />
-          </TitleSection>
-          <FourthSection handleJoinGameClick={this.handleJoinGameClick} />
         </SectionContainer>
+        {this.props.game.providerList.filter((e) => {
+          return e.abbreviation === "KY";
+        }).length === 0 ? (
+          <FourthSection></FourthSection>
+        ) : (
+          <ThirdSection handleJoinGameClick={this.handleJoinGameClick} />
+        )}
+
+        {(() => {
+          if (
+            config.features.PopupAnnouncement &&
+            this.props.ui.marqueeText.length > 0
+          ) {
+            var row = this.props.ui.marqueeText[0];
+
+            return (
+              <PopupAnnouncement
+                open={this.state.openAnnouncement}
+                onClose={() => {
+                  this.setState({ ...this.state, openAnnouncement: false });
+                }}
+                text={
+                  row.localization !== null && row.localization.content
+                    ? row.localization.content
+                    : row.content
+                }
+                header={
+                  row.localization !== null && row.localization.subject
+                    ? row.localization.subject
+                    : row.subject
+                }
+              ></PopupAnnouncement>
+            );
+          }
+        })()}
       </HomeContainer>
     );
   }

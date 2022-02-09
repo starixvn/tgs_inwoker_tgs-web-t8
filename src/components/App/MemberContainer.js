@@ -4,13 +4,10 @@ import styled, { keyframes } from "styled-components";
 import InboxIconPNG from "../../assets/images/inbox-icon.png";
 import IconRefreshBalancePNG from "../../assets/images/icon-refresh-balance.png";
 import IconRefreshBalanceHoverPNG from "../../assets/images/icon-refresh-balance-hover.png";
-import TransferIcon from "../../assets/images/new/1.png";
-import DepositIcon from "../../assets/images/new/2.png";
-import WithdrawalIcon from "../../assets/images/new/3.png";
 import { Link } from "react-router-dom";
 import i18n from "../../utils/i18n";
-import { Popover } from "@material-ui/core";
 import Common from "../../utils/Common";
+import config from "../../config/config";
 export const rotateKeyFrame = keyframes`
   0% {
     transform:rotate(0deg)
@@ -22,10 +19,6 @@ export const rotateKeyFrame = keyframes`
 const Container = styled.div`
   font-size: 14px;
   float: right;
-  color: #000;
-  height: 100%;
-  width: 100%;
-  margin-top: 10px;
 `;
 const BtnStyle1 = styled.div`
   width: 68px;
@@ -66,7 +59,7 @@ const BtnDeposit = styled(BtnStyle1)``;
 const BalanceContainer = styled.div`
   color: #ffffff;
   text-align: right;
-  padding: 10px 0 0 0;
+  padding: 10px 10px 0 0;
   float: right;
   &:hover {
     cursor: pointer;
@@ -142,164 +135,79 @@ const CustomLink = styled(Link)`
     cursor: pointer;
   }
 `;
-
-const RowContainer = styled.div`
-  display: grid;
-  grid-gap: 0px;
-  grid-template-columns: 33% 33% 33%;
-`;
-
-const IconButtonContainer = styled.div`
-  width: 35px;
-  height: 35px;
-  border-radius: 100px;
-  background: url(${({ src }) => src}) no-repeat center;
-  background-size: 100%;
-`;
-
-const ContainerInContainer = styled.div`
-  padding: 5px 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  font-size: 12px;
-`;
-
-const ContainerText = styled(ContainerInContainer)`
-  align-items: flex-start;
-  flex-direction: row;
-  padding: 2.5px;
-  justify-content: space-between;
-`;
-
-const SpecialHandling = styled.div`
-  border: solid 1px rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
-  padding: 4px 8px;
-
-  position: relative;
-`;
-
-const CustomPopover = styled(Popover)``;
-
-const PopoverButton = styled.div`
-  width: 150px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  padding: 0px 20px;
-  cursor: pointer;
-  user-select: none;
-  :hover {
-    background: rgba(0, 0, 0, 0.05);
-  }
-`;
-
-const MemberContainer = (props) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const handlePopoverOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+class MemberContainer extends Component {
+  vipSwitcher = (rank) => {
+    switch (rank) {
+      case 1:
+        return "VIP 1";
+      case 2:
+        return "Silver";
+      case 3:
+        return "Gold";
+      case 4:
+        return "Platinum";
+      case 5:
+        return "Diamond";
+      default:
+        return;
+    }
   };
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-
-  return (
-    <Container>
-      <SpecialHandling>
-        <ContainerText onClick={handlePopoverOpen}>
-          <div>
-            {props.account.info.member_username}(VIP
-            {props.account.info.member_level_id})
-          </div>
-          <div>
+  render() {
+    return (
+      <Container>
+        {this.props.game.containTransferWallet && (
+          <BtnTransfer onClick={this.props.onhandleTransfer}>
+            {i18n.t("web.header.transfer")}
+          </BtnTransfer>
+        )}
+        <BtnDeposit onClick={this.props.onhandleDeposit}>
+          {i18n.t("web.header.deposit")}
+        </BtnDeposit>
+        <BalanceContainer>
+          <span>{i18n.t("web.header.mainAccount")}</span>
+          <BalanceAmountLabel onClick={this.props.onhandleTransfer}>
             {Common.formatNumberWithThousand(
-              props.mainBalance +
-                props.game.providerList
+              this.props.mainBalance +
+                this.props.game.providerList
                   .filter(
                     (item) => item.status === 0 && item.transferwallet === true
                   )
                   .reduce((a, v) => (a = a + v.balance), 0)
             )}
-          </div>
-        </ContainerText>
-        <CustomPopover
-          open={open}
-          anchorEl={anchorEl}
-          onClose={handlePopoverClose}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "center",
-          }}
-        >
-          <PopoverButton onClick={props.handleProfileClick}>
-            {i18n.t("web.account.profile")}
-          </PopoverButton>
-          <PopoverButton onClick={props.onhandleLogout}>
-            {i18n.t("web.header.logout")}
-          </PopoverButton>
-        </CustomPopover>
-      </SpecialHandling>
-      <RowContainer>
-        <ContainerInContainer onClick={props.onhandleDeposit}>
-          <IconButtonContainer src={TransferIcon}></IconButtonContainer>
-          {i18n.language !== "vi-VN" && i18n.t("web.header.deposit")}
-        </ContainerInContainer>
-        {props.game.containTransferWallet && (
-          <ContainerInContainer onClick={props.onhandleTransfer}>
-            <IconButtonContainer src={DepositIcon}></IconButtonContainer>
-            {i18n.language !== "vi-VN" && i18n.t("web.header.transfer")}
-          </ContainerInContainer>
-        )}
+          </BalanceAmountLabel>
 
-        <ContainerInContainer onClick={props.onhandleWithdraw}>
-          <IconButtonContainer src={WithdrawalIcon}></IconButtonContainer>
-          {i18n.language !== "vi-VN" && i18n.t("web.account.withdrawal")}
-        </ContainerInContainer>
-      </RowContainer>
-
-      {
-        //<BalanceContainer>
-        //<span>{i18n.t("web.header.mainAccount")}</span>
-        //<BalanceAmountLabel
-        //  onClick={props.onhandleTransfer}
-        //></BalanceAmountLabel>
-        //
-        //<RefreshBalance onClick={props.onhandleRefreshBalanceClick}>
-        //  <RefreshBalanceIcon></RefreshBalanceIcon>
-        //</RefreshBalance>
-        //</BalanceContainer>
-        //<Spliter></Spliter>
-        //<InboxContainer onClick={props.onhandleInboxClick}>
-        //<InboxCountLabel>
-        //  {props.account.info.message_num}
-        //</InboxCountLabel>
-        //<InboxIconImg src={InboxIconPNG}></InboxIconImg>
-        //</InboxContainer>
-        //<Spliter></Spliter>
-        //<BtnLogout onClick={props.onhandleLogout}>
-        //{i18n.t("web.header.logout")}
-        //</BtnLogout>
-        //<Spliter></Spliter>
-        //<WelcomeContainer>
-        //<CustomLink to={"/" + i18n.language + "/account/profile"}>
-        //  {i18n.t("web.header.welcomBack")}
-        //  <MemberUserName></MemberUserName>
-        //</CustomLink>
-        //</WelcomeContainer>
-      }
-    </Container>
-  );
-};
-
+          <RefreshBalance onClick={this.props.onhandleRefreshBalanceClick}>
+            <RefreshBalanceIcon></RefreshBalanceIcon>
+          </RefreshBalance>
+        </BalanceContainer>
+        <Spliter></Spliter>
+        <InboxContainer onClick={this.props.onhandleInboxClick}>
+          <InboxCountLabel>
+            {this.props.account.info.message_num}
+          </InboxCountLabel>
+          <InboxIconImg src={InboxIconPNG}></InboxIconImg>
+        </InboxContainer>
+        <Spliter></Spliter>
+        <BtnLogout onClick={this.props.onhandleLogout}>
+          {i18n.t("web.header.logout")}
+        </BtnLogout>
+        <Spliter></Spliter>
+        <WelcomeContainer>
+          <CustomLink to={"/" + i18n.language + "/account/profile"}>
+            {i18n.t("web.header.welcomBack")}{" "}
+            <MemberUserName>
+              {this.props.account.info.member_username}(
+              {config.features.CustomVIP
+                ? this.vipSwitcher(this.props.account.info.member_level_id)
+                : "VIP" + this.props.account.info.member_level_id}
+              )
+            </MemberUserName>
+          </CustomLink>
+        </WelcomeContainer>
+      </Container>
+    );
+  }
+}
 const mapStateToProps = (state) => {
   return {
     // screenWidth: state.ui.screenWidth,

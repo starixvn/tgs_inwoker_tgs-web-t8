@@ -8,12 +8,13 @@ const StyleButton = styled.div`
   padding-top: 22px;
   font-size: 34px;
 
-  color: ${({ theme }) => theme.buttonText};
+  color: #ffffff;
   width: 637px;
   height: 93px;
   border-radius: 20px;
-
+  border: solid 1px #ffffff;
   background-color: ${({ theme }) => theme.primary};
+  box-shadow: 0px 2px 5px 3px rgba(177, 177, 177, 1);
 `;
 
 class ButtonWap extends Component {

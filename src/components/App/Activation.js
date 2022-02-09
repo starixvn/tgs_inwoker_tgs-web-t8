@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+
 import { accountAction } from "../../api-services/actions/accountAction";
 import { AccountService } from "../../api-services/services/AccountService";
 import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
 import LoginBGPNG from "../../assets/images/login-bg.png";
-import clsx from "clsx";
 
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -15,16 +15,15 @@ import Password1IconPNG from "../../assets/images/password1-icon.png";
 import IconMobilePNG from "../../assets/images/icon-mobile.png";
 import IconInboxSelectedPNG from "../../assets/images/icon-inbox-selected.png";
 import IconInputVerifyCodePNG from "../../assets/images/icon-input-verifycode.png";
-import Checkbox from "@material-ui/core/Checkbox";
+
 import { makeStyles } from "@material-ui/core/styles";
-import BlowFishEncryption from "../../utils/BlowFishEncryption";
+
 import { withSnackbar } from "notistack";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import IconLoginClosePNG from "../../assets/images/icon-login-close.png";
 import i18n from "../../utils/i18n";
 import config from "../../config/config";
-import ErrorSwitcher from "../../utils/ErrorSwitcher";
 const Container = styled.div`
   width: 506px;
   background: url(${LoginBGPNG});
@@ -49,13 +48,7 @@ const TitleContainer = styled.div`
 
   color: ${({ theme }) => theme.secondary};
 `;
-const SubTitleContainer = styled.div`
-  text-align: center;
 
-  font-size: 18px;
-
-  color: ${({ theme }) => theme.secondary};
-`;
 const FormContainer = styled.div`
   margin: 10px 78px 0 78px;
   padding: 0 3px;
@@ -153,20 +146,6 @@ const ButtonLoginLabel = styled.span`
   text-align: center;
   display: block;
   margin-top: 10px;
-`;
-
-const DescriptionContainer = styled.div`
-  padding: 12px 0 0 8px;
-`;
-const Description = styled.div`
-  float: left;
-  width: 310px;
-  margin-left: 5px;
-  font-size: 14px;
-
-  line-height: 1.43;
-
-  color: ${({ theme }) => theme.secondary};
 `;
 
 const useStyles = makeStyles((theme) => ({
@@ -299,11 +278,11 @@ const StyleButton = styled.div`
   ${(props) =>
     props.disable === true
       ? `  background-image: linear-gradient(90deg, rgba(89,89,89,1) 0%, rgba(126,126,126,1) 100%);`
-      : `background-image: linear-gradient(
-        to top,
-        ${props.theme.primaryGradient},
-        ${props.theme.primary}
-      );;
+      : `  background-image: linear-gradient(to top, ` +
+        props.theme.primaryGradient +
+        `, ` +
+        props.theme.primary +
+        `);
 `}
 
   border-radius: 5px;
@@ -343,7 +322,7 @@ function Activation(props) {
   const [code, setCode] = React.useState("");
   const [countdown, setCountdown] = React.useState(0);
   const [securityKey, setSecurityKey] = React.useState("");
-  var timer = null;
+
   const handleActivationClick = async () => {
     var expr = /^[a-zA-Z0-9]{6,32}$/;
     if (!expr.test(username)) {
@@ -402,7 +381,7 @@ function Activation(props) {
         });
         return;
       }
-      var expr = /^.{6,20}$/;
+      expr = /^.{6,20}$/;
       if (!expr.test(password)) {
         props.enqueueSnackbar(i18n.t("common.msgRegisterPassInvalid"), {
           variant: "warning",
@@ -448,7 +427,6 @@ function Activation(props) {
     setPassword(e.target.value);
   };
 
-  const classes = useStyles();
   return (
     <Container>
       <CloseIconContainer

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Loading from "../App/Loading";
-import {walletAction} from "../../api-services/actions/walletAction";
 import Maintenance from "./Maintenance";
 import config from "../../config/config";
+import {walletAction} from "../../api-services/actions/walletAction";
 class Deposit extends Component {
   state = {
     loading: true,
@@ -49,7 +49,7 @@ class Deposit extends Component {
   }
   componentDidUpdate(preProps, preState) {
     if (
-      preProps.wallet.depositResult != this.props.wallet.depositResult &&
+      preProps.wallet.depositResult !== this.props.wallet.depositResult &&
       this.props.wallet.depositResult !== null
     ) {
       localStorage.setItem(

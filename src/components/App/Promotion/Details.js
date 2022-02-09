@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
-
+import { withStyles } from "@material-ui/core/styles";
+import Dialog from "@material-ui/core/Dialog";
 import BGJPG from "../../../assets/images/bg.jpg";
 import { AppHistory } from "../../../history/History";
 import { withSnackbar } from "notistack";
@@ -10,14 +11,11 @@ import { withSnackbar } from "notistack";
 import i18n from "../../../utils/i18n";
 import { generalAction } from "../../../api-services/actions/generalAction";
 import { SHOW_LOGIN } from "../../../api-services/constant/actionType";
-
+import IconLoginClosePNG from "../../../assets/images/icon-login-close.png";
 import { Grid, Container as MContainer } from "@material-ui/core";
-import PromoImage1 from "../../../assets/images/promotion/promo-1.jpg";
-import PromoImage2 from "../../../assets/images/promotion/promo-2.jpg";
-import PromoImage3 from "../../../assets/images/promotion/promo-3.jpg";
-const promoImgMap = [PromoImage1, PromoImage2, PromoImage3];
 
 const moment = require("moment");
+
 const Container = styled.div`
   width: 100%;
   padding-top: 20px;
@@ -26,37 +24,7 @@ const Container = styled.div`
   background: url(${BGJPG}) no-repeat top center #19262f;
   min-height: 800px;
 `;
-const MainContent = styled.div`
-  margin: 40px auto;
-  padding: 23px 0;
 
-  width: 1000px;
-  min-height: 600px;
-  border-radius: 20px;
-  border: solid 2px #9eafff;
-  background-image: linear-gradient(to top, #1b213f, #29356c);
-`;
-const Inner = styled.div``;
-const Content = styled.div`
-  width: 927px;
-
-  margin: 0 0 13px 32px;
-  float: left;
-  position: relative;
-`;
-const PromoTitle = styled.div`
-  width: 400px;
-  font-size: 60px;
-  color: #fff;
-  margin-top: 23px;
-  margin-bottom: 23px;
-  margin-left: 34px;
-`;
-const PromoDate = styled.div`
-  font-size: 15px;
-
-  color: #01f1fe;
-`;
 const PromoDesc = styled.div`
   font-size: 14px;
   color: #747474;
@@ -84,13 +52,14 @@ const EventTitle = styled.div`
   color: #7e0000;
   margin-bottom: 10px;
   font-size: 16px;
-  font-family: AdobeHeitiR;
+  font-family: Arial;
+  font-weight: bold;
 `;
 
 const EventText = styled.div`
   font-size: 14px;
   color: #4f4f4f;
-  font-family: AdobeHeitiR;
+
   line-height: 26px;
   margin-bottom: 20px;
 `;
@@ -106,6 +75,7 @@ const PromoButtonContainer = styled(Grid)`
     ${({ theme }) => theme.primaryGradient},
     ${({ theme }) => theme.primary}
   );
+
   ${({ disableTheButton }) => {
     return disableTheButton
       ? `
@@ -114,10 +84,51 @@ const PromoButtonContainer = styled(Grid)`
       : ``;
   }}
 `;
-
+const TNCContainer = styled.span`
+  color: #123414;
+  text-decoration: underline;
+  font-weight: bold;
+`;
 const PromoButtonText = styled(Grid)`
   color: #fff;
   font-size: 20px;
+`;
+const StyledDialog = withStyles({
+  root: {
+    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+
+    "& .MuiPaper-root": {
+      backgroundColor: "transparent",
+      borderRadius: "15px",
+    },
+  },
+})(Dialog);
+const DialogContainer = styled.div`
+  width: 600px;
+
+  background-color: #fff;
+  display: table;
+`;
+const CloseIconContainer = styled.div`
+  background: url(${IconLoginClosePNG}) no-repeat;
+  width: 28px;
+  height: 28px;
+  float: right;
+  margin: 10px 10px 0 0;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+const TitleContainer = styled.div`
+  text-align: center;
+
+  font-size: 42px;
+
+  color: ${({ theme }) => theme.secondary};
+`;
+const DialogContent = styled.div`
+  margin: 0 auto;
+  padding: 10px 40px;
 `;
 
 const CloseButton = styled.div`
@@ -131,7 +142,6 @@ const CloseButton = styled.div`
   padding: 8px 12px;
   color: #000;
 `;
-
 class PromotionDetails extends Component {
   constructor(props) {
     super(props);
@@ -150,10 +160,25 @@ class PromotionDetails extends Component {
     if (index === -1) {
       AppHistory.replace("/" + i18n.language + "/promotion");
     }
+    var term = "";
+    if (details) {
+      if (
+        details.localization !== null &&
+        details.localization.terms &&
+        details.localization.terms !== null
+      ) {
+        term = details.localization.terms || "";
+      } else {
+        term = details.terms || "";
+      }
+    }
+
     this.state = {
       index: index,
       details: details,
+      term: term,
       joined: false,
+      openDialog: false,
     };
   }
 
@@ -186,6 +211,9 @@ class PromotionDetails extends Component {
           });
         }
       }
+    }
+    if (prevProps.account.token !== this.props.account.token) {
+      AppHistory.replace("/" + i18n.language + "/promotion");
     }
   }
 
@@ -228,6 +256,7 @@ class PromotionDetails extends Component {
       );
     }
   };
+
   performRedirect = (id, promotionType) => {
     this.props.joinPromotion(id);
     if (
@@ -244,24 +273,29 @@ class PromotionDetails extends Component {
   handlejoinPromotionClick = (id, promotionType) => {
     if (this.props.account.token === null) this.props.showLogin(true);
     else {
-      if (this.state.details.vipLevels.length === 0) {
-        //if nothing inside viplevels
-        this.performRedirect(id, promotionType);
-      } else {
-        this.state.details.vipLevels.filter((levels) => {
-          if (levels === this.props.account.info.member_level_id) {
-            //check every single level whether it match member level
-            this.performRedirect(id, promotionType);
-          }
+      this.props.joinPromotion(id);
+
+      if (
+        ["FirstDeposit", "DailySecondDeposit", "DailyFirstDeposit"].indexOf(
+          promotionType
+        ) >= 0
+      ) {
+        AppHistory.push({
+          pathname: "/" + i18n.language + "/account/deposit/" + id,
         });
       }
     }
+  };
+  handleCloseDialog = () => {
+    this.setState({ ...this.state, openDialog: false });
+  };
+  handleShowDialog = () => {
+    this.setState({ ...this.state, openDialog: true });
   };
 
   goBack() {
     AppHistory.replace("/" + i18n.language + "/promotion");
   }
-
   render() {
     if (this.state.details === null) return <></>;
     return (
@@ -321,25 +355,11 @@ class PromotionDetails extends Component {
                     "</div>",
                 }}
               ></PromoDesc>
-
-              <PromoDesc
-                dangerouslySetInnerHTML={{
-                  __html:
-                    "<div >" +
-                    (() => {
-                      if (
-                        this.state.details.localization !== null &&
-                        this.state.details.localization.terms &&
-                        this.state.details.localization.terms !== null
-                      ) {
-                        return this.state.details.localization.terms;
-                      } else {
-                        return this.state.details.terms;
-                      }
-                    })() +
-                    "</div>",
-                }}
-              ></PromoDesc>
+              {this.state.term !== "" && (
+                <TNCContainer onClick={this.handleShowDialog}>
+                  {i18n.t("common.termsAndCondition")}
+                </TNCContainer>
+              )}
             </EventText>
             <Grid container justify="center">
               <PromoButtonContainer
@@ -363,61 +383,28 @@ class PromotionDetails extends Component {
             </Grid>
           </PromoDetailContainer>
         </MContainer>
+        <StyledDialog
+          open={this.state.openDialog}
+          onClose={this.handleCloseDialog}
+        >
+          <DialogContainer>
+            <CloseIconContainer
+              viewBox="4 4 16 16"
+              onClick={this.handleCloseDialog}
+            ></CloseIconContainer>
+            <div className="clear"></div>
+            <TitleContainer>
+              {i18n.t("common.termsAndCondition")}
+            </TitleContainer>
+            <DialogContent
+              dangerouslySetInnerHTML={{
+                __html: "<div >" + this.state.term + "</div>",
+              }}
+            ></DialogContent>
+          </DialogContainer>
+        </StyledDialog>
       </Container>
     );
-    // if (this.state.details === null) {
-    //   //TODO: temporary put this here.
-    //   return (
-    //     <Container>
-    //       <MContainer>
-    //         <PromoDetailContainer container direction="column">
-    //           <PromoDetailImage src={PromoImage1} />
-    //           <EventTitle>【活動條件】</EventTitle>
-    //           <EventText>
-    //             活動對象：
-    //             <br />
-    //             全站會員
-    //           </EventText>
-    //           <EventText>
-    //             活動時間：
-    //             <br />
-    //             2021年4月20日00:00:00-2021年4月29日23:59:59
-    //           </EventText>
-    //         </PromoDetailContainer>
-    //       </MContainer>
-    //     </Container>
-    //   );
-    // } else {
-    //   return (
-    //     <Container>
-    //       <MainContent>
-    //         <Inner>
-    //           <Content>
-    //             <PromoTitle>{this.state.details.title}</PromoTitle>
-
-    //             <PromoDate>
-    //               {i18n.t("promotion.startDate")}
-    //               {this.state.details.start_time_text}
-    //             </PromoDate>
-    //             <PromoDate>
-    //               {i18n.t("promotion.endDate")}
-    //               {this.state.details.end_time_text}
-    //             </PromoDate>
-    //             <PromoDesc
-    //               dangerouslySetInnerHTML={{
-    //                 __html:
-    //                   "<div class='custom-promotion'>" +
-    //                   this.state.details.desc +
-    //                   this.state.details.pc_promotion_describe +
-    //                   "</div>",
-    //               }}
-    //             ></PromoDesc>
-    //           </Content>
-    //         </Inner>
-    //       </MainContent>
-    //     </Container>
-    //   );
-    // }
   }
 }
 const mapStateToProps = (state) => {

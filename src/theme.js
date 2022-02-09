@@ -1,33 +1,113 @@
-export const themeDefault = {
-  appbar: "#556db7",
-  loginBody: "#F0EFF5",
-  loginText: "#676767",
-  body: "#F0EFF5",
-  bodyBackground: "#F0EFF5",
-  variant: "wapT5",
-  primary: "#5676d5",
-  primaryRgb: "85, 109, 183",
+export const themeRed = {
+  variant: "red",
+  loginBody: "#fff",
+  loginText: "#404040",
+  primary: "#c40511",
+  primaryRgb: "196, 5, 17",
   primaryText: "#fff",
-  primaryGradient: "#535f83",
-  primaryGradientRgb: "85, 109, 183",
+  primaryGradient: "#91030c",
+  primaryGradientRgb: "145, 3, 12",
   primaryHightlight: "#fde73f",
-  secondary: "#676767",
+  secondary: "#404040",
   secondaryText: "rgba(0,0,0,0.5)",
   tertiary: "rgba(255, 255, 255, 0.5)",
   tertiaryText: "rgba(255, 255, 255, 0.5)",
-  buttonText: "#ffffff",
+  //new addition to compensate wap-t2
+  appbar: "linear-gradient(to top, #91030c, #c40511)",
   buttonBackground: "#fff",
-  buttonText2: "#556db7",
+  buttonText: "#fff",
+  buttonText2: "#000",
   bottomnav: "#f5f5f5",
-  bottomNavAction: "#585858",
-  tabbar: "#fff",
-  cardText: "#676767",
+  bottomNavAction: "#404040",
+  body: "#F0EFF5",
+  bodyBackground: "#F0EFF5",
   supportBg: `url(${
-    process.env.PUBLIC_URL + `/assets/images/wapp/resource/T5/supportbg.png`
+    process.env.PUBLIC_URL + `/assets/images/wapp/resource/T2/supportbg.png`
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
 };
 
+export const themeBlue = {
+  variant: "blue",
+  loginBody: "#fff",
+  loginText: "#404040",
+  primary: "#1b86c7",
+  primaryRgb: "27, 134, 199",
+  primaryText: "#fff",
+  primaryGradient: "#044BA3",
+  primaryGradientRgb: "4, 75, 163",
+  primaryHightlight: "#fde73f",
+  secondary: "#404040",
+  secondaryText: "rgba(0,0,0,0.5)",
+  tertiary: "rgba(255, 255, 255, 0.5)",
+  tertiaryText: "rgba(255, 255, 255, 0.5)",
+  //new addition to compensate wap-t2
+  appbar: "linear-gradient(to top,#044BA3, #1b86c7)",
+  buttonBackground: "#fff",
+  buttonText: "#fff",
+  buttonText2: "#000",
+  bottomnav: "#f5f5f5",
+  bottomNavAction: "#404040",
+  body: "#F0EFF5",
+  bodyBackground: "#F0EFF5",
+  supportBg: `url(${
+    process.env.PUBLIC_URL + `/assets/images/wapp/resource/T2/supportbg.png`
+  })
+  no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+};
+
+export const themeBlack = {
+  variant: "black",
+  loginBody: "#fff",
+  loginText: "#363A45",
+  primary: "#0d0d0d",
+  primaryRgb: "21, 21, 21",
+  primaryText: "#fff",
+  primaryGradient: "#151515",
+  primaryGradientRgb: "4, 75, 163",
+  primaryHightlight: "#fde73f",
+  secondary: "#363A45",
+  secondaryText: "#fff",
+  tertiary: "#FF9900",
+  tertiaryText: "#fff",
+  //new addition to compensate wap-t2
+  appbar: "linear-gradient(to top,#044BA3, #1b86c7)",
+  buttonBackground: "#fff",
+  buttonText: "#fff",
+  buttonText2: "#000",
+  bottomnav: "#f5f5f5",
+  bottomNavAction: "#404040",
+  body: "#F0EFF5",
+  bodyBackground: "#F0EFF5",
+  supportBg: `url(${
+    process.env.PUBLIC_URL + `/assets/images/wapp/resource/T2/supportbg.png`
+  })
+  no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+};
+export const MESS8 = {
+  variant: "red",
+  loginBody: "#3a3a3a",
+  loginText: "#fff",
+  primary: "#c40511",
+  primaryRgb: "196, 5, 17",
+  primaryText: "#fff",
+  primaryGradient: "#91030c",
+  primaryGradientRgb: "145, 3, 12",
+  primaryHightlight: "#fde73f",
+  secondary: "#404040",
+  secondaryText: "rgba(0,0,0,0.5)",
+  tertiary: "rgba(255, 255, 255, 0.5)",
+  tertiaryText: "rgba(255, 255, 255, 0.5)",
+  //new addition to compensate wap-t2
+  appbar: "linear-gradient(to top, #91030c, #c40511)",
+  buttonBackground: "#fff",
+  buttonText: "#fff",
+  buttonText2: "#000",
+  bottomnav: "#f5f5f5",
+  bottomNavAction: "#404040",
+  body: "#F0EFF5",
+  bodyBackground: "#F0EFF5",
+};
 export const wapT2 = {
   appbar: "#C69C6A",
   body: "#F0EFF5",
@@ -35,6 +115,7 @@ export const wapT2 = {
   loginText: "#676767",
   bodyBackground: "#F0EFF5",
   variant: "wapT2",
+
   primary: "#C69C6A",
   primaryRgb: "13, 98, 164",
   primaryText: "#fff",
@@ -98,12 +179,16 @@ export const wapT4 = {
     process.env.PUBLIC_URL + `/assets/images/wapp/resource/T4/background.png`
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  loginBody: `url(${
+    process.env.PUBLIC_URL + `/assets/images/wapp/resource/T4/background.png`
+  })
+  no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  loginText: "#ffffff",
   bodyBackground: `url(${
     process.env.PUBLIC_URL + `/assets/images/wapp/resource/T4/background.png`
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
-  loginBody: "#051b42",
-  loginText: "#ffffff",
+
   primary: "#ff9900",
   primaryRgb: "27, 134, 199",
   primaryText: "#fff",
@@ -129,17 +214,17 @@ export const wapT4 = {
 };
 
 export const wapT5 = {
-  appbar: "#556db7",
+  appbar: "#C69C6A",
   loginBody: "#F0EFF5",
   loginText: "#676767",
   body: "#F0EFF5",
   bodyBackground: "#F0EFF5",
   variant: "wapT5",
-  primary: "#5676d5",
-  primaryRgb: "85, 109, 183",
+  primary: "#C69C6A",
+  primaryRgb: "13, 98, 164",
   primaryText: "#fff",
-  primaryGradient: "#535f83",
-  primaryGradientRgb: "85, 109, 183",
+  primaryGradient: "#C69C6A",
+  primaryGradientRgb: "13, 98, 164",
   primaryHightlight: "#fde73f",
   secondary: "#676767",
   secondaryText: "rgba(0,0,0,0.5)",
@@ -147,7 +232,7 @@ export const wapT5 = {
   tertiaryText: "rgba(255, 255, 255, 0.5)",
   buttonText: "#ffffff",
   buttonBackground: "#fff",
-  buttonText2: "#556db7",
+  buttonText2: "#C69C6A",
   bottomnav: "#f5f5f5",
   bottomNavAction: "#585858",
   tabbar: "#fff",
@@ -215,11 +300,15 @@ export const wapT7 = {
 };
 
 export const themeList = {
-  default: themeDefault,
+  red: themeRed,
+  blue: themeBlue,
+  black: themeBlack,
   wapT2: wapT2,
   wapT3: wapT3,
   wapT4: wapT4,
   wapT5: wapT5,
   wapT6: wapT6,
   wapT7: wapT7,
+  MESS8: MESS8,
+  "28BET": MESS8,
 };

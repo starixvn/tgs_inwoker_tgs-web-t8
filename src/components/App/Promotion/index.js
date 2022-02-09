@@ -15,17 +15,12 @@ import {SHOW_LOGIN} from "../../../api-services/constant/actionType";
 import { Grid, Container as MContainer } from "@material-ui/core";
 
 import PromoEmpty from "../../../assets/images/promo-empty.png";
-import Common from "../../../utils/Common";
-import PromoImage1 from "../../../assets/images/promotion/promo-1.jpg";
-import PromoImage2 from "../../../assets/images/promotion/promo-2.jpg";
-import PromoImage3 from "../../../assets/images/promotion/promo-3.jpg";
-const promoImgMap = [PromoImage1, PromoImage2, PromoImage3];
 
 const moment = require("moment");
 
 const Container = styled.div`
   width: 100%;
-  background: url(${BGPromotionJPG}) no-repeat top center #ececec;
+  background: url(${BGPromotionJPG}) no-repeat top center #fff;
   min-height: 800px;
   position: relative;
 `;
@@ -58,91 +53,6 @@ const PromoEmptyTextLine = styled.div`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `;
-const MainContent = styled.div`
-  margin: 40px auto;
-  padding: 23px 0;
-
-  width: 1000px;
-  min-height: 600px;
-  border-radius: 20px;
-
-  background-color: #fff;
-`;
-const Inner = styled.div``;
-const Content = styled.div`
-  width: 927px;
-  height: 184px;
-
-  background-color: #fde73f;
-  margin: 13px 0 13px 32px;
-  float: left;
-  position: relative;
-`;
-const LeftContent = styled.div`
-  float: left;
-  clip-path: polygon(0 0, 100% 0%, 75% 100%, 0% 100%);
-  width: 444px;
-`;
-const RightContent = styled.div`
-  float: left;
-  height: 184px;
-  width: 602px;
-
-  clip-path: polygon(20% 0, 100% 0%, 100% 100%, 0% 110%);
-
-  background-image: linear-gradient(
-    to top,
-    ${({ theme }) => theme.primaryGradient},
-    ${({ theme }) => theme.primary}
-  );
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding-left: 130px;
-`;
-const PromoTitle = styled.div`
-  height: 40px;
-  font-size: 30px;
-
-  color: #ffffff;
-  margin-top: 23px;
-`;
-const PromoDate = styled.div`
-  font-size: 15px;
-
-  color: #fde73f;
-`;
-const PromoDesc = styled.div`
-  font-size: 14px;
-
-  color: #fff;
-`;
-const PromoImg = styled.img`
-  width: 444px;
-  height: 184px;
-`;
-const Viewall = styled.div`
-  font-size: 15px;
-
-  color: #ffffff;
-
-  float: right;
-
-  margin-right: 12px;
-
-  text-align: right;
-  &:hover {
-    cursor: pointer;
-  }
-`;
-const ViewallArrow = styled.img`
-  ${(props) =>
-    props.checked ? `transform: rotateX(0deg);` : `transform: rotateX(180deg);`}
-
-  float: right;
-  margin-left: 7px;
-  margin-top: 7px;
-`;
 
 const ThePromotion = styled(Grid)``;
 
@@ -165,27 +75,26 @@ const PromoImages = styled.div`
   background: url(${(props) => props.img}) no-repeat;
   background-size: 100% 100%;
 `;
-const PromoImgTitle = styled.div`
-  color: #fff;
-  position: absolute;
-  font-size: 36px;
-  width: 250px;
-  height: 230px;
-  margin: 33px 0 0 40px;
-  line-height: 1em;
-`;
+
 const EventTitle = styled.div`
   color: #7e0000;
   margin-bottom: 10px;
   font-size: 19px;
-  font-family: AdobeHeitiR;
+  font-family: Arial;
   margin-left: -8px;
 `;
-
+const EventLabel = styled.div`
+  font-size: 15px;
+  color: #4f4f4f;
+  font-family: Arial;
+  line-height: 16px;
+  margin-bottom: 6px;
+  font-weight: bold;
+`;
 const EventText = styled.div`
   font-size: 15px;
   color: #4f4f4f;
-  font-family: AdobeHeitiR;
+  font-family: Arial;
   line-height: 16px;
   margin-bottom: 12px;
 `;
@@ -349,7 +258,6 @@ class Promotion extends Component {
                                       ? data.localization.desktopBanner
                                       : data.desktopBanner
                                   }
-                                  onClick={() => this.handlePromoClick(data.id)}
                                 ></PromoImages>
                               );
                             } else {
@@ -357,7 +265,6 @@ class Promotion extends Component {
                                 <PromoImages
                                   key={index}
                                   img={data.desktopBanner}
-                                  onClick={() => this.handlePromoClick(data.id)}
                                 ></PromoImages>
                               );
                             }
@@ -366,9 +273,10 @@ class Promotion extends Component {
                           <EventTitle>
                             【{i18n.t("promotion.promoDetail")}】
                           </EventTitle>
-                          <EventText>
+                          <EventLabel>
                             {i18n.t("promotion.promoTarget")}:
-                            <br />
+                          </EventLabel>
+                          <EventText>
                             {data.vipLevels.map((a, index) => {
                               return (
                                 <span key={index}>
@@ -378,9 +286,11 @@ class Promotion extends Component {
                               );
                             })}
                           </EventText>
-                          <EventText>
+                          <br />
+                          <EventLabel>
                             {i18n.t("promotion.promoDate")}：
-                            <br />
+                          </EventLabel>
+                          <EventText>
                             {moment(data.from).format("YYYY/MM/DD HH:mm:ss")}
                             {" - "}
                             {moment(data.to).format("YYYY/MM/DD HH:mm:ss")}

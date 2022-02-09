@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
+
 import { withRouter } from "react-router-dom";
 import { accountAction } from "../../api-services/actions/accountAction";
 import styled from "styled-components";
@@ -16,11 +17,12 @@ import IconInboxSelectedPNG from "../../assets/images/icon-inbox-selected.png";
 
 import Checkbox from "@material-ui/core/Checkbox";
 import { makeStyles } from "@material-ui/core/styles";
-import BlowFishEncryption from "../../utils/BlowFishEncryption";
+
 import { withSnackbar } from "notistack";
-import config from "../../config/config";
+
 import IconLoginClosePNG from "../../assets/images/icon-login-close.png";
 import i18n from "../../utils/i18n";
+import config from "../../config/config";
 import ErrorSwitcher from "../../utils/ErrorSwitcher";
 const Container = styled.div`
   width: 506px;
@@ -61,7 +63,7 @@ const CustomText = withStyles({
   root: {
     width: "350px",
     height: "51px",
-    borderRadius: "6px",
+
     border: "none",
 
     margin: 0,
@@ -94,10 +96,10 @@ const CustomText = withStyles({
 const ButtonLogin = styled.div`
   margin-top: 24px;
   margin-bottom: 35px;
-  width: 350px;
-  height: 51px;
   color: #fff;
   font-size: 20px;
+  width: 350px;
+  height: 51px;
   border-radius: 6px;
 
   border: solid 1px #ffffff;
@@ -223,9 +225,9 @@ const CustomInvitationSelect = styled.select`
 `;
 
 const CustomTextWrapper = styled.div`
+  margin-top: 13px;
   box-shadow: 0px 3px 8px -2px rgba(0, 0, 0, 0.75);
   border-radius: 6px;
-  margin-top: 13px;
 `;
 
 function Register(props) {
@@ -235,10 +237,14 @@ function Register(props) {
   const [password2, setPassword2] = React.useState("");
 
   const [withPromo, setWithPromo] = React.useState(
-    localStorage.getItem("promotionId") === "" ? false : true
+    config.affiliateId === "" && localStorage.getItem("promotionId") === ""
+      ? false
+      : true
   );
   const [promotionId, setPromotionId] = React.useState(
-    localStorage.getItem("promotionId")
+    config.affiliateId !== ""
+      ? config.affiliateId
+      : localStorage.getItem("promotionId")
   );
 
   const { location } = props;
@@ -256,11 +262,11 @@ function Register(props) {
         //check if it player invitation code
         setUpper(URL[3]); //set username as upper.
         setPromoteType("p");
+        setPrefill(true);
       } else if (URL[2] == "a") {
         setPromotionId(URL[3]);
         setPromoteType("a");
       }
-
       if (URL[2] == "p" || URL[2] == "a") {
         setPrefill(true);
       }
@@ -276,7 +282,7 @@ function Register(props) {
       });
       return;
     }
-    var expr = /^.{6,20}$/;
+    expr = /^.{6,20}$/;
     if (!expr.test(password)) {
       props.enqueueSnackbar(i18n.t("common.msgRegisterPassInvalid"), {
         variant: "warning",

@@ -1,192 +1,265 @@
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import styled, { keyframes } from "styled-components";
-import i18n from "../../../utils/i18n";
-import {GameTypeEnum} from "../../../api-services/utils/Enum";
+import { Grid, Container as MContainer } from "@material-ui/core";
+import React from "react";
+import styled from "styled-components";
 
-import SectionTwo from "../../../assets/images/home/section/section2.png";
-import TitleLive from "../../../assets/images/home/section/title-sport.png";
-import TitleEN from "../../../assets/images/home/section/title-en.png";
-import LeftModelPNG from "../../../assets/images/home/section/left-model.png";
-import SliderPNG from "../../../assets/images/home/section/game-slider.png";
-import SliderSelectedPNG from "../../../assets/images/home/section/game-slider-selected.png";
-import GirlOne from "../../../assets/images/home/section/sport-1.png";
-import GirlTwo from "../../../assets/images/home/section/sport-2.png";
-import GirlThree from "../../../assets/images/home/section/sport-3.png";
+import StartGamePNG from "../../../assets/images/start-game.png";
+import StartGameHoverPNG from "../../../assets/images/start-game-hover.png";
+
+import {GameEnum,GameTypeEnum} from "../../../api-services/utils/Enum";
+import i18n from "../../../utils/i18n";
 
 import ScrollAnimation from "react-animate-on-scroll";
-const GameSelectorWithSlider = styled.div`
-  height: 555px;
-  width: 1280px;
-  margin: 0 auto;
-  padding-bottom: 10px;
-  background-position: 670px 160px;
+const Background = styled.div`
+  height: 580px;
 
-  margin-top: 14px;
-
-  position: relative;
-  overflow: visible;
-`;
-const TitleContainer = styled(ScrollAnimation)`
-  height: 161px;
-  width: 553px;
-  background: url(${(props) => props.img}) center no-repeat;
-  position: absolute;
-  display: flex;
-  top: 8%;
-  right: 6%;
-`;
-
-const GameSlider = styled.div`
-  height: 101px;
-  width: 101px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: background 300ms linear;
-  background: url(${(props) => {
-      return props.selected ? SliderSelectedPNG : SliderPNG;
-    }})
+  z-index: 3;
+  background: url(${process.env.PUBLIC_URL +
+    "/assets/images/" +
+    i18n.language +
+    `/ky-hotgame-bg.jpg`})
     center no-repeat;
-  cursor: pointer;
-  margin: 0px 10px;
-  margin-bottom: 10px;
+  padding-top: 40px;
 `;
 
-const GameSliderButtonContainer = styled.div`
-  padding: 10px 0px;
-  position: absolute;
-  display: flex;
-  top: 40%;
-  right: 21%;
-`;
-const GameModelContainer = styled.div`
-  width: 700px;
-  height: 550px;
-  float: left;
+const Container = styled(Grid)`
+  color: white;
   position: relative;
-  margin-top: -5px;
-  margin-right: 42px;
+  height: 100%;
 `;
-const TheGameGirl = styled.div`
-  width: 700px;
-  height: 550px;
+
+const AGContentStartGame = styled.div`
   position: absolute;
-  top: 0;
-  left: 15%;
-  background: url(${(props) => props.img}) no-repeat;
-  transition: opacity 300ms linear;
-  opacity: 0;
-  ${(props) => (props.selected === true ? `opacity:1;` : ``)}
+  width: 167px;
+  height: 41px;
+
+  background: url(${StartGamePNG}) no-repeat;
+  &:hover {
+    cursor: pointer;
+    background: url(${StartGameHoverPNG}) no-repeat;
+  }
+  color: #fff;
+  font-size: 17px;
+  padding: 0px 50px 0px 5px;
+  text-align: center;
+  line-height: 40px;
+  top: 371px;
+
+  left: 50%;
+  margin-left: 57px;
 `;
 
-const CustomTextContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+const Games = styled.img`
+  height: 130px;
+  width: auto;
+
+  cursor: pointer;
+  transition: transform 150ms linear;
+  :hover {
+    transform: Scale(1.1);
+    transform-origin: center center;
+  }
+`;
+
+const GameButton = styled(Grid)`
+  width: 180px;
   align-items: center;
-  color: #5a6b90;
-  font-weight: bold;
+  height: 180px;
 `;
 
-const ThirdSection = (props) => {
-  const [selected, setSelected] = useState(0);
-
-  var timerAnimation = null;
-  useEffect(() => {
-    if (timerAnimation != null) {
-      clearTimeout(timerAnimation);
-      timerAnimation = null;
-    }
-    timerAnimation = setAnimation();
-  }, [selected]);
-  const handleSliderClick = (index) => {
-    if (timerAnimation != null) {
-      clearTimeout(timerAnimation);
-      timerAnimation = null;
-    }
-    setSelected(index);
-  };
-  const setAnimation = () => {
-    return setTimeout(() => {
-      if (selected >= 2) {
-        setSelected(0);
-      } else {
-        setSelected(selected + 1);
-      }
-    }, 3000);
-  };
-
-  var getSportGame = props.game.homePageGameList.filter((e) => {
-    return e.type === GameTypeEnum.SPORTS && e.status === 0;
-  });
-
+const GameSection = (props) => {
   return (
-    <GameSelectorWithSlider>
-      <div>
-        <TitleContainer
-          animateIn="flipInY"
-          animateOut="flipOutY"
-          style={{ overflow: "visible" }}
-          img={TitleLive}
-        ></TitleContainer>
-        <GameSliderButtonContainer>
-          {getSportGame.slice(0,3).map((data, index) => {
-            return (
-              <CustomTextContainer>
-                <GameSlider
-                  selected={selected === index}
-                  onClick={() => {
-                    if (index === 0) {
-                      clearTimeout(timerAnimation);
-                    }
-
-                    handleSliderClick(index);
-                  }}
-                >
-                  <img
-                    src={
-                      process.env.PUBLIC_URL +
-                      `/assets/images/pcGamePage/sports/${data.abbreviation.toLowerCase()}${
-                        index === selected
-                          ? "-selected.png"
-                          : "-not-selected.png"
-                      }`
-                    }
-                    alt={data.abbreviation.toLowerCase()}
-                  />
-                </GameSlider>
-                <div>{i18n.t(data.abbreviation + ".sports")}</div>
-              </CustomTextContainer>
-            );
-          })}
-        </GameSliderButtonContainer>
-      </div>
-
-      <ScrollAnimation
-        animateIn="fadeInLeft"
-        duration={1}
-        animateOnce={true}
-        style={{ overflow: "visible" }}
-      ></ScrollAnimation>
-      <ScrollAnimation
-        animateIn="fadeInRight"
-        duration={1}
-        animateOnce={true}
-        style={{ overflow: "visible" }}
+    <GameButton item>
+      <Grid
+        container
+        alignItems="center"
+        justify="center"
+        style={{ height: "100%" }}
       >
-        <GameModelContainer>
-          <TheGameGirl selected={selected === 0} img={GirlOne} />
-          <TheGameGirl selected={selected === 1} img={GirlTwo} />
-          <TheGameGirl selected={selected === 2} img={GirlThree} />
-        </GameModelContainer>
-      </ScrollAnimation>
-    </GameSelectorWithSlider>
+        {props.children}
+      </Grid>
+    </GameButton>
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    game: state.game,
+const ThirdSection = (props) => {
+  const GetUrl = (item) => {
+    return (
+      process.env.PUBLIC_URL +
+      "/assets/images/" +
+      i18n.language +
+      `/ky-hotgame${item}.png`
+    );
   };
+
+  return (
+    <Background>
+      <MContainer style={{ height: "100%" }}>
+        <Grid container style={{ height: "100%", position: "relative" }}>
+          <ScrollAnimation
+            animateIn="fadeInLeft"
+            duration={1}
+            animateOnce={true}
+            style={{ overflow: "visible" }}
+          >
+            <Container>
+              <Grid
+                container
+                direction="column"
+                justify="center"
+                alignContent="center"
+                style={{ height: "100%", paddingTop: "30px" }}
+              >
+                <Grid item>
+                  <Grid
+                    container
+                    justify="center"
+                    alignItems="center"
+                    spacing="3"
+                  >
+                    <GameSection>
+                      <Games
+                        src={GetUrl(1)}
+                        onClick={() =>
+                          props.handleJoinGameClick(
+                            GameTypeEnum.QIPAILOBBY,
+                            "",
+                            GameEnum.KY,
+                            "/" +
+                              i18n.language +
+                              "/joingame/" +
+                              GameTypeEnum.QIPAILOBBY +
+                              "/" +
+                              GameEnum.KY
+                          )
+                        }
+                      />
+                    </GameSection>
+                    <GameSection>
+                      <Games
+                        src={GetUrl(2)}
+                        onClick={() =>
+                          props.handleJoinGameClick(
+                            GameTypeEnum.QIPAILOBBY,
+                            "",
+                            GameEnum.KY,
+                            "/" +
+                              i18n.language +
+                              "/joingame/" +
+                              GameTypeEnum.QIPAILOBBY +
+                              "/" +
+                              GameEnum.KY
+                          )
+                        }
+                      />
+                    </GameSection>
+                    <GameSection>
+                      <Games
+                        src={GetUrl(3)}
+                        onClick={() =>
+                          props.handleJoinGameClick(
+                            GameTypeEnum.QIPAILOBBY,
+                            "",
+                            GameEnum.KY,
+                            "/" +
+                              i18n.language +
+                              "/joingame/" +
+                              GameTypeEnum.QIPAILOBBY +
+                              "/" +
+                              GameEnum.KY
+                          )
+                        }
+                      />
+                    </GameSection>
+                  </Grid>
+                </Grid>
+                <Grid item>
+                  <Grid
+                    container
+                    justify="center"
+                    alignItems="center"
+                    spacing="3"
+                  >
+                    <GameSection>
+                      <Games
+                        src={GetUrl(4)}
+                        onClick={() =>
+                          props.handleJoinGameClick(
+                            GameTypeEnum.QIPAILOBBY,
+                            "",
+                            GameEnum.KY,
+                            "/" +
+                              i18n.language +
+                              "/joingame/" +
+                              GameTypeEnum.QIPAILOBBY +
+                              "/" +
+                              GameEnum.KY
+                          )
+                        }
+                      />
+                    </GameSection>
+                    <GameSection>
+                      <Games
+                        src={GetUrl(5)}
+                        onClick={() =>
+                          props.handleJoinGameClick(
+                            GameTypeEnum.QIPAILOBBY,
+                            "",
+                            GameEnum.KY,
+                            "/" +
+                              i18n.language +
+                              "/joingame/" +
+                              GameTypeEnum.QIPAILOBBY +
+                              "/" +
+                              GameEnum.KY
+                          )
+                        }
+                      />
+                    </GameSection>
+                    <GameSection>
+                      <Games
+                        src={GetUrl(6)}
+                        onClick={() =>
+                          props.handleJoinGameClick(
+                            GameTypeEnum.QIPAILOBBY,
+                            "",
+                            GameEnum.KY,
+                            "/" +
+                              i18n.language +
+                              "/joingame/" +
+                              GameTypeEnum.QIPAILOBBY +
+                              "/" +
+                              GameEnum.KY
+                          )
+                        }
+                      />
+                    </GameSection>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Container>
+          </ScrollAnimation>
+
+          <AGContentStartGame
+            onClick={() =>
+              props.handleJoinGameClick(
+                GameTypeEnum.QIPAILOBBY,
+                "",
+                GameEnum.KY,
+                "/" +
+                  i18n.language +
+                  "/joingame/" +
+                  GameTypeEnum.QIPAILOBBY +
+                  "/" +
+                  GameEnum.KY
+              )
+            }
+          >
+            {i18n.t("common.startGame")}
+          </AGContentStartGame>
+        </Grid>
+      </MContainer>
+    </Background>
+  );
 };
-export default connect(mapStateToProps)(ThirdSection);
+
+export default ThirdSection;

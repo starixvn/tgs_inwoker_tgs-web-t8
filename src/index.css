@@ -201,7 +201,7 @@ code {
   body {
     font-family: Tahoma, Helvetica, Arial, "Microsoft Yahei", "微软雅黑",
       STXihei, "华文细黑", sans-serif;
-
+    background-color: #ececec;
     background-repeat: no-repeat;
     -webkit-text-size-adjust: 100%;
     /* stop ios zooming text  on orientation change */
@@ -543,38 +543,3 @@ div[class*=" SnackbarItem-variantInfo-"]:before {
 
 
 */
-.headerSubmenu .slick-track,
-.headerSubmenu .slick-slider .slick-list {
-  height: auto;
-}
-
-.headerSubmenu .slick-slide > div {
-  display: flex;
-  align-items: center;
-}
-
-.headerSubmenu .slick-prev {
-  left: 0;
-  top: 125px;
-}
-
-.headerSubmenu .slick-next {
-  right: 0;
-  top: 125px;
-}
-.headerSubmenu.slick-slider .slick-track,
-.headerSubmenu.slick-slider .slick-list {
-  margin-left: 25px;
-  margin-right: 35px;
-}
-
-.headerSubmenu .slick-prev::before,
-.headerSubmenu .slick-next::before {
-  color: #0d62a4;
-}
-
-@media (min-width: 576px) {
-  .MuiPickersModal-dialogRoot {
-    zoom: 2;
-  }
-}

@@ -3,8 +3,6 @@ import styled, { keyframes } from "styled-components";
 import { connect } from "react-redux";
 import LoadingGIF from "../../assets/images/loading.gif";
 
-import Config from "../../config/config";
-
 const spinner = keyframes`
  0% { transform: rotateY(0deg);  }
 

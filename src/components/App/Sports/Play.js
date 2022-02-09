@@ -5,7 +5,7 @@ import {GameService} from "../../../api-services/services/GameService";
 
 import Maintenance from "../../Share/Maintenance";
 import SportsBGNewPNG from "../../../assets/images/sportsbook/sports-bg2.jpg";
-import config from "../../../config/config";
+
 const Container = styled.div`
   width: 100%;
   border: none;
