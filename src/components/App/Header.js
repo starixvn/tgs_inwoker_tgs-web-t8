@@ -165,6 +165,7 @@ const LogoContainer = styled.div`
 `;
 
 const RightMenuContainer = styled.div`
+  margin-left: 70px;
   float: right;
 `;
 const RightMenuUL = styled.ul`

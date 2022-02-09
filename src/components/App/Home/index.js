@@ -8,9 +8,11 @@ import { withRouter } from "react-router-dom";
 
 import Marquee from "./Marquee";
 
-
-import {SHOW_MODAL, SHOW_LOGIN} from "../../../api-services/constant/actionType";
-import {GameTypeEnum} from "../../../api-services/utils/Enum";
+import {
+  SHOW_MODAL,
+  SHOW_LOGIN,
+} from "../../../api-services/constant/actionType";
+import { GameTypeEnum } from "../../../api-services/utils/Enum";
 
 import i18n from "../../../utils/i18n";
 import SecondSection from "./SecondSection";
@@ -46,13 +48,14 @@ const MarqueeContainer = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
 `;
 const SectionContainer = styled.div`
-  background: url(${BGJPG}) no-repeat;
-  background-position: center;
-  background-size: cover;
+  //background: url(${BGJPG}) no-repeat;
+  //background-position: center;
+  //background-size: cover;
+  background-color: #000000;
   width: 100%;
 `;
 const FirstSection = styled.div`
-  width: 1280px;
+  max-width: 1440px;
   margin: 0 auto;
   min-height: 460px;
   padding-top: 110px;
@@ -70,26 +73,39 @@ const FirstSectionItemBg2 = styled.div`
 `;
 const FirstSectionItemBg = styled(Grid)`
   position: absolute;
-  bottom: 38px;
+  bottom: 76px;
   left: ${(props) => (i18n.language === "vi-VN" ? "0px" : "16px")};
-  height: 68px;
-  width: 283px;
+  width: 160px;
   padding-left: 30px;
 `;
 const FirstSectionItemLabel = styled(Grid)`
   text-transform: uppercase;
 `;
+
+const FirstSectionItemButton = styled(Grid)`
+  font-size: 14px;
+  color: #fff;
+  text-align: center;
+  width: 85px;
+  border-radius: 6px;
+  border: solid 1px #e4eaff;
+  margin-top: 25px;
+  height: 34px;
+  line-height: 2em;
+`;
+
 const FirstSectionItem = styled(Grid)`
   background: url(${(props) => props.img}) no-repeat;
-  background-size: contain;
+  background-position: 0% 100%;
   margin: 0 auto;
-  width: 320px;
-  height: 282px;
+  width: 469px;
+  height: 272px;
   color: #fff;
-  font-size: ${(props) => (i18n.language === "vi-VN" ? "1.4em" : "1.6em")};
-  padding-top: 215px;
-  padding-left: 38px;
+  font-size: ${(props) => (i18n.language === "vi-VN" ? "1.4em" : "1.75em")};
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   &:hover {
     cursor: pointer;
     ${FirstSectionItemBg2} {
@@ -208,9 +224,9 @@ class Home extends Component {
       <HomeContainer>
         <SliderContainer>
           <Slider list={this.props.ui.board_list}></Slider>
-          <MarqueeContainer>
+          {/* <MarqueeContainer>
             <Marquee text={this.props.ui.marqueeText}></Marquee>
-          </MarqueeContainer>
+          </MarqueeContainer> */}
         </SliderContainer>
         <SectionContainer>
           <FirstSection
@@ -225,38 +241,12 @@ class Home extends Component {
             {(() => {
               const MenuItemList = [
                 {
-                  path: "sports",
-                  title: config.features.MenuItem_HeaderSportsTranslation2
-                    ? i18n.t("mess888.wap.sports")
-                    : i18n.t("web.home.Section1Sport"),
-                  img: Section1SportPNG,
-                  gameType: [GameTypeEnum.SPORTS, GameTypeEnum.ESPORTS],
-                  sortingHK28: 2,
-                  sorting: 1,
-                },
-                {
-                  path: "chess",
-                  title: i18n.t("web.home.Section1Chess"),
-                  img: Section1ChessPNG,
-                  gameType: [GameTypeEnum.QIPAILOBBY],
-                  sortingHK28: 3,
-                  sorting: 2,
-                },
-                {
-                  path: `slots`,
-                  title: i18n.t("web.home.Section1Slot"),
-                  img: Section1SlotPNG,
-                  gameType: [GameTypeEnum.SLOT],
-                  sortingHK28: 4,
-                  sorting: 3,
-                },
-                {
                   path: `electron`,
                   title: i18n.t("web.home.Section1Electron"),
                   img: Section1ElectronPNG,
                   gameType: [GameTypeEnum.TABLEGAME],
                   sortingHK28: 6,
-                  sorting: 4,
+                  sorting: 1,
                 },
                 {
                   path: `fish`,
@@ -264,7 +254,7 @@ class Home extends Component {
                   img: Section1FishPNG,
                   gameType: [GameTypeEnum.FISH],
                   sortingHK28: 5,
-                  sorting: 5,
+                  sorting: 3,
                 },
                 {
                   path: "lottery",
@@ -272,15 +262,7 @@ class Home extends Component {
                   img: Section1LotteryPNG,
                   gameType: [GameTypeEnum.LOTTERYLOBBY],
                   sortingHK28: 7,
-                  sorting: 6,
-                },
-                {
-                  path: "live",
-                  title: i18n.t("web.home.Section1Live"),
-                  img: Section1LivePNG,
-                  gameType: [GameTypeEnum.LIVELOBBY],
-                  sortingHK28: 1,
-                  sorting: 7,
+                  sorting: 2,
                 },
               ];
               var count = 0;
@@ -318,7 +300,6 @@ class Home extends Component {
                           );
                         }}
                       >
-                        <FirstSectionItemBg2></FirstSectionItemBg2>
                         <FirstSectionItemBg
                           container
                           direction="row"
@@ -328,6 +309,16 @@ class Home extends Component {
                           <FirstSectionItemLabel item>
                             {item.title}
                           </FirstSectionItemLabel>
+                          <FirstSectionItemButton
+                            onClick={() => {
+                              window.scrollTo({ top: 0, behavior: "smooth" });
+                              this.props.history.push(
+                                `/${i18n.language}/${item.path}`
+                              );
+                            }}
+                          >
+                            {i18n.t("withdrawal.checkDetails")}
+                          </FirstSectionItemButton>
                         </FirstSectionItemBg>
                       </FirstSectionItem>
                     </ScrollAnimation>
