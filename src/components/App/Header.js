@@ -54,13 +54,12 @@ const moment = require("moment");
 
 const InnerWrap = styled.div`
   margin: 0 auto;
-  max-width: 1280px;
   width: 100%;
   font-size: 14px;
 `;
 const TopContainer = styled.div`
-  height: 50px;
-  border-bottom: 1px solid #2d3e45;
+  height: 38px;
+  background-color: #2C2C2C;
 `;
 const TimerContainer = styled.div`
   padding-top: 15px;
@@ -138,6 +137,9 @@ const BtnCS = styled(BtnAppsAndCS)`
 `;
 
 const BottomContainer = styled.div`
+  margin: 0 auto;
+  height: 68px;
+  max-width: 1280px;
   display: grid;
   grid-template-columns: 230px auto;
   grid-gap: 5px;
@@ -151,7 +153,7 @@ const LogoContainer = styled.div`
   background-size: contain;
   background-position: left center;
   width: 100%;
-  height: 90px;
+  height: 48px;
   margin-top: 10px;
   float: left;
   &:hover {
@@ -173,7 +175,7 @@ const RightMenuUL = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
-  height: 110px;
+  height: 68px;
 `;
 
 const RightMenuTextSpan = styled.span`
@@ -206,22 +208,6 @@ const MouseOverBackground = styled.div`
   bottom: 30px;
 `;
 
-const RightMenuImg = styled.div`
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-  ${(props) => `background-image:url(${props.img});`}
-
-  ${(props) =>
-    props.active
-      ? `
-
-  background-image:url(${props.hoverimg});
-  `
-      : `
-  
-  `}
-`;
 const MouseOverInner = styled.div`
   width: 1280px;
   height: 161px;
@@ -270,7 +256,8 @@ const breatheAnimation = keyframes`
 
 `;
 const RightMenuLI = styled.li`
-  display: inline-block;
+  display: flex;
+  align-items: center;
   width: 130px;
   height: 95%;
   color: #f6f6f6;
@@ -292,9 +279,6 @@ const RightMenuLI = styled.li`
   }
   &:hover ${MouseOverContainer} {
     height: 190px;
-  }
-  &:hover ${RightMenuImg} {
-    ${(props) => `background-image:url(${props.hoverimg});`}
   }
   &:hover ${GameImg} {
     animation-name: ${breatheAnimation};
@@ -319,12 +303,7 @@ const RightMenuLI = styled.li`
 
 const StyledAppBar = withStyles((theme) => ({
   root: {
-    backgroundImage:
-      "linear-gradient(to top," +
-      theme.palette.primary.mainGradient +
-      ", " +
-      theme.palette.primary.main +
-      ")",
+    backgroundColor: "#000000",
     "& .MuiToolbar-regular": {
       margin: "0 auto",
     },
@@ -554,18 +533,6 @@ class Header extends Component {
         onMouseLeave={this.handleMenuMouseLeave}
         hoverimg={imageHover}
       >
-        <RightMenuImg
-          img={image}
-          hoverimg={imageHover}
-          active={this.state.selected === `${to}`}
-          className={`${
-            this.state.shouldShow === null
-              ? classes.maxIcon
-              : this.state.shouldShow
-              ? classes.maxIcon
-              : classes.minIcon
-          }`}
-        ></RightMenuImg>
         <RightMenuTextSpan
           className={`${
             this.state.shouldShow === null
@@ -584,9 +551,9 @@ class Header extends Component {
                 onClick={(e) => e.stopPropagation()}
                 style={
                   this.state.shouldShow === null
-                    ? { top: "156px" }
+                    ? { top: "106px" }
                     : this.state.shouldShow
-                    ? { top: "156px" }
+                    ? { top: "106px" }
                     : { top: "114px" }
                 }
               >
@@ -785,7 +752,7 @@ class Header extends Component {
       <CustomAppBar hide={this.props.hide}>
         <InnerWrap>
           <TopContainer>
-            <TimerContainer>
+            {/* <TimerContainer>
               <TimerSpan>GMT+8 {this.state.systemDateTime}</TimerSpan>
             </TimerContainer>
             {config.features.DisplayPhone && (
@@ -829,7 +796,7 @@ class Header extends Component {
                   );
                 }
               })()}{" "}
-            </RightContainer>
+            </RightContainer> */}
           </TopContainer>
           <BottomContainer>
             <LogoContainer
@@ -877,18 +844,6 @@ class Header extends Component {
                         onMouseLeave={this.handleMenuMouseLeave}
                         hoverimg={item.hoverImg}
                       >
-                        <RightMenuImg
-                          img={item.img}
-                          hoverimg={item.hoverImg}
-                          active={this.state.selected === `${item.path}`}
-                          className={`${
-                            this.state.shouldShow === null
-                              ? classes.maxIcon
-                              : this.state.shouldShow
-                              ? classes.maxIcon
-                              : classes.minIcon
-                          }`}
-                        ></RightMenuImg>
                         <RightMenuTextSpan
                           className={`${
                             this.state.shouldShow === null
@@ -904,9 +859,9 @@ class Header extends Component {
                           onClick={(e) => e.stopPropagation()}
                           style={
                             this.state.shouldShow === null
-                              ? { top: "156px" }
+                              ? { top: "106px" }
                               : this.state.shouldShow
-                              ? { top: "156px" }
+                              ? { top: "106px" }
                               : { top: "114px" }
                           }
                         >
