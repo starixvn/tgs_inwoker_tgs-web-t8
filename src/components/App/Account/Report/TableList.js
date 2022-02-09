@@ -1,0 +1,381 @@
+import React from "react";
+import styled from "styled-components";
+import { withStyles } from "@material-ui/core/styles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import TablePagination from "@material-ui/core/TablePagination";
+import i18n from "../../../../utils/i18n";
+import copy from "copy-to-clipboard";
+
+import { AppHistory } from "../../../../history/History";
+const moment = require("moment");
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: "#f7f7f7",
+    color: "#747474",
+    padding: "5px 20px 5px 20px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  },
+  body: {
+    fontSize: 14,
+    padding: "5px 20px 5px 20px",
+
+    color: "#7b7b7b",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  },
+}))(TableCell);
+
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    backgroundColor: "#FFFFFF",
+    "&:hover": {
+      backgroundColor: "#dde3f6 !important",
+      cursor: "pointer",
+    },
+  },
+}))(TableRow);
+
+const CustomWinLose = styled(StyledTableCell)`
+  color: ${({ value }) => {
+    return value === 0 ? "" : value > 0 ? "rgb(3,189, 0)" : "rgb(255, 0, 0)";
+  }};
+`;
+
+const InnerWrap = styled.div`
+  width: 100%;
+  float: left;
+  margin-top: 8px;
+  box-sizing: border-box;
+  background-color: #f7f7f7;
+  overflow-x: auto;
+`;
+
+const TheDepositButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${({ theme }) => theme.primary};
+  padding: 0px 10px;
+  color: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+`;
+
+const headerLists = {
+  transactionDetails: [
+    {
+      title: `${i18n.t("report.betDateTime")}`,
+    },
+    {
+      title: `${i18n.t("report.betid")}`,
+      width: "20rem",
+    },
+    {
+      title: `${i18n.t("report.platform")}/${i18n.t("report.gamename")}`,
+    },
+    {
+      align: "right",
+      title: `${i18n.t("report.totalBet")}`,
+      width: "4rem",
+    },
+    {
+      align: "right",
+      title: `${i18n.t("report.validBet")}`,
+      width: "4rem",
+    },
+    {
+      align: "right",
+      title: `${i18n.t("report.winloss")}`,
+      width: "4rem",
+    },
+  ],
+  depositReport: [
+    {
+      title: `${i18n.t("report.submitDate")}`,
+    },
+    {
+      title: `${i18n.t("report.NewOrderNumber")}`,
+    },
+    {
+      title: `${i18n.t("report.status")}`,
+    },
+    {
+      align: "right",
+      title: `${i18n.t("common.amount")}`,
+    },
+  ],
+  joinedPromo: [
+    {
+      title: `${i18n.t("report.dateTime")}`,
+    },
+    {
+      title: `${i18n.t("report.joinedPromo.promoName")}`,
+    },
+  ],
+  transfer: [
+    {
+      title: `${i18n.t("report.dateTime")}`,
+    },
+    {
+      title: `${i18n.t("report.transfer.table.from")}`,
+    },
+    {
+      title: `${i18n.t("report.transfer.table.to")}`,
+    },
+    {
+      title: `${i18n.t("report.amount")}`,
+    },
+  ],
+  withdrawal: [
+    {
+      align: "",
+      title: `${i18n.t("report.RequestDate")}`,
+    },
+    {
+      align: "",
+      title: `${i18n.t("report.NewOrderNumber")}`,
+    },
+    {
+      align: "",
+      title: `${i18n.t("report.status")}`,
+    },
+    {
+      align: "right",
+      title: `${i18n.t("common.amount")}`,
+    },
+  ],
+  account: [
+    {
+      title: `${i18n.t("report.submitDate")}`,
+    },
+    {
+      title: `${i18n.t("report.status")}`,
+    },
+    {
+      title: `${i18n.t("report.transferOut")}`,
+    },
+    {
+      title: `${i18n.t("report.transferIn")}`,
+    },
+    {
+      align: "right",
+      title: `${i18n.t("report.amount")}`,
+    },
+  ],
+  rebate: [
+    {
+      title: `${i18n.t("report.rebate.sn")}`,
+    },
+    {
+      title: `${i18n.t("report.rebate.cycleDate")}`,
+    },
+    {
+      title: `${i18n.t("report.status")}`,
+    },
+    {
+      align: "right",
+      title: `${i18n.t("report.rebate.validBet")}`,
+    },
+    {
+      align: "right",
+      title: `${i18n.t("report.rebate.amount")}`,
+    },
+  ],
+};
+
+function TableList(props) {
+  const handleChangePage = (event, newPage) => {
+    props.onhandleChangePage(newPage + 1);
+  };
+
+  const handleDoubleClick = (e, id) => {
+    if (e.detail === 2) {
+      props.enqueueSnackbar(i18n.t("affiliate.copied"), {
+        variant: "success",
+      });
+      copy(id);
+    }
+  };
+
+  const handleManualDeposit = (id) => {
+    AppHistory.push({
+      pathname: "/" + i18n.language + "/account/manual/" + id,
+    });
+  };
+
+  const getTableList = () => {
+    switch (props.type) {
+      case "transactionDetails":
+        return props.rows.map((row, index) => {
+          const date = moment(row.createdOn).format("YYYY-MM-DD hh:mm a");
+          return (
+            <StyledTableRow
+              hover
+              role="checkbox"
+              tabIndex={-1}
+              key={index}
+              onClick={(e) => {
+                handleDoubleClick(e, row.id);
+              }}
+            >
+              <StyledTableCell>{date}</StyledTableCell>
+              <StyledTableCell>{row.id}</StyledTableCell>
+              <StyledTableCell>
+                {row.gameProviderName}-{row.gameName}
+              </StyledTableCell>
+              <StyledTableCell align="right">{row.betAmount}</StyledTableCell>
+              <StyledTableCell align="right">
+                {row.validBetAmount}
+              </StyledTableCell>
+              <CustomWinLose value={row.winLoss} align="right">
+                {row.winLoss}
+              </CustomWinLose>
+            </StyledTableRow>
+          );
+        });
+      case "depositReport":
+        return props.rows.map((row, index) => {
+          return (
+            <StyledTableRow hover role="checkbox" tabIndex={-1} key={index}>
+              <StyledTableCell>
+                {moment(row.createdon).format("YYYY-MM-DD hh:mm a")}
+              </StyledTableCell>
+
+              <StyledTableCell>{row.orderno}</StyledTableCell>
+              <StyledTableCell>
+                {i18n.t(`report.deposit.status${row.status}`)}
+              </StyledTableCell>
+              <StyledTableCell align="right">{row.amount}</StyledTableCell>
+              <StyledTableCell>
+                {row.status === 1 && row.canuploadcerts === true && (
+                  <TheDepositButton
+                    onClick={() => {
+                      handleManualDeposit(row.id);
+                    }}
+                  >
+                    {i18n.t("deposit.uploadReceipt")}
+                  </TheDepositButton>
+                )}
+              </StyledTableCell>
+            </StyledTableRow>
+          );
+        });
+      case "joinedPromo":
+        return props.rows.map((row, index) => {
+          const date = moment(row.joinedOn).format("YYYY-MM-DD hh:mm a");
+          return (
+            <StyledTableRow hover role="checkbox" tabIndex={-1} key={index}>
+              <StyledTableCell>{date}</StyledTableCell>
+              <StyledTableCell>{row.promotionName}</StyledTableCell>
+            </StyledTableRow>
+          );
+        });
+      case "transfer":
+        return props.rows.map((row, index) => {
+          const date = moment(row.balancetime).format("YYYY-MM-DD hh:mm a");
+          return (
+            <StyledTableRow hover role="checkbox" tabIndex={-1} key={index}>
+              <StyledTableCell>{date}</StyledTableCell>
+              <StyledTableCell>{row.from}</StyledTableCell>
+              <StyledTableCell>{row.to}</StyledTableCell>
+              <StyledTableCell>{row.amount}</StyledTableCell>
+            </StyledTableRow>
+          );
+        });
+      case "withdrawal":
+        return props.rows.map((row, index) => {
+          return (
+            <StyledTableRow hover role="checkbox" tabIndex={-1} key={index}>
+              <StyledTableCell>
+                {moment(row.createdon).format("YYYY-MM-DD hh:mm a")}
+              </StyledTableCell>
+              <StyledTableCell>{row.orderno}</StyledTableCell>
+              <StyledTableCell>
+                {i18n.t(`report.withdrawal.status${row.status}`)}
+              </StyledTableCell>
+              <StyledTableCell align="right">{row.amount}</StyledTableCell>
+            </StyledTableRow>
+          );
+        });
+      case "account":
+        return props.rows.map((row, index) => {
+          return (
+            <StyledTableRow hover role="checkbox" tabIndex={-1} key={index}>
+              <StyledTableCell>{row.create_time_text}</StyledTableCell>
+              <StyledTableCell>{row.status_text}</StyledTableCell>
+              <StyledTableCell>{row.transform_out}</StyledTableCell>
+              <StyledTableCell>{row.transform_in}</StyledTableCell>
+              <StyledTableCell align="right" style={{ paddingRight: "20px" }}>
+                {row.amount_text}
+              </StyledTableCell>
+            </StyledTableRow>
+          );
+        });
+      case "rebate":
+        return props.rows.map((row, index) => {
+          return (
+            <StyledTableRow hover role="checkbox" tabIndex={-1} key={index}>
+              <StyledTableCell>{row.sn}</StyledTableCell>
+              <StyledTableCell>{row.date}</StyledTableCell>
+              <StyledTableCell>{row.status_text}</StyledTableCell>
+              <StyledTableCell align="right">
+                {row.bet_valid_text}
+              </StyledTableCell>
+              <StyledTableCell align="right">
+                {row.rebate_amount_text}
+              </StyledTableCell>
+            </StyledTableRow>
+          );
+        });
+      default:
+        break;
+    }
+  };
+  return (
+    <InnerWrap>
+      <Table
+        aria-label="customized table"
+        style={{ tableLayout: props.tableLayout }}
+      >
+        <TableHead>
+          <TableRow>
+            {headerLists[props.type].map((header, index) => {
+              return (
+                <StyledTableCell
+                  align={header.align}
+                  style={{ width: header.width }}
+                >
+                  {header.title}
+                </StyledTableCell>
+              );
+            })}
+          </TableRow>
+        </TableHead>
+        <TableBody>{getTableList()}</TableBody>
+      </Table>
+      <TablePagination
+        rowsPerPageOptions={[20]}
+        component="div"
+        count={props.total}
+        rowsPerPage={20}
+        page={props.page - 1}
+        labelRowsPerPage={("asd", "213123", "asdasdasda", "每頁行数")}
+        backIconButtonProps={{
+          "aria-label": "previous page",
+        }}
+        nextIconButtonProps={{
+          "aria-label": "next page",
+        }}
+        onPageChange={handleChangePage}
+      />
+    </InnerWrap>
+  );
+}
+export default TableList;

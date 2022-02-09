@@ -1,0 +1,179 @@
+import React from 'react'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+import Textbox from '../Share/Textbox'
+import i18n from '../../../utils/i18n'
+import BottomNote from '../Share/BottomNote'
+import BaseProfile from './BaseProfile'
+
+import {accountAction} from "../../../api-services/actions/accountAction";
+import {RESET_ACCOUNTRESULT} from "../../../api-services/constant/actionType";
+import config from '../../../config/config'
+class NameVerify extends BaseProfile {
+  constructor(props) {
+    super(props)
+
+    const name = this.props.account.info.member_name
+    const ic = this.props.account.info.member_card_no
+    const isConfigured = this.checkisConfigure()
+    this.state = {
+      name: name,
+      ic: ic,
+      isConfigured: isConfigured
+    }
+  }
+
+  componentDidMount() {
+    //  this.setState({ name: name, ic: ic, isConfigured: isConfigured });
+  }
+  componentDidUpdate(preProps) {
+    if (
+      preProps.account.info.member_card_no !==
+      this.props.account.info.member_card_no
+    ) {
+      const ic = this.props.account.info.member_card_no
+      const isConfigured = this.checkisConfigure()
+      this.setState({ ...this.state, ic: ic, isConfigured: isConfigured })
+    }
+    if (
+      preProps.account.updateCardResult !==
+        this.props.account.updateCardResult &&
+      this.props.account.updateCardResult !== null
+    ) {
+      if (this.props.account.updateCardResult.IsSuccess) {
+        this.props.resetResult()
+        this.setState({ disableButton: true })
+        // this.props.getIDCardNo();
+        this.props.appHistory.replace(
+          '/' + i18n.language + '/profile'
+        )
+      } else {
+        this.props.alert('', this.props.account.updateCardResult.info)
+        // if (this.props.account.updateCardResult.code === 401) {
+        //   this.props.alert(
+        //     '',
+        //     i18n.t('profile.nameVerify.msgInvalidICNum')
+        //   )
+        // } else {
+        //   this.props.alert('', this.props.account.updateCardResult.info)
+        // }
+
+        this.showLoading(false)
+      }
+    }
+  }
+  checkisConfigure = () => {
+    var check_pass_account = false
+    if (config.features.ICVerification) {
+      if (
+        this.props.account.info.member_name !== '' &&
+        this.props.account.info.member_name !== null
+      ) {
+        check_pass_account = true
+      }
+    } else {
+      check_pass_account = this.props.account.info.check_pass_account
+    }
+    return check_pass_account
+  }
+  handleChangeName = (e) => {
+    this.setState({ ...this.state, name: e.target.value })
+    this.onTextChanged()
+  }
+  handleChangeIC = (e) => {
+    this.setState({ ...this.state, ic: e.target.value })
+    this.onTextChanged()
+  }
+  handleSubmitClicked = () => {
+    const name = this.state.name || ''
+    const ic = this.state.ic || ''
+    this.showLoading(true)
+    this.props.updateMemberCardNo(name, ic)
+    this.showLoading(false)
+  }
+
+  isDisableButton = () => {
+    const name = this.state.name || ''
+    const ic = this.state.ic || ''
+
+    const isDisableButton = config.features.ICVerification
+      ? !(name && ic)
+      : name === ''
+    return isDisableButton
+  }
+  render() {
+    return this.setupContent(
+      i18n.t('profile.nameVerify.title'),
+      <React.Fragment>
+        <Textbox
+          style={{ margin: '50px auto 20px auto' }}
+          value={this.state.name}
+          onChange={this.handleChangeName}
+          placeholder={
+            config.features.Profile_CustomIdentityPageTranslation
+              ? i18n.t('piso.profile.enterFullName')
+              : i18n.t('profile.nameVerify.title')
+          }
+          label={
+            config.features.Profile_CustomIdentityPageTranslation
+              ? i18n.t('piso.profile.fullName')
+              : i18n.t('profile.nameVerify.verifyName')
+          }
+          disabled={this.state.isConfigured === true}
+          maxLength={256}
+        ></Textbox>
+        {this.state.isConfigured === false && config.features.ICVerification ? (
+          <Textbox
+            style={{ margin: '50px auto 20px auto' }}
+            value={this.state.ic}
+            onChange={this.handleChangeIC}
+            placeholder={
+              config.features.Profile_CustomIdentityPageTranslation
+                ? i18n.t('piso.profile.enterDocumentNumber')
+                : i18n.t('profile.nameVerify.msgEnterICNum')
+            }
+            label={
+              config.features.Profile_CustomIdentityPageTranslation
+                ? i18n.t('piso.profile.documentNumber')
+                : i18n.t('profile.nameVerify.icNum')
+            }
+            disabled={this.props.account.info.check_pass_account === true}
+            maxLength={256}
+          ></Textbox>
+        ) : (
+          <React.Fragment></React.Fragment>
+        )}
+      </React.Fragment>,
+      this.state.isConfigured && config.features.ICVerification
+        ? i18n.t('common.configured')
+        : i18n.t('common.complete'),
+      <BottomNote
+        text1={i18n.t('profile.nameVerify.toEdit')}
+        link={'../chat'}
+        text2={i18n.t('common.customerService')}
+      ></BottomNote>
+    )
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    account: state.account
+  }
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getAccountProfile: () => dispatch(accountAction.getAccountProfile()),
+    getIDCardNo: () => dispatch(accountAction.getIDCardNo()),
+    updateMemberCardNo: (name, number) =>
+      dispatch(accountAction.updateMemberCardNo(name, number)),
+    resetResult: () =>
+      dispatch({
+        type: RESET_ACCOUNTRESULT
+      })
+  }
+}
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(NameVerify))
