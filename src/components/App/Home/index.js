@@ -92,6 +92,9 @@ const FirstSectionItemButton = styled(Grid)`
   margin-top: 25px;
   height: 34px;
   line-height: 2em;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const FirstSectionItem = styled(Grid)`
@@ -106,12 +109,6 @@ const FirstSectionItem = styled(Grid)`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  &:hover {
-    cursor: pointer;
-    ${FirstSectionItemBg2} {
-      width: 283px;
-    }
-  }
 `;
 
 class Home extends Component {
@@ -293,12 +290,6 @@ class Home extends Component {
                         item
                         spacing={0}
                         img={item.img}
-                        onClick={() => {
-                          window.scrollTo({ top: 0, behavior: "smooth" });
-                          this.props.history.push(
-                            `/${i18n.language}/${item.path}`
-                          );
-                        }}
                       >
                         <FirstSectionItemBg
                           container
