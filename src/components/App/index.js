@@ -180,7 +180,6 @@ class App extends Component {
         this.props.game.providerList.length &&
       this.props.account.token !== null
     ) {
-      console.log('test');
       this.props.game.providerList
         .filter((item) => item.status === 0 && item.transferwallet === true)
         .map((a) => {

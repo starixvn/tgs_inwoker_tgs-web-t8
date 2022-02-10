@@ -19,13 +19,9 @@ import SecondSection from "./SecondSection";
 import ThirdSection from "./ThirdSection";
 import FourthSection from "./FourthSection";
 import BGJPG from "../../../assets/images/home/section/bg.jpg";
-import Section1ChessPNG from "../../../assets/images/home/section/section1-chess.png";
 import Section1FishPNG from "../../../assets/images/home/section/section1-fish.png";
 import Section1LotteryPNG from "../../../assets/images/home/section/section1-lottery.png";
-import Section1SlotPNG from "../../../assets/images/home/section/section1-slot.png";
 import Section1ElectronPNG from "../../../assets/images/home/section/section1-electron.png";
-import Section1SportPNG from "../../../assets/images/home/section/section1-sport.png";
-import Section1LivePNG from "../../../assets/images/home/section/section1-live.png";
 import TextBgPNG from "../../../assets/images/home/section/text-bg.png";
 import ScrollAnimation from "react-animate-on-scroll";
 import { Grid } from "@material-ui/core";
@@ -318,7 +314,7 @@ class Home extends Component {
               });
             })()}
           </FirstSection>
-          <SecondSection />
+          <SecondSection navigate={this.handleNavigateClick} />
         </SectionContainer>
         {this.props.game.providerList.filter((e) => {
           return e.abbreviation === "KY";
