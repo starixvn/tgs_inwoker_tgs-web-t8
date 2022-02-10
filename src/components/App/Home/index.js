@@ -18,6 +18,7 @@ import i18n from "../../../utils/i18n";
 import SecondSection from "./SecondSection";
 import ThirdSection from "./ThirdSection";
 import FourthSection from "./FourthSection";
+import FifthSection from "./FifthSection";
 import BGJPG from "../../../assets/images/home/section/bg.jpg";
 import Section1FishPNG from "../../../assets/images/home/section/section1-fish.png";
 import Section1LotteryPNG from "../../../assets/images/home/section/section1-lottery.png";
@@ -282,11 +283,7 @@ class Home extends Component {
                       animateOnce={true}
                       style={{ overflow: "visible" }}
                     >
-                      <FirstSectionItem
-                        item
-                        spacing={0}
-                        img={item.img}
-                      >
+                      <FirstSectionItem item spacing={0} img={item.img}>
                         <FirstSectionItemBg
                           container
                           direction="row"
@@ -315,14 +312,30 @@ class Home extends Component {
             })()}
           </FirstSection>
           <SecondSection navigate={this.handleNavigateClick} />
+          <ScrollAnimation
+            animateIn="fadeInLeft"
+            duration={1}
+            animateOnce={true}
+            style={{ overflow: "visible" }}
+          >
+            <ThirdSection></ThirdSection>
+          </ScrollAnimation>
+          <ScrollAnimation
+            animateIn="fadeInLeft"
+            duration={1}
+            animateOnce={true}
+            style={{ overflow: "visible" }}
+          >
+            <FifthSection></FifthSection>
+          </ScrollAnimation>
         </SectionContainer>
-        {this.props.game.providerList.filter((e) => {
+        {/* {this.props.game.providerList.filter((e) => {
           return e.abbreviation === "KY";
         }).length === 0 ? (
           <FourthSection></FourthSection>
         ) : (
           <ThirdSection handleJoinGameClick={this.handleJoinGameClick} />
-        )}
+        )} */}
 
         {(() => {
           if (
