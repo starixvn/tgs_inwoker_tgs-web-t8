@@ -321,6 +321,14 @@ class Home extends Component {
             <ThirdSection></ThirdSection>
           </ScrollAnimation>
           <ScrollAnimation
+            animateIn="fadeInRight"
+            duration={1}
+            animateOnce={true}
+            style={{ overflow: "visible" }}
+          >
+            <FourthSection></FourthSection>
+          </ScrollAnimation>
+          <ScrollAnimation
             animateIn="fadeInLeft"
             duration={1}
             animateOnce={true}

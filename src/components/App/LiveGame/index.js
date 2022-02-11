@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import styled, { css,keyframes } from "styled-components";
 
@@ -116,7 +116,7 @@ const BottomNavItem = styled.li`
   ${(props) =>
     props.selected &&
     css`
-      animation: ${flipButton} 0.8s linear both;
+      //animation: ${flipButton} 0.8s linear both;
       transform: scaleX(1);
     `}
 `;
@@ -129,36 +129,48 @@ const GameButton = styled.div`
   padding-left: 30px;
 `;
 
+class LiveGame extends Component {
+  constructor(props) {
+    super(props);
 
+    var liveList = props.game.homePageGameList.filter((e) => {
+      return e.type === GameTypeEnum.LIVE;
+    });
 
-const LiveGame = (props) => {
-  const [selected, setSelected] = useState(0);
-  const [selectedGame, setSelectedGame] = useState("");
-  const [imageVisible, setImageVisible] = useState(false);
+    this.state = {
+      selected: 0,
+      selectedGame: "",
+      list: liveList,
+    };
 
-  var timerAnimation = null;
-  useEffect(() => {
-    if (timerAnimation != null) {
-      clearTimeout(timerAnimation);
-      timerAnimation = null;
+  }
+
+  componentDidMount() {
+    
+  }
+  componentDidUpdate(preProps, preStates) {
+    if (
+      preProps.game.homePageGameList.length !==
+      this.props.game.homePageGameList.length
+    ) {
+      var liveList = this.props.game.homePageGameList.filter((e) => {
+        return e.type === GameTypeEnum.LIVE;
+      });
+
+      this.setState({
+        ...this.state,
+        selected: 0,
+        list: liveList
+      });
     }
-    //   timerAnimation = setAnimation();
-  }, [selected]);
-  const handleSliderClick = (index, game) => {
-    if (timerAnimation != null) {
-      clearTimeout(timerAnimation);
-      timerAnimation = null;
-    }
-    setSelected(index);
-    setSelectedGame(game);
-    setImageVisible(false);
-    setTimeout(() => {
-      setImageVisible(true);
-    }, 150);
+  }
+
+  handleSliderClick = (index, game) => {
+    this.setState({...this.state, selected:index, selectedGame: game });
   };
 
-  const handleJoinGameClick = (params) => {
-    if (props.account.token != null) {
+  handleJoinGameClick = (params) => {
+    if (this.props.account.token != null) {
       window.open(
         "/" +
           i18n.language +
@@ -170,69 +182,59 @@ const LiveGame = (props) => {
         "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=1280,height=720"
       );
     } else {
-      props.showLogin(true);
+      this.props.showLogin(true);
     }
   };
-
-  var getLiveGame = props.game.homePageGameList.filter((e) => {
-    return e.type === GameTypeEnum.LIVE;
-  });
-
-  useEffect(() => {
-    if (selectedGame === "" && getLiveGame.length != 0) {
-      setSelectedGame(getLiveGame[0].abbreviation);
-      setTimeout(() => {
-        setImageVisible(true);
-      }, 150);
-    }
-  });
-  return getLiveGame.length ? (
-    <Container>
-      <LiveWrapper>
-        <BottomContainer>
-          <BottomNavItemContainer>
-            {getLiveGame.map((data, index) => {
-              return (
-                <BottomNavItem selected={selected === index}>
-                  <GameButton
-                    selected={selected === index}
-                    onClick={() => {
-                      clearTimeout(timerAnimation);
-
-                      handleSliderClick(index, data.abbreviation);
-                    }}
-                    maintenance={data.status != 0}
-                  >
-                    <img
-                      alt={data.abbreviation}
-                      src={
-                        process.env.PUBLIC_URL +
-                        `/assets/images/pcGamePage/live/${data.abbreviation.toLowerCase()}${
-                          index === selected
-                            ? "-selected.png"
-                            : "-not-selected.png"
-                        }`
-                      }
-                    />
-                  </GameButton>
-                </BottomNavItem>
-              );
-            })}
-          </BottomNavItemContainer>
-        </BottomContainer>
-      </LiveWrapper>
-    </Container>
-  ) : (
-    <Container
-      style={{
-        background:
-          "url(" +
-          process.env.PUBLIC_URL +
-          `/assets/images/pcGamePage/no_${i18n.language}.jpg) no-repeat center`,
-      }}
-    ></Container>
-  );
-};
+  
+  render()
+  {
+    return this.state.list.length ? (
+      <Container>
+        <LiveWrapper>
+          <BottomContainer>
+            <BottomNavItemContainer>
+              {this.state.list.map((data, index) => {
+                return (
+                  <BottomNavItem selected={this.state.selected === index}>
+                    <GameButton
+                      selected={this.state.selected === index}
+                      onClick={() => {
+                        this.handleSliderClick(index, data.abbreviation);
+                        this.handleJoinGameClick(data.abbreviation, data.type);
+                      }}
+                      maintenance={data.status != 0}
+                    >
+                      <img
+                        alt={data.abbreviation}
+                        src={
+                          process.env.PUBLIC_URL +
+                          `/assets/images/pcGamePage/live/${data.abbreviation.toLowerCase()}${
+                            index === this.state.selected
+                              ? "-selected.png"
+                              : "-not-selected.png"
+                          }`
+                        }
+                      />
+                    </GameButton>
+                  </BottomNavItem>
+                );
+              })}
+            </BottomNavItemContainer>
+          </BottomContainer>
+        </LiveWrapper>
+      </Container>
+    ) : (
+      <Container
+        style={{
+          background:
+            "url(" +
+            process.env.PUBLIC_URL +
+            `/assets/images/pcGamePage/no_${i18n.language}.jpg) no-repeat center`,
+        }}
+      ></Container>
+    );
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
