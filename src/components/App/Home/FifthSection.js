@@ -92,7 +92,19 @@ const providerList = [
   },
   {
     provider: 'jdb',
-  }
+  },
+  {
+    provider: 'avia',
+  },
+  {
+    provider: 'wgvia',
+  },
+  {
+    provider: '365',
+  },
+  {
+    provider: 'jili',
+  },
 ]
 
 const FifthSection = (props) => {

@@ -1,16 +1,15 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
 import i18n from "../../../utils/i18n";
 
-
-
+import LiveGameButtonPNG from "../../../assets/images/live/live-game-button.png";
 import ScrollAnimation from "react-animate-on-scroll";
 
 import config from "../../../config/config";
-import {GameTypeEnum} from "../../../api-services/utils/Enum";
-import {SHOW_LOGIN} from "../../../api-services/constant/actionType";
+import { GameTypeEnum } from "../../../api-services/utils/Enum";
+import { SHOW_LOGIN } from "../../../api-services/constant/actionType";
 const Container = styled.div`
   width: 100%;
   height: auto;
@@ -41,12 +40,7 @@ const LeftSlide = styled(ScrollAnimation)`
 const RightSlide = styled(ScrollAnimation)`
   display: flex;
 `;
-const ItemContainer = styled.div`
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  overflow: visible;
-`;
+const LiveWrapper = styled.div``;
 
 const Maintenance = styled.div`
   width: 100%;
@@ -85,55 +79,63 @@ const ImageWrapper = styled.div`
   }}
 `;
 
-class LiveGame extends Component {
-  constructor(props) {
-    super(props);
+const BottomContainer = styled.div`
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+`;
 
-    var liveList = props.game.homePageGameList.filter((item) => {
-      return item.type === GameTypeEnum.LIVELOBBY;
-    });
+const BottomNavItemContainer = styled.ul`
+  display: flex;
+  justify-content: center;
+  padding-bottom: 1.8%;
+`;
 
-    this.state = {
-      selected: liveList[0],
-      subMenu: null,
-      isSelected: false,
-      hide: true,
-      list: liveList,
-    };
-  }
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({
-        hide: false,
-      });
-    }, 1000);
-  }
-  componentDidUpdate(preProps, preStates) {
-    if (
-      preProps.game.homePageGameList.length !==
-      this.props.game.homePageGameList.length
-    ) {
-      var liveList = this.props.game.homePageGameList.filter((item) => {
-        return item.type === GameTypeEnum.LIVE;
-      });
+const BottomNavItem = styled.li`
+  cursor: pointer;
+  margin: 0 5px;
+  transform: scale3d(0.9, 0.9, 1);
+  transform-origin: 50% 90%;
+  transition: transform 0.4s;
+`;
 
-      this.setState({
-        ...this.state,
-        selected: liveList[0],
-        list: liveList,
-      });
+const GameButton = styled.div`
+  width: 188px;
+  height: 178px;
+  background: url(${LiveGameButtonPNG}) center no-repeat;
+  padding-top: 50px;
+  padding-left: 30px;
+`;
+
+const LiveGame = (props) => {
+  const [selected, setSelected] = useState(0);
+  const [selectedGame, setSelectedGame] = useState("");
+  const [imageVisible, setImageVisible] = useState(false);
+
+  var timerAnimation = null;
+  useEffect(() => {
+    if (timerAnimation != null) {
+      clearTimeout(timerAnimation);
+      timerAnimation = null;
     }
-  }
-  triggerSetSelected = (bool) => {
-    this.setState({
-      isSelected: bool,
-    });
+    //   timerAnimation = setAnimation();
+  }, [selected]);
+  const handleSliderClick = (index, game) => {
+    if (timerAnimation != null) {
+      clearTimeout(timerAnimation);
+      timerAnimation = null;
+    }
+    setSelected(index);
+    setSelectedGame(game);
+    setImageVisible(false);
     setTimeout(() => {
-      this.triggerSetSelected(false);
-    }, 800);
+      setImageVisible(true);
+    }, 150);
   };
-  handleJoinGameClick = (params) => {
-    if (this.props.account.token != null) {
+
+  const handleJoinGameClick = (params) => {
+    if (props.account.token != null) {
       window.open(
         "/" +
           i18n.language +
@@ -145,94 +147,70 @@ class LiveGame extends Component {
         "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=1280,height=720"
       );
     } else {
-      this.props.showLogin(true);
+      props.showLogin(true);
     }
   };
 
-  handleGameChange = (game) => {
-    this.setState({
-      selected: game,
-    });
-  };
+  var getLiveGame = props.game.homePageGameList.filter((e) => {
+    return e.type === GameTypeEnum.LIVE;
+  });
 
-  render() {
-    return (
-      <Container
-        GamePage_SpecificBackground={
-          config.features.GamePage_SpecificBackground
-        }
-      >
-        <ItemContainer style={{ marginTop: 370 }}>
-          <LeftSlide
-            animateIn="fadeInLeft"
-            duration={1}
-            animateOnce={true}
-            style={{ overflow: "visible" }}
-          >
-            {this.state.list
-              .slice(0, 3)
-              .reverse()
-              .map((item, index) => {
-                return (
-                  <ImageWrapper maintenance={item.status != 0}>
-                    <Maintenance>{i18n.t("transfer.maintenance")}</Maintenance>
-                    <GirlImage
-                      img={
+  useEffect(() => {
+    if (selectedGame === "" && getLiveGame.length != 0) {
+      setSelectedGame(getLiveGame[0].abbreviation);
+      setTimeout(() => {
+        setImageVisible(true);
+      }, 150);
+    }
+  });
+  return getLiveGame.length ? (
+    <Container>
+      <LiveWrapper>
+        <BottomContainer>
+          <BottomNavItemContainer>
+            {getLiveGame.map((data, index) => {
+              return (
+                <BottomNavItem>
+                  <GameButton
+                    selected={selected === index}
+                    onClick={() => {
+                      clearTimeout(timerAnimation);
+
+                      handleSliderClick(index, data.abbreviation);
+                    }}
+                    maintenance={data.status != 0}
+                  >
+                    <img
+                      alt={data.abbreviation}
+                      src={
                         process.env.PUBLIC_URL +
-                        "/assets/images/pcGamePage/live/" +
-                        item.abbreviation.toLowerCase() +
-                        (item.abbreviation.toLowerCase() === "wgfm" ||
-                        item.abbreviation.toLowerCase() === "wgvia"
-                          ? "-" + i18n.language
-                          : "") +
-                        ".png"
+                        `/assets/images/pcGamePage/live/${data.abbreviation.toLowerCase()}${
+                          index === selected
+                            ? "-selected.png"
+                            : "-not-selected.png"
+                        }`
                       }
-                      onClick={() => {
-                        this.handleJoinGameClick(item.abbreviation, item.type);
-                      }}
                     />
-                  </ImageWrapper>
-                );
-              })}
-          </LeftSlide>
-        </ItemContainer>
-        <ItemContainer style={{ marginTop: 560 }}>
-          <RightSlide
-            animateIn="fadeInRight"
-            duration={1}
-            animateOnce={true}
-            style={{ overflow: "visible" }}
-          >
-            {this.state.list.map((item, index) => {
-              if (index >= 3) {
-                return (
-                  <ImageWrapper maintenance={item.status != 0}>
-                    <Maintenance>{i18n.t("transfer.maintenance")}</Maintenance>
-                    <GirlImage
-                      img={
-                        process.env.PUBLIC_URL +
-                        "/assets/images/pcGamePage/live/" +
-                        item.abbreviation.toLowerCase() +
-                        (item.abbreviation.toLowerCase() === "wgfm" ||
-                        item.abbreviation.toLowerCase() === "wgvia"
-                          ? "-" + i18n.language
-                          : "") +
-                        ".png"
-                      }
-                      onClick={() => {
-                        this.handleJoinGameClick(item.abbreviation, item.type);
-                      }}
-                    />
-                  </ImageWrapper>
-                );
-              }
+                  </GameButton>
+                  <div>{data.abbreviation}</div>
+                </BottomNavItem>
+              );
             })}
-          </RightSlide>
-        </ItemContainer>
-      </Container>
-    );
-  }
-}
+          </BottomNavItemContainer>
+        </BottomContainer>
+      </LiveWrapper>
+    </Container>
+  ) : (
+    <Container
+      style={{
+        background:
+          "url(" +
+          process.env.PUBLIC_URL +
+          `/assets/images/pcGamePage/no_${i18n.language}.jpg) no-repeat center`,
+      }}
+    ></Container>
+  );
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
