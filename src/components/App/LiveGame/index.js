@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import styled from "styled-components";
+import styled, { css,keyframes } from "styled-components";
 
 import i18n from "../../../utils/i18n";
 
@@ -10,6 +10,19 @@ import ScrollAnimation from "react-animate-on-scroll";
 import config from "../../../config/config";
 import { GameTypeEnum } from "../../../api-services/utils/Enum";
 import { SHOW_LOGIN } from "../../../api-services/constant/actionType";
+
+export const flipButton = keyframes`
+  0% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(180deg);
+  }
+  to {
+    transform: rotateY(1turn);
+  }
+`;
+
 const Container = styled.div`
   width: 100%;
   height: auto;
@@ -90,14 +103,22 @@ const BottomNavItemContainer = styled.ul`
   display: flex;
   justify-content: center;
   padding-bottom: 1.8%;
+  list-style-type: none;
 `;
 
 const BottomNavItem = styled.li`
   cursor: pointer;
   margin: 0 5px;
+  perspective: 300px;
   transform: scale3d(0.9, 0.9, 1);
   transform-origin: 50% 90%;
   transition: transform 0.4s;
+  ${(props) =>
+    props.selected &&
+    css`
+      animation: ${flipButton} 0.8s linear both;
+      transform: scaleX(1);
+    `}
 `;
 
 const GameButton = styled.div`
@@ -107,6 +128,8 @@ const GameButton = styled.div`
   padding-top: 50px;
   padding-left: 30px;
 `;
+
+
 
 const LiveGame = (props) => {
   const [selected, setSelected] = useState(0);
@@ -170,7 +193,7 @@ const LiveGame = (props) => {
           <BottomNavItemContainer>
             {getLiveGame.map((data, index) => {
               return (
-                <BottomNavItem>
+                <BottomNavItem selected={selected === index}>
                   <GameButton
                     selected={selected === index}
                     onClick={() => {
@@ -192,7 +215,6 @@ const LiveGame = (props) => {
                       }
                     />
                   </GameButton>
-                  <div>{data.abbreviation}</div>
                 </BottomNavItem>
               );
             })}
