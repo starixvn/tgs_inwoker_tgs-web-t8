@@ -13,11 +13,10 @@ const Container = styled.div`
   width: 100%;
   height: auto;
   min-height: 850px;
-  padding: 70px 0px;
   position: relative;
   background: url(${(props) =>
       process.env.PUBLIC_URL +
-      "/assets/images/pcGamePage/sports/bg" +
+      "/assets/images/pcGamePage/sports/background" +
       (props.GamePage_SpecificBackground ? "-hk28" : "") +
       ".jpg"})
     no-repeat center;
@@ -192,23 +191,30 @@ class Sports extends Component {
       <Container>
         <SportsWrapper>
           <LeftContainer>
-            <LeftNavItemContainer>
-              {this.state.list.map((data, index) => {
-                return (
-                  <LeftNavItem
-                    selected={this.state.selected === index}
-                    onClick={() => {
-                      this.handleSliderClick(index, data.abbreviation);
-                      this.handleJoinGameClick(data.abbreviation, data.type);
-                    }}
-                    maintenance={data.status != 0}
-                  >
-                    <GameImage></GameImage>
-                    <GameTitle>{data.abbreviation}</GameTitle>
-                  </LeftNavItem>
-                );
-              })}
-            </LeftNavItemContainer>
+            <ScrollAnimation
+              animateIn="fadeInLeft"
+              duration={1}
+              animateOnce={true}
+              style={{ overflow: "visible" }}
+            >
+              <LeftNavItemContainer>
+                {this.state.list.map((data, index) => {
+                  return (
+                    <LeftNavItem
+                      selected={this.state.selected === index}
+                      onClick={() => {
+                        this.handleSliderClick(index, data.abbreviation);
+                        this.handleJoinGameClick(data.abbreviation, data.type);
+                      }}
+                      maintenance={data.status != 0}
+                    >
+                      <GameImage></GameImage>
+                      <GameTitle>{data.abbreviation}</GameTitle>
+                    </LeftNavItem>
+                  );
+                })}
+              </LeftNavItemContainer>
+            </ScrollAnimation>
           </LeftContainer>
         </SportsWrapper>
       </Container>

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import {SHOW_LOGIN} from "../../../api-services/constant/actionType";
-import {GameTypeEnum} from "../../../api-services/utils/Enum";
+import { SHOW_LOGIN } from "../../../api-services/constant/actionType";
+import { GameTypeEnum } from "../../../api-services/utils/Enum";
 import ScrollAnimation from "react-animate-on-scroll";
 
 import i18n from "../../../utils/i18n";
@@ -10,11 +10,13 @@ import i18n from "../../../utils/i18n";
 const Container = styled.div`
   width: 100%;
   height: auto;
-  min-height: 870px;
-  padding: 70px 0px;
+  min-height: 850px;
   position: relative;
-  background: url(${process.env
-      .PUBLIC_URL}/assets/images/pcGamePage/lottery/background.jpg)
+  background: url(${(props) =>
+      process.env.PUBLIC_URL +
+      "/assets/images/pcGamePage/lottery/background" +
+      (props.GamePage_SpecificBackground ? "-hk28" : "") +
+      ".jpg"})
     no-repeat center;
 `;
 
@@ -30,7 +32,9 @@ const GirlImage = styled.div`
 const LeftSlide = styled(ScrollAnimation)`
   display: flex;
 `;
-
+const RightSlide = styled(ScrollAnimation)`
+  display: flex;
+`;
 const ItemContainer = styled.div`
   position: absolute;
   left: 50%;
@@ -62,14 +66,71 @@ const ImageWrapper = styled.div`
       ? `
 
     ${Maintenance}{
+     
       display: flex;
     }
     ${GirlImage}{
       filter: brightness(40%) grayscale(200%);
     }
+    
+    
     `
       : ``;
   }}
+`;
+
+const SportsWrapper = styled.div`
+  margin: 0 auto;
+  width: 1280px;
+`;
+
+const RightContainer = styled.div`
+  top: 0;
+  right: 295px;
+  position: absolute;
+  height: 835px;
+`;
+
+const RightNavItemContainer = styled.ul`
+  list-style-type: none;
+  display: grid;
+  overflow: auto;
+  height: 835px;
+  grid-gap: 20px;
+  grid-template-rows: repeat(auto-fill, 180px);
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const RightNavItem = styled.li`
+  box-shadow: 0 3px 8px rgb(0 0 0 / 80%);
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  width: 355px;
+  height: 180px;
+  border-radius: 10px;
+  margin: 20px 0;
+`;
+
+const GameImage = styled.img`
+  height: 100%;
+  width: 100%;
+`;
+
+const GameTitle = styled.div`
+  height: 45px;
+  width: 100%;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 1.5em;
+  font-weight: bold;
+  position: absolute;
+  bottom: 0;
+  background: rgb(207 37 126 / 76%);
+  text-align: center;
+  line-height: 1.8em;
 `;
 
 class Lottery extends Component {
@@ -142,65 +203,46 @@ class Lottery extends Component {
   };
 
   render() {
-    return (
+    return this.state.list.length ? (
       <Container>
-        <ItemContainer style={{ marginTop: 500 }}>
-          <LeftSlide
-            animateIn="fadeInLeft"
+        <SportsWrapper>
+            <RightContainer>
+          <ScrollAnimation
+            animateIn="fadeInRight"
             duration={1}
             animateOnce={true}
             style={{ overflow: "visible" }}
           >
-            {this.state.list.map((item, index) => {
-              return (
-                <ImageWrapper maintenance={item.status != 0}>
-                  <Maintenance>{i18n.t("transfer.maintenance")}</Maintenance>
-                  <GirlImage
-                    img={
-                      process.env.PUBLIC_URL +
-                      "/assets/images/pcGamePage/lottery/" +
-                      item.abbreviation.toLowerCase() +
-                      ".png"
-                    }
-                    onClick={() => {
-                      this.handleJoinGameClick(item.abbreviation);
-                    }}
-                  />
-                </ImageWrapper>
-              );
-            })}
-          </LeftSlide>
-        </ItemContainer>
-        {
-          //    <ItemContainer style={{ marginTop: 560 }}>
-          //    <RightSlide
-          //      animateIn="fadeInRight"
-          //      duration={1}
-          //      animateOnce={true}
-          //      style={{ overflow: "visible" }}
-          //    >
-          //      {this.state.list.map((item, index) => {
-          //        if (index >= 3) {
-          //          return (
-          //            <GirlImage
-          //              style={{ float: "left" }}
-          //              img={
-          //                process.env.PUBLIC_URL +
-          //                "/assets/images/pcGamePage/lottery/" +
-          //                item.abbreviation.toLowerCase() +
-          //                ".png"
-          //              }
-          //              onClick={() => {
-          //                this.handleJoinGameClick(item.abbreviation, item.type);
-          //              }}
-          //            />
-          //          );
-          //        }
-          //      })}
-          //    </RightSlide>
-          //  </ItemContainer>
-        }
+              <RightNavItemContainer>
+                {this.state.list.map((data, index) => {
+                  return (
+                    <RightNavItem
+                      selected={this.state.selected === index}
+                      onClick={() => {
+                        this.handleSliderClick(index, data.abbreviation);
+                        this.handleJoinGameClick(data.abbreviation, data.type);
+                      }}
+                      maintenance={data.status != 0}
+                    >
+                      <GameImage></GameImage>
+                      <GameTitle>{data.abbreviation}</GameTitle>
+                    </RightNavItem>
+                  );
+                })}
+              </RightNavItemContainer>
+          </ScrollAnimation>
+            </RightContainer>
+        </SportsWrapper>
       </Container>
+    ) : (
+      <Container
+        style={{
+          background:
+            "url(" +
+            process.env.PUBLIC_URL +
+            `/assets/images/pcGamePage/no_${i18n.language}.jpg) no-repeat center`,
+        }}
+      ></Container>
     );
   }
 }

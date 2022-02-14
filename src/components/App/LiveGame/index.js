@@ -1,6 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
 import { connect } from "react-redux";
-import styled, { css,keyframes } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 
 import i18n from "../../../utils/i18n";
 
@@ -26,8 +26,6 @@ export const flipButton = keyframes`
 const Container = styled.div`
   width: 100%;
   height: auto;
-
-  padding: 70px 0px;
   position: relative;
   min-height: ${(props) =>
     props.GamePage_SpecificBackground ? "900px" : "870px"};
@@ -142,12 +140,9 @@ class LiveGame extends Component {
       selectedGame: "",
       list: liveList,
     };
-
   }
 
-  componentDidMount() {
-    
-  }
+  componentDidMount() {}
   componentDidUpdate(preProps, preStates) {
     if (
       preProps.game.homePageGameList.length !==
@@ -160,13 +155,13 @@ class LiveGame extends Component {
       this.setState({
         ...this.state,
         selected: 0,
-        list: liveList
+        list: liveList,
       });
     }
   }
 
   handleSliderClick = (index, game) => {
-    this.setState({...this.state, selected:index, selectedGame: game });
+    this.setState({ ...this.state, selected: index, selectedGame: game });
   };
 
   handleJoinGameClick = (params) => {
@@ -185,41 +180,50 @@ class LiveGame extends Component {
       this.props.showLogin(true);
     }
   };
-  
-  render()
-  {
+
+  render() {
     return this.state.list.length ? (
       <Container>
         <LiveWrapper>
           <BottomContainer>
-            <BottomNavItemContainer>
-              {this.state.list.map((data, index) => {
-                return (
-                  <BottomNavItem selected={this.state.selected === index}>
-                    <GameButton
-                      selected={this.state.selected === index}
-                      onClick={() => {
-                        this.handleSliderClick(index, data.abbreviation);
-                        this.handleJoinGameClick(data.abbreviation, data.type);
-                      }}
-                      maintenance={data.status != 0}
-                    >
-                      <img
-                        alt={data.abbreviation}
-                        src={
-                          process.env.PUBLIC_URL +
-                          `/assets/images/pcGamePage/live/${data.abbreviation.toLowerCase()}${
-                            index === this.state.selected
-                              ? "-selected.png"
-                              : "-not-selected.png"
-                          }`
-                        }
-                      />
-                    </GameButton>
-                  </BottomNavItem>
-                );
-              })}
-            </BottomNavItemContainer>
+            <ScrollAnimation
+              animateIn="fadeInLeft"
+              duration={1}
+              animateOnce={true}
+              style={{ overflow: "visible" }}
+            >
+              <BottomNavItemContainer>
+                {this.state.list.map((data, index) => {
+                  return (
+                    <BottomNavItem selected={this.state.selected === index}>
+                      <GameButton
+                        selected={this.state.selected === index}
+                        onClick={() => {
+                          this.handleSliderClick(index, data.abbreviation);
+                          this.handleJoinGameClick(
+                            data.abbreviation,
+                            data.type
+                          );
+                        }}
+                        maintenance={data.status != 0}
+                      >
+                        <img
+                          alt={data.abbreviation}
+                          src={
+                            process.env.PUBLIC_URL +
+                            `/assets/images/pcGamePage/live/${data.abbreviation.toLowerCase()}${
+                              index === this.state.selected
+                                ? "-selected.png"
+                                : "-not-selected.png"
+                            }`
+                          }
+                        />
+                      </GameButton>
+                    </BottomNavItem>
+                  );
+                })}
+              </BottomNavItemContainer>
+            </ScrollAnimation>
           </BottomContainer>
         </LiveWrapper>
       </Container>
