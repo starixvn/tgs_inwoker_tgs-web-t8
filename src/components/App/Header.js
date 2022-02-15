@@ -753,7 +753,7 @@ class Header extends Component {
       <CustomAppBar hide={this.props.hide}>
         <InnerWrap>
           <TopContainer>
-            {/* <TimerContainer>
+            <TimerContainer>
               <TimerSpan>GMT+8 {this.state.systemDateTime}</TimerSpan>
             </TimerContainer>
             {config.features.DisplayPhone && (
@@ -797,7 +797,7 @@ class Header extends Component {
                   );
                 }
               })()}{" "}
-            </RightContainer> */}
+            </RightContainer>
           </TopContainer>
           <BottomContainer>
             <LogoContainer

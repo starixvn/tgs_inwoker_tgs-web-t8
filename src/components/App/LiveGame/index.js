@@ -28,7 +28,7 @@ const Container = styled.div`
   height: auto;
   position: relative;
   min-height: ${(props) =>
-    props.GamePage_SpecificBackground ? "900px" : "870px"};
+    props.GamePage_SpecificBackground ? "900px" : "780px"};
   background: url(${(props) =>
       process.env.PUBLIC_URL +
       "/assets/images/pcGamePage/live/background" +

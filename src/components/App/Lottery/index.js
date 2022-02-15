@@ -10,7 +10,7 @@ import i18n from "../../../utils/i18n";
 const Container = styled.div`
   width: 100%;
   height: auto;
-  min-height: 850px;
+  min-height: 780px;
   position: relative;
   background: url(${(props) =>
       process.env.PUBLIC_URL +

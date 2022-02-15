@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { AppHistory } from "../../../history/History";
 
 import { GameService } from "../../../api-services/services/GameService";
@@ -41,10 +41,10 @@ const Container = styled.div`
 
 const InnerWrap = styled.div`
   width: 1020px;
-  min-height: 580px;
+  min-height: 780px;
   background: rgba(0, 0, 0, 0.8);
-  margin-left: auto;
-  padding: 16px 46px;
+  margin: 35px auto 0 auto;
+  padding: 10px;
   box-sizing: border-box;
   overflow-y: auto;
 `;
@@ -193,7 +193,7 @@ const GameDisplayContainer = styled.div`
 `;
 const GameSubFilterContainer = styled.div`
   width: 150px;
-  margin: 25px 0 15px 0;
+  margin: 35px auto 0 auto;
 `;
 
 const CategoryContainer = styled.div`
@@ -339,9 +339,8 @@ const SearchFilterItemInput = styled.input`
 `;
 
 const GameListContainer = styled.div`
-  width: 908px;
-  padding: 6px;
-  background-color: #eaeaea;
+  width: 100%;
+  padding: 5px;
 `;
 
 const GameHoverSelection = styled.div`
@@ -441,6 +440,181 @@ const Spliter = styled.div`
   margin: 7px 0 10px 0;
 `;
 
+const bounceInAnimation = keyframes`
+0% {
+  opacity: 0;
+  transform: scale3d(0.3, 0.3, 1);
+}
+20% {
+  transform: scale3d(1.1, 1.1, 1);
+}
+40% {
+  transform: scale3d(0.9, 0.9, 1);
+}
+60% {
+  opacity: 1;
+  transform: scale3d(1.03, 1.03, 1);
+}
+80% {
+  transform: scale3d(0.97, 0.97, 1);
+}
+to {
+  opacity: 1;
+  transform: scaleX(1);
+}
+`;
+
+const GameItem = styled.div`
+  animation: ${bounceInAnimation} 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) both;
+  display: inline-block;
+  height: 205px;
+  margin: 15px 5px 0;
+  perspective: 430px;
+  position: relative;
+  text-align: center;
+  vertical-align: top;
+  width: 155px;
+
+  &:before {
+    border-style: solid;
+    height: 0;
+    position: absolute;
+    top: 0;
+    width: 0;
+    z-index: 2;
+    border-width: 0 35px 35px;
+    color: #fff;
+    font-size: 12px;
+    left: 0;
+    line-height: 47px;
+    text-indent: -13px;
+    text-shadow: 0 1px 2px rgb(0 0 0 / 30%);
+    transform: translate3d(-26px, -8px, 0) scale3d(0.8, 0.8, 1) rotate(-45deg);
+    border-color: transparent transparent #d01919;
+    ${(props) =>
+      props.isNew
+        ? ` content:  "NEW"; `
+        : props.isHot
+        ? ` content:  "HOT"; `
+        : ``};
+  }
+`;
+
+const GameItemImage = styled.div`
+  & img {
+    display: block;
+    min-height: 150px;
+    width: 100%;
+  }
+`;
+
+const GameTitle = styled.div`
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  margin: 10px 0;
+  padding: 8px 0;
+`;
+
+const GameItemOverlay = styled.div`
+  align-items: center;
+  backface-visibility: hidden;
+  display: flex;
+  filter: blur(3px);
+  flex-direction: column;
+  height: calc(100% - 40px);
+  justify-content: center;
+  transform: rotateX(-105deg);
+  transform-origin: 50% 0;
+  transition: transform 0.6s, filter 0.4s;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+
+  &:before {
+    content: "";
+    height: 100%;
+    opacity: 0;
+    transform: scale3d(0.25, 0.25, 1);
+    z-index: -1;
+
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+
+    transition: transform .6s .6s,opacity .4s .4s;
+  }
+
+  ${GameItem}:hover &:before, ${GameItem}:hover &:after {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  
+
+  &:after {    
+    content: "";
+    height: 100%;
+    opacity: 0;
+    transform: scale3d(.25,.25,1);
+    z-index: -1;
+
+    background-color: rgba(0,0,0,.4);
+    border-radius: 8px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+
+    transition: transform .6s .2s,opacity .4s;
+  }
+
+  ${GameItem}:hover & {
+    filter: blur(0);
+    transform: rotate3d(0, 0, 0, 0deg);
+  }
+`;
+
+const GameItemButton = styled.button`
+  background-color: #20D0FF;
+  border: 0;
+  border-radius: 22.5px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  height: 45px;
+  padding: 0 40px;
+  font-size: 14px;
+  padding: 0;
+  transition: background-color 0.4s, transform 0.4s;
+  width: 80%;
+
+  &:hover {
+    transform: scale3d(1.06, 1.06, 1);
+  }
+`;
+
+const GameItemFavouriteButton = styled(GameItemButton)`
+  background-color: #ea4747;
+  &:hover {
+    background-color: #db4444;
+  }
+`;
+
+const GameItemJoinGameButton = styled(GameItemButton)`
+  margin-top: 18px;
+  &:hover {
+    background-color: #1db8e1;
+  }
+`;
+
 class Slots extends Component {
   constructor(props) {
     super(props);
@@ -465,7 +639,6 @@ class Slots extends Component {
   }
   language = null;
   componentDidMount() {
-    console.log(this.props.game);
     this.getGameList();
     if (this.props.token !== null && this.props.token !== "") {
       this.getFav();
@@ -776,34 +949,65 @@ class Slots extends Component {
           return s.isactive === true; // show only active game.
         })
         .map((el, i) => (
-          <ItemContainer
-            key={i}
-            img={`${
-              config.sourceUrl
-            }${el.gpcode.toUpperCase()}/${Common.getCDNLanguagePrefix()}/${
-              el.code
-            }.jpg`}
-          >
-            <GameDesc>
-              <GameProvider>{el.gpcode}</GameProvider>
-              <Spliter></Spliter>
-              <Bookmark
-                bookmark={this.state.favGame.indexOf(el.id) > -1}
+          <GameItem key={i} isNew={el.tag.new} isHot={el.tag.hot}>
+            <GameItemImage>
+              <img
+                src={`${
+                  config.sourceUrl
+                }${el.gpcode.toUpperCase()}/${Common.getCDNLanguagePrefix()}/${
+                  el.code
+                }.jpg`}
+                alt={i}
+              ></img>
+            </GameItemImage>
+            <GameTitle>{el.name}</GameTitle>
+            <GameItemOverlay>
+              <GameItemFavouriteButton
                 onClick={() =>
                   this.handleToggleFavorite(
                     this.state.favGame.indexOf(el.id) > -1,
                     el.id
                   )
                 }
-              ></Bookmark>
-            </GameDesc>
-            <GameHoverSelection
-              onClick={() => this.handleJoinGameClick(el.gpcode, el.id)}
-            >
-              GO
-            </GameHoverSelection>
-            <Namecontainer>{el.name}</Namecontainer>
-          </ItemContainer>
+              >
+                加到最愛
+              </GameItemFavouriteButton>
+              <GameItemJoinGameButton
+                onClick={() => this.handleJoinGameClick(el.gpcode, el.id)}
+              >
+                開始遊戲
+              </GameItemJoinGameButton>
+            </GameItemOverlay>
+          </GameItem>
+
+          // <ItemContainer
+          //   key={i}
+          //   img={`${
+          //     config.sourceUrl
+          //   }${el.gpcode.toUpperCase()}/${Common.getCDNLanguagePrefix()}/${
+          //     el.code
+          //   }.jpg`}
+          // >
+          //   <GameDesc>
+          //     <GameProvider>{el.gpcode}</GameProvider>
+          //     <Spliter></Spliter>
+          //     <Bookmark
+          //       bookmark={this.state.favGame.indexOf(el.id) > -1}
+          //       onClick={() =>
+          //         this.handleToggleFavorite(
+          //           this.state.favGame.indexOf(el.id) > -1,
+          //           el.id
+          //         )
+          //       }
+          //     ></Bookmark>
+          //   </GameDesc>
+          //   <GameHoverSelection
+          //     onClick={() => this.handleJoinGameClick(el.gpcode, el.id)}
+          //   >
+          //     GO
+          //   </GameHoverSelection>
+          //   <Namecontainer>{el.name}</Namecontainer>
+          // </ItemContainer>
         ));
     }
 

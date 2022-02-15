@@ -12,7 +12,7 @@ import ScrollAnimation from "react-animate-on-scroll";
 const Container = styled.div`
   width: 100%;
   height: auto;
-  min-height: 850px;
+  min-height: 780px;
   position: relative;
   background: url(${(props) =>
       process.env.PUBLIC_URL +
