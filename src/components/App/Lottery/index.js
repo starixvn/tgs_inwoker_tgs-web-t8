@@ -219,7 +219,6 @@ class Lottery extends Component {
                     <RightNavItem
                       selected={this.state.selected === index}
                       onClick={() => {
-                        this.handleSliderClick(index, data.abbreviation);
                         this.handleJoinGameClick(data.abbreviation, data.type);
                       }}
                       maintenance={data.status != 0}

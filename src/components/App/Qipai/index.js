@@ -1,26 +1,36 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
+import { AppHistory } from "../../../history/History";
 import ScrollAnimation from "react-animate-on-scroll";
-import {SHOW_LOGIN} from "../../../api-services/constant/actionType";
-import {GameTypeEnum} from "../../../api-services/utils/Enum";
+
+import { SHOW_LOGIN } from "../../../api-services/constant/actionType";
+import { GameTypeEnum } from "../../../api-services/utils/Enum";
+import { GameService } from "../../../api-services/services/GameService";
+
+import SlotAllPNG from "../../../assets/images/slot-all.png";
+import SlotAllInactivePNG from "../../../assets/images/slot-all-inactive.png";
+
+import Loading from "../../../components/App/Loading";
+
 import i18n from "../../../utils/i18n";
 import config from "../../../config/config";
+import Common from "../../../utils/Common";
 
 const Container = styled.div`
   width: 100%;
   height: auto;
-
   padding: 0px 0px;
   position: relative;
   min-height: ${(props) =>
-    props.GamePage_SpecificBackground ? "900px" : "730px"};
+    props.GamePage_SpecificBackground ? "900px" : "780px"};
   background: url(${(props) =>
-      process.env.PUBLIC_URL +
-      "/assets/images/pcGamePage/qipai/background" +
-      (props.GamePage_SpecificBackground ? "-hk28" : "") +
-      ".jpg"})
-    no-repeat center;
+        process.env.PUBLIC_URL +
+        "/assets/images/pcGamePage/qipai/background" +
+        (props.GamePage_SpecificBackground ? "-hk28" : "") +
+        ".jpg"})
+      no-repeat fixed 50% 100%/100% auto,
+    #e3e3e3;
 `;
 
 const GirlImage = styled.div`
@@ -34,6 +44,86 @@ const GirlImage = styled.div`
 `;
 const LeftSlide = styled(ScrollAnimation)`
   display: flex;
+`;
+
+const GameTabContainer = styled.div`
+  display: flex;
+  overflow: auto;
+  width: 1280px;
+  margin: 0 auto;
+  margin-top: 70px;
+`;
+
+const GameTab = styled.div`
+  background-color: #dcdcdc;
+  color: #5a5656;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  flex: 0 0 20em;
+  font-size: 14px;
+  height: 95px;
+  margin: 0 5px;
+  padding: 0 10px;
+  position: relative;
+  text-align: center;
+  ${(props) =>
+    props.active
+      ? `  
+      background: linear-gradient(#0091fe,#20D0FF);
+      color: #fff; 
+      `
+      : ``};
+  &:first-child {
+    margin-left: auto;
+  }
+  &:last-child {
+    margin-right: auto;
+  }
+  &:hover {
+    background-color: #f2f2f2;
+  }
+  &:before {
+    content: "";
+    display: block;
+    height: 65px;
+    margin: 3px auto 0;
+    transition: 0.2s;
+    width: 130px;
+    background-image: url(${(props) =>
+      process.env.PUBLIC_URL +
+      `/assets/images/pcGamePage/slots/` +
+      props.img +
+      (props.active === true ? `-white` : `-color`) +
+      `.png`});
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+`;
+
+const GameTabAll = styled(GameTab)`
+  &:before {
+    background-image: url(${(props) =>
+      props.active === true ? `${SlotAllPNG}` : `${SlotAllInactivePNG}`});
+    ${(props) => (props.active === true ? `filter: brightness(500%);` : ``)}
+  }
+`;
+
+const DisabledOverlay = styled.div`
+  height: 100%;
+  width: 100&;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.75);
+  position: relative;
+  color: white;
+  font-weight: bold;
+  pointer-event: none;
+  text-transform: capitalize;
+  z-index: 3;
+  cursor: not-allowed;
 `;
 
 const ItemContainer = styled.div`
@@ -59,6 +149,75 @@ const Maintenance = styled.div`
   cursor: not-allowed;
 `;
 
+const GameListContainer = styled.div`
+  position: relative;
+  width: 100%;
+  width: 1280px;
+  margin: 0 auto;
+  margin-top: 121px;
+`;
+const GameList = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 15px;
+  width: 100%;
+  list-style: none;
+}`;
+const GameItem = styled.li`
+  align-items: center;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 125px;
+  justify-content: center;
+  margin: 0 20px 35px 0;
+  padding-left: 130px;
+  padding-right: 10px;
+  position: relative;
+  width: 150px;
+`;
+const GameItemImage = styled.div`
+  & img {
+    display: block;
+    min-height: 150px;
+    width: 100%;
+  }
+`;
+const GameItemTitle = styled.div`
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 10px;
+  text-align: center;
+`;
+
+const GameItemActionContainer = styled.div`
+  display: flex;
+  transition: 0.2s;
+`;
+
+const GameItemButton = styled.button`
+  background-color: #20d0ff;
+  border: 0;
+  border-radius: 22.5px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  height: 45px;
+  padding: 0 40px;
+  font-size: 14px;
+  padding: 0;
+  transition: background-color 0.4s, transform 0.4s;
+  width: 136px;
+`;
+
+const GameItemJoinGameButton = styled(GameItemButton)`
+  &:hover {
+    filter: brightness(50%);
+  }
+`;
 const ImageWrapper = styled.div`
   position: relative;
 
@@ -92,12 +251,23 @@ class Qipai extends Component {
       list: qipaiList,
       selectedIndex: 0,
       first: true,
+      type: GameTypeEnum.QIPAI,
+      gameList: [],
+      page: 1,
+      platformList: [],
+      loading: true,
+      platform: "",
     };
   }
   componentDidMount() {
+    this.getGameList();
     //test for fake input
   }
-  componentDidUpdate(preProps, preStates) {}
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.platform !== this.state.platform && !this.loading) {
+      this.getGameList();
+    }
+  }
 
   handleJoinGameClick = (kind) => {
     if (this.props.account.token != null) {
@@ -125,78 +295,126 @@ class Qipai extends Component {
     });
   };
 
+  handleSelectPlatform = (index) => {
+    this.setState({
+      ...this.state,
+      platform: index,
+    });
+  };
+
+  getGameList(
+    page = this.state.page,
+    platform = this.state.platform,
+    type = this.state.type
+  ) {
+    this.setState({
+      ...this.state,
+
+      loading: true,
+    });
+
+    var result = GameService.GetGameList(platform, type);
+    result.then((response) => {
+      if (response.IsSuccess) {
+        var data = response.data;
+
+        if (page === 1) {
+          this.setState({
+            ...this.state,
+            page: page,
+            platform: platform,
+            type: type,
+            gameList: data,
+            loading: false,
+          });
+        } else {
+          this.setState({
+            ...this.state,
+            page: page,
+            platform: platform,
+            type: type,
+            gameList: this.state.gameList.concat(data),
+            loading: false,
+          });
+        }
+      } else {
+        this.setState({
+          ...this.state,
+          gameList: [],
+          platform: platform,
+          type: type,
+          loading: false,
+        });
+      }
+    });
+  }
+
   render() {
+    let list = null;
+    if (this.state.gameList.length > 0) {
+      list = this.state.gameList
+        .filter((s) => {
+          return s.isactive === true; // show only active game.
+        })
+        .map((el, i) => (
+          <GameItem>
+            <GameItemImage>
+              <img
+                src={`${
+                  config.sourceUrl
+                }${el.gpcode.toUpperCase()}/${Common.getCDNLanguagePrefix()}/${
+                  el.code
+                }.jpg`}
+                alt={i}
+              ></img>
+            </GameItemImage>
+            <GameItemTitle>{el.name}</GameItemTitle>
+            <GameItemActionContainer>
+              <GameItemJoinGameButton
+                onClick={() => this.handleJoinGameClick(el.gpcode, el.id)}
+              >
+                開始遊戲
+              </GameItemJoinGameButton>
+            </GameItemActionContainer>
+          </GameItem>
+        ));
+    }
     return (
       <Container
         GamePage_SpecificBackground={
           config.features.GamePage_SpecificBackground
         }
       >
-        <ItemContainer style={{ marginTop: 500 }}>
-          <LeftSlide
-            animateIn="fadeInLeft"
-            duration={1}
-            animateOnce={true}
-            style={{ overflow: "visible" }}
-          >
-            {this.props.game.homePageGameList
-              .filter((item) => {
-                return item.type == GameTypeEnum.QIPAI;
-              })
-              .slice(0, 4)
-              .reverse()
+        <GameTabContainer>
+          <GameTabAll
+            active={this.state.platform == ""}
+            onClick={() => {
+              this.handleSelectPlatform("");
+            }}
+          ></GameTabAll>
 
-              .map((item, index) => {
-                return (
-                  <ImageWrapper maintenance={item.status != 0}>
-                    <Maintenance isGameMaintenance={true}>
-                      {i18n.t("transfer.maintenance")}
-                    </Maintenance>
-                    <GirlImage
-                      img={
-                        process.env.PUBLIC_URL +
-                        "/assets/images/pcGamePage/qipai/" +
-                        item.abbreviation.toLowerCase() +
-                        ".png"
-                      }
-                      onClick={() => {
-                        this.handleJoinGameClick(item.abbreviation, item.type);
-                      }}
-                    />
-                  </ImageWrapper>
-                );
-              })}
-          </LeftSlide>
-        </ItemContainer>
-        {
-          //      <ItemContainer style={{ marginTop: 560 }}>
-          //      <RightSlide
-          //        animateIn="fadeInRight"
-          //        duration={1}
-          //        animateOnce={true}
-          //        style={{ overflow: "visible" }}
-          //      >
-          //        {this.state.list.map((item, index) => {
-          //          if (index >= 3) {
-          //            return (
-          //              <GirlImage
-          //                style={{ float: "left" }}
-          //                img={
-          //                  process.env.PUBLIC_URL +
-          //                  "/assets/images/pcGamePage/lottery/" +
-          //                  item.abbreviation.toLowerCase() +
-          //                  ".png"
-          //                }
-          //                onClick={() => {
-          //                  this.handleJoinGameClick(item.abbreviation, item.type);
-          //                }}
-          //              />
-          //            );
-          //          }
-          //        })}
-          //      </RightSlide>
-          //    </ItemContainer>
-        }
+          {this.state.list.map((row, index) => {
+            return (
+              <GameTab
+                key={index}
+                img={row.abbreviation.toLowerCase()}
+                onClick={() => {
+                  this.handleSelectPlatform(row.abbreviation);
+                }}
+                active={this.state.platform == row.abbreviation}
+                maintenance={row.status != 0}
+                img={row.abbreviation.toLowerCase()}
+                active={this.state.platform == row.abbreviation}
+              >
+                {row.abbreviation}
+              </GameTab>
+            );
+          })}
+        </GameTabContainer>
+        <GameListContainer>
+          <GameList>{list}</GameList>
+        </GameListContainer>
+        <Loading show={this.state.loading}></Loading>
       </Container>
     );
   }

@@ -979,35 +979,6 @@ class Slots extends Component {
               </GameItemJoinGameButton>
             </GameItemOverlay>
           </GameItem>
-
-          // <ItemContainer
-          //   key={i}
-          //   img={`${
-          //     config.sourceUrl
-          //   }${el.gpcode.toUpperCase()}/${Common.getCDNLanguagePrefix()}/${
-          //     el.code
-          //   }.jpg`}
-          // >
-          //   <GameDesc>
-          //     <GameProvider>{el.gpcode}</GameProvider>
-          //     <Spliter></Spliter>
-          //     <Bookmark
-          //       bookmark={this.state.favGame.indexOf(el.id) > -1}
-          //       onClick={() =>
-          //         this.handleToggleFavorite(
-          //           this.state.favGame.indexOf(el.id) > -1,
-          //           el.id
-          //         )
-          //       }
-          //     ></Bookmark>
-          //   </GameDesc>
-          //   <GameHoverSelection
-          //     onClick={() => this.handleJoinGameClick(el.gpcode, el.id)}
-          //   >
-          //     GO
-          //   </GameHoverSelection>
-          //   <Namecontainer>{el.name}</Namecontainer>
-          // </ItemContainer>
         ));
     }
 
