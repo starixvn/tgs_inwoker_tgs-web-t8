@@ -18,6 +18,7 @@ import { SHOW_LOGIN } from "../../api-services/constant/actionType";
 
 import LiveGame from "./LiveGame/index";
 import Slots from "./Slots/index";
+import Fishing from "./Fishing/index";
 import SlotPlay from "./Slots/Play";
 import Qipai from "./Qipai/index";
 import Sports from "./Sports/index";
@@ -326,7 +327,7 @@ class App extends Component {
                     <Route
                       exact
                       path={baseRouteUrl + "/fish/:platform?"}
-                      component={Slots}
+                      component={Fishing}
                     />
                     <Route
                       exact

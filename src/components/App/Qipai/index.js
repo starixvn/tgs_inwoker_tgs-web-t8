@@ -60,7 +60,7 @@ const GameTab = styled.div`
   border: 1px solid #ddd;
   border-radius: 5px;
   cursor: pointer;
-  flex: 0 0 20em;
+  flex: 1;
   font-size: 14px;
   height: 95px;
   margin: 0 5px;
