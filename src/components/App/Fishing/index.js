@@ -1,22 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled, { css, keyframes } from "styled-components";
-import BtnRedPNG from "../../../assets/images/btn-red.png";
-import BtnRedHoverPNG from "../../../assets/images/btn-red-hover.png";
 
 import { GameService } from "../../../api-services/services/GameService";
 import { SHOW_LOGIN } from "../../../api-services/constant/actionType";
 import { GameTypeEnum, GameEnum } from "../../../api-services/utils/Enum";
-import BtnJoinPNG from "../../../assets/images/btn-join.png";
-import BtnJoinHoverPNG from "../../../assets/images/btn-join-hover.png";
-import _633Lottery from "../../../assets/images/lottery/633-lotteryball.png";
-import _633Description from "../../../assets/images/lottery/633-lotterydescription.png";
 
 import i18n from "../../../utils/i18n";
 import config from "../../../config/config";
 import Common from "../../../utils/Common";
-
-import JDBLogo from "../../../assets/images/fish/jdb_logo.png";
 
 const Container = styled.div`
   width: 100%;
@@ -24,8 +16,29 @@ const Container = styled.div`
   min-height: 780px;
   position: relative;
   background: url(${(props) =>
-      `${process.env.PUBLIC_URL}/assets/images/pcGamePage/fish/background.jpg`})
-      no-repeat fixed 50% 100%/100% auto, #e3e3e3;
+        `${process.env.PUBLIC_URL}/assets/images/pcGamePage/fish/background.jpg`})
+      no-repeat fixed 50% 100%/100% auto,
+    #e3e3e3;
+`;
+
+const NoContentText = styled.div`
+  color: #000;
+  font-size: ${(props) =>
+    props.lang === "zh-CN" || props.lang === "zh-TW" ? `3.2em` : `2.3em`};
+  text-shadow: 0 0 18px #ffe14e;
+  -webkit-text-stroke: 0.5px white;
+  font-weight: bold;
+  width: 450px;
+  height: auto;
+  margin-left: 180px;
+  overflow: visible;
+  font-family: "微軟正黑粗";
+  &:first-child {
+    margin-top: 210px;
+  }
+  &:last-child {
+    ${(props) => (props.lang === "en-US" ? `font-size: 3.2em;` : ``)}
+  }
 `;
 
 const GameContainer = styled.div`
@@ -97,6 +110,43 @@ const GameItemJoinGameButton = styled(GameItemButton)`
   }
 `;
 
+const NoContentContainer = (props) => {
+  switch (props.lang) {
+    case "th-TH":
+    case "vi-VN":
+      return (
+        <Container
+          style={{
+            background:
+              "url(" +
+              process.env.PUBLIC_URL +
+              `/assets/images/pcGamePage/no.jpg) no-repeat center`,
+          }}
+        >
+          <NoContentText lang={i18n.language}>
+            {i18n.t("promotion.emptyLine1")}
+          </NoContentText>
+          <NoContentText lang={i18n.language}>
+            {i18n.t("promotion.emptyLine2")}
+          </NoContentText>
+        </Container>
+      );
+    case "en-US":
+    case "zh-CN":
+    case "zh-TW":
+    default:
+      return (
+        <Container
+          style={{
+            background:
+              "url(" +
+              process.env.PUBLIC_URL +
+              `/assets/images/pcGamePage/no_${i18n.language}.jpg) no-repeat fixed 50% 100%/100% auto, #E3E3E3`,
+          }}
+        ></Container>
+      );
+  }
+};
 class Fishing extends Component {
   constructor(props) {
     super(props);
@@ -115,24 +165,35 @@ class Fishing extends Component {
     this.getGameList();
   }
   componentDidUpdate(preProps, preStates) {}
-  handleJoinGameClick = (gid) => {
+
+  handleJoinGameClick = (gpcode, gpid) => {
     if (this.props.token) {
-      Common.PopupCenter(
-        "/" +
-          i18n.language +
-          "/joingame/" +
-          GameTypeEnum.FISH +
-          "/" +
-          GameEnum.JDB +
-          "/" +
-          gid,
-        1280,
-        720
+      this.props.history.push(
+        `/${i18n.language}/fish/play/${gpcode}/${gpid}`
       );
     } else {
       this.props.showLogin(true);
     }
   };
+
+  // handleJoinGameClick = (gid) => {
+  //   if (this.props.token) {
+  //     Common.PopupCenter(
+  //       "/" +
+  //         i18n.language +
+  //         "/joingame/" +
+  //         GameTypeEnum.FISH +
+  //         "/" +
+  //         GameEnum.JDB +
+  //         "/" +
+  //         gid,
+  //       1280,
+  //       720
+  //     );
+  //   } else {
+  //     this.props.showLogin(true);
+  //   }
+  // };
   getGameList(
     page = this.state.page,
     platform = this.state.platform,
@@ -186,7 +247,9 @@ class Fishing extends Component {
         })
         .map((el, i) => (
           <GameItem>
-            <GameItemImage onClick={() => this.handleJoinGameClick(el.gpcode, el.id)}>
+            <GameItemImage
+              onClick={() => this.handleJoinGameClick(el.gpcode, el.id)}
+            >
               <img
                 src={`${
                   config.sourceUrl
@@ -208,10 +271,11 @@ class Fishing extends Component {
         ));
     }
 
-    return (
+    return this.state.gameList.length ? (
       <Container>
         <GameContainer>{list}</GameContainer>
       </Container>
+    ) : (<NoContentContainer lang={i18n.language}></NoContentContainer>
     );
   }
 }

@@ -20,6 +20,26 @@ const Container = styled.div`
     no-repeat center;
 `;
 
+const NoContentText = styled.div`
+  color: #000;
+  font-size: ${(props) =>
+    props.lang === "zh-CN" || props.lang === "zh-TW" ? `3.2em` : `2.3em`};
+  text-shadow: 0 0 18px #ffe14e;
+  -webkit-text-stroke: 0.5px white;
+  font-weight: bold;
+  width: 450px;
+  height: auto;
+  margin-left: 180px;
+  overflow: visible;
+  font-family: "微軟正黑粗";
+  &:first-child {
+    margin-top: 210px;
+  }
+  &:last-child {
+    ${(props) => (props.lang === "en-US" ? `font-size: 3.2em;` : ``)}
+  }
+`;
+
 const GirlImage = styled.div`
   background: url(${(props) => props.img}) no-repeat;
   width: 308px;
@@ -133,6 +153,44 @@ const GameTitle = styled.div`
   line-height: 1.8em;
 `;
 
+const NoContentContainer = (props) => {
+  switch (props.lang) {
+    case "th-TH":
+    case "vi-VN":
+      return (
+        <Container
+          style={{
+            background:
+              "url(" +
+              process.env.PUBLIC_URL +
+              `/assets/images/pcGamePage/no.jpg) no-repeat center`,
+          }}
+        >
+          <NoContentText lang={i18n.language}>
+            {i18n.t("promotion.emptyLine1")}
+          </NoContentText>
+          <NoContentText lang={i18n.language}>
+            {i18n.t("promotion.emptyLine2")}
+          </NoContentText>
+        </Container>
+      );
+    case "en-US":
+    case "zh-CN":
+    case "zh-TW":
+    default:
+      return (
+        <Container
+          style={{
+            background:
+              "url(" +
+              process.env.PUBLIC_URL +
+              `/assets/images/pcGamePage/no_${i18n.language}.jpg) no-repeat center`,
+          }}
+        ></Container>
+      );
+  }
+};
+
 class Lottery extends Component {
   constructor(props) {
     super(props);
@@ -206,13 +264,13 @@ class Lottery extends Component {
     return this.state.list.length ? (
       <Container>
         <SportsWrapper>
-            <RightContainer>
-          <ScrollAnimation
-            animateIn="fadeInRight"
-            duration={1}
-            animateOnce={true}
-            style={{ overflow: "visible" }}
-          >
+          <RightContainer>
+            <ScrollAnimation
+              animateIn="fadeInRight"
+              duration={1}
+              animateOnce={true}
+              style={{ overflow: "visible" }}
+            >
               <RightNavItemContainer>
                 {this.state.list.map((data, index) => {
                   return (
@@ -229,19 +287,11 @@ class Lottery extends Component {
                   );
                 })}
               </RightNavItemContainer>
-          </ScrollAnimation>
-            </RightContainer>
+            </ScrollAnimation>
+          </RightContainer>
         </SportsWrapper>
       </Container>
-    ) : (
-      <Container
-        style={{
-          background:
-            "url(" +
-            process.env.PUBLIC_URL +
-            `/assets/images/pcGamePage/no_${i18n.language}.jpg) no-repeat center`,
-        }}
-      ></Container>
+    ) : (<NoContentContainer lang={i18n.language}></NoContentContainer>
     );
   }
 }

@@ -35,8 +35,29 @@ import Common from "../../../utils/Common";
 
 const Container = styled.div`
   width: 100%;
-
+  height: auto;
+  min-height: 780px;
   position: relative;
+`;
+
+const NoContentText = styled.div`
+  color: #000;
+  font-size: ${(props) =>
+    props.lang === "zh-CN" || props.lang === "zh-TW" ? `3.2em` : `2.3em`};
+  text-shadow: 0 0 18px #ffe14e;
+  -webkit-text-stroke: 0.5px white;
+  font-weight: bold;
+  width: 450px;
+  height: auto;
+  margin-left: 180px;
+  overflow: visible;
+  font-family: "微軟正黑粗";
+  &:first-child {
+    margin-top: 210px;
+  }
+  &:last-child {
+    ${(props) => (props.lang === "en-US" ? `font-size: 3.2em;` : ``)}
+  }
 `;
 
 const InnerWrap = styled.div`
@@ -501,7 +522,7 @@ const GameItemOverlay = styled.div`
 `;
 
 const GameItemButton = styled.button`
-  background-color: #20D0FF;
+  background-color: #20d0ff;
   border: 0;
   border-radius: 22.5px;
   color: #fff;
@@ -532,6 +553,46 @@ const GameItemJoinGameButton = styled(GameItemButton)`
     background-color: #1db8e1;
   }
 `;
+
+const NoContentContainer = (props) => {
+  switch (props.lang) {
+    case "th-TH":
+    case "vi-VN":
+      return (
+        <Container
+          style={{
+            height: `auto`,
+            minHeight: `780px`,
+            background:
+              "url(" +
+              process.env.PUBLIC_URL +
+              `/assets/images/pcGamePage/no.jpg) no-repeat center`,
+          }}
+        >
+          <NoContentText lang={i18n.language}>
+            {i18n.t("promotion.emptyLine1")}
+          </NoContentText>
+          <NoContentText lang={i18n.language}>
+            {i18n.t("promotion.emptyLine2")}
+          </NoContentText>
+        </Container>
+      );
+    case "en-US":
+    case "zh-CN":
+    case "zh-TW":
+    default:
+      return (
+        <Container
+          style={{
+            background:
+              "url(" +
+              process.env.PUBLIC_URL +
+              `/assets/images/pcGamePage/no_${i18n.language}.jpg) no-repeat fixed 50% 100%/100% auto, #E3E3E3`,
+          }}
+        ></Container>
+      );
+  }
+};
 
 class Slots extends Component {
   constructor(props) {
@@ -900,7 +961,7 @@ class Slots extends Component {
         ));
     }
 
-    return (
+    return this.state.gameList.length ? (
       <Container
         style={{
           background: `url(${
@@ -998,6 +1059,7 @@ class Slots extends Component {
         </GameDisplayContainer>
         <Loading show={this.state.loading}></Loading>
       </Container>
+    ) : ( <NoContentContainer lang={i18n.language}></NoContentContainer>
     );
   }
 }

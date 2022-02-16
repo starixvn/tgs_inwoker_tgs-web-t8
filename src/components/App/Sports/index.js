@@ -22,6 +22,26 @@ const Container = styled.div`
     no-repeat center;
 `;
 
+const NoContentText = styled.div`
+  color: #000;
+  font-size: ${(props) =>
+    props.lang === "zh-CN" || props.lang === "zh-TW" ? `3.2em` : `2.3em`};
+  text-shadow: 0 0 18px #ffe14e;
+  -webkit-text-stroke: 0.5px white;
+  font-weight: bold;
+  width: 450px;
+  height: auto;
+  margin-left: 180px;
+  overflow: visible;
+  font-family: "微軟正黑粗";
+  &:first-child {
+    margin-top: 210px;
+  }
+  &:last-child {
+    ${(props) => (props.lang === "en-US" ? `font-size: 3.2em;` : ``)}
+  }
+`;
+
 const GirlImage = styled.div`
   background: url(${(props) => props.img}) no-repeat;
   width: 308px;
@@ -97,7 +117,7 @@ const LeftNavItemContainer = styled.ul`
   list-style-type: none;
   display: grid;
   overflow: auto;
-  height: 835px;
+  height: 780px;
   grid-gap: 20px;
   grid-template-rows: repeat(auto-fill, 180px);
   &::-webkit-scrollbar {
@@ -134,7 +154,43 @@ const GameTitle = styled.div`
   text-align: center;
   line-height: 1.8em;
 `;
-
+const NoContentContainer = (props) => {
+  switch (props.lang) {
+    case "th-TH":
+    case "vi-VN":
+      return (
+        <Container
+          style={{
+            background:
+              "url(" +
+              process.env.PUBLIC_URL +
+              `/assets/images/pcGamePage/no.jpg) no-repeat center`,
+          }}
+        >
+          <NoContentText lang={i18n.language}>
+            {i18n.t("promotion.emptyLine1")}
+          </NoContentText>
+          <NoContentText lang={i18n.language}>
+            {i18n.t("promotion.emptyLine2")}
+          </NoContentText>
+        </Container>
+      );
+    case "en-US":
+    case "zh-CN":
+    case "zh-TW":
+    default:
+      return (
+        <Container
+          style={{
+            background:
+              "url(" +
+              process.env.PUBLIC_URL +
+              `/assets/images/pcGamePage/no_${i18n.language}.jpg) no-repeat center`,
+          }}
+        ></Container>
+      );
+  }
+};
 class Sports extends Component {
   constructor(props) {
     super(props);
@@ -209,7 +265,9 @@ class Sports extends Component {
                       maintenance={data.status != 0}
                     >
                       <GameImage></GameImage>
-                      <GameTitle>{data.abbreviation}</GameTitle>
+                      <GameTitle>
+                        {i18n.t(`${data.abbreviation}.sports`)}
+                      </GameTitle>
                     </LeftNavItem>
                   );
                 })}
@@ -218,15 +276,7 @@ class Sports extends Component {
           </LeftContainer>
         </SportsWrapper>
       </Container>
-    ) : (
-      <Container
-        style={{
-          background:
-            "url(" +
-            process.env.PUBLIC_URL +
-            `/assets/images/pcGamePage/no_${i18n.language}.jpg) no-repeat center`,
-        }}
-      ></Container>
+    ) : (<NoContentContainer lang={i18n.language}></NoContentContainer>
     );
   }
 }
