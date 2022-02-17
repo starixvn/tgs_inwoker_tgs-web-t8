@@ -20,6 +20,9 @@ export const flipButton = keyframes`
   }
   to {
     transform: rotateY(1turn);
+    filter: grayscale(0) contrast(100%)
+      drop-shadow(0 2px 4px rgba(0, 0, 0, 0.75))
+      drop-shadow(0 4px 8px rgba(0, 0, 0, 0.75));
   }
 `;
 
@@ -130,12 +133,16 @@ const BottomNavItem = styled.li`
   margin: 0 5px;
   perspective: 300px;
   transform: scale3d(0.9, 0.9, 1);
-  transform-origin: 50% 90%;
+  transform-origin: center;
   transition: transform 0.4s;
+  filter: grayscale(1) contrast(80%) drop-shadow(0 2px 4px rgba(0,0,0,.75)) drop-shadow(0 4px 8px rgba(0,0,0,.75));
+  &:hover {
+    filter: grayscale(.5) contrast(90%) drop-shadow(0 2px 4px rgba(0,0,0,.75)) drop-shadow(0 4px 8px rgba(0,0,0,.75));
+  }
   ${(props) =>
     props.selected &&
     css`
-      //animation: ${flipButton} 0.8s linear both;
+      animation: ${flipButton} 0.8s linear both;
       transform: scaleX(1);
     `}
 `;
