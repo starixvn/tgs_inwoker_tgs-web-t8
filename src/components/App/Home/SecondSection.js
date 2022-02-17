@@ -17,7 +17,7 @@ import ScrollAnimation from "react-animate-on-scroll";
 import Slider from "react-slick";
 
 const GameSelectorWithSlider = styled.div`
-  width: 100%;
+  width: 80%;
   margin: 0 auto;
   margin-top: 30px;
   position: relative;
@@ -65,7 +65,7 @@ const SliderImg = styled.div`
     height: 375px;
     border-radius: 13px;
     z-index: -1;
-    opacity: 0;
+    opacity: ${(props=>props.isSliding?'1':'0')};
     background: url(${(props) => props.img}) no-repeat;
     transform: scale(0.85);
     transition: all .3s;
@@ -170,6 +170,7 @@ const secondSectionSlides = [
 
 const SecondSection = (props) => {
   const [current] = useState(0);
+  const [isSliding, setIsSliding] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeSlide2, setActiveSlide2] = useState(0);
   const slider = useRef(null);
@@ -193,8 +194,8 @@ const SecondSection = (props) => {
     draggable: false,
     swipe: false,
     cssEase: "linear",
-    beforeChange: (current, next) => setActiveSlide(next),
-    afterChange: (current) => setActiveSlide2(current),
+    beforeChange: (current, next) =>{ setActiveSlide(next); setIsSliding(true);} ,
+    afterChange: (current) => {setActiveSlide2(current); setIsSliding(false);},
   };
 
   return (
@@ -212,6 +213,7 @@ const SecondSection = (props) => {
                 <SliderImg
                   index={index}
                   current={activeSlide2}
+                  isSliding={isSliding}
                   img={item.img}
                   background={item.background}
                   onClick={() => handleOverlayClick(index)}
