@@ -1,10 +1,10 @@
-import React, {  useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 
 import { connect } from "react-redux";
 import SliderPNG from "../../../assets/images/home/section/game-slider.png";
 import SliderBackgroundPNG from "../../../assets/images/home/section/game-slider-bg.png";
-import Section2LotteryPNG from "../../../assets/images/home/section/section2-lottery.png";
+import Section2SlotsPNG from "../../../assets/images/home/section/section2-slots.png";
 import Section2ChessPNG from "../../../assets/images/home/section/section2-chess.png";
 import Section2ElectronPNG from "../../../assets/images/home/section/section2-electron.png";
 import Section2LivePNG from "../../../assets/images/home/section/section2-live.png";
@@ -17,31 +17,68 @@ import ScrollAnimation from "react-animate-on-scroll";
 import Slider from "react-slick";
 
 const GameSelectorWithSlider = styled.div`
-  width: 1280px;
+  width: 100%;
   margin: 0 auto;
   margin-top: 30px;
   position: relative;
   overflow: visible;
 `;
 
+const handleFirstLastChild = (index) => {
+  return `
+  .slick-slide:nth-child(${index+5}) &:before, .slick-slide:nth-child(${index+9}) &:before{ 
+    z-index: 1; 
+    transform: scale(0.85); 
+    transition: all .3s;     
+    opacity: 1;
+  }
+  .slick-slide:nth-child(${index+5}) & ${SliderImgTitle}, .slick-slide:nth-child(${index+6}) & ${SliderImgTitle} ,.slick-slide:nth-child(${index+7}) & ${SliderImgTitle},
+  .slick-slide:nth-child(${index+5}) & ${SliderImgButton}, .slick-slide:nth-child(${index+6}) & ${SliderImgButton} ,.slick-slide:nth-child(${index+7}) & ${SliderImgButton}  {
+    display: block;
+  }
+  .slick-slide:nth-child(${index+6}) &:before, .slick-slide:nth-child(${index+8}) &:before{ 
+    z-index: 2; 
+    transform: scale(0.85); 
+    transition: all .3s;     
+    opacity: 1;
+  }
+  .slick-slide:nth-child(${index+7}) &:before {
+    z-index: 3;
+    transform: scale(1);
+    transition: all .3s;
+    opacity: 1;
+  }
+  `;
+}
+
 const SliderImg = styled.div`
-  background: url(${(props) => props.img}) no-repeat;
-  width: 489px;
+  width: 256px;
   height: 382px;
-  transform: scale(0.8);
-  background-position-x: ${(props) => props.background.x};
-  background-position-y: ${(props) => props.background.y};
   transition: all 0.2s ease-in;
   color: #ffffff;
-  padding-top: 184px;
-  padding-left: 47px;
-  .slick-current & {
-    transform: scale(1);
+  ${(props) => handleFirstLastChild(props.current)}
+  :before {
+    content: " ";
+    position: absolute;
+    margin-left: -1.5%;
+    width: 487px;
+    height: 375px;
+    border-radius: 13px;
+    z-index: -1;
+    opacity: 0;
+    background: url(${(props) => props.img}) no-repeat;
+    transform: scale(0.85);
+    transition: all .3s;
+    background-position: bottom;
   }
 `;
 
 const SliderImgTitle = styled.div`
   font-size: 1.5em;
+  display: none;
+  transform: translate(-27px, 158px);
+  z-index: 3;
+  position: absolute;
 `;
 
 const SliderImgButton = styled.div`
@@ -57,6 +94,10 @@ const SliderImgButton = styled.div`
   &:hover {
     cursor: pointer;
   }
+  display: none;
+  transform: translate(-27px, 195px);
+  z-index: 3;
+  position: absolute;
 `;
 
 const SliderBar = styled.div`
@@ -94,60 +135,36 @@ const secondSectionSlides = [
     img: Section2LivePNG,
     type: "live",
     name: i18n.t("common.live"),
-    background: {
-      x: "0px",
-      y: "-11px",
-    },
   },
   {
     path: "chess",
     img: Section2ChessPNG,
     type: "chess",
     name: i18n.t("common.chess"),
-    background: {
-      x: "0px",
-      y: "-20px",
-    },
   },
   {
     path: "sports",
     img: Section2SportsPNG,
     type: "sports",
     name: i18n.t("common.sport"),
-    background: {
-      x: "0px",
-      y: "-75px",
-    },
   },
   {
     path: "esports",
     img: Section2EsportsPNG,
     type: "esports",
     name: i18n.t("common.esports"),
-    background: {
-      x: "0px",
-      y: "9px",
-    },
   },
   {
-    path: "lottery",
-    img: Section2LotteryPNG,
-    type: "lottery",
-    name: i18n.t("common.lottery"),
-    background: {
-      x: "0px",
-      y: "-8px",
-    },
+    path: "slots",
+    img: Section2SlotsPNG,
+    type: "slots",
+    name: i18n.t("common.slot"),
   },
   {
     path: "electron",
     img: Section2ElectronPNG,
     type: "electron",
     name: i18n.t("common.electron"),
-    background: {
-      x: "0px",
-      y: "25px",
-    },
   },
 ];
 
@@ -164,10 +181,12 @@ const SecondSection = (props) => {
   const settings = {
     dots: false,
     infinite: true,
-    slidesToShow: 1,
+    slidesToShow: 5,
     slidesToScroll: 1,
     centerMode: true,
+    centerPadding: "10px",
     variableWidth: true,
+    adaptiveHeight: true,
     autoplay: false,
     speed: 500,
     autoplaySpeed: 6000,
@@ -179,7 +198,7 @@ const SecondSection = (props) => {
   };
 
   return (
-    <GameSelectorWithSlider>
+    <GameSelectorWithSlider current={activeSlide2}>
       <ScrollAnimation
         animateIn="fadeInRight"
         duration={1}
@@ -192,7 +211,7 @@ const SecondSection = (props) => {
               <div key={index}>
                 <SliderImg
                   index={index}
-                  current={current}
+                  current={activeSlide2}
                   img={item.img}
                   background={item.background}
                   onClick={() => handleOverlayClick(index)}

@@ -56,7 +56,7 @@ const FirstSection = styled.div`
   margin: 0 auto;
   min-height: 460px;
   padding-top: 110px;
-  overflow: auto;
+  overflow: visible;
 `;
 const FirstSectionItemBg2 = styled.div`
   background: url(${TextBgPNG}) no-repeat;
@@ -89,8 +89,11 @@ const FirstSectionItemButton = styled(Grid)`
   margin-top: 25px;
   height: 34px;
   line-height: 2em;
+  transition: all .3s;
   &:hover {
     cursor: pointer;
+    background-color: #20D0FF;
+    transition: all .3s;
   }
 `;
 
@@ -106,6 +109,11 @@ const FirstSectionItem = styled(Grid)`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  transition: transform .3s;
+  &:hover{
+    transform: scale(1.05);
+    transition: transform .3s;
+  }
 `;
 
 class Home extends Component {
