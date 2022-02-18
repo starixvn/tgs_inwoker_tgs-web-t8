@@ -120,10 +120,19 @@ const PromoDetailToggleButton = styled.div`
 const PromoDetailRightContainer = styled.div`
   box-sizing: border-box;
   height: calc(100% - 50px);
-  margin: 0 0 0 35%;
   overflow: auto;
-  padding: 15px;
-  width: 65%;
+  ${({ isToggled }) =>
+    isToggled
+      ? `     
+      margin-left: 0;
+      padding: 20px 50px 80px;
+      width: 100%;`
+      : `     
+      margin: 0 0 0 35%;  
+      padding: 15px;  
+      width: 65%;
+    `}
+
 `;
 
 const PromoDetailJoinButton = styled.button`

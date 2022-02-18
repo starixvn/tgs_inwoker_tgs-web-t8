@@ -62,10 +62,9 @@ const TopContainerWrap = styled.div`
   background-color: #2c2c2c;
 `;
 const TopContainer = styled.div`
-  height: 45px;//38px;
+  height: 38px;
   background-color: #2c2c2c;
   display: flex;
-  height: 45px;
   justify-content: space-between;
   margin: 0 auto;
   width: 1280px;
