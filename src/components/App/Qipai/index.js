@@ -174,14 +174,16 @@ const GameListContainer = styled.div`
   width: 100%;
   width: 1280px;
   margin: 0 auto;
-  margin-top: 121px;
+  margin-top: 30px;
 `;
 const GameList = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  padding-top: 15px;
   width: 100%;
   list-style: none;
+  margin: 0;
+  padding: 0;
+  padding-top: 15px;
 }`;
 const GameItem = styled.li`
   align-items: center;
@@ -191,16 +193,19 @@ const GameItem = styled.li`
   flex-wrap: wrap;
   height: 125px;
   justify-content: center;
-  margin: 0 20px 35px 0;
-  padding-left: 130px;
-  padding-right: 10px;
+  margin: 0 auto 35px auto;
   position: relative;
-  width: 150px;
+  width: calc(25% - 20px);
+  &:hover {
+    background-color: rgb(255,255,255,0.2);
+  }
 `;
 const GameItemImage = styled.div`
+  background: #fff;
+  height: 112px;
+  width: 112px;
   & img {
     display: block;
-    min-height: 150px;
     width: 100%;
   }
 `;
