@@ -59,7 +59,7 @@ const InnerWrap = styled.div`
 `;
 const TopContainer = styled.div`
   height: 38px;
-  background-color: #2C2C2C;
+  background-color: #2c2c2c;
 `;
 const TimerContainer = styled.div`
   padding-top: 15px;
@@ -257,6 +257,7 @@ const breatheAnimation = keyframes`
 
 `;
 const RightMenuLI = styled.li`
+  position: relative;
   display: flex;
   align-items: center;
   width: 130px;
@@ -272,11 +273,27 @@ const RightMenuLI = styled.li`
   @media (max-width: 650px) {
     width: 100px;
   }
+  &:after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 4px;
+    background: #20d0ff; //${({ theme }) => theme.primary};
+    border-radius: 1px;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transition: all 0.5s ease;
+    transform: translate(-50%, 0);
+  }
+  
   &:hover {
-    border-bottom: solid 4px #fde73f;
-    color: #fde73f;
-
+    //border-bottom: solid 4px #20d0ff;
+    color: #20d0ff;
     cursor: pointer;
+    &:after {
+      width: 80%;
+    }
   }
   &:hover ${MouseOverContainer} {
     height: 190px;
@@ -292,9 +309,11 @@ const RightMenuLI = styled.li`
   ${(props) =>
     props.active
       ? `
-  border-bottom: solid 4px #fde73f;
-  color: #fde73f;
-
+  //border-bottom: solid 4px #20d0ff;
+  color: #20d0ff;
+  &:after {
+    width: 80%;
+  }
 
   `
       : `
@@ -885,8 +904,7 @@ class Header extends Component {
                                             {i18n.t("transfer.maintenance")}
                                           </Maintenance>
                                           {(() => {
-                                            var gameCode =
-                                              game.abbreviation.toLowerCase();
+                                            var gameCode = game.abbreviation.toLowerCase();
                                             if (
                                               config.features.SportsHideLogo
                                             ) {
@@ -967,8 +985,7 @@ class Header extends Component {
                                               {i18n.t("transfer.maintenance")}
                                             </Maintenance>
                                             {(() => {
-                                              var gameCode =
-                                                game.abbreviation.toLowerCase();
+                                              var gameCode = game.abbreviation.toLowerCase();
                                               if (
                                                 config.features.SportsHideLogo
                                               ) {

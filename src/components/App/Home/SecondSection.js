@@ -108,6 +108,7 @@ const SliderBar = styled.div`
   height: 68px;
   margin: 0 auto;
   margin-top: 90px;
+  padding-right: 7px;
 `;
 
 const SliderButton = styled.div`

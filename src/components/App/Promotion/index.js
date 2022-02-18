@@ -20,41 +20,17 @@ const moment = require("moment");
 
 const Container = styled.div`
   width: 100%;
-  background: url(${BGPromotionJPG}) no-repeat top center #fff;
-  min-height: 800px;
+  background: #000; //url(${BGPromotionJPG}) no-repeat top center #fff;
+  min-height: 780px;
   position: relative;
 `;
 const Wrap = styled.div`
   width: 1280px;
   margin: 0 auto;
 `;
-const PromoEmptyContainer = styled.div``;
-const PromoEmptyBg = styled.div`
-  background: url(${PromoEmpty}) no-repeat;
-  position: absolute;
 
-  left: 50%;
-  bottom: -155px;
-  margin-left: -240px;
-  width: 1165px;
-  height: 877px;
-`;
-const PromoEmptyText = styled.div`
-  width: 673px;
-  position: absolute;
-  right: 50%;
-  top: 30%;
-`;
-const PromoEmptyTextLine = styled.div`
-  font-size: 80px;
-  text-align: center;
-  font-weight: bold;
-  background: -webkit-linear-gradient(#446597, #282828);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-`;
-
-const ThePromotion = styled(Grid)``;
+const ThePromotion = styled(Grid)`
+margin: 70px 0;`;
 
 const ThePromotionContainer = styled(Grid)`
   background: #fff;
@@ -127,6 +103,80 @@ const PromoButtonText = styled.div`
 const ContainerForPromoList = styled(Grid)`
   padding: 14px;
 `;
+
+
+const PromotionBannerContainer = styled.div`
+  cursor: pointer;
+  margin: 10px 0;
+  transition: .3s ease;
+  background: #fff;
+  width: 1200px;
+  height: 486px;
+  &:hover {
+    transform: translateY(10px);
+  }
+  & img {
+    width: 1200px;
+    height: 486px;
+  }
+`;
+
+const NoContentText = styled.div`
+  color: #000;
+  font-size: ${(props=> (props.lang === 'zh-CN') || (props.lang === 'zh-TW') ? `3.2em`: `2.3em`)};
+  text-shadow: 0 0 18px #ffe14e;
+  -webkit-text-stroke: 0.5px white;
+  font-weight: bold;
+  width: 450px;
+  height: auto;
+  margin-left: 180px;
+  overflow: visible;
+  font-family: '微軟正黑粗';
+  &:first-child {
+    margin-top: 210px;
+  }
+  &:last-child {
+    ${(props=> props.lang === 'en-US'? `font-size: 3.2em;`:``)}
+  }
+`;
+
+const NoContentContainer = (props) => {
+  switch (props.lang) {
+    case "th-TH":
+    case "vi-VN":
+      return (
+        <Container
+          style={{
+            background:
+              "url(" +
+              process.env.PUBLIC_URL +
+              `/assets/images/pcGamePage/no.jpg) no-repeat center`,
+          }}
+        >
+          <NoContentText lang={i18n.language}>
+            {i18n.t("promotion.emptyLine1")}
+          </NoContentText>
+          <NoContentText lang={i18n.language}>
+            {i18n.t("promotion.emptyLine2")}
+          </NoContentText>
+        </Container>
+      );
+    case "en-US":
+    case "zh-CN":
+    case "zh-TW":
+    default:
+      return (
+        <Container
+          style={{
+            background:
+              "url(" +
+              process.env.PUBLIC_URL +
+              `/assets/images/pcGamePage/no_${i18n.language}.jpg) no-repeat center`,
+          }}
+        ></Container>
+      );
+  }
+};
 
 class Promotion extends Component {
   state = {
@@ -217,19 +267,7 @@ class Promotion extends Component {
       <Container>
         {this.props.general.promotionList.items &&
         this.props.general.promotionList.items.length <= 0 ? (
-          <PromoEmptyContainer>
-            <PromoEmptyText>
-              <PromoEmptyTextLine
-                style={i18n.language === "en-US" ? { fontSize: "58px" } : {}}
-              >
-                {i18n.t("promotion.emptyLine1")}
-              </PromoEmptyTextLine>
-              <PromoEmptyTextLine>
-                {i18n.t("promotion.emptyLine2")}
-              </PromoEmptyTextLine>
-            </PromoEmptyText>
-            <PromoEmptyBg></PromoEmptyBg>
-          </PromoEmptyContainer>
+          <NoContentContainer lang={i18n.language}></NoContentContainer>
         ) : (
           <></>
         )}
@@ -238,78 +276,95 @@ class Promotion extends Component {
             <ThePromotion container>
               {this.props.general.promotionList.items.map((data, index) => {
                 return (
-                  <ContainerForPromoList lg={6} key={index}>
-                    <ThePromotionContainer
-                      container
-                      direction="column"
-                      justify="space-between"
-                      alignItems="stretch"
-                    >
-                      <Grid item>
-                        <Grid container direction="column">
-                          {(() => {
-                            if (data.localization !== null) {
-                              return (
-                                <PromoImages
-                                  key={index}
-                                  img={
-                                    data.localization.desktopBanner &&
-                                    data.localization.desktopBanner !== null
-                                      ? data.localization.desktopBanner
-                                      : data.desktopBanner
-                                  }
-                                ></PromoImages>
-                              );
-                            } else {
-                              return (
-                                <PromoImages
-                                  key={index}
-                                  img={data.desktopBanner}
-                                ></PromoImages>
-                              );
-                            }
-                          })()}
+                  <PromotionBannerContainer onClick={()=>this.handlePromotionClick(data.id, data.promotionType)}>
+                    <img
+                      src={
+                        data.localization.desktopBanner &&
+                        data.localization.desktopBanner !== null
+                          ? data.localization.desktopBanner
+                          : data.desktopBanner
+                      }
+                      alt={data.name}
+                    ></img>
+                    {/* <img
+                     src={
+                        process.env.PUBLIC_URL +
+                        `/assets/images/promotion/${i18n.language}/BN-${index}.jpg`
+                      } alt={data.name}>
+                    </img> */}
+                  </PromotionBannerContainer>
+                  // <ContainerForPromoList lg={6} key={index}>
+                  //   <ThePromotionContainer
+                  //     container
+                  //     direction="column"
+                  //     justify="space-between"
+                  //     alignItems="stretch"
+                  //   >
+                  //     <Grid item>
+                  //       <Grid container direction="column">
+                  //         {(() => {
+                  //           if (data.localization !== null) {
+                  //             return (
+                  //               <PromoImages
+                  //                 key={index}
+                  //                 img={
+                  //                   data.localization.desktopBanner &&
+                  //                   data.localization.desktopBanner !== null
+                  //                     ? data.localization.desktopBanner
+                  //                     : data.desktopBanner
+                  //                 }
+                  //               ></PromoImages>
+                  //             );
+                  //           } else {
+                  //             return (
+                  //               <PromoImages
+                  //                 key={index}
+                  //                 img={data.desktopBanner}
+                  //               ></PromoImages>
+                  //             );
+                  //           }
+                  //         })()}
 
-                          <EventTitle>
-                            【{i18n.t("promotion.promoDetail")}】
-                          </EventTitle>
-                          <EventLabel>
-                            {i18n.t("promotion.promoTarget")}:
-                          </EventLabel>
-                          <EventText>
-                            {data.vipLevels.map((a, index) => {
-                              return (
-                                <span key={index}>
-                                  VIP{a}
-                                  {index < data.vipLevels.length - 1 && ", "}
-                                </span>
-                              );
-                            })}
-                          </EventText>
-                          <br />
-                          <EventLabel>
-                            {i18n.t("promotion.promoDate")}：
-                          </EventLabel>
-                          <EventText>
-                            {moment(data.from).format("YYYY/MM/DD HH:mm:ss")}
-                            {" - "}
-                            {moment(data.to).format("YYYY/MM/DD HH:mm:ss")}
-                          </EventText>
-                        </Grid>
-                      </Grid>
-                      <PromoButtonContainer
-                        item
-                        onClick={() =>
-                          this.handlePromotionClick(data.id, data.promotionType)
-                        }
-                      >
-                        <PromoButtonImg />
-                        <PromoButtonText>
-                          {i18n.t("promotion.details")}
-                        </PromoButtonText>
-                      </PromoButtonContainer>
-                    </ThePromotionContainer>
-                  </ContainerForPromoList>
+                  //         <EventTitle>
+                  //           【{i18n.t("promotion.promoDetail")}】
+                  //         </EventTitle>
+                  //         <EventLabel>
+                  //           {i18n.t("promotion.promoTarget")}:
+                  //         </EventLabel>
+                  //         <EventText>
+                  //           {data.vipLevels.map((a, index) => {
+                  //             return (
+                  //               <span key={index}>
+                  //                 VIP{a}
+                  //                 {index < data.vipLevels.length - 1 && ", "}
+                  //               </span>
+                  //             );
+                  //           })}
+                  //         </EventText>
+                  //         <br />
+                  //         <EventLabel>
+                  //           {i18n.t("promotion.promoDate")}：
+                  //         </EventLabel>
+                  //         <EventText>
+                  //           {moment(data.from).format("YYYY/MM/DD HH:mm:ss")}
+                  //           {" - "}
+                  //           {moment(data.to).format("YYYY/MM/DD HH:mm:ss")}
+                  //         </EventText>
+                  //       </Grid>
+                  //     </Grid>
+                  //     <PromoButtonContainer
+                  //       item
+                  //       onClick={() =>
+                  //         this.handlePromotionClick(data.id, data.promotionType)
+                  //       }
+                  //     >
+                  //       <PromoButtonImg />
+                  //       <PromoButtonText>
+                  //         {i18n.t("promotion.details")}
+                  //       </PromoButtonText>
+                  //     </PromoButtonContainer>
+                  //   </ThePromotionContainer>
+                  // </ContainerForPromoList>
                 );
               })}
             </ThePromotion>
