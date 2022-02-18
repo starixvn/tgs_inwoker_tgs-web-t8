@@ -57,10 +57,26 @@ const InnerWrap = styled.div`
   width: 100%;
   font-size: 14px;
 `;
-const TopContainer = styled.div`
-  height: 38px;
+
+const TopContainerWrap = styled.div`  
   background-color: #2c2c2c;
 `;
+const TopContainer = styled.div`
+  height: 45px;//38px;
+  background-color: #2c2c2c;
+  display: flex;
+  height: 45px;
+  justify-content: space-between;
+  margin: 0 auto;
+  width: 1280px;
+`;
+
+const TopLeftContainer = styled.div`
+`;
+
+const TopRightContainer = styled.div`
+`;
+
 const TimerContainer = styled.div`
   padding-top: 15px;
   font-family: arial;
@@ -448,7 +464,7 @@ class Header extends Component {
       isHoverSubMenuContainer: false,
       open: false,
       dialog: "",
-      systemDateTime: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+      systemDateTime: moment(new Date()).format("HH:mm:ss"),//YYYY-MM-DD HH:mm:ss
     };
     this.lastScroll = null;
 
@@ -468,7 +484,7 @@ class Header extends Component {
     this.updateInterval = setInterval(() => {
       this.setState({
         ...this.state,
-        systemDateTime: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+        systemDateTime: moment(new Date()).format("HH:mm:ss"),
       });
       const localStorageToken = localStorage.getItem("token0");
       if (
@@ -771,9 +787,14 @@ class Header extends Component {
     return (
       <CustomAppBar hide={this.props.hide}>
         <InnerWrap>
+          <TopContainerWrap>
           <TopContainer>
+            <TopLeftContainer>
+            <LinkContainer>
+              <LanguageChanger language={this.props.general.brandLanguage} />
+            </LinkContainer>
             <TimerContainer>
-              <TimerSpan>GMT+8 {this.state.systemDateTime}</TimerSpan>
+              <TimerSpan> (GMT+0800) {this.state.systemDateTime}</TimerSpan>
             </TimerContainer>
             {config.features.DisplayPhone && (
               <TimerContainer style={{ marginLeft: "10px" }}>
@@ -785,39 +806,38 @@ class Header extends Component {
                 </PhoneNumberSpan>
               </TimerContainer>
             )}
-            <LinkContainer>
-              <LanguageChanger language={this.props.general.brandLanguage} />
-            </LinkContainer>
-            <RightContainer>
+            </TopLeftContainer>
+            <TopRightContainer>
               <BtnCS onClick={this.props.onhandleShowCSClick}>
                 {i18n.t("common.cs")}
               </BtnCS>
               {(() => {
                 if (
                   this.props.account.token !== this.props.account.info.token
-                ) {
-                  return (
-                    <GuestContainer
+                  ) {
+                    return (
+                      <GuestContainer
                       onhandleShowCSClick={this.props.onhandleShowCSClick}
                       onhandleContactUsClick={this.handleContactUsClick}
-                    ></GuestContainer>
-                  );
-                } else {
-                  return (
-                    <MemberContainer
-                      onhandleLogout={this.onhandleLogout}
-                      onhandleTransfer={this.onhandleTransfer}
-                      onhandleDeposit={this.onhandleDeposit}
-                      onhandleInboxClick={this.handleInboxClick}
-                      onhandleRefreshBalanceClick={
-                        this.handleRefreshBalanceClick
-                      }
+                      ></GuestContainer>
+                      );
+                    } else {
+                      return (
+                        <MemberContainer
+                        onhandleLogout={this.onhandleLogout}
+                        onhandleTransfer={this.onhandleTransfer}
+                        onhandleDeposit={this.onhandleDeposit}
+                        onhandleInboxClick={this.handleInboxClick}
+                        onhandleRefreshBalanceClick={
+                          this.handleRefreshBalanceClick
+                        }
                     ></MemberContainer>
-                  );
+                    );
                 }
               })()}{" "}
-            </RightContainer>
+            </TopRightContainer>
           </TopContainer>
+            </TopContainerWrap>
           <BottomContainer>
             <LogoContainer
               img={
