@@ -70,6 +70,7 @@ const InnerWrap = styled.div`
   padding: 10px;
   box-sizing: border-box;
   overflow-y: auto;
+  padding-bottom: 50px;
 `;
 const GameTabContainer = styled.div`
   display: flex;
@@ -557,11 +558,16 @@ const GameItemJoinGameButton = styled(GameItemButton)`
 `;
 
 const PaginationContainer = styled.div`
+  position: absolute;
+  bottom: 0;
+  width: inherit;
+  margin: 0 auto;
+  padding: 10px 0;
 `;
- const StyledPagination = withStyles({
+const StyledPagination = withStyles({
   root: {
     width: "100%",
-    "& .MuiPagination-ul":{
+    "& .MuiPagination-ul": {
       justifyContent: "center",
     },
     "& .MuiPaginationItem-root": {
@@ -580,8 +586,8 @@ const PaginationContainer = styled.div`
         backgroundColor: "transparent",
       },
     },
-  }
- })(Pagination);
+  },
+})(Pagination);
 
 const NoContentContainer = (props) => {
   switch (props.lang) {
@@ -1039,18 +1045,18 @@ class Slots extends Component {
                 itemsPerPage={this.state.limit}
               ></DisplayList>
             </GameListContainer>
-        <PaginationContainer>
-        <StyledPagination
-          count={Math.ceil(list.length / this.state.limit)}
-          page={this.state.page}
-          onChange={this.handlePageChange}
-          defaultPage={1}
-          shape="rounded"
-          size="small"
-          showFirstButton
-          showLastButton
-          />
-          </PaginationContainer>
+            <PaginationContainer>
+              <StyledPagination
+                count={Math.ceil(list.length / this.state.limit)}
+                page={this.state.page}
+                onChange={this.handlePageChange}
+                defaultPage={1}
+                shape="rounded"
+                size="small"
+                showFirstButton
+                showLastButton
+              />
+            </PaginationContainer>
           </InnerWrap>
         </GameDisplayContainer>
         <Loading show={this.state.loading}></Loading>
