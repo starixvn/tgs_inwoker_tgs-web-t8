@@ -118,11 +118,16 @@ const LeftNavItemContainer = styled.ul`
   display: grid;
   overflow: auto;
   height: 780px;
-  grid-gap: 20px;
-  grid-template-rows: repeat(auto-fill, 180px);
+  align-content: center;
   &::-webkit-scrollbar {
     display: none;
   }
+`;
+
+const GameImage = styled.img`
+  height: 100%;
+  width: 100%;
+  transition: transform 0.3s;
 `;
 
 const LeftNavItem = styled.li`
@@ -130,15 +135,14 @@ const LeftNavItem = styled.li`
   cursor: pointer;
   overflow: hidden;
   position: relative;
-  width: 355px;
+  width: 354px;
   height: 180px;
   border-radius: 10px;
   margin: 20px 0;
-`;
-
-const GameImage = styled.img`
-  height: 100%;
-  width: 100%;
+  &:hover ${GameImage} {
+    transform: scale(1.05);
+    transition: transform 0.3s;
+  }
 `;
 
 const GameTitle = styled.div`
@@ -150,7 +154,7 @@ const GameTitle = styled.div`
   font-weight: bold;
   position: absolute;
   bottom: 0;
-  background: rgb(15 80 197 / 64%);
+  background: url(${process.env.PUBLIC_URL}"/assets/images/pcGamePage/esports/btn-esports.png") no-repeat;
   text-align: center;
   line-height: 1.8em;
 `;
@@ -262,7 +266,7 @@ class ESports extends Component {
                       }}
                       maintenance={data.status != 0}
                     >
-                      <GameImage></GameImage>
+                      <GameImage src={process.env.PUBLIC_URL + `/assets/images/pcGamePage/esports/${data.abbreviation}.png`}></GameImage>
                       <GameTitle>{data.abbreviation}</GameTitle>
                     </LeftNavItem>
                   );

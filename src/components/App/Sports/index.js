@@ -125,21 +125,27 @@ const LeftNavItemContainer = styled.ul`
   }
 `;
 
+const GameImage = styled.img`
+  height: 100%;
+  width: 100%;
+  transition: transform 0.3s;
+`;
+
 const LeftNavItem = styled.li`
   box-shadow: 0 3px 8px rgb(0 0 0 / 80%);
   cursor: pointer;
   overflow: hidden;
   position: relative;
-  width: 355px;
+  width: 354px;
   height: 180px;
   border-radius: 10px;
   margin: 20px 0;
+  &:hover ${GameImage} {
+    transform: scale(1.05);
+    transition: transform 0.3s;
+  }
 `;
 
-const GameImage = styled.img`
-  height: 100%;
-  width: 100%;
-`;
 
 const GameTitle = styled.div`
   height: 45px;
@@ -150,10 +156,11 @@ const GameTitle = styled.div`
   font-weight: bold;
   position: absolute;
   bottom: 0;
-  background: rgb(78 173 241 / 57%);
+  background: url(${process.env.PUBLIC_URL}"/assets/images/pcGamePage/sports/btn-sports.png") no-repeat;  
   text-align: center;
   line-height: 1.8em;
 `;
+
 const NoContentContainer = (props) => {
   switch (props.lang) {
     case "th-TH":
@@ -264,7 +271,7 @@ class Sports extends Component {
                       }}
                       maintenance={data.status != 0}
                     >
-                      <GameImage></GameImage>
+                      <GameImage src={process.env.PUBLIC_URL + `/assets/images/pcGamePage/sports/${data.abbreviation}.png`}></GameImage>
                       <GameTitle>
                         {i18n.t(`${data.abbreviation}.sports`)}
                       </GameTitle>

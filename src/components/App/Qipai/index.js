@@ -18,19 +18,16 @@ import config from "../../../config/config";
 import Common from "../../../utils/Common";
 
 const Container = styled.div`
-  width: 100%;
-  height: auto;
-  padding: 0px 0px;
-  position: relative;
-  min-height: ${(props) =>
-    props.GamePage_SpecificBackground ? "900px" : "780px"};
-  background: url(${(props) =>
-        process.env.PUBLIC_URL +
-        "/assets/images/pcGamePage/qipai/background" +
-        (props.GamePage_SpecificBackground ? "-hk28" : "") +
-        ".jpg"})
-      no-repeat fixed 50% 100%/100% auto,
-    #e3e3e3;
+width: 100%;
+height: auto;
+min-height: 780px;
+position: relative;
+background: url(${(props) =>
+    process.env.PUBLIC_URL +
+    "/assets/images/pcGamePage/qipai/background" +
+    (props.GamePage_SpecificBackground ? "-hk28" : "") +
+    ".jpg"})
+  no-repeat center;
 `;
 
 const NoContentText = styled.div`
@@ -52,6 +49,63 @@ const NoContentText = styled.div`
     ${(props) => (props.lang === "en-US" ? `font-size: 3.2em;` : ``)}
   }
 `;
+const QipaiWrapper = styled.div`
+  margin: 0 auto;
+  width: 1280px;
+`;
+
+const RightContainer = styled.div`
+  top: 0;
+  right: 295px;
+  position: absolute;
+  height: 780px;
+`;
+
+const RightNavItemContainer = styled.ul`
+  list-style-type: none;
+  display: grid;
+  overflow: auto;
+  height: 780px;
+  align-content: center;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  `;
+
+  const GameImage = styled.img`
+    height: 100%;
+    width: 100%;
+    transition: transform 0.3s;
+  `;
+  
+  const RightNavItem = styled.li`
+  box-shadow: 0 3px 8px rgb(0 0 0 / 80%);
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  width: 354px;
+  height: 180px;
+  border-radius: 10px;
+  margin: 20px 0;
+  &:hover ${GameImage} {
+    transform: scale(1.05);
+    transition: transform 0.3s;
+  }
+  `;
+  
+  const GameTitle = styled.div`
+  height: 45px;
+  width: 100%;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 1.5em;
+  font-weight: bold;
+  position: absolute;
+  bottom: 0;
+  background: url(${process.env.PUBLIC_URL}"/assets/images/pcGamePage/qipai/btn-qipai.png") no-repeat;
+  text-align: center;
+  line-height: 1.8em;
+`;
 
 const GirlImage = styled.div`
   background: url(${(props) => props.img}) no-repeat;
@@ -61,96 +115,6 @@ const GirlImage = styled.div`
   &:hover {
     cursor: pointer;
   }
-`;
-const LeftSlide = styled(ScrollAnimation)`
-  display: flex;
-`;
-
-const GameTabContainer = styled.div`
-  display: flex;
-  overflow: auto;
-  width: 1280px;
-  margin: 0 auto;
-  margin-top: 70px;
-`;
-
-const GameTab = styled.div`
-  background-color: #dcdcdc;
-  color: #5a5656;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  cursor: pointer;
-  flex: 1;
-  font-size: 14px;
-  height: 95px;
-  margin: 0 5px;
-  padding: 0 10px;
-  position: relative;
-  text-align: center;
-  ${(props) =>
-    props.active
-      ? `  
-      background: linear-gradient(#0091fe,#20D0FF);
-      color: #fff; 
-      `
-      : ``};
-  &:first-child {
-    margin-left: auto;
-  }
-  &:last-child {
-    margin-right: auto;
-  }
-  &:hover {
-    background-color: #f2f2f2;
-  }
-  &:before {
-    content: "";
-    display: block;
-    height: 65px;
-    margin: 3px auto 0;
-    transition: 0.2s;
-    width: 130px;
-    background-image: url(${(props) =>
-      process.env.PUBLIC_URL +
-      `/assets/images/pcGamePage/slots/` +
-      props.img +
-      (props.active === true ? `-white` : `-color`) +
-      `.png`});
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-  }
-`;
-
-const GameTabAll = styled(GameTab)`
-  &:before {
-    background-image: url(${(props) =>
-      props.active === true ? `${SlotAllPNG}` : `${SlotAllInactivePNG}`});
-    ${(props) => (props.active === true ? `filter: brightness(500%);` : ``)}
-  }
-`;
-
-const DisabledOverlay = styled.div`
-  height: 100%;
-  width: 100&;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.75);
-  position: relative;
-  color: white;
-  font-weight: bold;
-  pointer-event: none;
-  text-transform: capitalize;
-  z-index: 3;
-  cursor: not-allowed;
-`;
-
-const ItemContainer = styled.div`
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  overflow: visible;
 `;
 
 const Maintenance = styled.div`
@@ -169,80 +133,6 @@ const Maintenance = styled.div`
   cursor: not-allowed;
 `;
 
-const GameListContainer = styled.div`
-  position: relative;
-  width: 100%;
-  width: 1280px;
-  margin: 0 auto;
-  margin-top: 30px;
-`;
-const GameList = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  padding-top: 15px;
-}`;
-const GameItem = styled.li`
-  align-items: center;
-  border-radius: 7px;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  height: 125px;
-  justify-content: center;
-  margin: 0 auto 35px auto;
-  position: relative;
-  width: calc(25% - 20px);
-  &:hover {
-    background-color: rgb(255,255,255,0.2);
-  }
-`;
-const GameItemImage = styled.div`
-  background: #fff;
-  height: 112px;
-  width: 112px;
-  & img {
-    display: block;
-    width: 100%;
-  }
-`;
-const GameItemTitle = styled.div`
-  color: #fff;
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 1.4;
-  margin-bottom: 10px;
-  text-align: center;
-`;
-
-const GameItemActionContainer = styled.div`
-  display: flex;
-  transition: 0.2s;
-`;
-
-const GameItemButton = styled.button`
-  background-color: #20d0ff;
-  border: 0;
-  border-radius: 22.5px;
-  color: #fff;
-  cursor: pointer;
-  font-size: 16px;
-  height: 45px;
-  padding: 0 40px;
-  font-size: 14px;
-  padding: 0;
-  transition: background-color 0.4s, transform 0.4s;
-  width: 136px;
-`;
-
-const GameItemJoinGameButton = styled(GameItemButton)`
-  &:hover {
-    filter: brightness(50%);
-  }
-`;
 const ImageWrapper = styled.div`
   position: relative;
 
@@ -322,12 +212,23 @@ class Qipai extends Component {
     };
   }
   componentDidMount() {
-    this.getGameList();
     //test for fake input
   }
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.platform !== this.state.platform && !this.loading) {
-      this.getGameList();
+    if (
+      prevProps.game.homePageGameList.length !==
+      this.props.game.homePageGameList.length
+    ) {
+      var qipaiList = this.props.game.homePageGameList.filter((item) => {
+        return item.type == GameTypeEnum.QIPAI;
+      });;
+
+      this.setState({
+        ...this.state,
+        selected: qipaiList[0],
+
+        list: qipaiList,
+      });
     }
   }
 
@@ -348,135 +249,36 @@ class Qipai extends Component {
     }
   };
 
-  handleGameChange = (index) => {
-    var gameSelected = this.state.list.filter(function (el) {
-      return el.id === index;
-    });
-    this.setState({
-      selected: gameSelected[0],
-    });
-  };
-
-  handleSelectPlatform = (index) => {
-    this.setState({
-      ...this.state,
-      platform: index,
-    });
-  };
-
-  getGameList(
-    page = this.state.page,
-    platform = this.state.platform,
-    type = this.state.type
-  ) {
-    this.setState({
-      ...this.state,
-
-      loading: true,
-    });
-
-    var result = GameService.GetGameList(platform, type);
-    result.then((response) => {
-      if (response.IsSuccess) {
-        var data = response.data;
-
-        if (page === 1) {
-          this.setState({
-            ...this.state,
-            page: page,
-            platform: platform,
-            type: type,
-            gameList: data,
-            loading: false,
-          });
-        } else {
-          this.setState({
-            ...this.state,
-            page: page,
-            platform: platform,
-            type: type,
-            gameList: this.state.gameList.concat(data),
-            loading: false,
-          });
-        }
-      } else {
-        this.setState({
-          ...this.state,
-          gameList: [],
-          platform: platform,
-          type: type,
-          loading: false,
-        });
-      }
-    });
-  }
-
   render() {
-    let list = null;
-    if (this.state.gameList.length > 0) {
-      list = this.state.gameList
-        .filter((s) => {
-          return s.isactive === true; // show only active game.
-        })
-        .map((el, i) => (
-          <GameItem>
-            <GameItemImage>
-              <img
-                src={`${
-                  config.sourceUrl
-                }${el.gpcode.toUpperCase()}/${Common.getCDNLanguagePrefix()}/${
-                  el.code
-                }.jpg`}
-                alt={i}
-              ></img>
-            </GameItemImage>
-            <GameItemTitle>{el.name}</GameItemTitle>
-            <GameItemActionContainer>
-              <GameItemJoinGameButton
-                onClick={() => this.handleJoinGameClick(el.gpcode, el.id)}
-              >
-                開始遊戲
-              </GameItemJoinGameButton>
-            </GameItemActionContainer>
-          </GameItem>
-        ));
-    }
     return this.state.list.length ? (
-      <Container
-        GamePage_SpecificBackground={
-          config.features.GamePage_SpecificBackground
-        }
-      >
-        <GameTabContainer>
-          <GameTabAll
-            active={this.state.platform == ""}
-            onClick={() => {
-              this.handleSelectPlatform("");
-            }}
-          ></GameTabAll>
-
-          {this.state.list.map((row, index) => {
-            return (
-              <GameTab
-                key={index}
-                img={row.abbreviation.toLowerCase()}
-                onClick={() => {
-                  this.handleSelectPlatform(row.abbreviation);
-                }}
-                active={this.state.platform == row.abbreviation}
-                maintenance={row.status != 0}
-                img={row.abbreviation.toLowerCase()}
-                active={this.state.platform == row.abbreviation}
-              >
-                {row.abbreviation}
-              </GameTab>
-            );
-          })}
-        </GameTabContainer>
-        <GameListContainer>
-          <GameList>{list}</GameList>
-        </GameListContainer>
-        <Loading show={this.state.loading}></Loading>
+      <Container>
+        <QipaiWrapper>
+          <RightContainer>
+            <ScrollAnimation
+              animateIn="fadeInRight"
+              duration={1}
+              animateOnce={true}
+              style={{ overflow: "visible" }}
+            >
+              <RightNavItemContainer>
+                {this.state.list.map((data, index) => {
+                  return (
+                    <RightNavItem
+                      selected={this.state.selected === index}
+                      onClick={() => {
+                        this.handleJoinGameClick(data.abbreviation, data.type);
+                      }}
+                      maintenance={data.status != 0}
+                    >
+                      <GameImage src={process.env.PUBLIC_URL + `/assets/images/pcGamePage/qipai/${data.abbreviation}.png`}></GameImage>
+                      <GameTitle>{data.abbreviation}</GameTitle>
+                    </RightNavItem>
+                  );
+                })}
+              </RightNavItemContainer>
+            </ScrollAnimation>
+          </RightContainer>
+        </QipaiWrapper>
       </Container>
     ) : (<NoContentContainer lang={i18n.language}></NoContentContainer>
     );

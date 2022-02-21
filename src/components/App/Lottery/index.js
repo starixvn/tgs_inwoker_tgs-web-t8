@@ -108,19 +108,24 @@ const RightContainer = styled.div`
   top: 0;
   right: 295px;
   position: absolute;
-  height: 835px;
+  height: 780px;
 `;
 
 const RightNavItemContainer = styled.ul`
   list-style-type: none;
   display: grid;
   overflow: auto;
-  height: 835px;
-  grid-gap: 20px;
-  grid-template-rows: repeat(auto-fill, 180px);
+  height: 780px;
+  align-content: center;
   &::-webkit-scrollbar {
     display: none;
   }
+`;
+
+const GameImage = styled.img`
+  height: 100%;
+  width: 100%;
+  transition: transform 0.3s;
 `;
 
 const RightNavItem = styled.li`
@@ -132,11 +137,10 @@ const RightNavItem = styled.li`
   height: 180px;
   border-radius: 10px;
   margin: 20px 0;
-`;
-
-const GameImage = styled.img`
-  height: 100%;
-  width: 100%;
+  &:hover ${GameImage} {
+    transform: scale(1.05);
+    transition: transform 0.3s;
+  }
 `;
 
 const GameTitle = styled.div`
@@ -148,7 +152,7 @@ const GameTitle = styled.div`
   font-weight: bold;
   position: absolute;
   bottom: 0;
-  background: rgb(207 37 126 / 76%);
+  background: url(${process.env.PUBLIC_URL}"/assets/images/pcGamePage/lottery/btn-lottery.png") no-repeat;
   text-align: center;
   line-height: 1.8em;
 `;
@@ -281,8 +285,8 @@ class Lottery extends Component {
                       }}
                       maintenance={data.status != 0}
                     >
-                      <GameImage></GameImage>
-                      <GameTitle>{data.abbreviation}</GameTitle>
+                      <GameImage src={process.env.PUBLIC_URL + `/assets/images/pcGamePage/lottery/${data.abbreviation}.png`}></GameImage>
+                      <GameTitle>{i18n.t(`${data.abbreviation}.lottery`)}</GameTitle>
                     </RightNavItem>
                   );
                 })}
