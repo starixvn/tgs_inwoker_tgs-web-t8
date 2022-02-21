@@ -26,6 +26,19 @@ export const flipButton = keyframes`
   }
 `;
 
+export const unflipButton = keyframes`
+  0% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(180deg);
+  }
+  to {
+    transform: rotateY(1turn);  
+    filter: grayscale(1) contrast(80%) drop-shadow(0 2px 4px rgba(0,0,0,.75)) drop-shadow(0 4px 8px rgba(0,0,0,.75));
+  }
+`;
+
 const Container = styled.div`
   width: 100%;
   height: auto;
@@ -145,6 +158,12 @@ const BottomNavItem = styled.li`
       animation: ${flipButton} 0.8s linear both;
       transform: scaleX(1);
     `}
+  ${(props) =>
+    !props.selected &&
+    css`
+      animation: ${unflipButton} 0.8s linear both;
+      transform: scaleX(1);
+    `}
 `;
 
 const GameButton = styled.div`
@@ -153,6 +172,20 @@ const GameButton = styled.div`
   background: url(${LiveGameButtonPNG}) center no-repeat;
   padding-top: 50px;
   padding-left: 30px;
+
+  &:before {
+    position: absolute;
+    left: 20px;
+    width: 150px;
+    height: 80px;
+    content: "";
+    background-image: url(${(props=>{ 
+      return process.env.PUBLIC_URL+"/assets/images/pcGamePage/live/"+props.name.toLowerCase()+".png";
+    })});
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
 `;
 
 const NoContentContainer = (props) => {
@@ -271,9 +304,10 @@ class LiveGame extends Component {
                             data.type
                           );
                         }}
+                        name={data.abbreviation}
                         maintenance={data.status != 0}
                       >
-                        <img
+                        {/* <img
                           alt={data.abbreviation}
                           src={
                             process.env.PUBLIC_URL +
@@ -283,7 +317,7 @@ class LiveGame extends Component {
                                 : "-not-selected.png"
                             }`
                           }
-                        />
+                        /> */}
                       </GameButton>
                     </BottomNavItem>
                   );
