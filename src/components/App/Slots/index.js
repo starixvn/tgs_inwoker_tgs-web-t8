@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled, { keyframes } from "styled-components";
 import { AppHistory } from "../../../history/History";
+import { withStyles } from "@material-ui/core/styles";
+import Pagination from "@material-ui/lab/Pagination";
 
 import { GameService } from "../../../api-services/services/GameService";
 import { gameAction } from "../../../api-services/actions/gameAction";
@@ -554,6 +556,33 @@ const GameItemJoinGameButton = styled(GameItemButton)`
   }
 `;
 
+const PaginationContainer = styled.div`
+`;
+ const StyledPagination = withStyles({
+  root: {
+    width: "100%",
+    "& .MuiPagination-ul":{
+      justifyContent: "center",
+    },
+    "& .MuiPaginationItem-root": {
+      padding: "10px",
+      color: "#ffffff",
+      backgroundColor: "#303030",
+      "&.MuiPaginationItem-page:hover": {
+        backgroundColor: "#20D0FF",
+        color: "#272727",
+      },
+      "&.MuiPaginationItem-page.Mui-selected": {
+        backgroundColor: "#20D0FF",
+        color: "#272727",
+      },
+      "&.MuiPaginationItem-ellipsis": {
+        backgroundColor: "transparent",
+      },
+    },
+  }
+ })(Pagination);
+
 const NoContentContainer = (props) => {
   switch (props.lang) {
     case "th-TH":
@@ -606,7 +635,7 @@ class Slots extends Component {
       keyword: "",
       gameList: [],
       page: 1,
-      limit: 25,
+      limit: 48,
       total: 0,
       type: type,
       platformList: [],
@@ -874,7 +903,9 @@ class Slots extends Component {
       </CategoryContainer>
     );
   }
-
+  handlePageChange = (event, value) => {
+    this.setState({ ...this.state, page: value });
+  };
   handleToggleFavorite = (match, id, match2) => {
     if (this.props.token !== null && this.props.token !== "") {
       if (match) {
@@ -899,68 +930,26 @@ class Slots extends Component {
 
   render() {
     let list = null;
-    if (this.state.gameList.length > 0) {
-      list = this.state.gameList
-        .filter((a) => {
-          if (this.state.filterGame === SlotFilterType.All) return true;
-          else {
-            if (this.state.filterGame === SlotFilterType.Hot) {
-              return a.tag.hot === true;
-            } else if (this.state.filterGame === SlotFilterType.New) {
-              return a.tag.new === true;
-            } else if (this.state.filterGame === SlotFilterType.Recommend) {
-              return a.tag.recommend === true;
-            } else if (this.state.filterGame === SlotFilterType.Bookmark) {
-              return this.state.favGame.indexOf(a.id) > -1;
-            }
+    list = this.state.gameList
+      .filter((a) => {
+        if (this.state.filterGame === SlotFilterType.All) return true;
+        else {
+          if (this.state.filterGame === SlotFilterType.Hot) {
+            return a.tag.hot === true;
+          } else if (this.state.filterGame === SlotFilterType.New) {
+            return a.tag.new === true;
+          } else if (this.state.filterGame === SlotFilterType.Recommend) {
+            return a.tag.recommend === true;
+          } else if (this.state.filterGame === SlotFilterType.Bookmark) {
+            return this.state.favGame.indexOf(a.id) > -1;
           }
+        }
 
-          return false;
-        })
-        .filter((a) => {
-          if (this.state.keyword === "") return true;
-          else
-            return a.name
-              .toUpperCase()
-              .includes(this.state.keyword.toUpperCase());
-        })
-        .filter((s) => {
-          return s.isactive === true; // show only active game.
-        })
-        .map((el, i) => (
-          <GameItem key={i} isNew={el.tag.new} isHot={el.tag.hot}>
-            <GameItemImage>
-              <img
-                src={`${
-                  config.sourceUrl
-                }${el.gpcode.toUpperCase()}/${Common.getCDNLanguagePrefix()}/${
-                  el.code
-                }.jpg`}
-                alt={i}
-              ></img>
-            </GameItemImage>
-            <GameTitle>{el.name}</GameTitle>
-            <GameItemOverlay>
-              <GameItemFavouriteButton
-                onClick={() =>
-                  this.handleToggleFavorite(
-                    this.state.favGame.indexOf(el.id) > -1,
-                    el.id
-                  )
-                }
-              >
-                加到最愛
-              </GameItemFavouriteButton>
-              <GameItemJoinGameButton
-                onClick={() => this.handleJoinGameClick(el.gpcode, el.id)}
-              >
-                開始遊戲
-              </GameItemJoinGameButton>
-            </GameItemOverlay>
-          </GameItem>
-        ));
-    }
-
+        return false;
+      })
+      .filter((s) => {
+        return s.isactive === true; // show only active game.
+      });
     return this.state.gameList.length ? (
       <Container
         style={{
@@ -1043,26 +1032,73 @@ class Slots extends Component {
             )} */}
           </GameSubFilterContainer>
           <InnerWrap type={this.state.type}>
-            <GameListContainer>{list}</GameListContainer>
-            {/* <ButtonMore
-            onClick={this.handleMoreClick}
-            style={{
-              visibility:
-                this.state.gameList.length < this.state.total
-                  ? "visible"
-                  : "hidden",
-            }}
-          >
-
-          </ButtonMore> */}
+            <GameListContainer>
+              <DisplayList
+                gameList={list}
+                page={this.state.page}
+                itemsPerPage={this.state.limit}
+              ></DisplayList>
+            </GameListContainer>
+        <PaginationContainer>
+        <StyledPagination
+          count={Math.ceil(list.length / this.state.limit)}
+          page={this.state.page}
+          onChange={this.handlePageChange}
+          defaultPage={1}
+          shape="rounded"
+          size="small"
+          showFirstButton
+          showLastButton
+          />
+          </PaginationContainer>
           </InnerWrap>
         </GameDisplayContainer>
         <Loading show={this.state.loading}></Loading>
       </Container>
-    ) : ( <NoContentContainer lang={i18n.language}></NoContentContainer>
+    ) : (
+      <NoContentContainer lang={i18n.language}></NoContentContainer>
     );
   }
 }
+
+const DisplayList = ({ gameList, page, itemsPerPage }) => {
+  if (gameList.length > 0) {
+    return gameList
+      .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+      .map((el, i) => (
+        <GameItem key={i} isNew={el.tag.new} isHot={el.tag.hot}>
+          <GameItemImage>
+            <img
+              src={`${
+                config.sourceUrl
+              }${el.gpcode.toUpperCase()}/${Common.getCDNLanguagePrefix()}/${
+                el.code
+              }.jpg`}
+              alt={i}
+            ></img>
+          </GameItemImage>
+          <GameTitle>{el.name}</GameTitle>
+          <GameItemOverlay>
+            <GameItemFavouriteButton
+              onClick={() =>
+                this.handleToggleFavorite(
+                  this.state.favGame.indexOf(el.id) > -1,
+                  el.id
+                )
+              }
+            >
+              加到最愛
+            </GameItemFavouriteButton>
+            <GameItemJoinGameButton
+              onClick={() => this.handleJoinGameClick(el.gpcode, el.id)}
+            >
+              開始遊戲
+            </GameItemJoinGameButton>
+          </GameItemOverlay>
+        </GameItem>
+      ));
+  } else return [];
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     showLogin: (payload) => {

@@ -111,7 +111,8 @@ const PromotionBannerContainer = styled.div`
   transition: .3s ease;
   background: #fff;
   width: 1200px;
-  height: 486px;
+  height: 200px;
+  
   &:hover {
     transform: translateY(10px);
   }
@@ -222,24 +223,7 @@ class Promotion extends Component {
       }
     }
   }
-  // handleJoinClick = (bosp_id) => {
-  //   BonusService.JoinActivity(
-  //     this.props.token,
-  //     this.state.selectedPromoId,
-  //     this.state.selectedBospId
-  //   ).then((response) => {
-  //     if (response.IsSuccess) {
-  //       this.props.enqueueSnackbar(response.msg, {
-  //         variant: "success",
-  //       });
-  //       this.ResetPopup();
-  //     } else {
-  //       this.props.enqueueSnackbar(response.msg, {
-  //         variant: "error",
-  //       });
-  //     }
-  //   });
-  // };
+
 
   //TODO: Temporary hardcode the navigation
   handlejoinPromotionClick = (id, promotionType) => {
@@ -293,117 +277,10 @@ class Promotion extends Component {
                       } alt={data.name}>
                     </img> */}
                   </PromotionBannerContainer>
-                  // <ContainerForPromoList lg={6} key={index}>
-                  //   <ThePromotionContainer
-                  //     container
-                  //     direction="column"
-                  //     justify="space-between"
-                  //     alignItems="stretch"
-                  //   >
-                  //     <Grid item>
-                  //       <Grid container direction="column">
-                  //         {(() => {
-                  //           if (data.localization !== null) {
-                  //             return (
-                  //               <PromoImages
-                  //                 key={index}
-                  //                 img={
-                  //                   data.localization.desktopBanner &&
-                  //                   data.localization.desktopBanner !== null
-                  //                     ? data.localization.desktopBanner
-                  //                     : data.desktopBanner
-                  //                 }
-                  //               ></PromoImages>
-                  //             );
-                  //           } else {
-                  //             return (
-                  //               <PromoImages
-                  //                 key={index}
-                  //                 img={data.desktopBanner}
-                  //               ></PromoImages>
-                  //             );
-                  //           }
-                  //         })()}
-
-                  //         <EventTitle>
-                  //           【{i18n.t("promotion.promoDetail")}】
-                  //         </EventTitle>
-                  //         <EventLabel>
-                  //           {i18n.t("promotion.promoTarget")}:
-                  //         </EventLabel>
-                  //         <EventText>
-                  //           {data.vipLevels.map((a, index) => {
-                  //             return (
-                  //               <span key={index}>
-                  //                 VIP{a}
-                  //                 {index < data.vipLevels.length - 1 && ", "}
-                  //               </span>
-                  //             );
-                  //           })}
-                  //         </EventText>
-                  //         <br />
-                  //         <EventLabel>
-                  //           {i18n.t("promotion.promoDate")}：
-                  //         </EventLabel>
-                  //         <EventText>
-                  //           {moment(data.from).format("YYYY/MM/DD HH:mm:ss")}
-                  //           {" - "}
-                  //           {moment(data.to).format("YYYY/MM/DD HH:mm:ss")}
-                  //         </EventText>
-                  //       </Grid>
-                  //     </Grid>
-                  //     <PromoButtonContainer
-                  //       item
-                  //       onClick={() =>
-                  //         this.handlePromotionClick(data.id, data.promotionType)
-                  //       }
-                  //     >
-                  //       <PromoButtonImg />
-                  //       <PromoButtonText>
-                  //         {i18n.t("promotion.details")}
-                  //       </PromoButtonText>
-                  //     </PromoButtonContainer>
-                  //   </ThePromotionContainer>
-                  // </ContainerForPromoList>
                 );
               })}
             </ThePromotion>
           </MContainer>
-
-          {
-            //
-            //  <MainContent>
-            //    <Inner>
-            //      {this.state.list.map((row) => (
-            //        <Content key={row.id} id={"promo" + row.id}>
-            //          <LeftContent>
-            //            <PromoImg src={row.pc_thumbnail_text}></PromoImg>
-            //          </LeftContent>
-            //          <RightContent>
-            //            <PromoTitle>{row.title}</PromoTitle>
-            //            <PromoDate>{row.end_time_text}</PromoDate>
-            //            <Collapse in={row.checked} collapsedHeight="70px">
-            //              <PromoDesc
-            //                onClick={this.contentClickHandler}
-            //                dangerouslySetInnerHTML={{
-            //                  __html: row.pc_promotion_describe.replace(
-            //                    /{activity_id}/g,
-            //                    row.id
-            //                  ),
-            //                }}
-            //              ></PromoDesc>
-            //            </Collapse>
-            //            <Viewall onClick={() => this.ViewAllClick(row.id)}>
-            //              {i18n.t("promotion.moreInfo")}&#187;
-            //              <ViewallArrow></ViewallArrow>
-            //            </Viewall>
-            //          </RightContent>
-            //        </Content>
-            //      ))}
-            //    </Inner>
-            //  </MainContent>
-            //
-          }
         </Wrap>
       </Container>
     );
