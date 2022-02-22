@@ -29,7 +29,7 @@ const handleFirstLastChild = (index) => {
   .slick-slide:nth-child(${index+5}) &:before, .slick-slide:nth-child(${index+9}) &:before{ 
     z-index: 1; 
     transform: scale(0.85); 
-    transition: all .3s;     
+    transition: all .5s;     
     opacity: 1;
   }
   .slick-slide:nth-child(${index+5}) & ${SliderImgTitle}, .slick-slide:nth-child(${index+6}) & ${SliderImgTitle} ,.slick-slide:nth-child(${index+7}) & ${SliderImgTitle},
@@ -39,13 +39,13 @@ const handleFirstLastChild = (index) => {
   .slick-slide:nth-child(${index+6}) &:before, .slick-slide:nth-child(${index+8}) &:before{ 
     z-index: 2; 
     transform: scale(0.85); 
-    transition: all .3s;     
+    transition: all .5s;     
     opacity: 1;
   }
   .slick-slide:nth-child(${index+7}) &:before {
     z-index: 3;
     transform: scale(1);
-    transition: all .3s;
+    transition: all .5s;
     opacity: 1;
   }
   `;
@@ -68,7 +68,7 @@ const SliderImg = styled.div`
     opacity: ${(props=>props.isSliding?'1':'0')};
     background: url(${(props) => props.img}) no-repeat;
     transform: scale(0.85);
-    transition: all .3s;
+    transition: all .5s;
     background-position: bottom;
   }
 `;
@@ -189,13 +189,11 @@ const SecondSection = (props) => {
     centerPadding: "10px",
     variableWidth: true,
     adaptiveHeight: true,
-    autoplay: false,
-    speed: 500,
-    autoplaySpeed: 6000,
+    speed: 300,
     draggable: false,
     swipe: false,
     cssEase: "linear",
-    beforeChange: (current, next) =>{ setActiveSlide(next); setIsSliding(true);} ,
+    beforeChange: (current, next) =>{ setActiveSlide(next); setActiveSlide2(next); setIsSliding(true);} ,
     afterChange: (current) => {setActiveSlide2(current); setIsSliding(false);},
   };
 
