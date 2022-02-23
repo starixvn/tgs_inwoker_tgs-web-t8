@@ -44,25 +44,20 @@ import config from "../../../config/config";
 const baseRouteUrl = Common.baseRouteUrl;
 const Container = styled.div`
   width: 100%;
-  background: url(${BGJPG});
+  background: #2c2c2c; //url(${BGJPG});
 `;
 const InnerContainer = styled.div`
   margin: 35px auto;
-  width: 1230px;
+  width: 1200px;
   overflow: auto;
-  background-color: rgba(255, 255, 255, 0.8);
+  //background-color: rgba(255, 255, 255, 0.8);
   padding-bottom: 15px;
 `;
 
 const Main = styled.div`
-  margin-left: 12px;
-
   height: 100%;
-  width: 1206px;
-
-  border-radius: 10px;
-
-  background-color: #d9d9d9;
+  border-radius: 5px;
+  background-color: #f7f7f7;
 `;
 const LeftMenu = styled.div`
   background-color: #d9d9d9;
@@ -188,6 +183,7 @@ class Account extends Component {
       }
       this.getAllGameBalance();
     }
+    this.props.onloadHideAppBar();
   }
   componentDidUpdate(preProps) {
     if (
@@ -197,6 +193,10 @@ class Account extends Component {
     ) {
       this.getAllGameBalance();
     }
+  }
+
+  componentWillUnmount() {
+    this.props.onloadShowAppBar();
   }
   getAllGameBalance = () => {
     this.props.game.providerList
@@ -318,6 +318,9 @@ class Account extends Component {
             vip={this.props.account.vip}
             wallet={this.props.wallet}
             game={this.props.game}
+            general={this.props.general}
+            activePage={this.state.activePage}
+            setActivePage={this.setActivePage}
             onhandleClickTab={this.handleClickTab}
             onhandleRefreshClick={this.handleRefreshClick}
             onhandleMoreBenefitClick={this.handleMoreBenefitClick}
@@ -327,34 +330,6 @@ class Account extends Component {
           ></Header>
 
           <Main>
-            <LeftMenu>
-              <MenuTitle>{i18n.t("web.account.fund")}</MenuTitle>
-              {this.genMenuButtonDiv(i18n.t("web.account.deposit"), "deposit")}
-              {this.genMenuButtonDiv(
-                i18n.t("web.account.withdrawal"),
-                "withdrawal"
-              )}
-
-              {this.props.game.containTransferWallet &&
-                this.genMenuButtonDiv(
-                  i18n.t("web.account.transfer"),
-                  "transfer"
-                )}
-
-              {this.genMenuButtonDiv(i18n.t("web.account.report"), "report")}
-
-              <MenuTitle>{i18n.t("web.account.personal")}</MenuTitle>
-              {this.genMenuButtonDiv(i18n.t("web.account.profile"), "profile")}
-
-              {this.genMenuButtonDiv(i18n.t("web.account.inbox"), "inbox")}
-
-              {config.features.HaveAffiliateFeature &&
-                this.genMenuButtonDiv(
-                  i18n.t("web.account.affiliate"),
-                  "affiliate"
-                )}
-            </LeftMenu>
-            <RightContent>
               <Router history={AppHistory}>
                 <Switch>
                   <Route
@@ -452,7 +427,6 @@ class Account extends Component {
                   ></Redirect>
                 </Switch>
               </Router>
-            </RightContent>
           </Main>
         </InnerContainer>
       </Container>
@@ -464,6 +438,7 @@ const mapStateToProps = (state) => {
     account: state.account,
     wallet: state.wallet,
     game: state.game,
+    general: state.general,
   };
 };
 const mapDispatchToProps = (dispatch) => {

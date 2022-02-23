@@ -219,14 +219,14 @@ const MouseOverBackground = styled.div`
   width: 100%;
 
   background-color: rgba(0, 0, 0, 0.75);
-  height: 160px;
-  position: absolute;
+  height: 190px;
+  //position: absolute;
   bottom: 30px;
 `;
 
 const MouseOverInner = styled.div`
   width: 1280px;
-  height: 161px;
+  height: 190px;
   margin: 0 auto;
 `;
 
@@ -235,9 +235,9 @@ const GameImg = styled.img`
 
   position: absolute;
 
-  padding-bottom: 10px;
+  //padding-bottom: 10px;
   transition: transform 0.6s;
-  bottom: 0;
+  bottom: 35px;
   right: 0;
   transform-origin: bottom center;
   transform: translateY(-160px) scale(1);
@@ -247,6 +247,15 @@ const GameImg = styled.img`
   animation-fill-mode: forwards;
   animation-timing-function: ease-in-out;
 `;
+
+const GameTitle = styled.img`
+  height: 66px;
+  position: absolute;
+  bottom: -5px;
+  right: 0;
+  
+`;
+
 const GameName = styled.div`
   color: #fff;
   font-weight: bold;
@@ -379,7 +388,8 @@ const Maintenance = styled.div`
 const GameFrame = styled.div`
   max-width: 255px;
   float: left;
-  min-height: 160px;
+  //min-height: 160px;
+  height: 175px;
   position: relative;
   transition: transform 0.6s;
   &:hover {
@@ -463,6 +473,7 @@ class Header extends Component {
       isHoverSubMenuContainer: false,
       open: false,
       dialog: "",
+      hideAppBar: false,
       systemDateTime: moment(new Date()).format("HH:mm:ss"),//YYYY-MM-DD HH:mm:ss
     };
     this.lastScroll = null;
@@ -475,7 +486,6 @@ class Header extends Component {
 
   async componentDidMount() {
     this.setState({ selected: this.props.location.pathname });
-
     this.FireTimerToUpdateBalance();
   }
 
@@ -512,7 +522,6 @@ class Header extends Component {
     }
     return;
   }
-
   onhandleLogout = () => {
     this.props.logout(this.props.account.token);
     this.props.history.push("/" + i18n.language + "/");
@@ -556,6 +565,10 @@ class Header extends Component {
     this.setState({ ...this.state, selected: path });
     this.props.history.push("/" + i18n.language + `/${path}`);
   };
+
+  handleHideAppBar = () => {
+    this.setState({...this.state, hideAppBar: true});
+  }
 
   RightMenuItem = (to, image, label, imageHover, subMenuImg) => {
     const { classes } = this.props;
@@ -983,6 +996,13 @@ class Header extends Component {
                                               }
                                             }}
                                           ></GameImg>
+                                          <GameTitle
+                                            index={index}
+                                            src={`${
+                                              process.env.PUBLIC_URL
+                                            }/assets/images/pcHeaderMenu/${item.path}/${game.abbreviation.toLowerCase()}-color.png`}
+                                            alt="">
+                                          </GameTitle>
                                         </GameFrameWrapper>
                                       </GameFrame>
                                     );

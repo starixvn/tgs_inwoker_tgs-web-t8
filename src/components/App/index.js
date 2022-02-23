@@ -62,6 +62,7 @@ class App extends Component {
     showCS: false,
     isIpRestrict: false,
     inbox: "",
+    hideAppBar: false
   };
   async componentDidMount() {
     if (this.props.general.token === "") {
@@ -240,6 +241,13 @@ class App extends Component {
     }
   };
 
+  onloadShowAppBar = () => {
+    this.setState({...this.state, hideAppBar: false});
+  }
+  onloadHideAppBar = () => {
+    this.setState({...this.state, hideAppBar: true});
+  }
+
   render() {
     return (
       <Router history={AppHistory}>
@@ -257,6 +265,7 @@ class App extends Component {
                 <Header
                   inbox={this.state.inbox}
                   onhandleShowCSClick={this.handleShowCSClick}
+                  hide={this.state.hideAppBar}
                 ></Header>
                 <EmptyHeader></EmptyHeader>
                 <Main>
@@ -274,6 +283,7 @@ class App extends Component {
                         <Home
                           onhandleShowCSClick={this.handleShowCSClick}
                           onhandleDepositClick={this.handleDepositClick}
+                          onloadShowAppBar={this.onloadShowAppBar}
                         />
                       )}
                     />
@@ -395,6 +405,8 @@ class App extends Component {
                           token={this.props.account.token}
                           onhandleCSClick={this.GetSupportUrl}
                           inbox={this.state.inbox}
+                          onloadHideAppBar={this.onloadHideAppBar}
+                          onloadShowAppBar={this.onloadShowAppBar}
                         />
                       )}
                     />
