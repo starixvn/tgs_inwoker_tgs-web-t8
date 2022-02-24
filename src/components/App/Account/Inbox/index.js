@@ -62,17 +62,17 @@ const HeaderTab = styled.div`
 `;
 
 const RefreshInboxButton = styled.div`
-  width: 28px;
-  height: 29px;
-  border-radius: 4.7px;
-
+  border-radius: 5px;
   float: left;
-  margin: 25px 25px 0 15px;
-  background-image: linear-gradient(
-    to top,
-    ${({ theme }) => theme.primaryGradient},
-    ${({ theme }) => theme.primary}
-  );
+  margin: 10px 10px;
+  border: 1px solid #272727;
+  background-color: rgba(0,0,0,.3);
+  border-color: #fff;
+  font-size: 0;
+  padding: 4px;
+  text-align: center;
+  width: 36px;
+  height: 36px;
   &:hover {
     cursor: pointer;
   }
