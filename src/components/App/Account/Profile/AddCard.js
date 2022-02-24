@@ -16,6 +16,7 @@ const SubTitle = styled.div`
   padding: 0 10px 10px;
   color: #16242a;
   margin-top: 0px;
+  margin-left: 300px;
 `;
 
 const TextFieldItem = styled.div`

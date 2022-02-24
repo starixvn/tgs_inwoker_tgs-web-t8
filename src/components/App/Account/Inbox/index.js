@@ -11,38 +11,60 @@ import { withSnackbar } from "notistack";
 import List from "./List";
 import Details from "./Details";
 
-
-import {accountAction} from "../../../../api-services/actions/accountAction";
-import {inboxAction} from "../../../../api-services/actions/inboxAction";
-import {InboxService} from "../../../../api-services/services/InboxService";
-import {SHOWING_DIALOG} from "../../../../api-services/constant/actionType";
+import { accountAction } from "../../../../api-services/actions/accountAction";
+import { inboxAction } from "../../../../api-services/actions/inboxAction";
+import { InboxService } from "../../../../api-services/services/InboxService";
+import { SHOWING_DIALOG } from "../../../../api-services/constant/actionType";
 import i18n from "../../../../utils/i18n";
+
 const Container = styled.div` 
-padding: 20px 28px;
-box-sizing: border-box
-
-width: 100%;
-min-height: 611px;`;
-const Title = styled.div`
-  color: ${({ theme }) => theme.secondary};
+  padding: 20px 28px;
+  box-sizing: border-box
+  width: 100%;
+  height: auto;
 `;
-const TitleIcon = styled.div`
-  width: 34px;
-  height: 24px;
 
-  background: url(${IconInboxRedPNG}) no-repeat left center;
-  background-size: 24px 24px;
-
-  float: left;
+const Header = styled.div`
+  background-color: #aaa;
+  width: 100%;
+  position: absolute;
+  top: 106px;
+  right: 0;
+  height: 90px;
+  border-bottom: none;
+  box-sizing: border-box;
+  padding: 25px 24% 0;
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
 `;
+const HeaderTab = styled.div`
+  box-sizing: border-box;
+  cursor: pointer;
+  display: block;
+  font-size: 16px;
+  font-stretch: normal;
+  font-style: normal;
+  font-weight: 300;
+  margin: 0 5px;
+  min-width: 150px;
+  padding: 20px;
+  background-color: #f7f7f7;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 25%);
+  color: #777;
+`;
+
 const InnerWrap = styled.div`
   width: 100%;
   padding: 25px;
-  margin-top: 14px;
+  margin-top: 35px;
   position: relative;
   background-color: #f7f7f7;
-  min-height: 630px;
-  border-radius: 10px;
+  min-height: 600px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
 `;
 const StyledDialog = withStyles({
   root: {
@@ -51,27 +73,32 @@ const StyledDialog = withStyles({
   paper: {
     background: `url(${LoginBGPNG}) no-repeat transparent`,
     backgroundSize: "cover",
-    borderRadius: "15px",
-    border: "solid 1px #ffffff",
+    borderRadius: "5px",
     width: "420px",
   },
 })(Dialog);
 const DialogContainer = styled.div`
-  padding: 0px 32px 30px 32px;
+  padding: 27px 32px;
 
   display: table;
 `;
 const DialogCloseIconContainer = styled.div`
-  background: url(${IconLoginClosePNG}) no-repeat center;
+  //background: url(${IconLoginClosePNG}) no-repeat center;
   width: 50px;
   height: 100%;
   float: right;
-  &:hover {
-    cursor: pointer;
-  }
+  position: absolute;
+  right: 5px;
+  top: 0px;
+  user-select: none;
+  cursor: pointer;
+  font-size: 24px;
+  padding: 8px 12px;
+  color: #fff;
 `;
 const DialogHeader = styled.div`
   height: 50px;
+  background-color: #0091fe;
 `;
 const DialogHeadertitle = styled.div`
   text-align: center;
@@ -80,7 +107,7 @@ const DialogHeadertitle = styled.div`
   float: left;
   font-size: 18px;
   font-weight: bold;
-  color: ${({ theme }) => theme.secondary};
+  color: #ffffff;
   width: 320px;
 `;
 class Inbox extends Component {
@@ -110,6 +137,7 @@ class Inbox extends Component {
     if (this.props.token != null) {
       this.GetInboxList(0);
     }
+    console.log(this.props);
   }
   componentDidUpdate(preProps) {
     if (preProps.token == null && this.props.token != null) {
@@ -143,41 +171,41 @@ class Inbox extends Component {
   };
   render() {
     return (
-      <Container>
-        <Title>
-          <TitleIcon></TitleIcon>
-          {i18n.t("inbox.title")}
-        </Title>
-
-        <InnerWrap>
-          <List
-            inbox={this.props.inbox}
-            page={this.state.page}
-            rows={this.state.inbox.list}
-            total={this.state.inbox.count}
-            selected={this.state.selected}
-            onhandleChangePage={this.handleChangePage}
-            onhandleRowClick={this.handleRowClick}
-            onhandleSelectedChange={this.handleSelectedChange}
-          ></List>
-        </InnerWrap>
-        <StyledDialog
-          open={this.state.openDialog}
-          onClose={this.handleCloseDialog}
-          onEntering={() => this.props.showDialog(true)}
-          onExited={() => this.props.showDialog(false)}
-        >
-          <DialogHeader>
-            <DialogHeadertitle>{i18n.t("inbox.title")}</DialogHeadertitle>
-            <DialogCloseIconContainer
-              onClick={this.handleCloseDialog}
-            ></DialogCloseIconContainer>
-          </DialogHeader>
-          <DialogContainer>
-            <Details inbox={this.state.selectedRecord}></Details>
-          </DialogContainer>
-        </StyledDialog>
-      </Container>
+      <React.Fragment>
+        <Header>
+          <HeaderTab>{i18n.t("inbox.title")}</HeaderTab>
+        </Header>
+        <Container>
+          <InnerWrap>
+            <List
+              inbox={this.props.inbox}
+              page={this.state.page}
+              rows={this.state.inbox.list}
+              total={this.state.inbox.count}
+              selected={this.state.selected}
+              onhandleChangePage={this.handleChangePage}
+              onhandleRowClick={this.handleRowClick}
+              onhandleSelectedChange={this.handleSelectedChange}
+            ></List>
+          </InnerWrap>
+          <StyledDialog
+            open={this.state.openDialog}
+            onClose={this.handleCloseDialog}
+            onEntering={() => this.props.showDialog(true)}
+            onExited={() => this.props.showDialog(false)}
+          >
+            <DialogHeader>
+              <DialogHeadertitle>{i18n.t("inbox.title")}</DialogHeadertitle>
+              <DialogCloseIconContainer onClick={this.handleCloseDialog}>
+                ✖
+              </DialogCloseIconContainer>
+            </DialogHeader>
+            <DialogContainer>
+              <Details inbox={this.state.selectedRecord}></Details>
+            </DialogContainer>
+          </StyledDialog>
+        </Container>
+      </React.Fragment>
     );
   }
 }

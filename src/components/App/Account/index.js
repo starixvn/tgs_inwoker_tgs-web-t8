@@ -50,6 +50,7 @@ const Container = styled.div`
 const InnerContainer = styled.div`
   margin: 35px auto;
   width: 1200px;
+  min-height: 690px;
   overflow: auto;
   //background-color: rgba(255, 255, 255, 0.8);
   padding-bottom: 15px;
@@ -59,6 +60,7 @@ const Main = styled.div`
   height: 100%;
   border-radius: 5px;
   background-color: #f7f7f7;
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 25%);
 `;
 const LeftMenu = styled.div`
   background-color: #d9d9d9;

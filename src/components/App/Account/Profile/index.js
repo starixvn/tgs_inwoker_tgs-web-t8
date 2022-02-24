@@ -340,7 +340,7 @@ const AllWalletItem = styled.div`
   padding-right: 20px;
 `;
 const AllWalletTitle = styled.div`
-  background-image: linear-gradient(180deg, #20d0ff, #0091fe);
+  background-image: linear-gradient(180deg,#0091fe, #20d0ff);
   border-bottom: 1px solid #ccc;
   box-sizing: border-box;
   color: #fff;
