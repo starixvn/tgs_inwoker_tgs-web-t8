@@ -299,6 +299,34 @@ export const wapT7 = {
   supportBg: "#121315",
 };
 
+export const wapT8 = {
+  appbar: "linear-gradient(to left, #001A75, #3461F9)",
+  loginBody: "#121315",
+  loginText: "#fff",
+  body: "#121315",
+  bodyBackground: "#121315",
+  variant: "wapT6",
+  primary: "#0091fe",
+  primaryRgb: "13, 98, 164",
+  primaryText: "#fff",
+  primaryGradient: "#20d0ff",
+  primaryGradientRgb: "13, 98, 164",
+  primaryHightlight: "#fde73f",
+  secondary: "#0d0d0d",
+  secondaryText: "rgba(0,0,0,0.5)",
+  tertiary: "rgba(255, 255, 255, 0.5)",
+  tertiaryText: "rgba(255, 255, 255, 0.5)",
+  buttonText: "#ffffff",
+  buttonBackground: "#0080FF",
+  buttonText2: "#fff",
+  bottomnav: "#2B2A2A",
+  bottomNavAction: "#fff",
+  tabbar: "#121315",
+  cardText: "#000",
+
+  supportBg: "#121315",
+}
+
 export const themeList = {
   red: themeRed,
   blue: themeBlue,
@@ -309,6 +337,7 @@ export const themeList = {
   wapT5: wapT5,
   wapT6: wapT6,
   wapT7: wapT7,
+  wapT8: wapT8,
   MESS8: MESS8,
   "28BET": MESS8,
 };

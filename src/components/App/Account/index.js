@@ -41,6 +41,7 @@ import BGJPG from "../../../assets/images/bg.jpg";
 import Common from "../../../utils/Common";
 import Affiliate from "./Affiliate";
 import config from "../../../config/config";
+import CardManagement from "./Profile/CardManagement";
 const baseRouteUrl = Common.baseRouteUrl;
 const Container = styled.div`
   width: 100%;
@@ -233,19 +234,35 @@ class Account extends Component {
   };
   handleIDVerifyClick = () => {
     this.props.history.push(
-      "/" + i18n.language + "/account/profile/member_name"
+      "/" + i18n.language + "/account/profile/popup/member_name"
     );
   };
   handlePhoneVerifyClick = () => {
     this.props.history.push(
-      "/" + i18n.language + "/account/profile/member_phone"
+      "/" + i18n.language + "/account/profile/popup/member_phone"
     );
   };
   handleEmailVerifyClick = () => {
     this.props.history.push(
-      "/" + i18n.language + "/account/profile/member_email"
+      "/" + i18n.language + "/account/profile/popup/member_email"
     );
   };
+
+  handleAddCardClick = () => {
+    this.props.history.push(
+      "/" + i18n.language + "/account/bankcard/add"
+    );
+  };
+
+  handleManageCardClick = (cardId) => {
+    this.props.history.push(
+      {
+      pathname: "/" + i18n.language + "/account/bankcard/edit",
+      state: { cardId: cardId}
+      }
+    );
+  };
+
   genImgComponent = (link) => {
     switch (link) {
       case "deposit":
@@ -395,18 +412,30 @@ class Account extends Component {
                       )}
                     />
                   )}
-
+                <Route
+                  exact
+                  path={baseRouteUrl + "/account/profile/:popup?"}
+                  render={(props) => (
+                    <Profile
+                      account={this.props.account}
+                      onhandleCSClick={this.props.onhandleCSClick}
+                      onhandleAddCardClick={this.handleAddCardClick}
+                      onhandleManageCardClick={this.handleManageCardClick}
+                      popup={this.props.match.params.popup}
+                    />
+                  )}
+                />
                   <Route
                     exact
-                    path={baseRouteUrl + "/account/profile/:popup?"}
+                    path={baseRouteUrl + "/account/bankcard/:type"}
                     render={(props) => (
-                      <Profile
+                      <CardManagement
                         account={this.props.account}
                         onhandleCSClick={this.props.onhandleCSClick}
-                        popup={this.props.match.params.popup}
                       />
                     )}
                   />
+
                   {config.features.HaveAffiliateFeature && (
                     <Route
                       exact

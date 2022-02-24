@@ -276,7 +276,6 @@ function Header(props) {
   ];
 
   useEffect(() => {
-    console.log(props.activePage)
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
