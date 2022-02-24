@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import Dialog from "@material-ui/core/Dialog";
 import IconInboxRedPNG from "../../../../assets/images/icon-inbox.png";
+import IconRefreshPNG from "../../../../assets/images/icon-refresh.png";
+
 import LoginBGPNG from "../../../../assets/images/login-bg.png";
 import IconLoginClosePNG from "../../../../assets/images/icon-login-close.png";
 import { withStyles } from "@material-ui/core/styles";
@@ -24,7 +26,7 @@ const Container = styled.div`
   height: auto;
 `;
 
-const Header = styled.div`
+const HeaderContainer = styled.div`
   background-color: #aaa;
   width: 100%;
   position: absolute;
@@ -33,10 +35,13 @@ const Header = styled.div`
   height: 90px;
   border-bottom: none;
   box-sizing: border-box;
-  padding: 25px 24% 0;
-  align-items: center;
+`;
+const Header = styled.div`
+  width: 1200px;
+  margin: 0 auto;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
+  margin-top: 26px;
 `;
 const HeaderTab = styled.div`
   box-sizing: border-box;
@@ -46,7 +51,7 @@ const HeaderTab = styled.div`
   font-stretch: normal;
   font-style: normal;
   font-weight: 300;
-  margin: 0 5px;
+  margin: 0 60px;
   min-width: 150px;
   padding: 20px;
   background-color: #f7f7f7;
@@ -56,6 +61,27 @@ const HeaderTab = styled.div`
   color: #777;
 `;
 
+const RefreshInboxButton = styled.div`
+  width: 28px;
+  height: 29px;
+  border-radius: 4.7px;
+
+  float: left;
+  margin: 25px 25px 0 15px;
+  background-image: linear-gradient(
+    to top,
+    ${({ theme }) => theme.primaryGradient},
+    ${({ theme }) => theme.primary}
+  );
+  &:hover {
+    cursor: pointer;
+  }
+`;
+const RefreshInboxButtonIcon = styled.div`
+  width: 28px;
+  height: 29px;
+  background: url(${IconRefreshPNG}) no-repeat center;
+`;
 const InnerWrap = styled.div`
   width: 100%;
   padding: 25px;
@@ -137,7 +163,6 @@ class Inbox extends Component {
     if (this.props.token != null) {
       this.GetInboxList(0);
     }
-    console.log(this.props);
   }
   componentDidUpdate(preProps) {
     if (preProps.token == null && this.props.token != null) {
@@ -169,12 +194,22 @@ class Inbox extends Component {
       openDialog: true,
     });
   };
+
+  handleRefreshClick = () => {
+    this.GetInboxList(this.state.page);
+  };
+
   render() {
     return (
       <React.Fragment>
-        <Header>
-          <HeaderTab>{i18n.t("inbox.title")}</HeaderTab>
-        </Header>
+        <HeaderContainer>
+          <Header>
+            <HeaderTab>{i18n.t("inbox.title")}</HeaderTab>
+            <RefreshInboxButton onClick={() => this.handleRefreshClick()}>
+              <RefreshInboxButtonIcon></RefreshInboxButtonIcon>
+            </RefreshInboxButton>
+          </Header>
+        </HeaderContainer>
         <Container>
           <InnerWrap>
             <List
