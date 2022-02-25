@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Grid } from "@material-ui/core";
-
+import DynamicFont from "react-dynamic-font";
 import LimitPopupBigPNG from "../../../../assets/images/limit-popup-big.png";
 
 import IconEditPNG from "../../../../assets/images/icon-edit.png";
@@ -36,6 +36,88 @@ const SubTitle = styled.div`
 `;
 const SelectionContainer = styled.div`
   margin: 15px 0 0 30px;
+`;
+
+const BankCardContainer = styled(SelectionContainer)`
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+`
+
+const BankCardItem = styled.div`
+  width: 240px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  height: 100px;
+  padding-right: 20px;
+  margin-bottom: 20px;
+
+  ${(props)=> props.active && `
+  border: 1px solid #0091FE;
+  &:before {
+    border-style: solid;
+    height: 0;
+    position: absolute;
+    top: 0;
+    width: 0;
+    z-index: 2;
+    border-width: 0 35px 35px;
+    color: #fff;
+    font-size: 12px;
+    left: 0;
+    text-shadow: 0 1px 2px rgb(0 0 0 / 30%);
+    transform: translate3d(197px,-12px,0) scale3d(0.5,0.5,1) rotate(45deg);
+    border-color: transparent transparent #0091FE;
+    content: "";
+  }
+  `}
+`;
+const BankCardTitle = styled.div`
+  background-image: linear-gradient(180deg, #787878, #3c3b3b);
+  border-bottom: 1px solid #ccc;
+  box-sizing: border-box;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  height: 100px;
+  justify-content: center;
+  padding: 0 16px;
+  position: relative;
+  width: 105px;
+  font-size: 14px;
+  &:after {
+    border-bottom: 99px solid #fff;
+    border-left: 16px solid transparent;
+    content: "";
+    height: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+`;
+const BankCardInfo = styled.div`
+  flex: 1;
+  padding-left: 10px;
+`;
+const BankCardAccount = styled.div`
+  color: #777;
+  margin: 10px 0 4px;
+`;
+const BankCardNumber = styled.div`
+  color: #ccc;
+  word-break: break-all;
+  font-size: 14px;
+`;
+const BankCardType = styled.div`
+  color: #ccc;
+  font-size: 14px;
 `;
 
 const BankCardButton = styled(Grid)`
@@ -164,6 +246,28 @@ class Main extends Component {
       this.setState({ ...this.state, disabled: false });
     }, 1000);
   };
+
+  handleFilterBankNumber = (item) => {
+    let last4Digits = "";
+    if (item.banktype === "ThirdParty" || item.banktype === "FPS") {
+      if (item.detail.phone) {
+        last4Digits = item.detail.phone.slice(-4);
+        return last4Digits.padStart(item.detail.phone.length, "*");
+      } else if (item.detail.address) {
+        last4Digits = item.detail.address.slice(-4);
+        return last4Digits.padStart(item.detail.address.length, "*");
+      }
+    } else {
+      if (item.detail.bankAccount) {
+        last4Digits = item.detail.bankAccount.slice(-4);
+        return last4Digits.padStart(item.detail.bankAccount.length, "*");
+      } else if (item.detail.address) {
+        last4Digits = item.detail.address.slice(-4);
+        return last4Digits.padStart(item.detail.address.length, "*");
+      }
+    }
+  };
+
   render() {
     return (
       <>
@@ -172,61 +276,81 @@ class Main extends Component {
 
           <SubTitle>{i18n.t("withdrawal.msgEnterBank")}</SubTitle>
         </SubHeaderContainer>
-        <SelectionContainer>
+        <BankCardContainer>
           {this.props.cardList.map((item, index) => {
             return (
-              <BankCardButton
-                key={index}
-                active={index === this.state.selectedCardIndex}
+              <BankCardItem 
+              key={index} 
+              active={index === this.state.selectedCardIndex}
                 onClick={() => this.handleSelectCardChange(index)}
-                container
-                direction="row"
-                justifyContent="flex-start"
-                alignItems="center"
               >
-                <BankCardButtonIcon items></BankCardButtonIcon>
-                <BankCardButtonLabel items>
-                  {i18n.t("withdrawal.bankCard")}
-                </BankCardButtonLabel>
-                <BankCardButtonCardNoHL items>
-                  {(() => {
-                    if (
-                      item.banktype === "ThirdParty" ||
-                      item.banktype === "FPS"
-                    ) {
-                      if (item.detail.phone) {
-                        return item.detail.phone.substring(
-                          item.detail.phone.length - 4,
-                          item.detail.phone.length
-                        );
-                      } else if (item.detail.address) {
-                        return item.detail.address.substring(
-                          item.detail.address.length - 4,
-                          item.detail.address.length
-                        );
-                      }
-                    } else {
-                      if (item.detail.bankAccount) {
-                        return item.detail.bankAccount.substring(
-                          item.detail.bankAccount.length - 4,
-                          item.detail.bankAccount.length
-                        );
-                      } else if (item.detail.address) {
-                        return item.detail.address.substring(
-                          item.detail.address.length - 4,
-                          item.detail.address.length
-                        );
-                      }
-                    }
-                  })()}
-                </BankCardButtonCardNoHL>
-                <BankCardButtonCardNo items>
-                  {i18n.t("withdrawal.tail")}
-                </BankCardButtonCardNo>
-              </BankCardButton>
+              <BankCardTitle>{i18n.t("withdrawal.bankCard")}</BankCardTitle>
+              <BankCardInfo>
+                <BankCardNumber>
+                  <DynamicFont content={this.handleFilterBankNumber(item)}>
+                  </DynamicFont>
+                </BankCardNumber>
+                <BankCardAccount>{i18n.t("deposit.details.account")}</BankCardAccount>
+                <BankCardType>
+                  {item.banktype === "bank"
+                    ? item.detail.bankName
+                    : item.banktype}
+                </BankCardType>
+              </BankCardInfo>
+            </BankCardItem>
+
+              // <BankCardButton
+              //   key={index}
+              //   active={index === this.state.selectedCardIndex}
+              //   onClick={() => this.handleSelectCardChange(index)}
+              //   container
+              //   direction="row"
+              //   justifyContent="flex-start"
+              //   alignItems="center"
+              // >
+              //   <BankCardButtonIcon items></BankCardButtonIcon>
+              //   <BankCardButtonLabel items>
+              //     {i18n.t("withdrawal.bankCard")}
+              //   </BankCardButtonLabel>
+              //   <BankCardButtonCardNoHL items>
+              //     {(() => {
+              //       if (
+              //         item.banktype === "ThirdParty" ||
+              //         item.banktype === "FPS"
+              //       ) {
+              //         if (item.detail.phone) {
+              //           return item.detail.phone.substring(
+              //             item.detail.phone.length - 4,
+              //             item.detail.phone.length
+              //           );
+              //         } else if (item.detail.address) {
+              //           return item.detail.address.substring(
+              //             item.detail.address.length - 4,
+              //             item.detail.address.length
+              //           );
+              //         }
+              //       } else {
+              //         if (item.detail.bankAccount) {
+              //           return item.detail.bankAccount.substring(
+              //             item.detail.bankAccount.length - 4,
+              //             item.detail.bankAccount.length
+              //           );
+              //         } else if (item.detail.address) {
+              //           return item.detail.address.substring(
+              //             item.detail.address.length - 4,
+              //             item.detail.address.length
+              //           );
+              //         }
+              //       }
+              //     })()}
+              //   </BankCardButtonCardNoHL>
+              //   <BankCardButtonCardNo items>
+              //     {i18n.t("withdrawal.tail")}
+              //   </BankCardButtonCardNo>
+              // </BankCardButton>
             );
           })}
-          <ManageCardButton
+          {/* <ManageCardButton
             onClick={this.props.onhandleManageCardClick}
             container
             direction="row"
@@ -235,8 +359,8 @@ class Main extends Component {
           >
             <ManageCardButtonIcon items></ManageCardButtonIcon>
             <Grid items> {i18n.t("withdrawal.manageBank")}</Grid>
-          </ManageCardButton>
-        </SelectionContainer>
+          </ManageCardButton> */}
+        </BankCardContainer>
         <SplitLine></SplitLine>
 
         <SubHeaderContainer>

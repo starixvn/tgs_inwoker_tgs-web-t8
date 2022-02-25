@@ -8,17 +8,17 @@ import Loading from "../../Loading";
 import NameVerification from "../../Share/NameVerification";
 // import PassSetting from "./PassSetting";
 
-import AddCard from "./AddCard";
-import AddCardSuccess from "./AddCardSuccess";
+import AddCard from "../Profile/AddCard";
+import AddCardSuccess from "../Profile/AddCardSuccess";
 import CardManage from "./CardManage";
 import Main from "./Main";
 import Success from "./Success";
 import config from "../../../../config/config";
 import ErrorSwitcher from "../../../../utils/ErrorSwitcher";
 
-import {walletAction} from "../../../../api-services/actions/walletAction";
-import {WalletService} from "../../../../api-services/services/WalletService";
-import {RESET_WALLETRESULT} from "../../../../api-services/constant/actionType";
+import { walletAction } from "../../../../api-services/actions/walletAction";
+import { WalletService } from "../../../../api-services/services/WalletService";
+import { RESET_WALLETRESULT } from "../../../../api-services/constant/actionType";
 import { withSnackbar } from "notistack";
 import i18n from "../../../../utils/i18n";
 
@@ -30,20 +30,26 @@ const Container = styled.div`
   min-height: 611px;
 
 `;
+const Header = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
+  height: 38px;
+  margin-bottom: 10px;
+  padding: 0 10px 10px;
+`;
 const Title = styled.div`
-  color: ${({ theme }) => theme.secondary};
+  align-items: baseline;
+  display: flex;
+  & h3 {
+    color: ${({ theme }) => theme.secondary};
+    font-size: 24px;
+    font-weight: 400;
+  }
 `;
-const TitleIcon = styled.div`
-  width: 34px;
-  height: 24px;
 
-  background: url(${IconWithdrawRedPNG}) no-repeat left center;
-  background-size: 24px 24px;
-
-  float: left;
-`;
 const InnerWrap = styled.div`
-  width: 935px;
   min-height: 532px;
   margin-top: 18px;
   box-sizing: border-box;
@@ -362,10 +368,12 @@ class Withdrawal extends Component {
   render() {
     return (
       <Container>
-        <Title>
-          <TitleIcon></TitleIcon>
-          {i18n.t("withdrawal.title")}
-        </Title>
+        <Header>
+          <Title>
+            <h3>{i18n.t("withdrawal.title")}</h3>
+          </Title>
+        </Header>
+
         <InnerWrap>
           {(() => {
             if (this.props.account.loading === false) {
@@ -401,7 +409,7 @@ class Withdrawal extends Component {
                     return (
                       <AddCardSuccess
                         onhandleBindCardClick={this.handleBindCardClick}
-                        onhandleGoWithdrawClick={this.handleGoWithdrawClick}
+                        onhandleBackClick={this.handleGoWithdrawClick}
                         onhandleCSClick={this.handleCSClick}
                       ></AddCardSuccess>
                     );

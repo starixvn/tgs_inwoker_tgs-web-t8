@@ -863,8 +863,8 @@ class Profile extends Component {
           </InnerWrap>
           <Header>
             <Title>
-              <h3>優惠資訊</h3>
-              {/* joint promo */}
+              <h3>{i18n.t("promotion.title")}</h3>
+              {/* 優惠資訊 joint promo */}
             </Title>
           </Header>
           <InnerWrap></InnerWrap>
@@ -874,24 +874,25 @@ class Profile extends Component {
             {this.props.wallet.bankCardList.map((item, index) => {
               return (
                 <BankCardItem key={index}>
-                  <BankCardTitle>銀行卡資料</BankCardTitle>
+                  <BankCardTitle>{i18n.t("withdrawal.bankCard")}</BankCardTitle>
                   <BankCardInfo>
                     <BankCardNumber>
-                      {this.handleFilterBankNumber(item)}
+                    <DynamicFont content={this.handleFilterBankNumber(item)}>
+                    </DynamicFont>
                     </BankCardNumber>
-                    <BankCardAccount> Account</BankCardAccount>
+                    <BankCardAccount> {i18n.t("deposit.details.account")}</BankCardAccount>
                     <BankCardType>
                       {item.banktype === "bank"
                         ? item.detail.bankName
                         : item.banktype}
                     </BankCardType>
                   </BankCardInfo>
-                  <BankCardAction onClick={()=>{this.handleManageCard(item.id);}}>詳細</BankCardAction>
+                  <BankCardAction onClick={()=>{this.handleManageCard(item.id);}}>{i18n.t("card.checkDetails")}</BankCardAction>
                 </BankCardItem>
               );
             })}
             <BankCardItem>
-              <BankCardTitle>銀行卡資料</BankCardTitle>
+              <BankCardTitle>{i18n.t("withdrawal.bankCard")}</BankCardTitle>
               <BankCardAdd onClick={()=>{this.handleAddCard();}}>
                 <BankCardAddIcon></BankCardAddIcon>
                 <BankCardAddText>{i18n.t("card.msgAddCard")}</BankCardAddText>
