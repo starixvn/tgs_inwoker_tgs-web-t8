@@ -48,7 +48,7 @@ const BankCardContainer = styled(SelectionContainer)`
 const BankCardItem = styled.div`
   width: 240px;
   background-color: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid ${(props)=> props.active? props.theme.primary :`#ccc`};
   border-radius: 2px;
   overflow: hidden;
   position: relative;
@@ -61,27 +61,27 @@ const BankCardItem = styled.div`
   margin-bottom: 20px;
 
   ${(props)=> props.active && `
-  border: 1px solid #0091FE;
-  &:before {
-    border-style: solid;
-    height: 0;
-    position: absolute;
-    top: 0;
-    width: 0;
-    z-index: 2;
-    border-width: 0 35px 35px;
-    color: #fff;
-    font-size: 12px;
-    left: 0;
-    text-shadow: 0 1px 2px rgb(0 0 0 / 30%);
-    transform: translate3d(197px,-12px,0) scale3d(0.5,0.5,1) rotate(45deg);
-    border-color: transparent transparent #0091FE;
-    content: "";
-  }
+  // border: 1px solid #0091FE;
+  // &:before {
+  //   border-style: solid;
+  //   height: 0;
+  //   position: absolute;
+  //   top: 0;
+  //   width: 0;
+  //   z-index: 2;
+  //   border-width: 0 35px 35px;
+  //   color: #fff;
+  //   font-size: 12px;
+  //   left: 0;
+  //   text-shadow: 0 1px 2px rgb(0 0 0 / 30%);
+  //   transform: translate3d(197px,-12px,0) scale3d(0.5,0.5,1) rotate(45deg);
+  //   border-color: transparent transparent #0091FE;
+  //   content: "";
+  // }
   `}
 `;
 const BankCardTitle = styled.div`
-  background-image: linear-gradient(180deg, #787878, #3c3b3b);
+  background-image: ${(props)=> props.active?`linear-gradient(180deg, ${props.theme.primary}, ${props.theme.primaryGradient})`:`linear-gradient(180deg, #787878, #3c3b3b)`};
   border-bottom: 1px solid #ccc;
   box-sizing: border-box;
   color: #fff;
@@ -283,7 +283,7 @@ class Main extends Component {
               active={index === this.state.selectedCardIndex}
                 onClick={() => this.handleSelectCardChange(index)}
               >
-              <BankCardTitle>{i18n.t("withdrawal.bankCard")}</BankCardTitle>
+              <BankCardTitle active={index === this.state.selectedCardIndex}>{i18n.t("withdrawal.bankCard")}</BankCardTitle>
               <BankCardInfo>
                 <BankCardNumber>
                   <DynamicFont content={this.handleFilterBankNumber(item)}>
