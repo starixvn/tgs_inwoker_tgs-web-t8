@@ -93,6 +93,7 @@ const SliderImgButton = styled.div`
   line-height: 2em;
   &:hover {
     cursor: pointer;
+    background-color: ${(props)=> props.theme.primary};
   }
   display: none;
   transform: translate(-27px, 195px);

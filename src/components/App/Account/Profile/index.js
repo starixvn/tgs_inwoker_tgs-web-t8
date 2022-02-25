@@ -409,7 +409,6 @@ const StyledDialog = withStyles({
     boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
   },
   paper: {
-    background: `url(${LoginBGPNG}) no-repeat transparent`,
     backgroundSize: "cover",
     borderRadius: "5px",
     width: "420px",

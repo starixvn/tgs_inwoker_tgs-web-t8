@@ -45,7 +45,7 @@ import CardManagement from "./Profile/CardManagement";
 const baseRouteUrl = Common.baseRouteUrl;
 const Container = styled.div`
   width: 100%;
-  background: #2c2c2c; //url(${BGJPG});
+  background: #e7e7e7; //url(${BGJPG});
 `;
 const InnerContainer = styled.div`
   margin: 35px auto;
