@@ -48,7 +48,7 @@ class ManageCard extends Component {
       labelList: {
         name: i18n.t("profile.nameVerify.title"),
         username: i18n.t("profile.nameVerify.title"),
-        phone: i18n.t("profile.nameVerify.title"),
+        phone: i18n.t("profile.phone.title"),
         bankName: i18n.t("card.addCard.BankName"),
         bankBranch: i18n.t("card.addCard.branch"),
         bankAccount: i18n.t("card.addCard.BankAccountName"),

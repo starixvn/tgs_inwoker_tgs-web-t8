@@ -99,7 +99,7 @@ const ContentButton = styled.div`
   color: #fff;
   margin-right: 5px;
   border-radius: 6px;
-  background-color: #20d0ff;
+  background-color: ${(props)=>props.theme.primary};
   &:hover {
     cursor: pointer;
     filter: grayscale(1);

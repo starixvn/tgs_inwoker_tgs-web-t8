@@ -17,20 +17,29 @@ const SuccessMessage = styled.div`
   text-align: center;
   margin-top: 20px;
 `;
+
+const ButtonContainer = styled.div`
+  margin: 0 auto;
+  display: table;
+  width: 540px;
+  display: flex;
+  justify-content: space-around;
+`;
 class Success extends Component {
   render() {
     return (
       <Container>
         <ImgSuccess src={SuccessPNG}></ImgSuccess>
         <SuccessMessage>{i18n.t("deposit.uploadSuccess")}</SuccessMessage>
-        <CustomButton
-          name={i18n.t("common.confirm")}
-          width={257}
-          marginTop={30}
-          float={"none"}
-          marginLeft={310}
-          handleClick={this.props.handleRestartClick}
-        ></CustomButton>
+        <ButtonContainer>
+          <CustomButton
+            name={i18n.t("common.confirm")}
+            width={257}
+            marginTop={30}
+            float={"none"}
+            handleClick={this.props.handleRestartClick}
+          ></CustomButton>
+        </ButtonContainer>
       </Container>
     );
   }

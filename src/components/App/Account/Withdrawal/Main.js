@@ -42,6 +42,7 @@ const BankCardContainer = styled(SelectionContainer)`
   display: flex;
   justify-content: flex-start;
   gap: 10px;
+  flex-wrap: wrap;
 `
 
 const BankCardItem = styled.div`
@@ -272,8 +273,6 @@ class Main extends Component {
     return (
       <>
         <SubHeaderContainer>
-          <NumberContainer>1</NumberContainer>
-
           <SubTitle>{i18n.t("withdrawal.msgEnterBank")}</SubTitle>
         </SubHeaderContainer>
         <BankCardContainer>
@@ -361,11 +360,8 @@ class Main extends Component {
             <Grid items> {i18n.t("withdrawal.manageBank")}</Grid>
           </ManageCardButton> */}
         </BankCardContainer>
-        <SplitLine></SplitLine>
-
+        
         <SubHeaderContainer>
-          <NumberContainer>2</NumberContainer>
-
           <SubTitle>{i18n.t("withdrawal.enterAmount")}</SubTitle>
         </SubHeaderContainer>
 
