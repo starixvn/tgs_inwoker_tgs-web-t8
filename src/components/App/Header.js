@@ -77,7 +77,6 @@ const TopRightContainer = styled.div`
 `;
 
 const TimerContainer = styled.div`
-  padding-top: 15px;
   font-family: arial;
   float: left;
   @media (max-width: 950px) {
@@ -89,10 +88,12 @@ const TimerSpan = styled.span`
   color: #f6f6f6;
   float: left;
   min-width: 100px;
+  line-height: 38px;
 `;
 const PhoneNumberSpan = styled.span`
   color: #f6f6f6;
   float: left;
+  line-height: 38px;
 `;
 
 const IconPhone = styled.div`
@@ -533,6 +534,9 @@ class Header extends Component {
   onhandleTransfer = () => {
     this.props.history.push("/" + i18n.language + "/account/transfer");
   };
+  onhandleWithdrawal = () => {
+    this.props.history.push("/" + i18n.language + "/account/withdrawal");
+  };
   onhandleDeposit = () => {
     this.props.history.push("/" + i18n.language + "/account/deposit");
   };
@@ -820,9 +824,9 @@ class Header extends Component {
             )}
             </TopLeftContainer>
             <TopRightContainer>
-              <BtnCS onClick={this.props.onhandleShowCSClick}>
+              {/* <BtnCS onClick={this.props.onhandleShowCSClick}>
                 {i18n.t("common.cs")}
-              </BtnCS>
+              </BtnCS> */}
               {(() => {
                 if (
                   this.props.account.token !== this.props.account.info.token
@@ -838,6 +842,7 @@ class Header extends Component {
                         <MemberContainer
                         onhandleLogout={this.onhandleLogout}
                         onhandleTransfer={this.onhandleTransfer}
+                        onhandleWithdrawal={this.onhandleWithdrawal}
                         onhandleDeposit={this.onhandleDeposit}
                         onhandleInboxClick={this.handleInboxClick}
                         onhandleRefreshBalanceClick={

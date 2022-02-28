@@ -19,6 +19,11 @@ export const rotateKeyFrame = keyframes`
 const Container = styled.div`
   font-size: 14px;
   float: right;
+  width: 600px;
+  display: flex;
+  flex-direction: row-reverse;
+  line-height: 38px;
+  justify-content: space-evenly;
 `;
 const BtnStyle1 = styled.div`
   width: 68px;
@@ -42,14 +47,30 @@ const BtnStyle1 = styled.div`
     cursor: pointer;
   }
 `;
-const BtnLogout = styled.div`
-  color: #ffffff;
-  text-align: right;
-  padding: 10px 0px 0 0;
-  float: right;
+
+const TabButton = styled.div`
+  color: rgba(255, 255, 255, 0.6);
   &:hover {
+    color: rgba(255, 255, 255, 1);
     cursor: pointer;
-    color: #fde73f;
+  }
+`;
+
+const BtnLogout = styled.button`
+  background-color: ${(props) => props.theme.primary};
+  border-radius: 100px;
+  color: #fff;
+  font-size: 13px;
+  line-height: 30px;
+  margin: auto 3px;
+  height: 30px;
+  padding: 0 12px;
+  user-select: none;
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  &:hover {
+    filter: grayscale(0.3);
   }
 `;
 
@@ -59,7 +80,6 @@ const BtnDeposit = styled(BtnStyle1)``;
 const BalanceContainer = styled.div`
   color: #ffffff;
   text-align: right;
-  padding: 10px 10px 0 0;
   float: right;
   &:hover {
     cursor: pointer;
@@ -67,11 +87,11 @@ const BalanceContainer = styled.div`
 `;
 
 const RefreshBalance = styled.div`
-  margin: 2px 0 0 0;
-
   width: 16px;
   height: 16px;
   float: right;
+  margin-top: 12px;
+  margin-left: 5px;
 
   &:hover {
     cursor: pointer;
@@ -90,10 +110,12 @@ const RefreshBalanceIcon = styled.div`
   }
 `;
 const BalanceAmountLabel = styled.span`
-  color: #fde73f;
+  color: #edd092;
+  font-weight: 700;
 `;
 const MemberUserName = styled.span`
-  color: #fde73f;
+  color: #edd092;
+  font-weight: 700;
 `;
 const Spliter = styled.div`
   width: 2px;
@@ -125,7 +147,6 @@ const WelcomeContainer = styled(BalanceContainer)`
   color: #f6f6f6;
   float: right;
   margin-right: 0px;
-  padding: 10px 0 0 0;
   max-width: 300px;
 `;
 const CustomLink = styled(Link)`
@@ -155,14 +176,6 @@ class MemberContainer extends Component {
   render() {
     return (
       <Container>
-        {this.props.game.containTransferWallet && (
-          <BtnTransfer onClick={this.props.onhandleTransfer}>
-            {i18n.t("web.header.transfer")}
-          </BtnTransfer>
-        )}
-        <BtnDeposit onClick={this.props.onhandleDeposit}>
-          {i18n.t("web.header.deposit")}
-        </BtnDeposit>
         <BalanceContainer>
           <span>{i18n.t("web.header.mainAccount")}</span>
           <BalanceAmountLabel onClick={this.props.onhandleTransfer}>
@@ -180,21 +193,14 @@ class MemberContainer extends Component {
             <RefreshBalanceIcon></RefreshBalanceIcon>
           </RefreshBalance>
         </BalanceContainer>
-        <Spliter></Spliter>
-        <InboxContainer onClick={this.props.onhandleInboxClick}>
-          <InboxCountLabel>
-            {this.props.account.info.message_num}
-          </InboxCountLabel>
-          <InboxIconImg src={InboxIconPNG}></InboxIconImg>
-        </InboxContainer>
-        <Spliter></Spliter>
+
         <BtnLogout onClick={this.props.onhandleLogout}>
           {i18n.t("web.header.logout")}
         </BtnLogout>
-        <Spliter></Spliter>
+
         <WelcomeContainer>
           <CustomLink to={"/" + i18n.language + "/account/profile"}>
-            {i18n.t("web.header.welcomBack")}{" "}
+            {/* {i18n.t("web.header.welcomBack")}{" "} */}
             <MemberUserName>
               {this.props.account.info.member_username}(
               {config.features.CustomVIP
@@ -204,6 +210,31 @@ class MemberContainer extends Component {
             </MemberUserName>
           </CustomLink>
         </WelcomeContainer>
+
+        <TabButton onClick={this.props.onhandleDeposit}>
+          {i18n.t("web.account.inbox")} ({this.props.account.info.message_num})
+        </TabButton>
+
+        {this.props.game.containTransferWallet && (
+          <TabButton onClick={this.props.onhandleTransfer}>
+            {i18n.t("web.header.transfer")}
+          </TabButton>
+        )}
+
+        <TabButton onClick={this.props.onhandleWithdrawal}>
+          {i18n.t("web.account.withdrawal")}
+        </TabButton>
+
+        <TabButton onClick={this.props.onhandleDeposit}>
+          {i18n.t("web.header.deposit")}
+        </TabButton>
+
+        {/* <InboxContainer onClick={this.props.onhandleInboxClick}>
+          <InboxCountLabel>
+            {this.props.account.info.message_num}
+          </InboxCountLabel>
+          <InboxIconImg src={InboxIconPNG}></InboxIconImg>
+        </InboxContainer> */}
       </Container>
     );
   }
