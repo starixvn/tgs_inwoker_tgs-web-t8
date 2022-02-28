@@ -28,26 +28,34 @@ import { withSnackbar } from "notistack";
 import i18n from "../../utils/i18n";
 import config from "../../config/config";
 import ForgotPasswordPhone from "./ForgotPasswordPhone";
-const Container = styled.div``;
-const BtnLoginRegister = styled.div`
-  float: right;
-  font-size: 17px;
-  text-align: center;
-  color: #f6f6f6;
-
+const Container = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  height: 38px;
+  width: 250px;
+  justify-content: space-evenly;
+`;
+const BtnLoginRegister = styled.button`
+  background-color: ${(props) => props.theme.primary};
+  border-radius: 100px;
+  color: #fff;
+  font-size: 13px;
+  line-height: 30px;
+  margin: auto 3px;
+  height: 30px;
+  padding: 0 12px;
+  user-select: none;
+  appearance: none;
+  border: 0;
+  cursor: pointer;
   &:hover {
-    color: #fde73f;
-    cursor: pointer;
+    filter: grayscale(0.3);
   }
 `;
-const BtnRegister = styled(BtnLoginRegister)`
-  margin-left: 5px;
-  margin-right: 10px;
-`;
+const BtnRegister = styled(BtnLoginRegister)``;
 
-const BtnLogin = styled(BtnLoginRegister)`
-  margin-right: 5px;
-`;
+const BtnLogin = styled(BtnLoginRegister)``;
 
 const BtnSpliter = styled.div`
   float: right;
@@ -425,23 +433,16 @@ class GuestContainer extends Component {
         {config.features.SMSVerification && (
           <React.Fragment>
             <BtnRegister onClick={() => this.onhandleActivation()}>
-              <BtnLoginRegisterLabel>
-                {i18n.t("web.register.activation")}
-              </BtnLoginRegisterLabel>
+              {i18n.t("web.register.activation")}
             </BtnRegister>
-            <BtnSpliter> | </BtnSpliter>
           </React.Fragment>
         )}
         <BtnRegister onClick={() => this.onhandleRegister()}>
-          <BtnLoginRegisterLabel>
-            {i18n.t("common.register")}
-          </BtnLoginRegisterLabel>
+          {i18n.t("common.register")}
         </BtnRegister>
-        <BtnSpliter> | </BtnSpliter>
+
         <BtnLogin onClick={() => this.handleClickOpenDialog("login")}>
-          <BtnLoginRegisterLabel>
-            {i18n.t("common.login")}
-          </BtnLoginRegisterLabel>
+          {i18n.t("common.login")}
         </BtnLogin>
         <StyledDialog
           open={this.state.openDialog || this.props.ui.showLogin}

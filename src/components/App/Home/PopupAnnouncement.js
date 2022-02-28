@@ -16,7 +16,7 @@ const StyledDialog = withStyles({
 })(Dialog);
 const Container = styled.div`
   width: 506px;
-  background: url(${LoginBGPNG});
+  background: #fff;//url(${LoginBGPNG});
   background-attachment: fixed;
   background-position: center;
   display: table;

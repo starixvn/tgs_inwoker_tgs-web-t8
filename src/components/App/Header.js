@@ -58,7 +58,7 @@ const InnerWrap = styled.div`
   font-size: 14px;
 `;
 
-const TopContainerWrap = styled.div`  
+const TopContainerWrap = styled.div`
   background-color: #2c2c2c;
 `;
 const TopContainer = styled.div`
@@ -70,11 +70,9 @@ const TopContainer = styled.div`
   width: 1280px;
 `;
 
-const TopLeftContainer = styled.div`
-`;
+const TopLeftContainer = styled.div``;
 
-const TopRightContainer = styled.div`
-`;
+const TopRightContainer = styled.div``;
 
 const TimerContainer = styled.div`
   font-family: arial;
@@ -234,12 +232,12 @@ const MouseOverInner = styled.div`
 const GameImg = styled.img`
   height: 130px;
 
-  position: absolute;
-
+  //position: absolute;
+  object-fit: contain;
   //padding-bottom: 10px;
   transition: transform 0.6s;
-  bottom: 35px;
-  right: 0;
+  //bottom: 35px;
+  //right: 0;
   transform-origin: bottom center;
   transform: translateY(-160px) scale(1);
   animation-duration: 200ms;
@@ -249,12 +247,9 @@ const GameImg = styled.img`
   animation-timing-function: ease-in-out;
 `;
 
-const GameTitle = styled.img`
-  height: 66px;
-  position: absolute;
-  bottom: -5px;
-  right: 0;
-  
+const GameTitle = styled.span`
+  color: #fff;
+  font-weight: 700;
 `;
 
 const GameName = styled.div`
@@ -364,6 +359,10 @@ const CustomAppBar = styled(StyledAppBar)`
 const GameFrameWrapper = styled.div`
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 15px;
 `;
 
 const Maintenance = styled.div`
@@ -475,7 +474,7 @@ class Header extends Component {
       open: false,
       dialog: "",
       hideAppBar: false,
-      systemDateTime: moment(new Date()).format("HH:mm:ss"),//YYYY-MM-DD HH:mm:ss
+      systemDateTime: moment(new Date()).format("HH:mm:ss"), //YYYY-MM-DD HH:mm:ss
     };
     this.lastScroll = null;
 
@@ -571,8 +570,8 @@ class Header extends Component {
   };
 
   handleHideAppBar = () => {
-    this.setState({...this.state, hideAppBar: true});
-  }
+    this.setState({ ...this.state, hideAppBar: true });
+  };
 
   RightMenuItem = (to, image, label, imageHover, subMenuImg) => {
     const { classes } = this.props;
@@ -726,6 +725,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.LIVELOBBY],
         sorting: 1,
         sortingHK28: 1,
+        providerList: ["ab", "ag", "evo", "sw", "wm"],
       },
       {
         path: "chess",
@@ -735,6 +735,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.QIPAILOBBY],
         sorting: 2,
         sortingHK28: 3,
+        providerList: ["365", "ky", "ly"],
       },
       {
         path: "sports",
@@ -744,6 +745,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.SPORTS],
         sorting: 3,
         sortingHK28: 2,
+        providerList: ["bc", "saba", "sbo", "tf", "wgfm", "wgvia"],
       },
       {
         path: "esports",
@@ -753,6 +755,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.ESPORTS],
         sorting: 4,
         sortingHK28: 2,
+        providerList: ["imes"],
       },
       {
         path: "lottery",
@@ -762,6 +765,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.LOTTERYLOBBY],
         sorting: 5,
         sortingHK28: 7,
+        providerList: ["tcg_lotto", "tcg_lotto_vn", "tcg_sea", "vr"],
       },
       {
         path: `slots`,
@@ -771,6 +775,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.SLOT],
         sorting: 6,
         sortingHK28: 4,
+        providerList: ["haba", "jdb", "jili", "nt", "pp", "rt", "sw"],
       },
       {
         path: `electron`,
@@ -780,6 +785,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.TABLEGAME],
         sorting: 7,
         sortingHK28: 6,
+        providerList: ["haba", "nt", "pp", "rt", "sw"],
       },
       {
         path: `fish`,
@@ -791,6 +797,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.FISH],
         sorting: 8,
         sortingHK28: 5,
+        providerList: ["bg", "haba", "jdb", "ky", "ly"],
       },
     ];
 
@@ -804,42 +811,44 @@ class Header extends Component {
       <CustomAppBar hide={this.props.hide}>
         <InnerWrap>
           <TopContainerWrap>
-          <TopContainer>
-            <TopLeftContainer>
-            <LinkContainer>
-              <LanguageChanger language={this.props.general.brandLanguage} />
-            </LinkContainer>
-            <TimerContainer>
-              <TimerSpan> (GMT+0800) {this.state.systemDateTime}</TimerSpan>
-            </TimerContainer>
-            {config.features.DisplayPhone && (
-              <TimerContainer style={{ marginLeft: "10px" }}>
-                <IconPhone img={IconPhonePNG}></IconPhone>
-                <PhoneNumberSpan>
-                  {this.props.general.brandsSupport &&
-                    this.props.general.brandsSupport.length >= 1 &&
-                    this.props.general.brandsSupport[0].phone}
-                </PhoneNumberSpan>
-              </TimerContainer>
-            )}
-            </TopLeftContainer>
-            <TopRightContainer>
-              {/* <BtnCS onClick={this.props.onhandleShowCSClick}>
+            <TopContainer>
+              <TopLeftContainer>
+                <LinkContainer>
+                  <LanguageChanger
+                    language={this.props.general.brandLanguage}
+                  />
+                </LinkContainer>
+                <TimerContainer>
+                  <TimerSpan> (GMT+0800) {this.state.systemDateTime}</TimerSpan>
+                </TimerContainer>
+                {config.features.DisplayPhone && (
+                  <TimerContainer style={{ marginLeft: "10px" }}>
+                    <IconPhone img={IconPhonePNG}></IconPhone>
+                    <PhoneNumberSpan>
+                      {this.props.general.brandsSupport &&
+                        this.props.general.brandsSupport.length >= 1 &&
+                        this.props.general.brandsSupport[0].phone}
+                    </PhoneNumberSpan>
+                  </TimerContainer>
+                )}
+              </TopLeftContainer>
+              <TopRightContainer>
+                {/* <BtnCS onClick={this.props.onhandleShowCSClick}>
                 {i18n.t("common.cs")}
               </BtnCS> */}
-              {(() => {
-                if (
-                  this.props.account.token !== this.props.account.info.token
+                {(() => {
+                  if (
+                    this.props.account.token !== this.props.account.info.token
                   ) {
                     return (
                       <GuestContainer
-                      onhandleShowCSClick={this.props.onhandleShowCSClick}
-                      onhandleContactUsClick={this.handleContactUsClick}
+                        onhandleShowCSClick={this.props.onhandleShowCSClick}
+                        onhandleContactUsClick={this.handleContactUsClick}
                       ></GuestContainer>
-                      );
-                    } else {
-                      return (
-                        <MemberContainer
+                    );
+                  } else {
+                    return (
+                      <MemberContainer
                         onhandleLogout={this.onhandleLogout}
                         onhandleTransfer={this.onhandleTransfer}
                         onhandleWithdrawal={this.onhandleWithdrawal}
@@ -848,13 +857,13 @@ class Header extends Component {
                         onhandleRefreshBalanceClick={
                           this.handleRefreshBalanceClick
                         }
-                    ></MemberContainer>
+                      ></MemberContainer>
                     );
-                }
-              })()}{" "}
-            </TopRightContainer>
-          </TopContainer>
-            </TopContainerWrap>
+                  }
+                })()}{" "}
+              </TopRightContainer>
+            </TopContainer>
+          </TopContainerWrap>
           <BottomContainer>
             <LogoContainer
               img={
@@ -889,8 +898,13 @@ class Header extends Component {
                   }
                 }).map((item, index) => {
                   var list = this.props.game.homePageGameList.filter(
-                    (game) => item.gameType.indexOf(game.type) >= 0
+                    (game) =>
+                      item.gameType.indexOf(game.type) >= 0 &&
+                      item.providerList.includes(
+                        game.abbreviation.toLowerCase()
+                      )
                   );
+
                   if (list.length > 0) {
                     return (
                       <RightMenuLI
@@ -1001,12 +1015,15 @@ class Header extends Component {
                                               }
                                             }}
                                           ></GameImg>
-                                          <GameTitle
-                                            index={index}
-                                            src={`${
-                                              process.env.PUBLIC_URL
-                                            }/assets/images/pcHeaderMenu/${item.path}/${game.abbreviation.toLowerCase()}-color.png`}
-                                            alt="">
+                                          <GameTitle index={index}>
+                                            {game.abbreviation.toLowerCase() ===
+                                              "imes" && item.path === "esports"
+                                              ? i18n.t(
+                                                  `${game.abbreviation}.sports`
+                                                )
+                                              : i18n.t(
+                                                  `${game.abbreviation}.${item.path}`
+                                                )}
                                           </GameTitle>
                                         </GameFrameWrapper>
                                       </GameFrame>
@@ -1052,7 +1069,6 @@ class Header extends Component {
                                                 }
                                               }
                                             })()}
-
                                             <GameImg
                                               index={index}
                                               src={`${
@@ -1094,6 +1110,17 @@ class Header extends Component {
                                                 }
                                               }}
                                             ></GameImg>
+                                            <GameTitle index={index}>
+                                              {game.abbreviation.toLowerCase() ===
+                                                "imes" &&
+                                              item.path === "esports"
+                                                ? i18n.t(
+                                                    `${game.abbreviation}.sports`
+                                                  )
+                                                : i18n.t(
+                                                    `${game.abbreviation}.${item.path}`
+                                                  )}
+                                            </GameTitle>
                                           </GameFrameWrapper>
                                         </GameFrame>
                                       );
