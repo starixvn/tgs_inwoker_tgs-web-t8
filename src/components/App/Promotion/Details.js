@@ -94,7 +94,7 @@ const PromoDetailToggleButton = styled.div`
   width: 80px;
   z-index: 10;
   &:after {
-    ${({ isToggled }) => (isToggled ? ` content: "❮";` : ` content: "❯";`)}
+    ${({ isToggled }) => (isToggled ? ` content: "❯";` : ` content: "❮";`)}
     speak: none;
     align-items: center;
     background-color: rgba(239, 239, 239, 0.9);
