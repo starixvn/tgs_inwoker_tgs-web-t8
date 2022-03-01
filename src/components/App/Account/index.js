@@ -32,14 +32,14 @@ import Report from "./Report/index";
 import Transfer from "./Transfer/index";
 import Deposit from "./Deposit/index";
 
-
-import {walletAction} from "../../../api-services/actions/walletAction";
+import { walletAction } from "../../../api-services/actions/walletAction";
 import Withdrawal from "./Withdrawal/index";
 
 import i18n from "../../../utils/i18n";
 import BGJPG from "../../../assets/images/bg.jpg";
 import Common from "../../../utils/Common";
 import Affiliate from "./Affiliate";
+import VIP from "./Vip/index";
 import config from "../../../config/config";
 import CardManagement from "./Profile/CardManagement";
 const baseRouteUrl = Common.baseRouteUrl;
@@ -251,18 +251,14 @@ class Account extends Component {
   };
 
   handleAddCardClick = () => {
-    this.props.history.push(
-      "/" + i18n.language + "/account/bankcard/add"
-    );
+    this.props.history.push("/" + i18n.language + "/account/bankcard/add");
   };
 
   handleManageCardClick = (cardId) => {
-    this.props.history.push(
-      {
+    this.props.history.push({
       pathname: "/" + i18n.language + "/account/bankcard/edit",
-      state: { cardId: cardId}
-      }
-    );
+      state: { cardId: cardId },
+    });
   };
 
   genImgComponent = (link) => {
@@ -349,71 +345,69 @@ class Account extends Component {
           ></Header>
 
           <Main>
-              <Router history={AppHistory}>
-                <Switch>
-                  <Route
-                    exact
-                    path={baseRouteUrl + "/account/deposit/:promotionid?"}
-                    render={(props) => (
-                      <Deposit
-                        token={this.props.account.token}
-                        account={this.props.account}
-                      />
-                    )}
-                  />
-                  <Route
-                    exact
-                    path={baseRouteUrl + "/account/manual/:paymentId"}
-                    render={(props) => (
-                      <Deposit
-                        setActivePage={this.setActivePage}
-                        token={this.props.account.token}
-                        account={this.props.account}
-                      />
-                    )}
-                  />
-                  <Route
-                    exact
-                    path={baseRouteUrl + "/account/withdrawal"}
-                    render={(props) => (
-                      <Withdrawal
-                        token={this.props.account.token}
-                        onhandleClickTab={this.handleClickTab}
-                        onhandleCSClick={this.props.onhandleCSClick}
-                        account={this.props.account}
-                      />
-                    )}
-                  />
-
-                  <Route
-                    exact
-                    path={baseRouteUrl + "/account/inbox"}
-                    render={(props) => (
-                      <Inbox token={this.props.account.token} />
-                    )}
-                  />
-                  <Route
-                    exact
-                    path={baseRouteUrl + "/account/report"}
-                    render={(props) => (
-                      <Report
-                        token={this.props.account.token}
-                        transferwallet={this.props.game.containTransferWallet}
-                      />
-                    )}
-                  />
-                  {this.props.game.containTransferWallet && (
-                    <Route
-                      exact
-                      path={baseRouteUrl + "/account/transfer"}
-                      render={(props) => (
-                        <Transfer
-                          token={this.props.account.token}
-                          getAllGameBalance={this.getAllGameBalance}
-                        />
-                      )}
+            <Router history={AppHistory}>
+              <Switch>
+                <Route
+                  exact
+                  path={baseRouteUrl + "/account/deposit/:promotionid?"}
+                  render={(props) => (
+                    <Deposit
+                      token={this.props.account.token}
+                      account={this.props.account}
                     />
                   )}
+                />
+                <Route
+                  exact
+                  path={baseRouteUrl + "/account/manual/:paymentId"}
+                  render={(props) => (
+                    <Deposit
+                      setActivePage={this.setActivePage}
+                      token={this.props.account.token}
+                      account={this.props.account}
+                    />
+                  )}
+                />
+                <Route
+                  exact
+                  path={baseRouteUrl + "/account/withdrawal"}
+                  render={(props) => (
+                    <Withdrawal
+                      token={this.props.account.token}
+                      onhandleClickTab={this.handleClickTab}
+                      onhandleCSClick={this.props.onhandleCSClick}
+                      account={this.props.account}
+                    />
+                  )}
+                />
+
+                <Route
+                  exact
+                  path={baseRouteUrl + "/account/inbox"}
+                  render={(props) => <Inbox token={this.props.account.token} />}
+                />
+                <Route
+                  exact
+                  path={baseRouteUrl + "/account/report"}
+                  render={(props) => (
+                    <Report
+                      token={this.props.account.token}
+                      transferwallet={this.props.game.containTransferWallet}
+                    />
+                  )}
+                />
+                {this.props.game.containTransferWallet && (
+                  <Route
+                    exact
+                    path={baseRouteUrl + "/account/transfer"}
+                    render={(props) => (
+                      <Transfer
+                        token={this.props.account.token}
+                        getAllGameBalance={this.getAllGameBalance}
+                      />
+                    )}
+                  />
+                )}
                 <Route
                   exact
                   path={baseRouteUrl + "/account/profile/:popup?"}
@@ -427,37 +421,43 @@ class Account extends Component {
                     />
                   )}
                 />
+                <Route
+                  exact
+                  path={baseRouteUrl + "/account/bankcard/:type"}
+                  render={(props) => (
+                    <CardManagement
+                      account={this.props.account}
+                      onhandleCSClick={this.props.onhandleCSClick}
+                    />
+                  )}
+                />
+
+                <Route
+                  exact
+                  path={baseRouteUrl + "/account/vip"}
+                  render={(props) => <VIP token={this.props.account.token} />}
+                />
+
+                {config.features.HaveAffiliateFeature && (
                   <Route
                     exact
-                    path={baseRouteUrl + "/account/bankcard/:type"}
+                    path={baseRouteUrl + "/account/affiliate"}
                     render={(props) => (
-                      <CardManagement
+                      <Affiliate
+                        token={this.props.account.token}
                         account={this.props.account}
                         onhandleCSClick={this.props.onhandleCSClick}
+                        popup={this.props.match.params.popup}
                       />
                     )}
                   />
+                )}
 
-                  {config.features.HaveAffiliateFeature && (
-                    <Route
-                      exact
-                      path={baseRouteUrl + "/account/affiliate"}
-                      render={(props) => (
-                        <Affiliate
-                          token={this.props.account.token}
-                          account={this.props.account}
-                          onhandleCSClick={this.props.onhandleCSClick}
-                          popup={this.props.match.params.popup}
-                        />
-                      )}
-                    />
-                  )}
-
-                  <Redirect
-                    to={"/" + i18n.language + "/account/profile"}
-                  ></Redirect>
-                </Switch>
-              </Router>
+                <Redirect
+                  to={"/" + i18n.language + "/account/profile"}
+                ></Redirect>
+              </Switch>
+            </Router>
           </Main>
         </InnerContainer>
       </Container>

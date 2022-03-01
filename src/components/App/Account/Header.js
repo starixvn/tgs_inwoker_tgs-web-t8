@@ -14,6 +14,7 @@ import IconProfilePNG from "../../../assets/images/icon-profile.png";
 
 import IconBonusPNG from "../../../assets/images/icon-bonus.png";
 import IconInboxPNG from "../../../assets/images/icon-inbox.png";
+import IconVIPPNG from "../../../assets/images/icon-vip-hover.png";
 
 import IconDepositActivePNG from "../../../assets/images/icon-deposit-active.png";
 import IconWithdrawActivePNG from "../../../assets/images/icon-withdraw-active.png";
@@ -23,6 +24,7 @@ import IconProfileActivePNG from "../../../assets/images/icon-profile-active.png
 
 import IconBonusActivePNG from "../../../assets/images/icon-bonus-active.png";
 import IconInboxActivePNG from "../../../assets/images/icon-inbox-active.png";
+import IconVIPActivePNG from "../../../assets/images/icon-vip-active.png";
 
 import i18n from "../../../utils/i18n";
 import Common from "../../../utils/Common";
@@ -265,6 +267,13 @@ function Header(props) {
       canDisplay: config.features.HaveAffiliateFeature,
       img: IconBonusPNG,
       activeImg: IconBonusActivePNG
+    },
+    {
+      path: "vip",
+      title: "VIP",
+      canDisplay: true,
+      img: IconVIPPNG,
+      activeImg: IconVIPActivePNG
     },
     {
       path: "inbox",

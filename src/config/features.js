@@ -20,7 +20,7 @@ const featureList = {
     HaveDownloadFeature: false,
     FloatPanel_CustomTranslation: false,
     DisplayPhone: false,
-    HaveAffiliateFeature: false,
+    HaveAffiliateFeature: true,
     ChangesNotAllowed: false,
     HomePage_CustomSection: false,
     ICVerificationUpload: false,

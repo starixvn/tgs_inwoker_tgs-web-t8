@@ -756,7 +756,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.ESPORTS],
         sorting: 4,
         sortingHK28: 2,
-        providerList: ["imes"],
+        providerList: ["imes","avia","tf"],
       },
       {
         path: "lottery",
