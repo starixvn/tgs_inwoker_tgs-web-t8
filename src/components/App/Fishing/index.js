@@ -85,7 +85,7 @@ const GameItemTitle = styled.div`
 const GameItemActionContainer = styled.div``;
 
 const GameItemButton = styled.button`
-  background-color: #20d0ff;
+  background-color: ${({theme})=>theme.primary};
   border: 0;
   border-radius: 22.5px;
   color: #fff;
@@ -106,7 +106,7 @@ const GameItemButton = styled.button`
 const GameItemJoinGameButton = styled(GameItemButton)`
   margin-top: 18px;
   &:hover {
-    background-color: #1db8e1;
+    filter: grayscale(0.3);
   }
 `;
 

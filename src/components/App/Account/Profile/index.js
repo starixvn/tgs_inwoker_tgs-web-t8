@@ -340,7 +340,7 @@ const AllWalletItem = styled.div`
   padding-right: 20px;
 `;
 const AllWalletTitle = styled.div`
-  background-image: linear-gradient(180deg,#0091fe, #20d0ff);
+  background-image: linear-gradient(180deg, #889ddf,${({ theme }) => theme.primary});
   border-bottom: 1px solid #ccc;
   box-sizing: border-box;
   color: #fff;
@@ -435,7 +435,7 @@ const DialogCloseIconContainer = styled.div`
 `;
 const DialogHeader = styled.div`
   height: 50px;
-  background-color: #0091FE;
+  background-color: ${({theme})=>theme.primary};
 `;
 const DialogHeadertitle = styled.div`
   text-align: center;

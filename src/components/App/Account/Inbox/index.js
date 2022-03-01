@@ -123,7 +123,7 @@ const DialogCloseIconContainer = styled.div`
 `;
 const DialogHeader = styled.div`
   height: 50px;
-  background-color: #0091fe;
+  background-color: ${({theme})=>theme.primary};
 `;
 const DialogHeadertitle = styled.div`
   text-align: center;

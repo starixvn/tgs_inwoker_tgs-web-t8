@@ -45,7 +45,7 @@ const PromoDetailHeaderContainer = styled.div`
 justify-content: flex-end;
 box-sizing: border-box;
 width: 100%;
-background-color: #0091FE
+background-color: ${({theme})=>theme.primary};
 height: 50px;
     padding: 0 20px;`;
 
@@ -136,7 +136,7 @@ const PromoDetailRightContainer = styled.div`
 `;
 
 const PromoDetailJoinButton = styled.button`
-  background-color: #20d0ff;
+  background-color: ${({theme})=>theme.primary};
   border: 0;
   border-radius: 22.5px;
   color: #fff;
@@ -188,7 +188,7 @@ const PromoDetailImage = styled.div`
 `;
 
 const EventTitle = styled.div`
-  color: #0091fe;
+  color: ${({theme})=>theme.primary};;
   margin-bottom: 10px;
   font-size: 16px;
   font-family: Arial;

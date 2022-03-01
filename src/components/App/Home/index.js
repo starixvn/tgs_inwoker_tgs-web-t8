@@ -92,7 +92,7 @@ const FirstSectionItemButton = styled(Grid)`
   transition: all .3s;
   &:hover {
     cursor: pointer;
-    background-color: #20D0FF;
+    background-color: ${({theme})=>theme.primary};
     transition: all .3s;
   }
 `;

@@ -146,7 +146,7 @@ const RightMenuLI = styled.li`
   }
   
   &:hover {
-    color: #20d0ff;
+    color: ${({ theme }) => theme.primary};
     cursor: pointer;
   }
   background-repeat: no-repeat;
@@ -154,7 +154,7 @@ const RightMenuLI = styled.li`
   ${(props) =>
     props.active
       ? `
-  color: #20d0ff;
+  color: ${props.theme.primary};
 
   `
       : `

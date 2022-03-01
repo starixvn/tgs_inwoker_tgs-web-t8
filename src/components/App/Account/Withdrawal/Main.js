@@ -60,25 +60,6 @@ const BankCardItem = styled.div`
   padding-right: 20px;
   margin-bottom: 20px;
 
-  ${(props)=> props.active && `
-  // border: 1px solid #0091FE;
-  // &:before {
-  //   border-style: solid;
-  //   height: 0;
-  //   position: absolute;
-  //   top: 0;
-  //   width: 0;
-  //   z-index: 2;
-  //   border-width: 0 35px 35px;
-  //   color: #fff;
-  //   font-size: 12px;
-  //   left: 0;
-  //   text-shadow: 0 1px 2px rgb(0 0 0 / 30%);
-  //   transform: translate3d(197px,-12px,0) scale3d(0.5,0.5,1) rotate(45deg);
-  //   border-color: transparent transparent #0091FE;
-  //   content: "";
-  // }
-  `}
 `;
 const BankCardTitle = styled.div`
   background-image: ${(props)=> props.active?`linear-gradient(180deg, ${props.theme.primary}, ${props.theme.primaryGradient})`:`linear-gradient(180deg, #787878, #3c3b3b)`};

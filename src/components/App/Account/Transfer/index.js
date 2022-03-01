@@ -86,7 +86,7 @@ const AllWalletItem = styled.div`
   padding-right: 20px;
 `;
 const AllWalletTitle = styled.div`
-  background-image: linear-gradient(180deg,#0091fe, #20d0ff);
+  background-image: linear-gradient(180deg,#889ddf, ${({ theme }) => theme.primary});
   border-bottom: 1px solid #ccc;
   box-sizing: border-box;
   color: #fff;
@@ -211,7 +211,7 @@ const GameTranferLeftWrap = styled.div`
   width: 100px;
   padding: 10px 0;
   float: left;
-  background-image: linear-gradient(180deg,#0091fe,#20d0ff);
+  background-image: linear-gradient(180deg,#889ddf, ${({ theme }) => theme.primary});
   border-bottom: 1px solid #ccc;
   box-sizing: border-box;
   display: flex;

@@ -199,6 +199,7 @@ const GameTabButton = styled.div`
       background-position: center;
       background-size: contain;
     filter: brightness(500%) grayscale(100%);
+    transition: filter 3s;
   }
   &:hover ${GameTabAll} {
     background: url(${SlotAllInactivePNG})
@@ -206,6 +207,7 @@ const GameTabButton = styled.div`
       background-position: center;
       background-size: contain;
     filter: brightness(500%) grayscale(100%);
+    transition: filter 1s;
   }
 `;
 
@@ -237,7 +239,6 @@ const CategoryContainer = styled.div`
   &:hover {
     cursor: pointer;
     color: #272727;
-    //background-color: #20d0ff;
   }
 
   ${(props) =>

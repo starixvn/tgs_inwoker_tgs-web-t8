@@ -298,7 +298,7 @@ const RightMenuLI = styled.li`
     display: block;
     width: 0;
     height: 4px;
-    background: #20d0ff; //${({ theme }) => theme.primary};
+    background: ${({ theme }) => theme.primary};
     border-radius: 1px;
     position: absolute;
     bottom: 0;
@@ -309,7 +309,7 @@ const RightMenuLI = styled.li`
   
   &:hover {
     //border-bottom: solid 4px #20d0ff;
-    color: #20d0ff;
+    color: ${({ theme }) => theme.primary};
     cursor: pointer;
     &:after {
       width: 80%;
@@ -330,7 +330,7 @@ const RightMenuLI = styled.li`
     props.active
       ? `
   //border-bottom: solid 4px #20d0ff;
-  color: #20d0ff;
+  color: ${props.theme.primary};
   &:after {
     width: 80%;
   }
@@ -725,7 +725,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.LIVELOBBY],
         sorting: 1,
         sortingHK28: 1,
-        providerList: ["ab", "ag", "evo", "sw", "wm"],
+        providerList: ["ab", "ag","bg", "evo", "sw", "wm"],
       },
       {
         path: "chess",
@@ -785,7 +785,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.TABLEGAME],
         sorting: 7,
         sortingHK28: 6,
-        providerList: ["haba", "nt", "pp", "rt", "sw"],
+        providerList: ["avia","haba" ,"imes", "nt", "pp", "rt", "sw","tf"],
       },
       {
         path: `fish`,
