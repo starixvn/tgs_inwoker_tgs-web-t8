@@ -187,9 +187,6 @@ const muiTheme = createMuiTheme({
         color: "#ffffff !important",
         minWidth: "210px",
         height: "64px",
-        "&.Mui-selected": {
-          color: "#FDE740  !important",
-        },
       },
     },
   },

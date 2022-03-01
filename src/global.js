@@ -58,5 +58,18 @@ export const GlobalStyles = createGlobalStyle`
   }
   
 
+  .MuiTab-root.Mui-selected{
+    
+  }
+
+  .MuiTabs-root .MuiTabs-indicator{
+    background: ${({ theme }) => theme.gameTab};
+  }
+
+  .MuiTabs-root .MuiTabs-indicator:before{
+    border-color: transparent transparent ${({ theme }) =>
+      theme.gameTab} transparent;
+  }
+
 
 `;

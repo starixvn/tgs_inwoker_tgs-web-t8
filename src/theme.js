@@ -25,6 +25,7 @@ export const themeRed = {
     process.env.PUBLIC_URL + `/assets/images/wapp/resource/T2/supportbg.png`
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  balance: "#fde73f",
 };
 
 export const themeBlue = {
@@ -54,6 +55,7 @@ export const themeBlue = {
     process.env.PUBLIC_URL + `/assets/images/wapp/resource/T2/supportbg.png`
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  balance: "#fde73f",
 };
 
 export const themeBlack = {
@@ -83,6 +85,7 @@ export const themeBlack = {
     process.env.PUBLIC_URL + `/assets/images/wapp/resource/T2/supportbg.png`
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  balance: "#fde73f",
 };
 export const MESS8 = {
   variant: "red",
@@ -107,6 +110,7 @@ export const MESS8 = {
   bottomNavAction: "#404040",
   body: "#F0EFF5",
   bodyBackground: "#F0EFF5",
+  balance: "#fde73f",
 };
 export const wapT2 = {
   appbar: "#C69C6A",
@@ -138,6 +142,7 @@ export const wapT2 = {
     process.env.PUBLIC_URL + `/assets/images/wapp/resource/T2/supportbg.png`
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  balance: "#fde73f",
 };
 
 export const wapT3 = {
@@ -170,6 +175,7 @@ export const wapT3 = {
     process.env.PUBLIC_URL + `/assets/images/wapp/resource/T3/supportbg.png`
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  balance: "#fde73f",
 };
 
 export const wapT4 = {
@@ -188,6 +194,7 @@ export const wapT4 = {
     process.env.PUBLIC_URL + `/assets/images/wapp/resource/T4/background.png`
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  balance: "#fde73f",
 
   primary: "#ff9900",
   primaryRgb: "27, 134, 199",
@@ -211,6 +218,7 @@ export const wapT4 = {
     process.env.PUBLIC_URL + `/assets/images/wapp/resource/T4/supportbg.png`
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  balance: "#fde73f",
 };
 
 export const wapT5 = {
@@ -241,6 +249,7 @@ export const wapT5 = {
     process.env.PUBLIC_URL + `/assets/images/wapp/resource/T5/supportbg.png`
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  balance: "#fde73f",
 };
 
 export const wapT6 = {
@@ -267,8 +276,9 @@ export const wapT6 = {
   bottomNavAction: "#fff",
   tabbar: "#121315",
   cardText: "#000",
-
+  balance: "#fde73f",
   supportBg: "#121315",
+  gameTab: "#fff",
 };
 
 export const wapT7 = {
@@ -295,37 +305,43 @@ export const wapT7 = {
   bottomNavAction: "#fff",
   tabbar: "#121315",
   cardText: "#000",
-
+  balance: "#fde73f",
   supportBg: "#121315",
+  gameTab: "#fff",
 };
 
 export const wapT8 = {
-  appbar: "linear-gradient(to left, #001A75, #3461F9)",
-  loginBody: "#121315",
-  loginText: "#fff",
-  body: "#121315",
-  bodyBackground: "#121315",
-  variant: "wapT6",
-  primary: "#0091fe",
-  primaryRgb: "13, 98, 164",
-  primaryText: "#fff",
-  primaryGradient: "#20d0ff",
-  primaryGradientRgb: "13, 98, 164",
+  appbar: "#fff",
+  loginBody: "#F0EFF5",
+  loginText: "#676767",
+  body: "#F0EFF5",
+  bodyBackground: "#F0EFF5",
+  variant: "wapT8",
+  primary: "#658AF8",
+  primaryRgb: "101, 138, 248",
+  primaryText: "#000",
+  primaryGradient: "#658AF8",
+  primaryGradientRgb: "101, 138, 248",
   primaryHightlight: "#fde73f",
-  secondary: "#0d0d0d",
+  secondary: "#676767",
   secondaryText: "rgba(0,0,0,0.5)",
   tertiary: "rgba(255, 255, 255, 0.5)",
   tertiaryText: "rgba(255, 255, 255, 0.5)",
   buttonText: "#ffffff",
-  buttonBackground: "#0080FF",
+  buttonBackground: "#658AF8",
   buttonText2: "#fff",
-  bottomnav: "#2B2A2A",
-  bottomNavAction: "#fff",
-  tabbar: "#121315",
-  cardText: "#000",
-
-  supportBg: "#121315",
-}
+  bottomnav: "#f5f5f5",
+  balance: "#658AF8",
+  bottomnavrad: "35px 35px 0px 0px",
+  bottomNavAction: "#585858",
+  tabbar: "#fff",
+  cardText: "#676767",
+  supportBg: `url(${
+    process.env.PUBLIC_URL + `/assets/images/wapp/resource/T5/supportbg.png`
+  })
+  no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  gameTab: "#fff",
+};
 
 export const themeList = {
   red: themeRed,
