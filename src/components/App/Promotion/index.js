@@ -111,14 +111,14 @@ const PromotionBannerContainer = styled.div`
   transition: .3s ease;
   background: #fff;
   width: 1200px;
-  height: 200px;
+  height: 486px;
   
   &:hover {
     transform: translateY(10px);
   }
   & img {
     width: 1200px;
-    height: 200px;
+    height: 486px;
   }
 `;
 

@@ -69,6 +69,7 @@ const TopContainer = styled.div`
   padding: 2px 10px;
   font-size: 11px;
   float: right;
+  color: #fff;
 `;
 
 
