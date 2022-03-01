@@ -34,7 +34,6 @@ const Container = styled.div`
   align-items: center;
   height: 38px;
   width: 250px;
-  justify-content: space-evenly;
 `;
 const BtnLoginRegister = styled.button`
   background-color: ${(props) => props.theme.primary};

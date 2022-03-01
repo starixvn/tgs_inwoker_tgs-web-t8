@@ -101,6 +101,7 @@ const IconPhone = styled.div`
   height: 20px;
 `;
 const LinkContainer = styled.div`
+  color: #fff;
   float: left;
   padding: 0px 10px;
   @media (max-width: 950px) {

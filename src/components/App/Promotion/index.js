@@ -118,7 +118,7 @@ const PromotionBannerContainer = styled.div`
   }
   & img {
     width: 1200px;
-    height: 486px;
+    height: 200px;
   }
 `;
 

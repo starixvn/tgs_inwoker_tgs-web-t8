@@ -203,7 +203,6 @@ const styles = {
     transition: "all .3s",
   },
   maxLabel: {
-    transition: "all .3s",
   },
   minLabel: {
     transition: "all .3s",
