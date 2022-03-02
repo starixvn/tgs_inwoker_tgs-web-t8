@@ -1041,9 +1041,12 @@ class Slots extends Component {
           <InnerWrap type={this.state.type}>
             <GameListContainer>
               <DisplayList
+                favGame={this.state.favGame}
                 gameList={list}
                 page={this.state.page}
                 itemsPerPage={this.state.limit}
+                onhandleJoinGameClick={this.handleJoinGameClick}
+                onhandleToggleFavorite={this.handleToggleFavorite}
               ></DisplayList>
             </GameListContainer>
             <PaginationContainer>
@@ -1068,7 +1071,7 @@ class Slots extends Component {
   }
 }
 
-const DisplayList = ({ gameList, page, itemsPerPage }) => {
+const DisplayList = ({ favGame, gameList, page, itemsPerPage, onhandleJoinGameClick, onhandleToggleFavorite }) => {
   if (gameList.length > 0) {
     return gameList
       .slice((page - 1) * itemsPerPage, page * itemsPerPage)
@@ -1088,8 +1091,8 @@ const DisplayList = ({ gameList, page, itemsPerPage }) => {
           <GameItemOverlay>
             <GameItemFavouriteButton
               onClick={() =>
-                this.handleToggleFavorite(
-                  this.state.favGame.indexOf(el.id) > -1,
+                onhandleToggleFavorite(
+                  favGame.indexOf(el.id) > -1,
                   el.id
                 )
               }
@@ -1097,7 +1100,7 @@ const DisplayList = ({ gameList, page, itemsPerPage }) => {
               加到最愛
             </GameItemFavouriteButton>
             <GameItemJoinGameButton
-              onClick={() => this.handleJoinGameClick(el.gpcode, el.id)}
+              onClick={() =>{ onhandleJoinGameClick(el.gpcode, el.id);}}
             >
               開始遊戲
             </GameItemJoinGameButton>

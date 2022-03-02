@@ -20,7 +20,7 @@ import ErrorSwitcher from "../../../utils/ErrorSwitcher";
 import { AppHistory } from "../../../history/History";
 const Container = styled.div`
   width: 100%;
-  background: url(${BGJPG});
+  background: #000;//url(${BGJPG});
   min-height: 800px;
 `;
 const InnerContainer = styled.div`

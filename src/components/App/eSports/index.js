@@ -240,7 +240,7 @@ class ESports extends Component {
         );
       } else {
         this.props.history.push(
-          "/" + i18n.language + "/esports/play/" + params + "/" + type
+          "/" + i18n.language + "/sports/play/" + params + "/" + type
         );
       }
     }
