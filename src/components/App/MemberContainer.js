@@ -58,13 +58,13 @@ const TabButton = styled.div`
 
 const BtnLogout = styled.button`
   background-color: ${(props) => props.theme.primary};
-  border-radius: 100px;
+  border-radius: 7px;
   color: #fff;
   font-size: 13px;
   line-height: 30px;
-  margin: auto 3px;
+  margin: auto 5px;
   height: 30px;
-  padding: 0 12px;
+  padding: 0 20px;
   user-select: none;
   appearance: none;
   border: 0;
