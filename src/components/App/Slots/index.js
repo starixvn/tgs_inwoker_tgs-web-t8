@@ -333,6 +333,31 @@ const HistoryFilterItem = styled(FilterItem)`
       : `  background-image: url(${SlotHistoryGamePNG});`};
 `;
 
+const GameDesc = styled.div`
+  height: 28px;
+  float: right;
+  background-color: rgba(0, 0, 0, 0.8);
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 3;
+`;
+
+const Bookmark = styled.div`
+  float: right;
+
+  width: 30px;
+  height: 28px;
+  background-repeat: no-repeat;
+  background-position: 8px center;
+
+  ${(props) =>
+    props.bookmark
+      ? ` background-image:  url(${SlotBookmark1PNG})`
+      : `  background-image:  url(${SlotBookmark2PNG})`};
+`;
+
+
 const GameSearchContainer = styled.div`
   width: 1280px;
   margin: 0 auto;
@@ -1088,6 +1113,17 @@ const DisplayList = ({ favGame, gameList, page, itemsPerPage, onhandleJoinGameCl
             ></img>
           </GameItemImage>
           <GameTitle>{el.name}</GameTitle>
+          <GameDesc>
+          <Bookmark
+                bookmark={favGame.indexOf(el.id) > -1}
+                onClick={() =>
+                  onhandleToggleFavorite(
+                    favGame.indexOf(el.id) > -1,
+                    el.id
+                  )
+                }
+              ></Bookmark>
+          </GameDesc>
           <GameItemOverlay>
             <GameItemFavouriteButton
               onClick={() =>
