@@ -244,7 +244,7 @@ function GetContentWrap(accountInfo, label, attr, func, label2) {
 
   if (currentFormStatus === 0 && hasSubmitted === false) {
     //api沒給表單id ，表示可以上傳
-    status = "";
+    status = "no";
   }
   if (
     (currentFormStatus === 1 && hasSubmitted === true) ||
