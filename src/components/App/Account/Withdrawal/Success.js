@@ -3,6 +3,7 @@ import styled from "styled-components";
 import i18n from "../../../../utils/i18n";
 import SuccessPNG from "../../../../assets/images/success.png";
 import CustomButton from "../../../Share/Button";
+import { AppHistory } from "../../../../history/History";
 const Container = styled.div`
   padding-top: 50px;
 `;
@@ -22,9 +23,12 @@ const ButtonContainer = styled.div`
   display: table;
   width: 540px;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
 `;
 class Success extends Component {
+  gotoVerify = () => {
+    AppHistory.push("/" + i18n.language + "/account/profile/member_name");
+  };
   render() {
     return (
       <Container>
@@ -38,6 +42,15 @@ class Success extends Component {
             float={"none"}
             handleClick={this.props.handleConfirmClick}
           ></CustomButton>
+          {!this.props.verified && (
+            <CustomButton
+              name={i18n.t("verified.goVerify")}
+              width={257}
+              grayMode
+              float={"none"}
+              handleClick={this.gotoVerify}
+            ></CustomButton>
+          )}
         </ButtonContainer>
       </Container>
     );

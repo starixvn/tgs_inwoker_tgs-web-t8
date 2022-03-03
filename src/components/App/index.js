@@ -85,7 +85,24 @@ class App extends Component {
     // this.props.getBanner();
     // this.props.getGamePlatformList();
     //this.props.getHomePageGameList();
+    const urlpath = this.props.location.pathname.split("/");
 
+    if (urlpath.length === 4) {
+      if (urlpath[2] === "a") {
+        localStorage.setItem("promotionId", urlpath[3] || "");
+        localStorage.setItem("upper", ""); //reset
+        localStorage.setItem("invitationtype", "a");
+      }
+      if (urlpath[2] === "p") {
+        localStorage.setItem("upper", urlpath[3] || "");
+        localStorage.setItem("promotionId", ""); //reset
+        localStorage.setItem("invitationtype", "p");
+      }
+    } else {
+      localStorage.setItem("invitationtype", "");
+      localStorage.setItem("upper", ""); //reset
+      localStorage.setItem("promotionId", ""); //reset
+    }
     let urlParams = new URLSearchParams(this.props.location.search);
     if (urlParams.has("goto")) {
       const gotoValue = urlParams.get("goto");

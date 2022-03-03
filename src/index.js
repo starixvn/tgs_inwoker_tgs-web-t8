@@ -1,7 +1,7 @@
 import "react-app-polyfill/ie11";
 import "react-app-polyfill/stable";
 
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import { Router, Route, Switch, Redirect } from "react-router";
@@ -48,6 +48,8 @@ import { GlobalStyles } from "./global";
 import JoinLotteryGame from "./components/App/Lottery/JoinLotteryGame";
 import featureList from "./config/features";
 import FeatureGetter from "./components/Share/feature-getter";
+import AudioPlayer from "./components/Share/audioplayer";
+
 require("es6-promise").polyfill();
 const store = createStore(rootReducer, applyMiddleware(thunk));
 InterceptorService.setupInterceptors(store);
@@ -187,6 +189,9 @@ const muiTheme = createMuiTheme({
         color: "#ffffff !important",
         minWidth: "210px",
         height: "64px",
+        "&.Mui-selected": {
+          color: "#FDE740  !important",
+        },
       },
     },
   },
@@ -197,6 +202,7 @@ const AppWrapper = () => {
   return (
     <Provider store={store}>
       <FeatureGetter />
+      {Config.features.BackgroundMusic && <AudioPlayer />}
       <StylesProvider injectFirst>
         <MuiThemeProvider theme={muiTheme}>
           <ThemeProvider theme={muiThemeMode}>

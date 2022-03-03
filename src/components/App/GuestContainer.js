@@ -145,6 +145,7 @@ class GuestContainer extends Component {
       openDialog: true,
       openDialogName: "register",
     });
+    this.props.onDialogChange("register");
     this.props.showLogin(false);
   };
   onhandleActivation = (username = "", pass = "") => {
@@ -155,6 +156,7 @@ class GuestContainer extends Component {
       username: username,
       pass: pass,
     });
+    this.props.onDialogChange("activation");
     this.props.showLogin(false);
   };
   onhandleForgotPassword = () => {
@@ -163,6 +165,7 @@ class GuestContainer extends Component {
       openDialog: true,
       openDialogName: "forgotpassword",
     });
+
     this.props.showLogin(false);
   };
 
@@ -411,6 +414,14 @@ class GuestContainer extends Component {
       // this.props.getIDCardNo();
       // this.props.getInviteLink();
       // this.props.getDepositChannel();
+
+      if (this.state.openDialogName === "activation") {
+        if (config.features.NavigateToAddCard) {
+          this.props.history.push(
+            "/" + i18n.language + "/account/withdrawal?do=addCard"
+          );
+        }
+      }
     }
   };
   onhandleOnlineSupport = () => {

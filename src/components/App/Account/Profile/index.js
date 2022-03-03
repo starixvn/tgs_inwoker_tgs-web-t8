@@ -18,7 +18,7 @@ import Email from "./Email";
 import WithdrawalPassword from "./WithdrawalPassword";
 import ChangeWithdrawalPassword from "./ChangeWithdrawalPassword";
 
-import IDVerification from "./IDVerification";
+import IDVerification from "./id-verification";
 import PhoneVerification from "./PhoneVerification";
 // import SecurityQuestion from "./SecurityQuestion";
 // import ResetSecurityQuestion from "./ResetSecurityQuestion";
@@ -117,8 +117,16 @@ const ContentButtonLabel = styled.div`
   margin-top: 5px;
 `;
 
+const VerifiedSpan = styled.span`
+  color: ${({ theme }) => theme.primary};
+  user-select: none;
+`;
+
 function GetContentWrap(accountInfo, label, attr, func, label2) {
   let attrValue = accountInfo[attr];
+  let isMemberName = false;
+  let verified = accountInfo["check_pass_account"];
+  let containMemberName = accountInfo["member_name"];
   if (attr === "member_address") {
     if (attrValue !== "") {
       attrValue +=
@@ -152,6 +160,14 @@ function GetContentWrap(accountInfo, label, attr, func, label2) {
     }
   }
 
+  if (attr === "member_name") {
+    isMemberName = true;
+
+    if (attrValue !== "") {
+      attrValue = accountInfo["member_name"] ? accountInfo["member_name"] : "";
+    }
+  }
+
   let isDisable = false;
   let buttonValue = i18n.t("profile.edit");
   let requiredVerify =
@@ -161,6 +177,7 @@ function GetContentWrap(accountInfo, label, attr, func, label2) {
     attr === "member_birthday";
 
   let isVerify = false;
+  let hide = false;
 
   if (requiredVerify) {
     if (attr === "member_name" || attr === "member_birthday") {
@@ -173,6 +190,7 @@ function GetContentWrap(accountInfo, label, attr, func, label2) {
     }
     if (attr === "member_phone") {
       isVerify = accountInfo.check_pass_phone;
+      hide = true;
     }
   }
 
@@ -217,14 +235,42 @@ function GetContentWrap(accountInfo, label, attr, func, label2) {
     }
   }
 
+  var currentFormStatus = accountInfo.identityformstatus;
+  var hasSubmitted = accountInfo.identityformid ? true : false;
+
+  var status = "";
+
+  if (currentFormStatus === 0 && hasSubmitted === false) {
+    //api沒給表單id ，表示可以上傳
+    status = "";
+  }
+  if (currentFormStatus === 1 && hasSubmitted === true) {
+    status = "yes";
+  }
+  if (currentFormStatus === 2 && hasSubmitted === true) {
+    //有給表單id但是狀態是拒絕，也可以上傳
+    status = "rejected";
+  }
+  if (currentFormStatus === 0 && hasSubmitted === true) {
+    //有給表單id但狀態沒驗證，不能上傳
+    status = "verifying";
+  }
+
   return (
     <ContentWrap>
       <ContentLabel>{label}:</ContentLabel>
       <ContentValue style={isDisable ? { color: "#acacac" } : {}}>
-        {attrValue}
+        {attrValue}{" "}
+        {
+          <VerifiedSpan>
+            {isMemberName &&
+              containMemberName &&
+              "(" + i18n.t("verified." + status) + ")"}
+          </VerifiedSpan>
+        }
       </ContentValue>
       {(() => {
-        if (buttonValue !== "") {
+        if (buttonValue !== "" && hide !== true) {
           return (
             <ContentButton onClick={() => func(attr)}>
               <ContentButtonLabel>{buttonValue}</ContentButtonLabel>

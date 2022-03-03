@@ -168,6 +168,8 @@ class Play extends Component {
   componentDidMount() {
     window.scrollTo(0, 0);
     if (this.props.token != null) {
+      if (document.getElementById("audio") != null)
+        document.getElementById("audio").volume = 0.0;
       this.DoJoinGame();
     }
     GameService.GetFavoriteGame(this.getType()).then((e) => {
@@ -215,6 +217,10 @@ class Play extends Component {
     if (prevProps.token == null && this.props.token != null) {
       this.DoJoinGame();
     }
+  }
+  componentWillUnmount() {
+    if (document.getElementById("audio") != null)
+      document.getElementById("audio").volume = 1.0;
   }
   handleFullScreenClick = () => {
     var elem = this.myRef.current;

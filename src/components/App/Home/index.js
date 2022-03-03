@@ -131,15 +131,15 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    let promotionId = "";
-    let promotionChannelId = "";
+    // let promotionId = "";
+    // let promotionChannelId = "";
 
-    if (this.props.match.params) {
-      promotionId = this.props.match.params.promotionid || "";
-      promotionChannelId = this.props.match.params.promotionchannelid || "";
-    }
-    localStorage.setItem("promotionId", promotionId);
-    localStorage.setItem("promotionChannelId", promotionChannelId);
+    // if (this.props.match.params) {
+    //   promotionId = this.props.match.params.promotionid || "";
+    //   promotionChannelId = this.props.match.params.promotionchannelid || "";
+    // }
+    // localStorage.setItem("promotionId", promotionId);
+    // localStorage.setItem("promotionChannelId", promotionChannelId);
   }
   componentDidUpdate(preProps) {
     if (
@@ -364,6 +364,8 @@ class Home extends Component {
               <PopupAnnouncement
                 open={this.state.openAnnouncement}
                 onClose={() => {
+                  if (document.getElementById("audio") != null)
+                    document.getElementById("audio").play();
                   this.setState({ ...this.state, openAnnouncement: false });
                 }}
                 text={

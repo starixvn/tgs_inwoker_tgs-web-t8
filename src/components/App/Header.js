@@ -629,11 +629,20 @@ class Header extends Component {
 
   handleJoinLotteryGame = (name) => {
     if (this.props.account.token != null) {
-      window.open(
+      if (document.getElementById("audio") != null)
+        document.getElementById("audio").volume = 0.0;
+      var win = window.open(
         "/" + i18n.language + "/joinlottery/" + name,
         "_blank",
         "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=1280,height=720"
       );
+      var timer = setInterval(function () {
+        if (win.closed) {
+          clearInterval(timer);
+          if (document.getElementById("audio") != null)
+            document.getElementById("audio").volume = 1.0;
+        }
+      }, 1000);
     } else {
       this.props.showLogin(true);
     }
@@ -654,10 +663,19 @@ class Header extends Component {
           this.props.showLogin(true);
         } else {
           if (gameCode === "WGFM" || gameCode === "WGVIA") {
-            window.open(
+            if (document.getElementById("audio") != null)
+              document.getElementById("audio").volume = 0;
+            var win = window.open(
               `/${i18n.language}/joinlobbygame/${gameType}/${gameCode}`,
               "_blank"
             );
+            var timer = setInterval(function () {
+              if (win.closed) {
+                clearInterval(timer);
+                if (document.getElementById("audio") != null)
+                  document.getElementById("audio").volume = 1.0;
+              }
+            }, 1000);
           } else {
             this.props.history.push(
               "/" + i18n.language + "/sports/play/" + gameCode + "/" + gameType
@@ -672,7 +690,16 @@ class Header extends Component {
         this.props.showLogin(true);
         return;
       }
-      Common.PopupCenter(url, gameCode, 1280, 720);
+      if (document.getElementById("audio") != null)
+        document.getElementById("audio").volume = 0;
+      var win = Common.PopupCenter(url, gameCode, 1280, 720);
+      var timer = setInterval(function () {
+        if (win.closed) {
+          clearInterval(timer);
+          if (document.getElementById("audio") != null)
+            document.getElementById("audio").volume = 1.0;
+        }
+      }, 1000);
     }
   };
   handleBookmarkClick = () => {
