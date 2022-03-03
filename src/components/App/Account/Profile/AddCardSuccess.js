@@ -60,11 +60,11 @@ function AddCardSuccess(props) {
             handleClick={props.onhandleBindCardClick}
           ></Button>
         )}
-        <Button
-          name={i18n.t("card.success.bindBankCard")}
-          width={255}
-          handleClick={props.onhandleBindCardClick}
-        ></Button>
+          <Button
+            name={i18n.t("card.success.goProfile")}
+            width={255}
+            handleClick={props.onhandleBackClick}
+          ></Button>
       </ButtonContainer>
     </Container>
   );
