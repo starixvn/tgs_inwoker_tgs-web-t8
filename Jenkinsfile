@@ -6,9 +6,9 @@ pipeline {
         TAG = sh(script: "echo `date +%Y-%m%d-%H%M`", returnStdout: true).trim()
         Registry = "registry.gitlab.com/rayprosoft/turnkey-gaming-system/"
         GitUrl = "gitlab.com/cjennhong/tgs-web.git"
-        ImageTagUrl = "https://gitlab.com/api/v4/projects/20478010/registry/repositories/2163343/tags"
+        ImageTagUrl = "https://gitlab.com/api/v4/projects/20478010/registry/repositories/2804396/tags"
         gitlab_user_pwd = credentials('gitlab-user-pwd')
-        Image = "lobby-t1"
+        Image = "lobby-t6"
     }
 	
     stages {		    	
