@@ -162,14 +162,23 @@ class Play extends Component {
       maintenance: false,
       fullScreen: false,
       isFav: false,
+      hideFav: false,
     };
     this.myRef = React.createRef();
   }
   componentDidMount() {
     window.scrollTo(0, 0);
     if (this.props.token != null) {
+      if (document.getElementById("audio") != null)
+        document.getElementById("audio").volume = 0.0;
       this.DoJoinGame();
     }
+    // hide fav if fish
+    this.setState({
+      ...this.state,            
+      hideFav: (this.getType()===GameTypeEnum.FISH) ? true : false
+    });
+    
     GameService.GetFavoriteGame(this.getType()).then((e) => {
       if (e.IsSuccess) {
         if (e.data.indexOf(this.params) > -1) {
@@ -215,6 +224,10 @@ class Play extends Component {
     if (prevProps.token == null && this.props.token != null) {
       this.DoJoinGame();
     }
+  }
+  componentWillUnmount() {
+    if (document.getElementById("audio") != null)
+      document.getElementById("audio").volume = 1.0;
   }
   handleFullScreenClick = () => {
     var elem = this.myRef.current;
@@ -326,9 +339,11 @@ class Play extends Component {
                 </StyleButton>
               </div>
               <div>
+                { !this.state.hideFav &&
                 <FavButton onClick={this.handleToggleFavorite}>
                   <FavButtonButton active={!this.state.isFav}></FavButtonButton>
                 </FavButton>
+                }
               </div>
             </GameFrameHeader>
             <GameFrame

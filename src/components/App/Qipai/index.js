@@ -234,7 +234,9 @@ class Qipai extends Component {
 
   handleJoinGameClick = (kind) => {
     if (this.props.account.token != null) {
-      window.open(
+      if (document.getElementById("audio") != null)
+        document.getElementById("audio").volume = 0.0;
+      var win = window.open(
         "/" +
           i18n.language +
           "/joingame/" +
@@ -244,6 +246,13 @@ class Qipai extends Component {
         "_blank",
         "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=1280,height=720"
       );
+      var timer = setInterval(function () {
+        if (win.closed) {
+          clearInterval(timer);
+          if (document.getElementById("audio") != null)
+            document.getElementById("audio").volume = 1.0;
+        }
+      }, 1000);
     } else {
       this.props.showLogin(true);
     }

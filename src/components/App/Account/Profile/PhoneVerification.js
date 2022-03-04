@@ -160,6 +160,14 @@ class PhoneVerification extends Component {
     this.setState({ ...this.state, code: e.target.value });
   };
   onhandleGetCodeClick = () => {
+    var expr = /^[0-9]{8,10}$/;
+    if (!expr.test(this.state.phone)) {
+      this.props.enqueueSnackbar(i18n.t("common.noReachMin"), {
+        variant: "warning",
+      });
+      return;
+    }
+
     if (this.state.countdown <= 0) {
       AccountService.VerifyPhone(this.state.phone, this.state.areacode).then(
         (response) => {
@@ -197,6 +205,13 @@ class PhoneVerification extends Component {
     if (this.state.code.length < 6) {
       this.props.enqueueSnackbar(i18n.t("common.msgEnterCode"), {
         variant: "error",
+      });
+      return;
+    }
+    var expr = /^[0-9]{8,10}$/;
+    if (!expr.test(this.state.phone)) {
+      this.props.enqueueSnackbar(i18n.t("common.noReachMin"), {
+        variant: "warning",
       });
       return;
     }
@@ -360,7 +375,7 @@ class PhoneVerification extends Component {
           onChange={this.onhandlePhoneChange}
           value={this.state.phone}
           inputProps={{
-            maxLength: 20,
+            maxLength: 10,
           }}
           style={{
             width: "268px",

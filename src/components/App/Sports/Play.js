@@ -32,6 +32,8 @@ class Play extends Component {
     document.getElementsByTagName("body")[0].style.overflow = "hidden";
     window.scrollTo(0, 0);
     this.JoinGame(this.props.match.params.params);
+    if (document.getElementById("audio") != null)
+      document.getElementById("audio").volume = 0.0;
   }
 
   componentDidUpdate(preProps) {
@@ -46,6 +48,8 @@ class Play extends Component {
   componentWillUnmount() {
     document.getElementsByTagName("body")[0].style.overflow = "";
     window.removeEventListener("resize", this.updateWindowDimensions);
+    if (document.getElementById("audio") != null)
+      document.getElementById("audio").volume = 1.0;
   }
   JoinGame = (gameCode) => {
     if (gameCode === "BC") {

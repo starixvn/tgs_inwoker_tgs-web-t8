@@ -238,10 +238,19 @@ class Sports extends Component {
       this.props.showLogin(true);
     } else {
       if (params === "WGFM" || params === "WGVIA") {
-        window.open(
+        if (document.getElementById("audio") != null)
+          document.getElementById("audio").volume = 0.0;
+        var win = window.open(
           `/${i18n.language}/joinlobbygame/${type}/${params}`,
           "_blank"
         );
+        var timer = setInterval(function () {
+          if (win.closed) {
+            clearInterval(timer);
+            if (document.getElementById("audio") != null)
+              document.getElementById("audio").volume = 1.0;
+          }
+        }, 1000);
       } else {
         this.props.history.push(
           "/" + i18n.language + "/sports/play/" + params + "/" + type

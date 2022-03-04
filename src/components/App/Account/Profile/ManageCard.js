@@ -57,8 +57,7 @@ class ManageCard extends Component {
     };
   }
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
   componentDidUpdate(preProps, preState) {}
 
   isEmpty = (obj) => {
@@ -75,17 +74,17 @@ class ManageCard extends Component {
 
     return Object.keys(this.props.cardDetail.detail).map((key) => {
       let info = this.props.cardDetail.detail[key];
-      if(key==="address"||key==="phone"||key==="bankAccount")
-      {
+      if (key === "address" || key === "phone" || key === "bankAccount") {
         let last4Digits = this.props.cardDetail.detail[key].slice(-4);
-        info = last4Digits.padStart(this.props.cardDetail.detail[key].length, "*");
+        info = last4Digits.padStart(
+          this.props.cardDetail.detail[key].length,
+          "*"
+        );
       }
       return (
         <TextFieldItem>
           <TextFieldLabel>{this.state.labelList[key]}</TextFieldLabel>
-          <TextFieldContainer>
-            {info}
-          </TextFieldContainer>
+          <TextFieldContainer>{info}</TextFieldContainer>
         </TextFieldItem>
       );
     });
@@ -103,14 +102,18 @@ class ManageCard extends Component {
             marginRight={20}
             handleClick={this.props.onhandleBackClick}
           ></Button>
-
-          <Button
-            name={i18n.t("card.remove")}
-            width={255}
-            handleClick={() =>
-              this.props.onhandleDeleteCardClick(this.props.cardDetail.id)
-            }
-          ></Button>
+          {!(
+            config.features.AddCard_NotAllowedEditDelete ||
+            config.features.ChangesNotAllowed
+          ) && (
+            <Button
+              name={i18n.t("card.remove")}
+              width={255}
+              handleClick={() =>
+                this.props.onhandleDeleteCardClick(this.props.cardDetail.id)
+              }
+            ></Button>
+          )}
         </ActionContainer>
       </Container>
     );

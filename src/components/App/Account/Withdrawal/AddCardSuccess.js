@@ -36,14 +36,24 @@ function AddCardSuccess(props) {
   return (
     <Container>
       <SubTitle>{i18n.t("card.success.title")}</SubTitle>
-      <SubTitleDesc>
-        {i18n.t("card.success.successDesc")}
-        <br></br>
-        {i18n.t("card.success.bindDesc")}
-      </SubTitleDesc>
+      {!(
+        config.features.ChangesNotAllowed ||
+        config.features.AddCard_NotAllowedEditDelete
+      ) ? (
+        <SubTitleDesc>
+          {i18n.t("card.success.successDesc")}
+          <br></br>
+          {i18n.t("card.success.bindDesc")}
+        </SubTitleDesc>
+      ) : (
+        <SubTitleDesc>{i18n.t("card.success.noMoreAddCard")}</SubTitleDesc>
+      )}
 
       <ButtonContainer>
-        {!config.features.ChangesNotAllowed && (
+        {!(
+          config.features.ChangesNotAllowed ||
+          config.features.AddCard_NotAllowedEditDelete
+        ) && (
           <Button
             name={i18n.t("card.success.bindBankCard")}
             width={255}

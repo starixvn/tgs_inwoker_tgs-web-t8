@@ -324,7 +324,7 @@ function Activation(props) {
   const [securityKey, setSecurityKey] = React.useState("");
 
   const handleActivationClick = async () => {
-    var expr = /^[a-zA-Z0-9]{6,32}$/;
+    var expr = /^[a-zA-Z0-9]{6,16}$/;
     if (!expr.test(username)) {
       props.enqueueSnackbar(i18n.t("common.msgRegisterUserNameInvalid"), {
         variant: "warning",
@@ -338,9 +338,9 @@ function Activation(props) {
       });
       return;
     }
-    expr = /^.{8,9}$/;
+    expr = /^[0-9]{8,10}$/;
     if (!expr.test(phone)) {
-      props.enqueueSnackbar(i18n.t("forgotPassword.plsEnterPhoneNumber"), {
+      props.enqueueSnackbar(i18n.t("common.noReachMin"), {
         variant: "warning",
       });
       return;
@@ -360,10 +360,6 @@ function Activation(props) {
             variant: "success",
           });
           props.doLogin(username, password);
-
-          props.history.push(
-            "/" + i18n.language + "/registersuccess/" + username
-          );
         } else {
           props.enqueueSnackbar(response.info, {
             variant: "warning",
@@ -374,7 +370,7 @@ function Activation(props) {
   };
   const handleGetCodeClick = async () => {
     if (countdown <= 0) {
-      var expr = /^[a-zA-Z0-9]{6,32}$/;
+      var expr = /^[a-zA-Z0-9]{6,16}$/;
       if (!expr.test(username)) {
         props.enqueueSnackbar(i18n.t("common.msgRegisterUserNameInvalid"), {
           variant: "warning",
@@ -388,13 +384,14 @@ function Activation(props) {
         });
         return;
       }
-      expr = /^.{8,9}$/;
+      expr = /^[0-9]{8,10}$/;
       if (!expr.test(phone)) {
-        props.enqueueSnackbar(i18n.t("forgotPassword.plsEnterPhoneNumber"), {
+        props.enqueueSnackbar(i18n.t("common.noReachMin"), {
           variant: "warning",
         });
         return;
       }
+
       AccountService.Activation(username, password, areacode, phone).then(
         async (response) => {
           if (response.IsSuccess) {
@@ -507,7 +504,7 @@ function Activation(props) {
           type="text"
           autoComplete="off"
           inputProps={{
-            maxLength: 20,
+            maxLength: 10,
           }}
           InputProps={{
             startAdornment: (

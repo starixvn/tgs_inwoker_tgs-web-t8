@@ -394,43 +394,56 @@ class NewStepOne extends Component {
                     !config.features.Deposit_ManualApplePayHideBankAcc
                   ) {
                     return (
-                      <>
-                        <FormContainer>
-                          <FormLeftContainer>
-                            <SubHeaderContainer>
-                              <SubTitle>
-                                {config.features.Deposit_EnglishName
-                                  ? i18n.t("bet28.BankAccountName")
-                                  : i18n.t("deposit.msgPlsEnterAccount")}
-                              </SubTitle>
-                            </SubHeaderContainer>
-                          </FormLeftContainer>
+                      !config.features.Deposit_RemoveName && (
+                        <>
+                          <FormContainer>
+                            <FormLeftContainer>
+                              <SubHeaderContainer>
+                                <SubTitle>
+                                  {config.features
+                                    .Deposit_CustomBankNameTranslation
+                                    ? i18n.t("mgm.msgPlsEnterAccount")
+                                    : config.features.Deposit_EnglishName
+                                    ? i18n.t("bet28.BankAccountName")
+                                    : i18n.t("deposit.msgPlsEnterAccount")}
+                                </SubTitle>
+                              </SubHeaderContainer>
+                            </FormLeftContainer>
 
-                          <FormRightContainer>
-                            <SelectionContainer>
-                              <TextField
-                                style={{
-                                  height: "38px",
-                                  width: "258px",
-                                  float: "left",
-                                  marginRight: "5px",
-                                  padding: 0,
-                                }}
-                                placeholder={
-                                  config.features.Deposit_EnglishName
-                                    ? i18n.t("bet28.msgEnterBankAccountName")
-                                    : i18n.t("deposit.msgPlsEnterAccount")
-                                }
-                                onChange={onNameChange}
-                                outputFormat="string"
-                                variant="outlined"
-                                autoComplete="off"
-                                value={name}
-                              ></TextField>
-                            </SelectionContainer>
-                          </FormRightContainer>
-                        </FormContainer>
-                      </>
+                            <FormRightContainer>
+                              <SelectionContainer>
+                                <TextField
+                                  style={{
+                                    height: "38px",
+                                    width: "258px",
+                                    float: "left",
+                                    marginRight: "5px",
+                                    padding: 0,
+                                  }}
+                                  placeholder={
+                                    config.features
+                                      .Deposit_CustomBankNameTranslation
+                                      ? i18n.t("mgm.msgPlsEnterAccount")
+                                      : config.features.Deposit_EnglishName
+                                      ? i18n.t("bet28.msgEnterBankAccountName")
+                                      : i18n.t("deposit.msgPlsEnterAccount")
+                                  }
+                                  onChange={onNameChange}
+                                  outputFormat="string"
+                                  variant="outlined"
+                                  autoComplete="off"
+                                  value={name}
+                                ></TextField>
+                              </SelectionContainer>
+                              {config.features.Deposit_AddTips && (
+                                <div style={{ marginLeft: 30, marginTop: 8 }}>
+                                  <Remark> {i18n.t("mgm.depositTips")}</Remark>
+                                </div>
+                              )}
+                            </FormRightContainer>
+                          </FormContainer>
+                        </>
+                      )
                     );
                   }
                 })()}
