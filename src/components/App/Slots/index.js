@@ -10,6 +10,9 @@ import { gameAction } from "../../../api-services/actions/gameAction";
 import { GameTypeEnum, SlotFilterType } from "../../../api-services/utils/Enum";
 import { SHOW_LOGIN } from "../../../api-services/constant/actionType";
 
+import SearchIcon from "../../../assets/images/search.svg";
+import SearchActiveIcon from "../../../assets/images/search-active.svg";
+
 import SlotAllPNG from "../../../assets/images/slot-all.png";
 import SlotAllInactivePNG from "../../../assets/images/slot-all-inactive.png";
 
@@ -357,28 +360,41 @@ const Bookmark = styled.div`
       : `  background-image:  url(${SlotBookmark2PNG})`};
 `;
 
-
 const GameSearchContainer = styled.div`
   width: 1280px;
   margin: 0 auto;
 `;
 
-const SearchFilterItemContainer = styled.div`
-  width: 141px;
-  height: 30px;
-  border-radius: 15px;
-  background-color: #d3d3d3;
-
-  margin-top: 5px;
-  float: right;
+const Spliter = styled.div`
+  width: 2px;
+  height: 25px;
+  background-color: #cecece;
+  transition: width 0.3s;
+  position: absolute;
+  top: 6px;
+  right: 42px;
 `;
+
+const SearchImg = styled.img`
+  height: 25px;
+  margin-right: 10px;
+  position: absolute;
+  top: 6px;
+  right: 0;
+  cursor: pointer;
+`;
+
 const SearchFilterItemInput = styled.input`
   background: transparent;
   border: none;
   color: ${({ theme }) => theme.secondary};
   font-size: 15px;
-  margin: 5px 0 0 5px;
+  margin: 0;
+  margin-left: 10px;
   width: 100px;
+  transition: width 0.3s;
+  height: 37px;
+  line-height: 37px;
   ::placeholder,
   ::-webkit-input-placeholder {
     color: #9e9e9e;
@@ -386,6 +402,36 @@ const SearchFilterItemInput = styled.input`
   :-ms-input-placeholder {
     color: #9e9e9e;
   }
+`;
+
+const SearchFilterItemContainer = styled.div`
+  ${(props) =>
+    props.toggleSearchBar
+      ? `
+  width:195px;
+  background-color: #ffffff;
+  transition: all 0.3s;
+  `
+      : `
+width:50px;
+background-color: transparent;
+transition: all 0.3s;
+
+& ${Spliter} {
+  display: none;
+  width: 0;
+}
+& ${SearchFilterItemInput} {
+  display: none;
+  width: 0;
+}
+`}
+
+  position: relative;
+  height: 37px;
+  border-radius: 7px;
+  margin-top: 5px;
+  float: right;
 `;
 
 const GameListContainer = styled.div`
@@ -656,6 +702,7 @@ const NoContentContainer = (props) => {
 };
 
 class Slots extends Component {
+  
   constructor(props) {
     super(props);
 
@@ -675,6 +722,7 @@ class Slots extends Component {
       platform: this.props.match.params.platform
         ? this.props.match.params.platform
         : "",
+      toggleSearchBar: false,
     };
   }
   language = null;
@@ -753,7 +801,8 @@ class Slots extends Component {
   ) {
     this.setState({
       ...this.state,
-
+      keyword: "",
+      toggleSearchBar: false,
       loading: true,
     });
 
@@ -806,6 +855,12 @@ class Slots extends Component {
   };
   handleKeywordChange = (e) => {
     this.setState({ ...this.state, keyword: e.target.value });
+  };
+  handleToggleSearchBar = () => {
+    this.setState({
+      ...this.state,
+      toggleSearchBar: !this.state.toggleSearchBar,
+    });
   };
   // handleSearchClick = (e) => {
   //   this.getGameList(1);
@@ -979,6 +1034,13 @@ class Slots extends Component {
 
         return false;
       })
+      .filter((a) => {
+        if (this.state.keyword === "") return true;
+        else
+          return a.name
+            .toUpperCase()
+            .includes(this.state.keyword.toUpperCase());
+      })
       .filter((s) => {
         return s.isactive === true; // show only active game.
       });
@@ -1034,17 +1096,7 @@ class Slots extends Component {
               );
             })}
         </GameTabContainer>
-        {/* <GameSearchContainer>
-          <SearchFilterItemContainer>
-            <SearchFilterItemInput
-              type="text"
-              maxLength="15"
-              autocomplete="off"
-              placeholder={i18n.t("slot.search")}
-              onChange={this.handleKeywordChange}
-            ></SearchFilterItemInput>
-          </SearchFilterItemContainer>
-        </GameSearchContainer> */}
+        <GameSearchContainer></GameSearchContainer>
         <GameDisplayContainer>
           <GameSubFilterContainer>
             {this.genCategoryItem(SlotFilterType.All, i18n.t("slot.allGame"))}
@@ -1064,8 +1116,27 @@ class Slots extends Component {
             )} */}
           </GameSubFilterContainer>
           <InnerWrap type={this.state.type}>
+            <SearchFilterItemContainer
+              toggleSearchBar={this.state.toggleSearchBar}
+            >
+              <SearchFilterItemInput
+                type="text"
+                maxLength="15"
+                autocomplete="off"
+                placeholder={i18n.t("slot.search")}
+                onChange={this.handleKeywordChange}
+                value={this.state.keyword}
+                focus={this.state.toggleSearchBar}
+              ></SearchFilterItemInput>
+              <Spliter></Spliter>
+              <SearchImg
+                src={this.state.toggleSearchBar ? SearchActiveIcon : SearchIcon}
+                onClick={this.handleToggleSearchBar}
+              ></SearchImg>
+            </SearchFilterItemContainer>
             <GameListContainer>
               <DisplayList
+                keyword={this.state.keyword}
                 favGame={this.state.favGame}
                 gameList={list}
                 page={this.state.page}
@@ -1096,7 +1167,14 @@ class Slots extends Component {
   }
 }
 
-const DisplayList = ({ favGame, gameList, page, itemsPerPage, onhandleJoinGameClick, onhandleToggleFavorite }) => {
+const DisplayList = ({
+  favGame,
+  gameList,
+  page,
+  itemsPerPage,
+  onhandleJoinGameClick,
+  onhandleToggleFavorite,
+}) => {
   if (gameList.length > 0) {
     return gameList
       .slice((page - 1) * itemsPerPage, page * itemsPerPage)
@@ -1114,29 +1192,25 @@ const DisplayList = ({ favGame, gameList, page, itemsPerPage, onhandleJoinGameCl
           </GameItemImage>
           <GameTitle>{el.name}</GameTitle>
           <GameDesc>
-          <Bookmark
-                bookmark={favGame.indexOf(el.id) > -1}
-                onClick={() =>
-                  onhandleToggleFavorite(
-                    favGame.indexOf(el.id) > -1,
-                    el.id
-                  )
-                }
-              ></Bookmark>
+            <Bookmark
+              bookmark={favGame.indexOf(el.id) > -1}
+              onClick={() =>
+                onhandleToggleFavorite(favGame.indexOf(el.id) > -1, el.id)
+              }
+            ></Bookmark>
           </GameDesc>
           <GameItemOverlay>
             <GameItemFavouriteButton
               onClick={() =>
-                onhandleToggleFavorite(
-                  favGame.indexOf(el.id) > -1,
-                  el.id
-                )
+                onhandleToggleFavorite(favGame.indexOf(el.id) > -1, el.id)
               }
             >
               加到最愛
             </GameItemFavouriteButton>
             <GameItemJoinGameButton
-              onClick={() =>{ onhandleJoinGameClick(el.gpcode, el.id);}}
+              onClick={() => {
+                onhandleJoinGameClick(el.gpcode, el.id);
+              }}
             >
               開始遊戲
             </GameItemJoinGameButton>

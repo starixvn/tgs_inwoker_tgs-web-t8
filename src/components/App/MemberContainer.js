@@ -211,7 +211,7 @@ class MemberContainer extends Component {
           </CustomLink>
         </WelcomeContainer>
 
-        <TabButton onClick={this.props.onhandleDeposit}>
+        <TabButton onClick={this.props.onhandleInboxClick}>
           {i18n.t("web.account.inbox")} ({this.props.account.info.message_num})
         </TabButton>
 
