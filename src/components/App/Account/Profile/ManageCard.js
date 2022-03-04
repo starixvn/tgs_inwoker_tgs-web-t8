@@ -46,13 +46,21 @@ class ManageCard extends Component {
 
     this.state = {
       labelList: {
-        name: i18n.t("profile.nameVerify.title"),
-        username: i18n.t("profile.nameVerify.title"),
-        phone: i18n.t("profile.phone.title"),
-        bankName: i18n.t("card.addCard.BankName"),
-        bankBranch: i18n.t("card.addCard.branch"),
-        bankAccount: i18n.t("card.addCard.BankAccountName"),
-        address: i18n.t("common.withdrawalNumber"),
+        Bank:{
+          name: i18n.t("card.addCard.BankAccountName"),
+          bankName: i18n.t("card.addCard.BankName"),
+          bankBranch: i18n.t("card.addCard.branch"),
+          bankAccount: i18n.t("common.withdrawalNumber"),
+          address: i18n.t("common.withdrawalNumber"),
+        },
+        FPS: {
+          name: i18n.t("profile.nameVerify.title"),
+          username: i18n.t("profile.nameVerify.title"),
+          phone: i18n.t("profile.phone.title"),
+        },
+        Crypto: {
+          address: i18n.t("common.withdrawalNumber"),
+        }
       },
     };
   }
@@ -74,6 +82,7 @@ class ManageCard extends Component {
 
     return Object.keys(this.props.cardDetail.detail).map((key) => {
       let info = this.props.cardDetail.detail[key];
+      let field = this.state.labelList[this.props.cardDetail.banktype][key];
       if (key === "address" || key === "phone" || key === "bankAccount") {
         let last4Digits = this.props.cardDetail.detail[key].slice(-4);
         info = last4Digits.padStart(
@@ -83,7 +92,7 @@ class ManageCard extends Component {
       }
       return (
         <TextFieldItem>
-          <TextFieldLabel>{this.state.labelList[key]}</TextFieldLabel>
+          <TextFieldLabel>{field}</TextFieldLabel>
           <TextFieldContainer>{info}</TextFieldContainer>
         </TextFieldItem>
       );
