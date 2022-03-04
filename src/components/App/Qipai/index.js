@@ -279,7 +279,7 @@ class Qipai extends Component {
                       }}
                       maintenance={data.status != 0}
                     >
-                      <GameImage src={process.env.PUBLIC_URL + `/assets/images/pcGamePage/qipai/${data.abbreviation}.png`}></GameImage>
+                      <GameImage src={process.env.PUBLIC_URL + `/assets/images/pcGamePage/qipai/${data.abbreviation.toLowerCase()}.png`}></GameImage>
                       <GameTitle>{data.abbreviation}</GameTitle>
                     </RightNavItem>
                   );

@@ -266,7 +266,7 @@ class ESports extends Component {
                       }}
                       maintenance={data.status != 0}
                     >
-                      <GameImage src={process.env.PUBLIC_URL + `/assets/images/pcGamePage/esports/${data.abbreviation}.png`}></GameImage>
+                      <GameImage src={process.env.PUBLIC_URL + `/assets/images/pcGamePage/esports/${data.abbreviation.toLowerCase()}.png`}></GameImage>
                       <GameTitle>{data.abbreviation}</GameTitle>
                     </LeftNavItem>
                   );

@@ -294,7 +294,7 @@ class Lottery extends Component {
                       }}
                       maintenance={data.status != 0}
                     >
-                      <GameImage src={process.env.PUBLIC_URL + `/assets/images/pcGamePage/lottery/${data.abbreviation}.png`}></GameImage>
+                      <GameImage src={process.env.PUBLIC_URL + `/assets/images/pcGamePage/lottery/${data.abbreviation.toLowerCase()}.png`}></GameImage>
                       <GameTitle>{i18n.t(`${data.abbreviation}.lottery`)}</GameTitle>
                     </RightNavItem>
                   );

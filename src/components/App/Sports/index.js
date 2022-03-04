@@ -280,7 +280,7 @@ class Sports extends Component {
                       }}
                       maintenance={data.status != 0}
                     >
-                      <GameImage src={process.env.PUBLIC_URL + `/assets/images/pcGamePage/sports/${data.abbreviation}.png`}></GameImage>
+                      <GameImage src={process.env.PUBLIC_URL + `/assets/images/pcGamePage/sports/${data.abbreviation.toLowerCase()}.png`}></GameImage>
                       <GameTitle>
                         {i18n.t(`${data.abbreviation}.sports`)}
                       </GameTitle>
