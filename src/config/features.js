@@ -39,7 +39,7 @@ const featureList = {
     Deposit_AddTips: false,
     Deposit_CustomBankNameTranslation: false,
     AddCard_DisplayGCash: false,
-    AddCard_NotAllowedEditDelete: true,
+    AddCard_NotAllowedEditDelete: false,
     NavigateToAddCard: false,
     Profile_NotAllowChangePhone: false,
   },
