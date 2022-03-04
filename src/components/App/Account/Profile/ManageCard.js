@@ -53,6 +53,11 @@ class ManageCard extends Component {
           bankAccount: i18n.t("common.withdrawalNumber"),
           address: i18n.t("common.withdrawalNumber"),
         },
+        ThirdParty: {
+          name: i18n.t("profile.nameVerify.title"),
+          username: i18n.t("profile.nameVerify.title"),
+          phone: i18n.t("profile.phone.title"),
+        },
         FPS: {
           name: i18n.t("profile.nameVerify.title"),
           username: i18n.t("profile.nameVerify.title"),
