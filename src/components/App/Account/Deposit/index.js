@@ -113,6 +113,7 @@ class Deposit extends Component {
       depositPromotion: this.props.match.params.promotionid,
       amount: "",
       name: "",
+      account: "",
       step: 0,
       exchangeRate: { buyprice: 0, sellprice: 0 },
       files: [],
@@ -346,6 +347,14 @@ class Deposit extends Component {
       if (method.methodcode === "BankTransfer") {
         this.props.doBankDeposit(
           this.state.name,
+          this.state.account,
+          this.state.amount.replace(/,/g, ""),
+          channel.id,
+          this.state.depositPromotion
+        );
+      } else if (method.methodcode === "FPS") {
+        this.props.doFPSDeposit(
+          this.state.account,
           this.state.amount.replace(/,/g, ""),
           channel.id,
           this.state.depositPromotion
@@ -363,7 +372,7 @@ class Deposit extends Component {
           method.methodcode
         }/${channel.id}/${this.state.amount}/${
           this.state.depositPromotion ? this.state.depositPromotion : " "
-        }/${this.state.name}`,
+        }/${this.state.name}/${this.state.account}`,
         "_blank"
       );
     }
@@ -461,6 +470,12 @@ class Deposit extends Component {
       name: e.target.value,
     });
   };
+  handleAccountChange = (e) => {
+    this.setState({
+      ...this.state,
+      account: e.target.value,
+    });
+  };
   handleFileChange = (e) => {
     var files = e.target.files;
     var fileName = e.target.value.toLowerCase();
@@ -509,8 +524,10 @@ class Deposit extends Component {
               amount={this.state.amount}
               onAmountChange={this.handleAmountChange}
               name={this.state.name}
-              exchangeRate={this.state.exchangeRate}
+              account={this.state.account}
               onNameChange={this.handleNameChange}
+              exchangeRate={this.state.exchangeRate}
+              onAccountChange={this.handleAccountChange}
               selectedChannelIndex={this.state.selectedChannelIndex}
               onChannelChange={this.handleChannelChange}
               selectedMethodIndex={this.state.selectedMethodIndex}
@@ -543,9 +560,11 @@ class Deposit extends Component {
               amount={this.state.amount}
               onAmountChange={this.handleAmountChange}
               name={this.state.name}
+              onNameChange={this.handleNameChange}
+              account={this.state.account}
+              onAccountChange={this.handleAccountChange}
               files={this.state.files}
               exchangeRate={this.state.exchangeRate}
-              onNameChange={this.handleNameChange}
               selectedChannelIndex={this.state.selectedChannelIndex}
               onChannelChange={this.handleChannelChange}
               selectedMethodIndex={this.state.selectedMethodIndex}
@@ -788,9 +807,21 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    doBankDeposit: (account, amount, paymentid, promotionid, banktype) => {
+    doBankDeposit: (name, account, amount, paymentid, promotionid, banktype) => {
       dispatch(
         walletAction.doBankDeposit(
+          name,
+          account,
+          amount,
+          paymentid,
+          promotionid,
+          banktype
+        )
+      );
+    },
+    doFPSDeposit: (account, amount, paymentid, promotionid, banktype) => {
+      dispatch(
+        walletAction.doFPSDeposit(
           account,
           amount,
           paymentid,

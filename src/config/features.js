@@ -32,7 +32,7 @@ const featureList = {
     OnlineUser: false,
     CustomDepositInput: false,
     AddCard_InputAddFPS: false,
-    Deposit_RemoveName: false,
+    Deposit_RemoveName: true,
     DepositNotification: false,
     AddCard_HideChannel: false,
     AddCard_BankDropdown: false,

@@ -196,29 +196,34 @@ const Remark = styled.div`
   opacity: 0.75;
 `;
 
-class NewStepOne extends Component {
-  render() {
-    const {
-      amount,
-      onAmountChange,
-      name,
-      onNameChange,
-      selectedMethodIndex,
-      onMethodChange,
-      selectedChannelIndex,
-      onChannelChange,
-      selectedPaymentIndex,
-      paymentType,
-      onNextClick,
-      exchangeRate,
-      isCrypto,
-      onFileChange,
-      files,
-      onDepositCancelClick,
-    } = this.props;
-    if (paymentType === null) return <></>;
 
-    const methodList = paymentType.method;
+const NewStepOne = (props) => {
+  const {
+    amount,
+    onAmountChange,
+    name,
+    onNameChange,
+    account,
+    onAccountChange,
+    onDepositCancelClick,
+    selectedMethodIndex,
+    onMethodChange,
+    selectedChannelIndex,
+    onChannelChange,
+    paymentType,
+    onNextClick,
+    exchangeRate,
+    files,
+  } = props;
+
+  if (paymentType === null) return <></>;
+
+  const methodList = paymentType.method;
+
+  var isApplePay = paymentType.paymentcode.toUpperCase() === "APPLEPAY";
+  var isManual = paymentType.paymentcode.toUpperCase() === "MANUAL";
+  var isFPS =
+    methodList[selectedMethodIndex].methodcode.toUpperCase() === "FPS";
 
     return (
       <>
@@ -234,7 +239,7 @@ class NewStepOne extends Component {
               <CustomFormControl>
                 <CustomSelect
                   variant="outlined"
-                  value={this.props.selectedMethodIndex}
+                  value={selectedMethodIndex}
                   displayEmpty
                   onChange={onMethodChange}
                   native
@@ -281,7 +286,7 @@ class NewStepOne extends Component {
                       <CustomFormControl>
                         <CustomSelect
                           variant="outlined"
-                          value={this.props.selectedChannelIndex}
+                          value={selectedChannelIndex}
                           displayEmpty
                           onChange={onChannelChange}
                           native
@@ -315,7 +320,7 @@ class NewStepOne extends Component {
                 </FormContainer>
 
                 {(() => {
-                  if (paymentType.paymentcode.toUpperCase() === "MANUAL") {
+                  if (isManual) {
                     var channelExtend =
                       methodList[selectedMethodIndex].channel[
                         selectedChannelIndex
@@ -359,9 +364,10 @@ class NewStepOne extends Component {
 
                             <FormRightContainer>
                               <SelectionContainer>
-                                {channelExtend.logo && (
-                                  <CustomImage src={channelExtend.logo} />
+                                {channelExtend.qrCodeFileUrl && (
+                                  <CustomImage src={channelExtend.qrCodeFileUrl} />
                                 )}
+                                {channelExtend.name && (
                                 <TransferContainer>
                                   <TransferLabel>
                                     {i18n.t("deposit.accName")}:
@@ -370,6 +376,8 @@ class NewStepOne extends Component {
                                     {channelExtend.name}
                                   </TransferLabelValue>
                                 </TransferContainer>
+                                )}
+                                {channelExtend.bankAccount && (
                                 <TransferContainer>
                                   <TransferLabel>
                                     {i18n.t("deposit.cardNum")}:
@@ -378,6 +386,38 @@ class NewStepOne extends Component {
                                     {channelExtend.bankAccount}
                                   </TransferLabelValue>
                                 </TransferContainer>
+                              )}
+                              {channelExtend.phone && (
+                                <TransferContainer>
+                                  <TransferLabel>
+                                    {i18n.t("deposit.phone")}:
+                                  </TransferLabel>
+                                  <TransferLabelValue>
+                                    {channelExtend.phone}
+                                  </TransferLabelValue>
+                                </TransferContainer>
+                              )}
+                              {channelExtend.email && (
+                                <TransferContainer>
+                                  <TransferLabel>
+                                    {i18n.t("deposit.email")}:
+                                  </TransferLabel>
+                                  <TransferLabelValue>
+                                    {channelExtend.email}
+                                  </TransferLabelValue>
+                                </TransferContainer>
+                              )}
+
+                              {channelExtend.fpsId && (
+                                <TransferContainer>
+                                  <TransferLabel>
+                                    {i18n.t("deposit.fpsId")}:
+                                  </TransferLabel>
+                                  <TransferLabelValue>
+                                    {channelExtend.fpsId}
+                                  </TransferLabelValue>
+                                </TransferContainer>
+                              )}
                               </SelectionContainer>
                             </FormRightContainer>
                           </FormContainer>
@@ -389,13 +429,48 @@ class NewStepOne extends Component {
 
                 {(() => {
                   if (
-                    (paymentType.paymentcode.toUpperCase() === "MANUAL" ||
-                      paymentType.paymentcode.toUpperCase() === "APPLEPAY") &&
+                    (isManual || isApplePay) &&
                     !config.features.Deposit_ManualApplePayHideBankAcc
                   ) {
                     return (
-                      !config.features.Deposit_RemoveName && (
-                        <>
+                      <>
+                        <FormContainer>
+                          <FormLeftContainer>
+                            <SubHeaderContainer>
+                              <SubTitle>
+                                {i18n.t("common.pleaseEnterAccountName")}
+                              </SubTitle>
+                            </SubHeaderContainer>
+                          </FormLeftContainer>
+
+                          <FormRightContainer>
+                            <SelectionContainer>
+                              <TextField
+                                style={{
+                                  height: "38px",
+                                  width: "258px",
+                                  float: "left",
+                                  marginRight: "5px",
+                                  padding: 0,
+                                }}
+                                placeholder={i18n.t(
+                                  "common.pleaseEnterAccountName"
+                                )}
+                                onChange={onAccountChange}
+                                outputFormat="string"
+                                variant="outlined"
+                                autoComplete="off"
+                                value={account}
+                              ></TextField>
+                            </SelectionContainer>
+                            {config.features.Deposit_AddTips && (
+                              <div style={{ marginLeft: 30, marginTop: 8 }}>
+                                <Remark> {i18n.t("mgm.depositTips")}</Remark>
+                              </div>
+                            )}
+                          </FormRightContainer>
+                        </FormContainer>
+                        {!(config.features.Deposit_RemoveName || isFPS )&& (
                           <FormContainer>
                             <FormLeftContainer>
                               <SubHeaderContainer>
@@ -437,13 +512,13 @@ class NewStepOne extends Component {
                               </SelectionContainer>
                               {config.features.Deposit_AddTips && (
                                 <div style={{ marginLeft: 30, marginTop: 8 }}>
-                                  <Remark> {i18n.t("mgm.depositTips")}</Remark>
+                                  <Remark> {i18n.t("mgm.depositTips2")}</Remark>
                                 </div>
                               )}
                             </FormRightContainer>
                           </FormContainer>
-                        </>
-                      )
+                        )}
+                      </>
                     );
                   }
                 })()}
@@ -577,15 +652,15 @@ class NewStepOne extends Component {
                       <CustomFormControl>
                         <CustomSelect
                           variant="outlined"
-                          value={this.props.depositPromotion}
+                          value={props.depositPromotion}
                           displayEmpty
-                          onChange={this.props.handleDepositPromotionChange}
+                          onChange={props.handleDepositPromotionChange}
                           native
                         >
                           <option value="">
                             {i18n.t("deposit.msgPlsSelectPromotion")}
                           </option>
-                          {this.props.promotionList.map((data, key) => {
+                          {props.promotionList.map((data, key) => {
                             return (
                               <option value={data.id} key={key}>
                                 {data.name}
@@ -616,7 +691,7 @@ class NewStepOne extends Component {
                               <CustomInput
                                 type="file"
                                 accept="image/jpg, image/jpeg, image/png, image/tiff"
-                                onChange={this.props.onFileChange}
+                                onChange={props.onFileChange}
                               ></CustomInput>
                             </SelectionContainer>
                           </FormRightContainer>
@@ -670,6 +745,6 @@ class NewStepOne extends Component {
       </>
     );
   }
-}
+
 
 export default NewStepOne;
