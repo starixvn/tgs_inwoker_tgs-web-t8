@@ -475,7 +475,7 @@ class Header extends Component {
       open: false,
       dialog: "",
       hideAppBar: false,
-      systemDateTime: moment(new Date()).format("HH:mm:ss"), //YYYY-MM-DD HH:mm:ss
+      systemDateTime: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"), //YYYY-MM-DD HH:mm:ss
     };
     this.lastScroll = null;
 
@@ -494,7 +494,7 @@ class Header extends Component {
     this.updateInterval = setInterval(() => {
       this.setState({
         ...this.state,
-        systemDateTime: moment(new Date()).format("HH:mm:ss"),
+        systemDateTime: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
       });
       const localStorageToken = localStorage.getItem("token0");
       if (

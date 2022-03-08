@@ -19,7 +19,7 @@ export const rotateKeyFrame = keyframes`
 const Container = styled.div`
   font-size: 14px;
   float: right;
-  width: 600px;
+  width: 650px;
   display: flex;
   flex-direction: row-reverse;
   line-height: 38px;
@@ -62,7 +62,7 @@ const BtnLogout = styled.button`
   color: #fff;
   font-size: 13px;
   line-height: 30px;
-  margin: auto 5px;
+  margin: 4px 5px;
   height: 30px;
   padding: 0 20px;
   user-select: none;
