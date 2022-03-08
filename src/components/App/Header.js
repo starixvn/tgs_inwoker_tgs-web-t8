@@ -757,7 +757,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.LIVELOBBY],
         sorting: 1,
         sortingHK28: 1,
-        providerList: ["ab", "ag","bg", "evo", "sw", "wm"],
+        providerList: ["ab", "ag","bg", "evo", "sw", "wm", "sg"],
       },
       {
         path: "chess",
@@ -829,7 +829,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.FISH],
         sorting: 8,
         sortingHK28: 5,
-        providerList: ["bg", "haba", "jdb", "ky", "ly"],
+        providerList: ["bg", "haba", "jdb","jili", "ky", "ly"],
       },
     ];
 
