@@ -487,6 +487,7 @@ class Header extends Component {
 
   async componentDidMount() {
     this.setState({ selected: this.props.location.pathname });
+
     this.FireTimerToUpdateBalance();
   }
 
@@ -513,7 +514,9 @@ class Header extends Component {
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
   }
-
+  handleDialogChange = (dialog) => {
+    this.setState({ ...this.state, dialog: dialog });
+  };
   handleScroll(evt) {
     const lastScroll = window.scrollY;
     if (lastScroll > 160) {
@@ -523,6 +526,7 @@ class Header extends Component {
     }
     return;
   }
+
   onhandleLogout = () => {
     this.props.logout(this.props.account.token);
     this.props.history.push("/" + i18n.language + "/");
@@ -872,6 +876,7 @@ class Header extends Component {
                       <GuestContainer
                         onhandleShowCSClick={this.props.onhandleShowCSClick}
                         onhandleContactUsClick={this.handleContactUsClick}
+                        onDialogChange={this.handleDialogChange}
                       ></GuestContainer>
                     );
                   } else {
@@ -909,8 +914,7 @@ class Header extends Component {
             ></LogoContainer>
             <RightMenuContainer>
               <RightMenuUL
-                className="top-menu"
-                className={`${
+                className={`top-menu ${
                   this.state.shouldShow === null
                     ? classes.maxMenu
                     : this.state.shouldShow

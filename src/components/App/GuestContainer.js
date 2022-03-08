@@ -126,12 +126,14 @@ class GuestContainer extends Component {
       openDialog: true,
       openDialogName: dialogName,
     });
+    this.props.onDialogChange(dialogName);
     this.props.showLogin(true);
   };
 
   onhandleCloseDialog = () => {
     this.setState({ ...this.state, openDialog: false });
     this.props.showLogin(false);
+    this.props.onDialogChange("");
   };
 
   // onhandleLoginSuccess = token => {
@@ -145,6 +147,7 @@ class GuestContainer extends Component {
       openDialog: true,
       openDialogName: "register",
     });
+    console.log(this.props)
     this.props.onDialogChange("register");
     this.props.showLogin(false);
   };
