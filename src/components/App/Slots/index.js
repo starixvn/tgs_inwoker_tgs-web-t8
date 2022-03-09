@@ -43,6 +43,14 @@ const Container = styled.div`
   height: auto;
   min-height: 780px;
   position: relative;
+  background: url(${(props) =>
+      process.env.PUBLIC_URL +
+      "/assets/images/pcGamePage/slots/bg-" +
+      props.type +
+      ".jpg"})
+    no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
 `;
 
 const NoContentText = styled.div`
@@ -673,7 +681,9 @@ const NoContentContainer = (props) => {
             background:
               "url(" +
               process.env.PUBLIC_URL +
-              `/assets/images/pcGamePage/no.jpg) no-repeat center`,
+              `/assets/images/pcGamePage/no.jpg) no-repeat`,
+            backgroundAttachment: "fixed",
+            backgroundSize: "cover",
           }}
         >
           <NoContentText lang={i18n.language}>
@@ -694,7 +704,9 @@ const NoContentContainer = (props) => {
             background:
               "url(" +
               process.env.PUBLIC_URL +
-              `/assets/images/pcGamePage/no_${i18n.language}.jpg) no-repeat fixed 50% 100%/100% auto, #E3E3E3`,
+              `/assets/images/pcGamePage/no_${i18n.language}.jpg) no-repeat`,
+            backgroundAttachment: "fixed",
+            backgroundSize: "cover",
           }}
         ></Container>
       );
@@ -702,7 +714,6 @@ const NoContentContainer = (props) => {
 };
 
 class Slots extends Component {
-  
   constructor(props) {
     super(props);
 
@@ -1046,21 +1057,17 @@ class Slots extends Component {
       });
     return this.state.gameList.length ? (
       <Container
-        style={{
-          background: `url(${
-            process.env.PUBLIC_URL
-          }/assets/images/pcGamePage/slots/bg-${
-            this.state.type === GameTypeEnum.TABLEGAME
-              ? "electron"
-              : this.state.type === GameTypeEnum.SLOT
-              ? "slot"
-              : this.state.type === GameTypeEnum.FISH
-              ? config.features.GamePage_SpecificBackground
-                ? "fish-hk28"
-                : "fish"
-              : "slot"
-          }.jpg) no-repeat fixed 50% 100%/100% auto, #E3E3E3`,
-        }}
+        type={
+          this.state.type === GameTypeEnum.TABLEGAME
+            ? "electron"
+            : this.state.type === GameTypeEnum.SLOT
+            ? "slot"
+            : this.state.type === GameTypeEnum.FISH
+            ? config.features.GamePage_SpecificBackground
+              ? "fish-hk28"
+              : "fish"
+            : "slot"
+        }
       >
         <GameTabContainer>
           <GameTabButton

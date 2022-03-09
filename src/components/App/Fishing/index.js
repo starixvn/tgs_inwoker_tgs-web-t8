@@ -16,9 +16,13 @@ const Container = styled.div`
   min-height: 780px;
   position: relative;
   background: url(${(props) =>
-        `${process.env.PUBLIC_URL}/assets/images/pcGamePage/fish/background.jpg`})
-      no-repeat fixed 50% 100%/100% auto,
-    #e3e3e3;
+      process.env.PUBLIC_URL +
+      "/assets/images/pcGamePage/fish/background" +
+      (props.GamePage_SpecificBackground ? "-hk28" : "") +
+      ".jpg"})
+    no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
 `;
 
 const NoContentText = styled.div`
@@ -85,7 +89,7 @@ const GameItemTitle = styled.div`
 const GameItemActionContainer = styled.div``;
 
 const GameItemButton = styled.button`
-  background-color: ${({theme})=>theme.primary};
+  background-color: ${({ theme }) => theme.primary};
   border: 0;
   border-radius: 22.5px;
   color: #fff;
@@ -120,7 +124,9 @@ const NoContentContainer = (props) => {
             background:
               "url(" +
               process.env.PUBLIC_URL +
-              `/assets/images/pcGamePage/no.jpg) no-repeat center`,
+              `/assets/images/pcGamePage/no.jpg) no-repeat`,
+            backgroundAttachment: "fixed",
+            backgroundSize: "cover",
           }}
         >
           <NoContentText lang={i18n.language}>
@@ -141,7 +147,9 @@ const NoContentContainer = (props) => {
             background:
               "url(" +
               process.env.PUBLIC_URL +
-              `/assets/images/pcGamePage/no_${i18n.language}.jpg) no-repeat fixed 50% 100%/100% auto, #E3E3E3`,
+              `/assets/images/pcGamePage/no_${i18n.language}.jpg) no-repeat`,
+            backgroundAttachment: "fixed",
+            backgroundSize: "cover",
           }}
         ></Container>
       );
@@ -168,9 +176,7 @@ class Fishing extends Component {
 
   handleJoinGameClick = (gpcode, gpid) => {
     if (this.props.token) {
-      this.props.history.push(
-        `/${i18n.language}/fish/play/${gpcode}/${gpid}`
-      );
+      this.props.history.push(`/${i18n.language}/fish/play/${gpcode}/${gpid}`);
     } else {
       this.props.showLogin(true);
     }
@@ -275,7 +281,8 @@ class Fishing extends Component {
       <Container>
         <GameContainer>{list}</GameContainer>
       </Container>
-    ) : (<NoContentContainer lang={i18n.language}></NoContentContainer>
+    ) : (
+      <NoContentContainer lang={i18n.language}></NoContentContainer>
     );
   }
 }
