@@ -189,7 +189,7 @@ const LimitPopupContainer = styled.div`
 `;
 
 const Turnover = styled.div`
-  a {
+  span {
     color: ${({ theme }) => {
       return theme.primary;
     }};
@@ -345,7 +345,7 @@ class Main extends Component {
         <SubHeaderContainer>
           <SubTitle>{i18n.t("withdrawal.enterAmount")}</SubTitle>
         </SubHeaderContainer>
-
+        
         <SelectionContainer>
           <CustomTextField
             width={250}
@@ -364,10 +364,16 @@ class Main extends Component {
             {Common.formatNumberWithThousand(this.props.withdrawalMaxLimit)}
           </LimitPopupContainer>
           <Turnover>
+            {i18n.t("withdrawal.msgCanWithdrawal")}
+            <span>
+              {Common.formatNumberWithThousand(this.props.mainBalance)}
+            </span>
+          </Turnover>
+          <Turnover>
             {i18n.t("withdrawal.turnover")}
-            <a>
+            <span>
               {Common.formatNumberWithThousand(this.props.minWithdrawLimit)}
-            </a>
+            </span>
           </Turnover>
         </SelectionContainer>
         {/* {config.brand !== "HKJP" && config.brand !== "GPI" ? (
