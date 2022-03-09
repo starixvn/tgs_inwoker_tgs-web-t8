@@ -1,7 +1,7 @@
 import { Grid, Container as MContainer } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
-
+import DynamicFont from "react-dynamic-font";
 import ItemPNG from "../../../assets/images/home/section/section3-item.png"
 import i18n from "../../../utils/i18n";
 
@@ -18,6 +18,7 @@ const ItemInnerLabel = styled.div`
   font-size: 38px;
   font-weight: bold;
   padding-bottom: 100px;
+  margin: 0 45px;
 `;
 
 const ItemBottomLabel = styled.div`
@@ -37,20 +38,20 @@ const ItemContainer = styled.div`
 
 const itemList = [
   {
-    innerText: '30秒',
-    bottomText: '平均存款时间',
+    title: i18n.t("web.home.services.service1.title"),
+    value: i18n.t("web.home.services.service1.value"),
   },
   {
-    innerText: '50秒',
-    bottomText: '平均取款时间',
+    title: i18n.t("web.home.services.service2.title"),
+    value: i18n.t("web.home.services.service2.value"),
   },
   {
-    innerText: '60家',
-    bottomText: '合作支付平台',
+    title: i18n.t("web.home.services.service3.title"),
+    value: i18n.t("web.home.services.service3.value"),
   },
   {
-    innerText: '80家',
-    bottomText: '合作游戏平台',
+    title: i18n.t("web.home.services.service4.title"),
+    value: i18n.t("web.home.services.service4.value"),
   }
 ]
 
@@ -60,8 +61,8 @@ const ThirdSection = (props) => {
     {itemList.map((item,index)=>{
       return(
         <ItemContainer key={index}>
-          <ItemInnerLabel>{item.innerText}</ItemInnerLabel>
-          <ItemBottomLabel>{item.bottomText}</ItemBottomLabel>
+          <ItemInnerLabel><DynamicFont content={item.value}></DynamicFont></ItemInnerLabel>
+          <ItemBottomLabel><DynamicFont content={item.title}></DynamicFont></ItemBottomLabel>
         </ItemContainer>
       )
     })}

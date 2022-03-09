@@ -851,7 +851,7 @@ class Header extends Component {
                   />
                 </LinkContainer>
                 <TimerContainer>
-                  <TimerSpan> (GMT+0800) {this.state.systemDateTime}</TimerSpan>
+                  <TimerSpan> (GMT+8) {this.state.systemDateTime}</TimerSpan>
                 </TimerContainer>
                 {config.features.DisplayPhone && (
                   <TimerContainer style={{ marginLeft: "10px" }}>
