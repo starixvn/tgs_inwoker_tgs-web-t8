@@ -42,6 +42,7 @@ const featureList = {
     AddCard_NotAllowedEditDelete: false,
     NavigateToAddCard: false,
     Profile_NotAllowChangePhone: false,
+    Deposit_RemoveAccount: false,
   },
 };
 export default featureList;
