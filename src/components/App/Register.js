@@ -252,15 +252,17 @@ function Register(props) {
 
   const [upper, setUpper] = React.useState(localStorage.getItem("upper"));
   const [promoteType, setPromoteType] = React.useState(
-    localStorage.getItem("invitationtype")
+    localStorage.getItem("invitationtype") === ""
+      ? "a"
+      : localStorage.getItem("invitationtype")
   );
   const [prefill, setPrefill] = React.useState(
     localStorage.getItem("promotionId") != "" ||
-      localStorage.getItem("upper") != ""
+      localStorage.getItem("upper") != "" ||
+      localStorage.getItem("invitationtype") != ""
       ? true
       : false
   );
-
   useEffect(() => {
     if (props.general.brand.hasInvitationCode) {
       props.getInvitationCode().then((result) => {
@@ -483,7 +485,9 @@ function Register(props) {
                 selected={promoteType}
                 onChange={handleSwitchType}
               >
-                <option value="a">{i18n.t("usertype.agent")}</option>
+                <option value="a" selected>
+                  {i18n.t("usertype.agent")}
+                </option>
                 <option value="p">{i18n.t("usertype.player")}</option>
               </CustomInvitationSelect>
             )}
