@@ -42,28 +42,6 @@ const NoContentText = styled.div`
   }
 `;
 
-const GirlImage = styled.div`
-  background: url(${(props) => props.img}) no-repeat;
-  width: 308px;
-  height: 172px;
-  float: right;
-  &:hover {
-    cursor: pointer;
-  }
-`;
-const LeftSlide = styled(ScrollAnimation)`
-  display: flex;
-`;
-const RightSlide = styled(ScrollAnimation)`
-  display: flex;
-`;
-const ItemContainer = styled.div`
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  overflow: visible;
-`;
-
 const Maintenance = styled.div`
   width: 100%;
   height: 100%;
@@ -78,27 +56,6 @@ const Maintenance = styled.div`
   font-size: 24px;
   user-select: none;
   cursor: not-allowed;
-`;
-
-const ImageWrapper = styled.div`
-  position: relative;
-
-  ${({ maintenance }) => {
-    return maintenance
-      ? `
-
-    ${Maintenance}{
-     
-      display: flex;
-    }
-    ${GirlImage}{
-      filter: brightness(40%) grayscale(200%);
-    }
-    
-    
-    `
-      : ``;
-  }}
 `;
 
 const SportsWrapper = styled.div`
@@ -130,6 +87,20 @@ const GameImage = styled.img`
   transition: transform 0.3s;
 `;
 
+const GameTitle = styled.div`
+  height: 45px;
+  width: 100%;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 1.5em;
+  font-weight: bold;
+  position: absolute;
+  bottom: 0;
+  background: url(${process.env.PUBLIC_URL}"/assets/images/pcGamePage/esports/btn-esports.png") no-repeat;
+  text-align: center;
+  line-height: 1.8em;
+`;
+
 const LeftNavItem = styled.li`
   box-shadow: 0 3px 8px rgb(0 0 0 / 80%);
   cursor: pointer;
@@ -143,20 +114,20 @@ const LeftNavItem = styled.li`
     transform: scale(1.05);
     transition: transform 0.3s;
   }
-`;
 
-const GameTitle = styled.div`
-  height: 45px;
-  width: 100%;
-  border-radius: 10px;
-  color: #ffffff;
-  font-size: 1.5em;
-  font-weight: bold;
-  position: absolute;
-  bottom: 0;
-  background: url(${process.env.PUBLIC_URL}"/assets/images/pcGamePage/esports/btn-esports.png") no-repeat;
-  text-align: center;
-  line-height: 1.8em;
+  ${({ maintenance }) => {
+    return maintenance
+      ? `
+  
+    ${Maintenance}{
+      display: flex;
+    }
+    ${GameImage}, ${GameTitle}{
+      filter: brightness(40%) grayscale(200%);
+    }
+    `
+      : ``;
+  }}
 `;
 
 const NoContentContainer = (props) => {
@@ -262,10 +233,14 @@ class ESports extends Component {
                     <LeftNavItem
                       selected={this.state.selected === index}
                       onClick={() => {
-                        this.handleJoinGameClick(data.abbreviation, data.type);
+                        if(data.status === 0)
+                        {
+                          this.handleJoinGameClick(data.abbreviation, data.type);
+                        }
                       }}
-                      maintenance={data.status != 0}
+                      maintenance={data.status !== 0}
                     >
+                      <Maintenance>{i18n.t("transfer.maintenance")}</Maintenance>
                       <GameImage src={process.env.PUBLIC_URL + `/assets/images/pcGamePage/esports/${data.abbreviation.toLowerCase()}.png`}></GameImage>
                       <GameTitle>{data.abbreviation}</GameTitle>
                     </LeftNavItem>

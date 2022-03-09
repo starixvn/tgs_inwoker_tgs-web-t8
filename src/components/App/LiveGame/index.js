@@ -72,16 +72,6 @@ const NoContentText = styled.div`
   }
 `;
 
-
-const GirlImage = styled.div`
-  background: url(${(props) => props.img}) no-repeat;
-  width: 308px;
-  height: 172px;
-  float: right;
-  &:hover {
-    cursor: pointer;
-  }
-`;
 const LeftSlide = styled(ScrollAnimation)`
   display: flex;
 `;
@@ -106,27 +96,6 @@ const Maintenance = styled.div`
   cursor: not-allowed;
 `;
 
-const ImageWrapper = styled.div`
-  position: relative;
-
-  ${({ maintenance }) => {
-    return maintenance
-      ? `
-
-    ${Maintenance}{
-     
-      display: flex;
-    }
-    ${GirlImage}{
-      filter: brightness(40%) grayscale(200%);
-    }
-    
-    
-    `
-      : ``;
-  }}
-`;
-
 const BottomContainer = styled.div`
   bottom: 0;
   left: 0;
@@ -139,6 +108,28 @@ const BottomNavItemContainer = styled.ul`
   justify-content: center;
   padding-bottom: 1.8%;
   list-style-type: none;
+`;
+
+const GameButton = styled.div`
+  width: 188px;
+  height: 178px;
+  background: url(${LiveGameButtonPNG}) center no-repeat;
+  padding-top: 50px;
+  padding-left: 30px;
+
+  &:before {
+    position: absolute;
+    left: 20px;
+    width: 150px;
+    height: 80px;
+    content: "";
+    background-image: url(${(props=>{ 
+      return process.env.PUBLIC_URL+"/assets/images/pcGamePage/live/"+props.name.toLowerCase()+".png";
+    })});
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
 `;
 
 const BottomNavItem = styled.li`
@@ -164,29 +155,21 @@ const BottomNavItem = styled.li`
       animation: ${unflipButton} 0.8s linear both;
       transform: scaleX(1);
     `}
+
+    ${({ maintenance }) => {
+      return maintenance
+        ? `
+      ${Maintenance}{
+        display: flex;
+      }
+      ${GameButton}{
+        filter: brightness(40%) grayscale(200%);
+      }
+      `
+        : ``;
+    }}
 `;
 
-const GameButton = styled.div`
-  width: 188px;
-  height: 178px;
-  background: url(${LiveGameButtonPNG}) center no-repeat;
-  padding-top: 50px;
-  padding-left: 30px;
-
-  &:before {
-    position: absolute;
-    left: 20px;
-    width: 150px;
-    height: 80px;
-    content: "";
-    background-image: url(${(props=>{ 
-      return process.env.PUBLIC_URL+"/assets/images/pcGamePage/live/"+props.name.toLowerCase()+".png";
-    })});
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
-  }
-`;
 
 const NoContentContainer = (props) => {
   switch (props.lang) {
@@ -305,7 +288,9 @@ class LiveGame extends Component {
               <BottomNavItemContainer>
                 {this.state.list.map((data, index) => {
                   return (
-                    <BottomNavItem selected={this.state.selected === index}>
+                    <BottomNavItem selected={this.state.selected === index}
+                        maintenance={data.status != 0}>
+                      <Maintenance>{i18n.t("transfer.maintenance")}</Maintenance>
                       <GameButton
                         selected={this.state.selected === index}
                         onClick={() => {
@@ -316,7 +301,6 @@ class LiveGame extends Component {
                           );
                         }}
                         name={data.abbreviation}
-                        maintenance={data.status != 0}
                       >
                         {/* <img
                           alt={data.abbreviation}

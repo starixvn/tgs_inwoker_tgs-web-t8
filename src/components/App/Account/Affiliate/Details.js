@@ -136,7 +136,6 @@ class Affiliate extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     account: state.account,
   };

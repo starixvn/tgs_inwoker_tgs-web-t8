@@ -147,7 +147,6 @@ class GuestContainer extends Component {
       openDialog: true,
       openDialogName: "register",
     });
-    console.log(this.props)
     this.props.onDialogChange("register");
     this.props.showLogin(false);
   };

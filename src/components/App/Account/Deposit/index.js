@@ -323,7 +323,6 @@ class Deposit extends Component {
     });
   };
   handleMethodChange = (e) => {
-    console.log(e);
     this.setState({
       ...this.state,
       amount: "",

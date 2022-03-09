@@ -78,21 +78,6 @@ const RightNavItemContainer = styled.ul`
     transition: transform 0.3s;
   `;
   
-  const RightNavItem = styled.li`
-  box-shadow: 0 3px 8px rgb(0 0 0 / 80%);
-  cursor: pointer;
-  overflow: hidden;
-  position: relative;
-  width: 354px;
-  height: 180px;
-  border-radius: 10px;
-  margin: 20px 0;
-  &:hover ${GameImage} {
-    transform: scale(1.05);
-    transition: transform 0.3s;
-  }
-  `;
-  
   const GameTitle = styled.div`
   height: 45px;
   width: 100%;
@@ -105,16 +90,6 @@ const RightNavItemContainer = styled.ul`
   background: url(${process.env.PUBLIC_URL}"/assets/images/pcGamePage/qipai/btn-qipai.png") no-repeat;
   text-align: center;
   line-height: 1.8em;
-`;
-
-const GirlImage = styled.div`
-  background: url(${(props) => props.img}) no-repeat;
-  width: 308px;
-  height: 172px;
-  float: right;
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 const Maintenance = styled.div`
@@ -133,22 +108,34 @@ const Maintenance = styled.div`
   cursor: not-allowed;
 `;
 
-const ImageWrapper = styled.div`
-  position: relative;
+const RightNavItem = styled.li`
+box-shadow: 0 3px 8px rgb(0 0 0 / 80%);
+cursor: pointer;
+overflow: hidden;
+position: relative;
+width: 354px;
+height: 180px;
+border-radius: 10px;
+margin: 20px 0;
+&:hover ${GameImage} {
+  transform: scale(1.05);
+  transition: transform 0.3s;
+}
 
-  ${({ maintenance }) => {
-    return maintenance
-      ? `
+${({ maintenance }) => {
+  return maintenance
+    ? `
 
-    ${Maintenance}{
-      display: flex;
-    }
-    ${GirlImage}{
-      filter: brightness(40%) grayscale(200%);
-    }
-    `
-      : ``;
-  }}
+  ${Maintenance}{
+    display: flex;
+  }
+  ${GameImage}, ${GameTitle}{
+    filter: brightness(40%) grayscale(200%);
+  }
+  `
+    : ``;
+}}
+
 `;
 
 const NoContentContainer = (props) => {
@@ -275,10 +262,14 @@ class Qipai extends Component {
                     <RightNavItem
                       selected={this.state.selected === index}
                       onClick={() => {
-                        this.handleJoinGameClick(data.abbreviation, data.type);
+                        if(data.status === 0)
+                        {
+                          this.handleJoinGameClick(data.abbreviation, data.type);
+                        }
                       }}
-                      maintenance={data.status != 0}
+                      maintenance={data.status !== 0}
                     >
+                      <Maintenance>{i18n.t("transfer.maintenance")}</Maintenance>
                       <GameImage src={process.env.PUBLIC_URL + `/assets/images/pcGamePage/qipai/${data.abbreviation.toLowerCase()}.png`}></GameImage>
                       <GameTitle>{data.abbreviation}</GameTitle>
                     </RightNavItem>
