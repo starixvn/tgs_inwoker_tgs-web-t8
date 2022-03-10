@@ -307,7 +307,7 @@ const RightMenuLI = styled.li`
     transition: all 0.5s ease;
     transform: translate(-50%, 0);
   }
-  
+
   &:hover {
     //border-bottom: solid 4px #20d0ff;
     color: ${({ theme }) => theme.primary};
@@ -757,7 +757,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.LIVELOBBY],
         sorting: 1,
         sortingHK28: 1,
-        providerList: ["ab", "ag","bg", "evo", "sw", "wm", "sg"],
+        providerList: ["ab", "ag", "bg", "evo", "sw", "wm", "sg"],
       },
       {
         path: "chess",
@@ -787,7 +787,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.ESPORTS],
         sorting: 4,
         sortingHK28: 2,
-        providerList: ["imes","avia","tf"],
+        providerList: ["imes", "avia", "tf"],
       },
       {
         path: "lottery",
@@ -817,7 +817,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.TABLEGAME],
         sorting: 7,
         sortingHK28: 6,
-        providerList: ["avia","haba" ,"imes", "nt", "pp", "rt", "sw","tf"],
+        providerList: ["avia", "haba", "imes", "nt", "pp", "rt", "sw", "tf"],
       },
       {
         path: `fish`,
@@ -829,7 +829,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.FISH],
         sorting: 8,
         sortingHK28: 5,
-        providerList: ["bg", "haba", "jdb","jili", "ky", "ly"],
+        providerList: ["bg", "haba", "jdb", "jili", "ky", "ly"],
       },
     ];
 
@@ -890,6 +890,9 @@ class Header extends Component {
                         onhandleRefreshBalanceClick={
                           this.handleRefreshBalanceClick
                         }
+                        wallet={this.props.wallet}
+                        account={this.props.account}
+                        game={this.props.game}
                       ></MemberContainer>
                     );
                   }
@@ -1194,6 +1197,7 @@ const mapStateToProps = (state) => {
     account: state.account,
     game: state.game,
     general: state.general,
+    wallet: state.wallet,
   };
 };
 

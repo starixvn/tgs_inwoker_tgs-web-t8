@@ -180,7 +180,7 @@ class MemberContainer extends Component {
           <span>{i18n.t("web.header.mainAccount")}</span>
           <BalanceAmountLabel onClick={this.props.onhandleTransfer}>
             {Common.formatNumberWithThousand(
-              this.props.mainBalance +
+              this.props.wallet.mainBalance +
                 this.props.game.providerList
                   .filter(
                     (item) => item.status === 0 && item.transferwallet === true
@@ -248,4 +248,4 @@ const mapStateToProps = (state) => {
     game: state.game,
   };
 };
-export default connect(mapStateToProps, null)(MemberContainer);
+export default MemberContainer;
