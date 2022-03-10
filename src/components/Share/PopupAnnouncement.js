@@ -45,6 +45,7 @@ const FormContainer = styled.div`
   padding: 0 3px;
   width: 100%;
   font-size: 30px;
+  text-align: justify;
 `;
 class PopupAnnouncement extends Component {
   render() {
