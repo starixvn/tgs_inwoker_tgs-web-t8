@@ -141,7 +141,7 @@ class AddCard extends Component {
     return channel;
   };
   handleBankTypeChange = (e) => {
-    this.setState({ ...this.state, selectedBankTypeIndex: e.target.value });
+    this.setState({ ...this.state, selectedBankTypeIndex: e.target.value, selectedChannelIndex: 0 });
   };
   handleChannelChange = (e) => {
     this.setState({ ...this.state, selectedChannelIndex: e.target.value });
