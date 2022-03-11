@@ -318,7 +318,7 @@ class Home extends Component {
               });
             })()}
           </FirstSection>
-          <SecondSection match={this.props.match} navigate={this.handleNavigateClick} />
+          <SecondSection navigate={this.handleNavigateClick} />
           <ScrollAnimation
             animateIn="fadeInLeft"
             duration={1}

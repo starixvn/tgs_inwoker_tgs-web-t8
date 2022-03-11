@@ -85,7 +85,7 @@ const RightNavItemContainer = styled.ul`
   list-style-type: none;
   display: grid;
   overflow: auto;
-  height: 780px;
+  height: 765px;
   align-content: center;
   &::-webkit-scrollbar {
     display: none;

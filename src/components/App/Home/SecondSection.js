@@ -137,7 +137,6 @@ const SecondSection = (props) => {
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeSlide2, setActiveSlide2] = useState(0);
   const slider = useRef(null);
-  const [currentLanguage] = useState(i18n.language);
   const handleOverlayClick = (index) => {
     slider.current.slickGoTo(index);
   };
@@ -197,9 +196,6 @@ const SecondSection = (props) => {
       name: i18n.t("common.electron"),
     },
   ];
-
-  useEffect(()=>{
-  },[props.match.url])
 
   return (
     <GameSelectorWithSlider current={activeSlide2}>

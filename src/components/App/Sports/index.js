@@ -74,9 +74,7 @@ const LeftNavItemContainer = styled.ul`
   list-style-type: none;
   display: grid;
   overflow: auto;
-  height: 780px;
-  grid-gap: 20px;
-  grid-template-rows: repeat(auto-fill, 180px);
+  height: 765px;
   &::-webkit-scrollbar {
     display: none;
   }
