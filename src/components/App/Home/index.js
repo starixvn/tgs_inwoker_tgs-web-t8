@@ -119,7 +119,6 @@ const FirstSectionItem = styled(Grid)`
 class Home extends Component {
   constructor(props) {
     super(props);
-
     var displayGame = this.getHomePageDisplayGame();
     this.state = {
       marqueeText: [],
@@ -319,7 +318,7 @@ class Home extends Component {
               });
             })()}
           </FirstSection>
-          <SecondSection navigate={this.handleNavigateClick} />
+          <SecondSection match={this.props.match} navigate={this.handleNavigateClick} />
           <ScrollAnimation
             animateIn="fadeInLeft"
             duration={1}

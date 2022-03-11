@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 
 import { connect } from "react-redux";
@@ -131,52 +131,13 @@ const SliderButtonLabel = styled.div`
   padding-top: 23px;
 `;
 
-const secondSectionSlides = [
-  {
-    path: "live",
-    img: Section2LivePNG,
-    type: "live",
-    name: i18n.t("common.live"),
-  },
-  {
-    path: "chess",
-    img: Section2ChessPNG,
-    type: "chess",
-    name: i18n.t("common.chess"),
-  },
-  {
-    path: "sports",
-    img: Section2SportsPNG,
-    type: "sports",
-    name: i18n.t("common.sport"),
-  },
-  {
-    path: "esports",
-    img: Section2EsportsPNG,
-    type: "esports",
-    name: i18n.t("common.esports"),
-  },
-  {
-    path: "slots",
-    img: Section2SlotsPNG,
-    type: "slots",
-    name: i18n.t("common.slot"),
-  },
-  {
-    path: "electron",
-    img: Section2ElectronPNG,
-    type: "electron",
-    name: i18n.t("common.electron"),
-  },
-];
-
 const SecondSection = (props) => {
   const [current] = useState(0);
   const [isSliding, setIsSliding] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeSlide2, setActiveSlide2] = useState(0);
   const slider = useRef(null);
-
+  const [currentLanguage] = useState(i18n.language);
   const handleOverlayClick = (index) => {
     slider.current.slickGoTo(index);
   };
@@ -197,6 +158,48 @@ const SecondSection = (props) => {
     beforeChange: (current, next) =>{ setActiveSlide(next); setActiveSlide2(next); setIsSliding(true);} ,
     afterChange: (current) => {setActiveSlide2(current); setIsSliding(false);},
   };
+
+  const secondSectionSlides = [
+    {
+      path: "live",
+      img: Section2LivePNG,
+      type: "live",
+      name: i18n.t("common.live"),
+    },
+    {
+      path: "chess",
+      img: Section2ChessPNG,
+      type: "chess",
+      name: i18n.t("common.chess"),
+    },
+    {
+      path: "sports",
+      img: Section2SportsPNG,
+      type: "sports",
+      name: i18n.t("common.sport"),
+    },
+    {
+      path: "esports",
+      img: Section2EsportsPNG,
+      type: "esports",
+      name: i18n.t("common.esports"),
+    },
+    {
+      path: "slots",
+      img: Section2SlotsPNG,
+      type: "slots",
+      name: i18n.t("common.slot"),
+    },
+    {
+      path: "electron",
+      img: Section2ElectronPNG,
+      type: "electron",
+      name: i18n.t("common.electron"),
+    },
+  ];
+
+  useEffect(()=>{
+  },[props.match.url])
 
   return (
     <GameSelectorWithSlider current={activeSlide2}>

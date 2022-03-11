@@ -46,34 +46,30 @@ const FeatureRightContainer = styled.div`
   margin-right: 34px;
 `;
 const FeatureTitle = styled.div`
-  font-size: ${(props) => 
-    {
-    switch(props.lang){
+  font-size: ${(props) => {
+    switch (props.lang) {
       case "en-US":
       case "vi-VN":
       case "th-TH":
-        return "1.5em"
+        return "1.5em";
       default:
-        return "2em"
+        return "2em";
     }
-  }
-  };
+  }};
   font-weight: bold;
   padding-bottom: 10px;
 `;
 const FeatureDesc = styled.div`
-font-size: ${(props) => 
-  {
-  switch(props.lang){
-    case "en-US":
-    case "vi-VN":
-    case "th-TH":
-      return "1em"
-    default:
-      return "1.2em"
-  }
-}
-};
+  font-size: ${(props) => {
+    switch (props.lang) {
+      case "en-US":
+      case "vi-VN":
+      case "th-TH":
+        return "1em";
+      default:
+        return "1.2em";
+    }
+  }};
 `;
 
 const FourthSection = (props) => {
@@ -99,7 +95,6 @@ const FourthSection = (props) => {
       description: i18n.t("web.home.features.feature4.description"),
     },
   ];
-
   return (
     <Container>
       <ScrollAnimation
@@ -114,8 +109,12 @@ const FourthSection = (props) => {
               <FeatureBg>
                 <FeatureIcon src={feature.icon} alt={index}></FeatureIcon>
                 <FeatureRightContainer>
-                  <FeatureTitle lang={i18n.language}>{feature.title}</FeatureTitle>
-                  <FeatureDesc lang={i18n.language}>{feature.description}</FeatureDesc>
+                  <FeatureTitle lang={i18n.language}>
+                    {feature.title}
+                  </FeatureTitle>
+                  <FeatureDesc lang={i18n.language}>
+                    {feature.description}
+                  </FeatureDesc>
                 </FeatureRightContainer>
               </FeatureBg>
             );
