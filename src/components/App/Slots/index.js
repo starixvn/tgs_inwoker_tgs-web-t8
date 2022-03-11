@@ -127,12 +127,12 @@ const GameTabAll = styled(GameTab)`
 
 const DisabledOverlay = styled.div`
   height: 100%;
-  width: 100&;
+  width: 100%;
   display: none;
   justify-content: center;
   align-items: center;
   background: rgba(0, 0, 0, 0.75);
-  position: relative;
+  position: absolute;
   color: white;
   font-weight: bold;
   pointer-event: none;
