@@ -1212,14 +1212,14 @@ const DisplayList = ({
                 onhandleToggleFavorite(favGame.indexOf(el.id) > -1, el.id)
               }
             >
-              加到最愛
+              {i18n.t("common.favoriteGame")}
             </GameItemFavouriteButton>
             <GameItemJoinGameButton
               onClick={() => {
                 onhandleJoinGameClick(el.gpcode, el.id);
               }}
             >
-              開始遊戲
+              {i18n.t("common.joinGame")}
             </GameItemJoinGameButton>
           </GameItemOverlay>
         </GameItem>

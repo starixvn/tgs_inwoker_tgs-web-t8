@@ -75,6 +75,11 @@ const GameItemImage = styled.div`
   ${GameItem}:hover & {
     transform: translateY(-4px);
   }
+  
+  & > img {
+    width: 150px;
+    height: 150px;
+  }
 `;
 
 const GameItemTitle = styled.div`
@@ -158,7 +163,6 @@ const NoContentContainer = (props) => {
 class Fishing extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       loaded: false,
       gameList: [],
@@ -270,7 +274,7 @@ class Fishing extends Component {
               <GameItemJoinGameButton
                 onClick={() => this.handleJoinGameClick(el.gpcode, el.id)}
               >
-                開始遊戲
+                {i18n.t("common.joinGame")}
               </GameItemJoinGameButton>
             </GameItemActionContainer>
           </GameItem>
