@@ -20,7 +20,7 @@ const TheButtonWrapper = styled.div`
   line-height: 38px;
 `;
 
-const LanguageChanger = ({ language }) => {
+const LanguageChanger = ({ language, changeLanguage }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -64,6 +64,7 @@ const LanguageChanger = ({ language }) => {
               onClick={() => {
                 i18n.changeLanguage(data.culturecode);
                 AppHistory.replace(data.culturecode);
+                changeLanguage(data.culturecode);
                 setAnchorEl(null);
               }}
             >

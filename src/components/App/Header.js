@@ -49,6 +49,10 @@ import Common from "../../utils/Common";
 import i18n from "../../utils/i18n";
 import Slider from "react-slick";
 import LanguageChanger from "../Share/language-changer";
+import { generalAction } from "../../api-services/actions/generalAction";
+import { uiAction } from "../../api-services/actions/uiAction";
+import { GeneralService } from "../../api-services/services/GeneralService";
+import ErrorSwitcher from "../../utils/ErrorSwitcher";
 
 const moment = require("moment");
 
@@ -741,6 +745,17 @@ class Header extends Component {
     }
     return false;
   };
+
+  changeLanguage = (language) => {
+    this.props.getBanner();
+    this.props.getMarquee(language);
+    GeneralService.GetLocalization().then((response) => {
+      if (response.IsSuccess) {
+        ErrorSwitcher.setTranslation(response.data);
+      }
+    });
+  };
+
   render() {
     const { classes } = this.props;
 
@@ -848,6 +863,7 @@ class Header extends Component {
                 <LinkContainer>
                   <LanguageChanger
                     language={this.props.general.brandLanguage}
+                    changeLanguage={this.changeLanguage}
                   />
                 </LinkContainer>
                 <TimerContainer>
@@ -1203,6 +1219,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    getBanner: () => dispatch(generalAction.getBanner()),
+    getMarquee: (language) => dispatch(uiAction.getMarquee(language)),
     // updateScreenSize: (width, height) => {
     //   dispatch({ type: UPDATING_SCREEN_SIZE, width, height });
     // },
