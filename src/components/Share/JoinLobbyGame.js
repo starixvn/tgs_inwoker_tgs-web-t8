@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import Loading from "../App/Loading";
-import {GameService} from "../../api-services/services/GameService";
+import { GameService } from "../../api-services/services/GameService";
 import { isMobileOnly } from "react-device-detect";
 import Maintenance from "./Maintenance";
 import MaintenanceMobile from "./MaintenanceMobile";
@@ -22,7 +22,7 @@ class JoinLobbyGame extends Component {
     const gameCode = this.props.match.params.params.trim();
     if (gameCode === "BC") {
       GameService.JoinBetConstruct(gameType, gameCode).then((response) => {
-        if (response.IsSuccess) {
+        if (response.data !== undefined) {
           document.write(
             "<style>body{margin:0;padding:0}</style>" + response.data
           );
