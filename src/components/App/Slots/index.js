@@ -139,6 +139,7 @@ const DisabledOverlay = styled.div`
   text-transform: capitalize;
   z-index: 3;
   cursor: not-allowed;
+  text-align: center;
 `;
 
 const GameTabButton = styled.div`
