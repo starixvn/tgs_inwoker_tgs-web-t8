@@ -915,12 +915,6 @@ class Profile extends Component {
             this.handleButtonClick
           )} */}
           </InnerWrap>
-          <Header>
-            <Title>
-              <h3>{i18n.t("promotion.title")}</h3>
-              {/* 優惠資訊 joint promo */}
-            </Title>
-          </Header>
           <InnerWrap></InnerWrap>
         </LeftContainer>
         <RightContainer>
