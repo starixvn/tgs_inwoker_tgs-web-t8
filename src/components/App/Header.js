@@ -491,8 +491,15 @@ class Header extends Component {
 
   async componentDidMount() {
     this.setState({ selected: this.props.location.pathname });
-
     this.FireTimerToUpdateBalance();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.location.pathname !== this.props.location.pathname && this.props.location.pathname ===`/${i18n.language}`
+    ) {
+      this.setState({ selected: this.props.location.pathname });
+    }
   }
 
   FireTimerToUpdateBalance = () => {

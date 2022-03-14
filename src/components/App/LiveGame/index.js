@@ -94,7 +94,8 @@ const Maintenance = styled.div`
   font-size: 24px;
   user-select: none;
   cursor: not-allowed;
-`;
+  text-align: center;
+  `;
 
 const BottomContainer = styled.div`
   bottom: 0;
