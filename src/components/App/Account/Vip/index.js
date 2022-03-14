@@ -58,12 +58,17 @@ const VIPOverflow = styled.div`
 `;
 
 const VIPOverflowData = styled(VIPOverflow)`
-  width: calc(
-    100% /
-      ${(props) => {
-        return props.total;
-      }}
-  );
+  ${(props) => {
+    return props.total > 6
+      ? `  width: calc(
+      100%
+       
+    );`
+      : ` 
+       width: calc(100% / ${props.total} );
+       `;
+  }}
+
   box-shadow: none;
 `;
 
@@ -71,10 +76,11 @@ const VIPOverflowContainer = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
+  overflow-x: auto;
 `;
 
 const VIPContent = styled.div`
-  min-width: 200px;
+  min-width: 125px;
   text-align: center;
   padding: 10px 20px;
 `;
