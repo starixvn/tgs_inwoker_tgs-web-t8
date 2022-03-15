@@ -962,7 +962,7 @@ class Profile extends Component {
                         : (total += 0),
                     0
                   ) + this.props.wallet.mainBalance
-                )}
+                ).toString()}
               />
               </AllWalletInfo>
             </AllWalletItem>
@@ -995,7 +995,7 @@ class Profile extends Component {
                         content={
                           item.maintenance === 1
                             ? i18n.t("transfer.maintenance")
-                            : Common.formatNumberWithCommas(item.balance)
+                            : Common.formatNumberWithCommas(item.balance).toString()
                         }
                       />
                     </WalletItemInfo>
