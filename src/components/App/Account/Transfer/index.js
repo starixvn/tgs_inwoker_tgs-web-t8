@@ -120,7 +120,7 @@ const AllWalletInfo = styled.div`
 
 const WalletNumber = styled.div`
   font-weight: 300;
-  font-size: 38px;
+  font-size: 28px;
   word-break: break-all;
   text-align: right;
 `;

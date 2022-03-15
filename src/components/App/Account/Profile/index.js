@@ -290,7 +290,11 @@ function GetContentWrap(accountInfo, label, attr, func, label2) {
   );
 }
 
-const BankCardContainer = styled.div``;
+const BankCardContainer = styled.div`
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 10px;
+`;
 
 const BankCardItem = styled.div`
   background-color: #fff;
@@ -304,7 +308,6 @@ const BankCardItem = styled.div`
   flex-direction: row;
   height: 100px;
   padding-right: 20px;
-  margin-bottom: 20px;
 `;
 const BankCardTitle = styled.div`
   background-image: linear-gradient(180deg, #787878, #3c3b3b);
@@ -419,7 +422,7 @@ const AllWalletTitle = styled.div`
 
 const AllWalletInfo = styled.div`
   flex: 1;
-  font-size: 38px;
+  font-size: 28px;
   font-weight: 300;
   line-height: 100px;
   text-align: right;
@@ -915,9 +918,7 @@ class Profile extends Component {
             this.handleButtonClick
           )} */}
           </InnerWrap>
-          <InnerWrap></InnerWrap>
-        </LeftContainer>
-        <RightContainer>
+          <InnerWrap>
           <BankCardContainer>
             {this.props.wallet.bankCardList.map((item, index) => {
               return (
@@ -939,6 +940,7 @@ class Profile extends Component {
                 </BankCardItem>
               );
             })}
+            {this.props.wallet.bankCardList.length < 4 &&
             <BankCardItem>
               <BankCardTitle>{i18n.t("withdrawal.bankCard")}</BankCardTitle>
               <BankCardAdd onClick={()=>{this.handleAddCard();}}>
@@ -946,7 +948,11 @@ class Profile extends Component {
                 <BankCardAddText>{i18n.t("card.msgAddCard")}</BankCardAddText>
               </BankCardAdd>
             </BankCardItem>
+            }
           </BankCardContainer>
+          </InnerWrap>
+        </LeftContainer>
+        <RightContainer>
           <WalletContainer>
             <AllWalletItem>
               <AllWalletTitle>
