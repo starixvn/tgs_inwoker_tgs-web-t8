@@ -496,7 +496,8 @@ class Header extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (
-      prevProps.location.pathname !== this.props.location.pathname && this.props.location.pathname ===`/${i18n.language}`
+      prevProps.location.pathname !== this.props.location.pathname &&
+      this.props.location.pathname === `/${i18n.language}`
     ) {
       this.setState({ selected: this.props.location.pathname });
     }
@@ -779,7 +780,6 @@ class Header extends Component {
         gameType: [GameTypeEnum.LIVELOBBY],
         sorting: 1,
         sortingHK28: 1,
-        providerList: ["ab", "ag", "bg", "evo", "sw", "wm", "sg"],
       },
       {
         path: "chess",
@@ -789,7 +789,6 @@ class Header extends Component {
         gameType: [GameTypeEnum.QIPAILOBBY],
         sorting: 2,
         sortingHK28: 3,
-        providerList: ["365", "ky", "ly"],
       },
       {
         path: "sports",
@@ -799,7 +798,6 @@ class Header extends Component {
         gameType: [GameTypeEnum.SPORTS],
         sorting: 3,
         sortingHK28: 2,
-        providerList: ["bc", "saba", "sbo", "tf", "wgfm", "wgvia"],
       },
       {
         path: "esports",
@@ -809,7 +807,6 @@ class Header extends Component {
         gameType: [GameTypeEnum.ESPORTS],
         sorting: 4,
         sortingHK28: 2,
-        providerList: ["imes", "avia", "tf"],
       },
       {
         path: "lottery",
@@ -819,7 +816,6 @@ class Header extends Component {
         gameType: [GameTypeEnum.LOTTERYLOBBY],
         sorting: 5,
         sortingHK28: 7,
-        providerList: ["tcg_lotto", "tcg_lotto_vn", "tcg_sea", "vr"],
       },
       {
         path: `slots`,
@@ -829,7 +825,6 @@ class Header extends Component {
         gameType: [GameTypeEnum.SLOT],
         sorting: 6,
         sortingHK28: 4,
-        providerList: ["haba", "jdb", "jili", "nt", "pp", "rt", "sw"],
       },
       {
         path: `electron`,
@@ -839,7 +834,6 @@ class Header extends Component {
         gameType: [GameTypeEnum.TABLEGAME],
         sorting: 7,
         sortingHK28: 6,
-        providerList: ["avia", "haba", "imes", "nt", "pp", "rt", "sw", "tf"],
       },
       {
         path: `fish`,
@@ -851,7 +845,6 @@ class Header extends Component {
         gameType: [GameTypeEnum.FISH],
         sorting: 8,
         sortingHK28: 5,
-        providerList: ["bg", "haba", "jdb", "jili", "ky", "ly"],
       },
     ];
 
@@ -958,9 +951,7 @@ class Header extends Component {
                   var list = this.props.game.homePageGameList.filter(
                     (game) =>
                       item.gameType.indexOf(game.type) >= 0 &&
-                      item.providerList.includes(
-                        game.abbreviation.toLowerCase()
-                      )
+                      game.abbreviation.toLowerCase()
                   );
 
                   if (list.length > 0) {

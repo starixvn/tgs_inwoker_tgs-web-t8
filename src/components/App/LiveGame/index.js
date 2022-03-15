@@ -55,7 +55,8 @@ const Container = styled.div`
 
 const NoContentText = styled.div`
   color: #000;
-  font-size: ${(props=> (props.lang === 'zh-CN') || (props.lang === 'zh-TW') ? `3.2em`: `2.3em`)};
+  font-size: ${(props) =>
+    props.lang === "zh-CN" || props.lang === "zh-TW" ? `3.2em` : `2.3em`};
   text-shadow: 0 0 18px #ffe14e;
   -webkit-text-stroke: 0.5px white;
   font-weight: bold;
@@ -63,12 +64,12 @@ const NoContentText = styled.div`
   height: auto;
   margin-left: 180px;
   overflow: visible;
-  font-family: '微軟正黑粗';
+  font-family: "微軟正黑粗";
   &:first-child {
     margin-top: 210px;
   }
   &:last-child {
-    ${(props=> props.lang === 'en-US'? `font-size: 3.2em;`:``)}
+    ${(props) => (props.lang === "en-US" ? `font-size: 3.2em;` : ``)}
   }
 `;
 
@@ -95,7 +96,7 @@ const Maintenance = styled.div`
   user-select: none;
   cursor: not-allowed;
   text-align: center;
-  `;
+`;
 
 const BottomContainer = styled.div`
   bottom: 0;
@@ -124,9 +125,14 @@ const GameButton = styled.div`
     width: 150px;
     height: 80px;
     content: "";
-    background-image: url(${(props=>{ 
-      return process.env.PUBLIC_URL+"/assets/images/pcGamePage/live/"+props.name.toLowerCase()+".png";
-    })});
+    background-image: url(${(props) => {
+      return (
+        process.env.PUBLIC_URL +
+        "/assets/images/pcGamePage/live/" +
+        props.name.toLowerCase() +
+        ".png"
+      );
+    }});
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
@@ -171,7 +177,6 @@ const BottomNavItem = styled.li`
     }}
 `;
 
-
 const NoContentContainer = (props) => {
   switch (props.lang) {
     case "th-TH":
@@ -213,11 +218,8 @@ const NoContentContainer = (props) => {
 class LiveGame extends Component {
   constructor(props) {
     super(props);
-    var providerList = ["ab", "ag", "bg", "evo", "sw", "wm", "sg"];
-    var liveList = props.game.homePageGameList.filter((e) => {
-      return e.type === GameTypeEnum.LIVELOBBY && providerList.includes(
-        e.abbreviation.toLowerCase()
-      );
+    var liveList = props.game.homePageGameList.filter((item) => {
+      return item.type === GameTypeEnum.LIVELOBBY;
     });
 
     this.state = {
@@ -233,11 +235,8 @@ class LiveGame extends Component {
       preProps.game.homePageGameList.length !==
       this.props.game.homePageGameList.length
     ) {
-      var providerList = ["ab", "ag", "bg", "evo", "sw", "wm", "sg"];
-      var liveList = this.props.game.homePageGameList.filter((e) => {
-        return e.type === GameTypeEnum.LIVELOBBY && providerList.includes(
-          e.abbreviation.toLowerCase()
-        );
+      var liveList = this.props.game.homePageGameList.filter((item) => {
+        return item.type === GameTypeEnum.LIVELOBBY;
       });
       this.setState({
         ...this.state,
@@ -293,9 +292,13 @@ class LiveGame extends Component {
               <BottomNavItemContainer>
                 {this.state.list.map((data, index) => {
                   return (
-                    <BottomNavItem selected={this.state.selected === index}
-                        maintenance={data.status != 0}>
-                      <Maintenance>{i18n.t("transfer.maintenance")}</Maintenance>
+                    <BottomNavItem
+                      selected={this.state.selected === index}
+                      maintenance={data.status != 0}
+                    >
+                      <Maintenance>
+                        {i18n.t("transfer.maintenance")}
+                      </Maintenance>
                       <GameButton
                         selected={this.state.selected === index}
                         onClick={() => {
@@ -327,7 +330,8 @@ class LiveGame extends Component {
           </BottomContainer>
         </LiveWrapper>
       </Container>
-    ) : (<NoContentContainer lang={i18n.language}></NoContentContainer>
+    ) : (
+      <NoContentContainer lang={i18n.language}></NoContentContainer>
     );
   }
 }

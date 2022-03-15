@@ -2,7 +2,7 @@ import { Grid, Container as MContainer } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 
-import ItemPNG from "../../../assets/images/home/section/section3-item.png"
+import ItemPNG from "../../../assets/images/home/section/section3-item.png";
 import i18n from "../../../utils/i18n";
 
 const Container = styled(Grid)`
@@ -24,113 +24,36 @@ const ProviderContainer = styled.div`
   grid-gap: 20px;
 `;
 const ProviderIMG = styled.div`
-  background: url("${process.env.PUBLIC_URL}/assets/images/provider/${(props)=>props.provider}.png") no-repeat;
+  background: url("${process.env.PUBLIC_URL}/assets/images/provider/${(props) =>
+  props.provider}.png") no-repeat;
   width: 130px;
   height: 66px;
 `;
 
-const providerList = [
-  {
-    provider: 'wm',
-  },
-  {
-    provider: 'ly',
-  },
-  {
-    provider: 'ag',
-  },
-  {
-    provider: 'bg',
-  },
-  {
-    provider: 'ky',
-  },
-  {
-    provider: 'rt',
-  },
-  {
-    provider: 'sg',
-  },
-  {
-    provider: 'bc',
-  },
-  {
-    provider: 'imes',
-  },
-  {
-    provider: 'tcg',
-  },
-  {
-    provider: 'vr',
-  },
-  {
-    provider: 'saba',
-  },
-  {
-    provider: 'wm2',
-  },
-  {
-    provider: 'tcg2',
-  },
-  {
-    provider: 'pp',
-  },
-  {
-    provider: 'evo',
-  },
-  {
-    provider: 'nt',
-  },
-  {
-    provider: 'ab',
-  },
-  {
-    provider: 'haba',
-  },
-  {
-    provider: 'sw',
-  },
-  {
-    provider: 'sbo',
-  },
-  {
-    provider: 'tf',
-  },
-  {
-    provider: 'wgfm',
-  },
-  {
-    provider: 'jdb',
-  },
-  {
-    provider: 'avia',
-  },
-  {
-    provider: 'wgvia',
-  },
-  {
-    provider: '365',
-  },
-  {
-    provider: 'jili',
-  },
-]
-
 const FifthSection = (props) => {
-
-  return (<Container>
-    <ProviderTitle>
-      {i18n.t("web.footer.footerDescTitle")}
-    </ProviderTitle>
-    <ProviderContainer>
-    {providerList.map((item,index)=>{
-      return(
-        <ProviderIMG key={index} provider={item.provider}>
-        </ProviderIMG>
-      )
-    })}
-    </ProviderContainer>
-  </Container>);
+  return (
+    <Container>
+      <ProviderTitle>{i18n.t("web.footer.footerDescTitle")}</ProviderTitle>
+      <ProviderContainer>
+        {props.gameProvider
+          .filter((gp) => {
+            if (gp.abbreviation.includes("TCG")) {
+              return gp.abbreviation === "TCG_SEA";
+            } else {
+              return gp;
+            }
+          })
+          .map((item, index) => {
+            return (
+              <ProviderIMG
+                key={index}
+                provider={item.abbreviation.toLowerCase()}
+              ></ProviderIMG>
+            );
+          })}
+      </ProviderContainer>
+    </Container>
+  );
 };
 
 export default FifthSection;

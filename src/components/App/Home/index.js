@@ -89,11 +89,11 @@ const FirstSectionItemButton = styled(Grid)`
   margin-top: 25px;
   height: 34px;
   line-height: 2em;
-  transition: all .3s;
+  transition: all 0.3s;
   &:hover {
     cursor: pointer;
-    background-color: ${({theme})=>theme.primary};
-    transition: all .3s;
+    background-color: ${({ theme }) => theme.primary};
+    transition: all 0.3s;
   }
 `;
 
@@ -109,10 +109,10 @@ const FirstSectionItem = styled(Grid)`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  transition: transform .3s;
-  &:hover{
+  transition: transform 0.3s;
+  &:hover {
     transform: scale(1.05);
-    transition: transform .3s;
+    transition: transform 0.3s;
   }
 `;
 
@@ -132,7 +132,6 @@ class Home extends Component {
   componentDidMount() {
     // let promotionId = "";
     // let promotionChannelId = "";
-
     // if (this.props.match.params) {
     //   promotionId = this.props.match.params.promotionid || "";
     //   promotionChannelId = this.props.match.params.promotionchannelid || "";
@@ -341,7 +340,9 @@ class Home extends Component {
             animateOnce={true}
             style={{ overflow: "visible" }}
           >
-            <FifthSection></FifthSection>
+            <FifthSection
+              gameProvider={this.props.game.providerList}
+            ></FifthSection>
           </ScrollAnimation>
         </SectionContainer>
         {/* {this.props.game.providerList.filter((e) => {
