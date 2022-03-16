@@ -50,21 +50,23 @@ function AddCardSuccess(props) {
       )}
 
       <ButtonContainer>
-        {!(
-          config.features.ChangesNotAllowed ||
-          config.features.AddCard_NotAllowedEditDelete
-        ) && (
-          <Button
-            name={i18n.t("card.success.bindBankCard")}
-            width={255}
-            handleClick={props.onhandleBindCardClick}
-          ></Button>
-        )}
-          <Button
-            name={i18n.t("card.success.goProfile")}
-            width={255}
-            handleClick={props.onhandleBackClick}
-          ></Button>
+        {
+          !(
+            config.features.ChangesNotAllowed ||
+            config.features.AddCard_NotAllowedEditDelete
+          ) && (
+            props.bankCardListLength < 4 &&
+            <Button
+              name={i18n.t("card.success.bindBankCard")}
+              width={255}
+              handleClick={props.onhandleBindCardClick}
+            ></Button>
+          )}
+        <Button
+          name={i18n.t("card.success.goProfile")}
+          width={255}
+          handleClick={props.onhandleBackClick}
+        ></Button>
       </ButtonContainer>
     </Container>
   );

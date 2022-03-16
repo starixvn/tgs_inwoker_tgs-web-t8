@@ -104,12 +104,13 @@ class CardManagement extends Component {
     ) {
       if (this.props.wallet.addBankCardResult.IsSuccess) {
         this.props.resetResult();
-        this.props.getBankCardList();
-        this.setState({
-          ...this.state,
-          loading: false,
-          isAddCardSuccess: true,
-          displayView: 3,
+        this.props.getBankCardList().then(()=>{
+          this.setState({
+            ...this.state,
+            loading: false,
+            isAddCardSuccess: true,
+            displayView: 3,
+          });
         });
       } else {
         this.props.enqueueSnackbar(
@@ -189,6 +190,7 @@ class CardManagement extends Component {
             onhandleBindCardClick={this.handleBindCardClick}
             onhandleBackClick={this.handleBacktoProfile}
             onhandleCSClick={this.handleCSClick}
+            bankCardListLength={this.props.wallet.bankCardList.length}
           ></AddCardSuccess>
         );
       default:
