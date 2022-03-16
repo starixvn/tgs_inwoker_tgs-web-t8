@@ -213,11 +213,8 @@ const NoContentContainer = (props) => {
 class LiveGame extends Component {
   constructor(props) {
     super(props);
-    var providerList = ["ab", "ag", "bg", "evo", "sw", "wm", "sg"];
     var liveList = props.game.homePageGameList.filter((e) => {
-      return e.type === GameTypeEnum.LIVELOBBY && providerList.includes(
-        e.abbreviation.toLowerCase()
-      );
+      return e.type === GameTypeEnum.LIVELOBBY
     });
 
     this.state = {
@@ -233,11 +230,8 @@ class LiveGame extends Component {
       preProps.game.homePageGameList.length !==
       this.props.game.homePageGameList.length
     ) {
-      var providerList = ["ab", "ag", "bg", "evo", "sw", "wm", "sg"];
       var liveList = this.props.game.homePageGameList.filter((e) => {
-        return e.type === GameTypeEnum.LIVELOBBY && providerList.includes(
-          e.abbreviation.toLowerCase()
-        );
+        return e.type === GameTypeEnum.LIVELOBBY
       });
       this.setState({
         ...this.state,

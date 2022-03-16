@@ -341,7 +341,7 @@ class Home extends Component {
             animateOnce={true}
             style={{ overflow: "visible" }}
           >
-            <FifthSection></FifthSection>
+            <FifthSection providerList={this.props.game.providerList}></FifthSection>
           </ScrollAnimation>
         </SectionContainer>
         {/* {this.props.game.providerList.filter((e) => {
