@@ -496,7 +496,8 @@ class Header extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (
-      prevProps.location.pathname !== this.props.location.pathname && this.props.location.pathname ===`/${i18n.language}`
+      prevProps.location.pathname !== this.props.location.pathname &&
+      this.props.location.pathname === `/${i18n.language}`
     ) {
       this.setState({ selected: this.props.location.pathname });
     }
@@ -949,7 +950,8 @@ class Header extends Component {
                 }).map((item, index) => {
                   var list = this.props.game.homePageGameList.filter(
                     (game) =>
-                      item.gameType.indexOf(game.type) >= 0
+                      item.gameType.indexOf(game.type) >= 0 &&
+                      game.abbreviation.toLowerCase()
                   );
 
                   if (list.length > 0) {

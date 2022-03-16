@@ -325,7 +325,7 @@ export const wapT8 = {
   primaryHightlight: "#fde73f",
   secondary: "#676767",
   secondaryText: "rgba(0,0,0,0.5)",
-  tertiary: "rgba(255, 255, 255,1)",
+  tertiary: "rgba(255, 255, 255, 1)",
   tertiaryText: "rgba(255, 255, 255, 0.5)",
   buttonText: "#ffffff",
   buttonBackground: "#658AF8",
