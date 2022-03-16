@@ -20,6 +20,7 @@ import JoinGame from "./components/Share/JoinGame";
 import Deposit from "./components/Share/Deposit";
 import RedirectPage from "./components/Share/Redirect";
 import JoinLobbyGame from "./components/Share/JoinLobbyGame";
+import JoinLotteryGame from "./components/Share/JoinLotteryGame";
 import Maintenance from "./components/Share/Maintenance";
 // import IPRestrict from "./components/App/IPRestrict";
 // import CS from "./components/App/CS";
@@ -45,7 +46,7 @@ import Common from "./utils/Common";
 import { ThemeProvider } from "styled-components";
 import { themeList } from "./theme";
 import { GlobalStyles } from "./global";
-import JoinLotteryGame from "./components/App/Lottery/JoinLotteryGame";
+
 import featureList from "./config/features";
 import FeatureGetter from "./components/Share/feature-getter";
 import AudioPlayer from "./components/Share/audioplayer";
