@@ -186,11 +186,11 @@ const muiTheme = createMuiTheme({
       root: {
         fontSize: "24px",
         maxWidth: "375px",
-        color: "#ffffff !important",
+
         minWidth: "210px",
         height: "64px",
         "&.Mui-selected": {
-          color: "#FDE740  !important",
+          color: "#658AF8  !important",
         },
       },
     },
