@@ -38,7 +38,7 @@ const TitleContainer = styled.div`
 
   font-size: 50px;
 
-  color: ${({ theme }) => theme.secondary};
+  color: #000;
 `;
 const FormContainer = styled.div`
   margin: 30px 60px 40px 60px;
