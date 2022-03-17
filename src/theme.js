@@ -325,7 +325,7 @@ export const wapT8 = {
   primaryHightlight: "#fde73f",
   secondary: "#676767",
   secondaryText: "rgba(0,0,0,0.5)",
-  tertiary: "rgba(255, 255, 255, 1)",
+  tertiary: "rgba(255, 255, 255, 0.5)",
   tertiaryText: "rgba(255, 255, 255, 0.5)",
   buttonText: "#ffffff",
   buttonBackground: "#658AF8",
@@ -341,8 +341,58 @@ export const wapT8 = {
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
   gameTab: "#fff",
+  gamelisterBg: "#fff",
+  gamelisterOriginalColor: "#9fa3b4",
+  gamelisterOriginalText: "#000",
+  gamelisterBorder: "solid 2px #fff",
+  gamelisterSelectedText: "#fff",
+  gamelisterSelectedIcon: "#fff",
+  gamelisterSelectedButton: " rgb(140,166,241)",
 };
 
+export const GMO = {
+  appbar:
+    "linear-gradient(180deg, rgba(0,1,41,1) 50%, rgba(95,113,162,0) 100%)",
+  loginBody: "#000",
+  loginText: "#fff",
+  body: "#000",
+  bodyBackground: "#000",
+  variant: "wapT8",
+  primary: "#e9a60b",
+  primaryRgb: "101, 138, 248",
+  primaryText: "#fff",
+  primaryGradient: " #e9a60b",
+  primaryGradientRgb: "101, 138, 248",
+  primaryHightlight: "#fde73f",
+  secondary: "#fff",
+  secondaryText: "rgba(0,0,0,0.5)",
+  tertiary: "rgba(255, 255, 255, 1) !important",
+  tertiaryText: "rgba(255, 255, 255, 1)",
+  buttonText: "#000",
+  buttonBackground: "#fff",
+  buttonText2: "#000",
+  bottomnav:
+    "linear-gradient(0deg, rgb(2, 31, 96) 25%, rgba(95,113,162,0) 100%)",
+  balance: "#e9a60b",
+  bottomnavrad: "35px 35px 0px 0px",
+  bottomNavAction: "#fff",
+  tabbar: "#e9a60b",
+  cardText: "#676767",
+  supportBg: `url(${
+    process.env.PUBLIC_URL + `/assets/images/wapp/resource/T3/supportbg.png`
+  })
+  no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  gameTab: "#fff",
+  gamelisterBg:
+    "linear-gradient(0deg, rgb(8, 15, 33) 25%, rgba(95,113,162,0) 100%)",
+  gamelisterBorder: "solid 2px #FEFFA1",
+  gamelisterOriginalColor: "#fff",
+  gamelisterOriginalText: "#fff",
+  gamelisterSelectedText: "#FEFFA1",
+  gamelisterSelectedIcon: "linear-gradient(0deg, #FEFFA1 25%, #e9a60b 100%)",
+  gamelisterSelectedButton:
+    "linear-gradient(80deg, rgb(7, 24, 66) 25%, rgb(21, 44, 98) 100%)",
+};
 export const themeList = {
   red: themeRed,
   blue: themeBlue,
@@ -356,4 +406,5 @@ export const themeList = {
   wapT8: wapT8,
   MESS8: MESS8,
   "28BET": MESS8,
+  GMO: GMO,
 };
