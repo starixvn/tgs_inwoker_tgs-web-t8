@@ -8,7 +8,7 @@ pipeline {
         GitUrl = "gitlab.com/cjennhong/tgs-web.git"
         ImageTagUrl = "https://gitlab.com/api/v4/projects/20478010/registry/repositories/2804396/tags"
         gitlab_user_pwd = credentials('gitlab-user-pwd')
-        Image = "lobby-t6"
+        Image = "lobby-t8"
     }
 	
     stages {		    	
