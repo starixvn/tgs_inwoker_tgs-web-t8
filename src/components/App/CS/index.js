@@ -9,7 +9,7 @@
 // import Common from "../../../utils/Common";
 // const Container = styled.div`
 //   padding: 27px 32px;
-//   background: url(${LoginBGPNG});
+//   background: #fff;//url(${LoginBGPNG});
 //   display: table;
 //   width: 420px;
 //   height: 430px;

@@ -49,6 +49,10 @@ import Common from "../../utils/Common";
 import i18n from "../../utils/i18n";
 import Slider from "react-slick";
 import LanguageChanger from "../Share/language-changer";
+import { generalAction } from "../../api-services/actions/generalAction";
+import { uiAction } from "../../api-services/actions/uiAction";
+import { GeneralService } from "../../api-services/services/GeneralService";
+import ErrorSwitcher from "../../utils/ErrorSwitcher";
 
 const moment = require("moment");
 
@@ -57,12 +61,24 @@ const InnerWrap = styled.div`
   width: 100%;
   font-size: 14px;
 `;
+
+const TopContainerWrap = styled.div`
+  background-color: #2c2c2c;
+`;
 const TopContainer = styled.div`
   height: 38px;
-  background-color: #2C2C2C;
+  background-color: #2c2c2c;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  width: 1280px;
 `;
+
+const TopLeftContainer = styled.div``;
+
+const TopRightContainer = styled.div``;
+
 const TimerContainer = styled.div`
-  padding-top: 15px;
   font-family: arial;
   float: left;
   @media (max-width: 950px) {
@@ -74,10 +90,12 @@ const TimerSpan = styled.span`
   color: #f6f6f6;
   float: left;
   min-width: 100px;
+  line-height: 38px;
 `;
 const PhoneNumberSpan = styled.span`
   color: #f6f6f6;
   float: left;
+  line-height: 38px;
 `;
 
 const IconPhone = styled.div`
@@ -87,6 +105,7 @@ const IconPhone = styled.div`
   height: 20px;
 `;
 const LinkContainer = styled.div`
+  color: #fff;
   float: left;
   padding: 0px 10px;
   @media (max-width: 950px) {
@@ -204,26 +223,26 @@ const MouseOverBackground = styled.div`
   width: 100%;
 
   background-color: rgba(0, 0, 0, 0.75);
-  height: 160px;
-  position: absolute;
+  height: 190px;
+  //position: absolute;
   bottom: 30px;
 `;
 
 const MouseOverInner = styled.div`
   width: 1280px;
-  height: 161px;
+  height: 190px;
   margin: 0 auto;
 `;
 
 const GameImg = styled.img`
   height: 130px;
 
-  position: absolute;
-
-  padding-bottom: 10px;
+  //position: absolute;
+  object-fit: contain;
+  //padding-bottom: 10px;
   transition: transform 0.6s;
-  bottom: 0;
-  right: 0;
+  //bottom: 35px;
+  //right: 0;
   transform-origin: bottom center;
   transform: translateY(-160px) scale(1);
   animation-duration: 200ms;
@@ -232,6 +251,12 @@ const GameImg = styled.img`
   animation-fill-mode: forwards;
   animation-timing-function: ease-in-out;
 `;
+
+const GameTitle = styled.span`
+  color: #fff;
+  font-weight: 700;
+`;
+
 const GameName = styled.div`
   color: #fff;
   font-weight: bold;
@@ -257,6 +282,7 @@ const breatheAnimation = keyframes`
 
 `;
 const RightMenuLI = styled.li`
+  position: relative;
   display: flex;
   align-items: center;
   width: 130px;
@@ -272,11 +298,27 @@ const RightMenuLI = styled.li`
   @media (max-width: 650px) {
     width: 100px;
   }
-  &:hover {
-    border-bottom: solid 4px #fde73f;
-    color: #fde73f;
+  &:after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 4px;
+    background: ${({ theme }) => theme.primary};
+    border-radius: 1px;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transition: all 0.5s ease;
+    transform: translate(-50%, 0);
+  }
 
+  &:hover {
+    //border-bottom: solid 4px #20d0ff;
+    color: ${({ theme }) => theme.primary};
     cursor: pointer;
+    &:after {
+      width: 80%;
+    }
   }
   &:hover ${MouseOverContainer} {
     height: 190px;
@@ -292,9 +334,11 @@ const RightMenuLI = styled.li`
   ${(props) =>
     props.active
       ? `
-  border-bottom: solid 4px #fde73f;
-  color: #fde73f;
-
+  //border-bottom: solid 4px #20d0ff;
+  color: ${props.theme.primary};
+  &:after {
+    width: 80%;
+  }
 
   `
       : `
@@ -320,6 +364,10 @@ const CustomAppBar = styled(StyledAppBar)`
 const GameFrameWrapper = styled.div`
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 15px;
 `;
 
 const Maintenance = styled.div`
@@ -345,7 +393,8 @@ const Maintenance = styled.div`
 const GameFrame = styled.div`
   max-width: 255px;
   float: left;
-  min-height: 160px;
+  //min-height: 160px;
+  height: 175px;
   position: relative;
   transition: transform 0.6s;
   &:hover {
@@ -429,7 +478,8 @@ class Header extends Component {
       isHoverSubMenuContainer: false,
       open: false,
       dialog: "",
-      systemDateTime: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+      hideAppBar: false,
+      systemDateTime: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"), //YYYY-MM-DD HH:mm:ss
     };
     this.lastScroll = null;
 
@@ -441,8 +491,16 @@ class Header extends Component {
 
   async componentDidMount() {
     this.setState({ selected: this.props.location.pathname });
-
     this.FireTimerToUpdateBalance();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.location.pathname !== this.props.location.pathname &&
+      this.props.location.pathname === `/${i18n.language}`
+    ) {
+      this.setState({ selected: this.props.location.pathname });
+    }
   }
 
   FireTimerToUpdateBalance = () => {
@@ -468,7 +526,9 @@ class Header extends Component {
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
   }
-
+  handleDialogChange = (dialog) => {
+    this.setState({ ...this.state, dialog: dialog });
+  };
   handleScroll(evt) {
     const lastScroll = window.scrollY;
     if (lastScroll > 160) {
@@ -489,6 +549,9 @@ class Header extends Component {
   };
   onhandleTransfer = () => {
     this.props.history.push("/" + i18n.language + "/account/transfer");
+  };
+  onhandleWithdrawal = () => {
+    this.props.history.push("/" + i18n.language + "/account/withdrawal");
   };
   onhandleDeposit = () => {
     this.props.history.push("/" + i18n.language + "/account/deposit");
@@ -521,6 +584,10 @@ class Header extends Component {
   handleClickMenu = (path) => {
     this.setState({ ...this.state, selected: path });
     this.props.history.push("/" + i18n.language + `/${path}`);
+  };
+
+  handleHideAppBar = () => {
+    this.setState({ ...this.state, hideAppBar: true });
   };
 
   RightMenuItem = (to, image, label, imageHover, subMenuImg) => {
@@ -578,11 +645,20 @@ class Header extends Component {
 
   handleJoinLotteryGame = (name) => {
     if (this.props.account.token != null) {
-      window.open(
+      if (document.getElementById("audio") != null)
+        document.getElementById("audio").volume = 0.0;
+      var win = window.open(
         "/" + i18n.language + "/joinlottery/" + name,
         "_blank",
         "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=1280,height=720"
       );
+      var timer = setInterval(function () {
+        if (win.closed) {
+          clearInterval(timer);
+          if (document.getElementById("audio") != null)
+            document.getElementById("audio").volume = 1.0;
+        }
+      }, 1000);
     } else {
       this.props.showLogin(true);
     }
@@ -603,10 +679,19 @@ class Header extends Component {
           this.props.showLogin(true);
         } else {
           if (gameCode === "WGFM" || gameCode === "WGVIA") {
-            window.open(
+            if (document.getElementById("audio") != null)
+              document.getElementById("audio").volume = 0;
+            var win = window.open(
               `/${i18n.language}/joinlobbygame/${gameType}/${gameCode}`,
               "_blank"
             );
+            var timer = setInterval(function () {
+              if (win.closed) {
+                clearInterval(timer);
+                if (document.getElementById("audio") != null)
+                  document.getElementById("audio").volume = 1.0;
+              }
+            }, 1000);
           } else {
             this.props.history.push(
               "/" + i18n.language + "/sports/play/" + gameCode + "/" + gameType
@@ -621,7 +706,16 @@ class Header extends Component {
         this.props.showLogin(true);
         return;
       }
-      Common.PopupCenter(url, gameCode, 1280, 720);
+      if (document.getElementById("audio") != null)
+        document.getElementById("audio").volume = 0;
+      var win = Common.PopupCenter(url, gameCode, 1280, 720);
+      var timer = setInterval(function () {
+        if (win.closed) {
+          clearInterval(timer);
+          if (document.getElementById("audio") != null)
+            document.getElementById("audio").volume = 1.0;
+        }
+      }, 1000);
     }
   };
   handleBookmarkClick = () => {
@@ -659,6 +753,17 @@ class Header extends Component {
     }
     return false;
   };
+
+  changeLanguage = (language) => {
+    this.props.getBanner();
+    this.props.getMarquee(language);
+    GeneralService.GetLocalization().then((response) => {
+      if (response.IsSuccess) {
+        ErrorSwitcher.setTranslation(response.data);
+      }
+    });
+  };
+
   render() {
     const { classes } = this.props;
 
@@ -752,53 +857,65 @@ class Header extends Component {
     return (
       <CustomAppBar hide={this.props.hide}>
         <InnerWrap>
-          <TopContainer>
-            {/* <TimerContainer>
-              <TimerSpan>GMT+8 {this.state.systemDateTime}</TimerSpan>
-            </TimerContainer>
-            {config.features.DisplayPhone && (
-              <TimerContainer style={{ marginLeft: "10px" }}>
-                <IconPhone img={IconPhonePNG}></IconPhone>
-                <PhoneNumberSpan>
-                  {this.props.general.brandsSupport &&
-                    this.props.general.brandsSupport.length >= 1 &&
-                    this.props.general.brandsSupport[0].phone}
-                </PhoneNumberSpan>
-              </TimerContainer>
-            )}
-            <LinkContainer>
-              <LanguageChanger language={this.props.general.brandLanguage} />
-            </LinkContainer>
-            <RightContainer>
-              <BtnCS onClick={this.props.onhandleShowCSClick}>
+          <TopContainerWrap>
+            <TopContainer>
+              <TopLeftContainer>
+                <LinkContainer>
+                  <LanguageChanger
+                    language={this.props.general.brandLanguage}
+                    changeLanguage={this.changeLanguage}
+                  />
+                </LinkContainer>
+                <TimerContainer>
+                  <TimerSpan> (GMT+8) {this.state.systemDateTime}</TimerSpan>
+                </TimerContainer>
+                {config.features.DisplayPhone && (
+                  <TimerContainer style={{ marginLeft: "10px" }}>
+                    <IconPhone img={IconPhonePNG}></IconPhone>
+                    <PhoneNumberSpan>
+                      {this.props.general.brandsSupport &&
+                        this.props.general.brandsSupport.length >= 1 &&
+                        this.props.general.brandsSupport[0].phone}
+                    </PhoneNumberSpan>
+                  </TimerContainer>
+                )}
+              </TopLeftContainer>
+              <TopRightContainer>
+                {/* <BtnCS onClick={this.props.onhandleShowCSClick}>
                 {i18n.t("common.cs")}
-              </BtnCS>
-              {(() => {
-                if (
-                  this.props.account.token !== this.props.account.info.token
-                ) {
-                  return (
-                    <GuestContainer
-                      onhandleShowCSClick={this.props.onhandleShowCSClick}
-                      onhandleContactUsClick={this.handleContactUsClick}
-                    ></GuestContainer>
-                  );
-                } else {
-                  return (
-                    <MemberContainer
-                      onhandleLogout={this.onhandleLogout}
-                      onhandleTransfer={this.onhandleTransfer}
-                      onhandleDeposit={this.onhandleDeposit}
-                      onhandleInboxClick={this.handleInboxClick}
-                      onhandleRefreshBalanceClick={
-                        this.handleRefreshBalanceClick
-                      }
-                    ></MemberContainer>
-                  );
-                }
-              })()}{" "}
-            </RightContainer> */}
-          </TopContainer>
+              </BtnCS> */}
+                {(() => {
+                  if (
+                    this.props.account.token !== this.props.account.info.token
+                  ) {
+                    return (
+                      <GuestContainer
+                        onhandleShowCSClick={this.props.onhandleShowCSClick}
+                        onhandleContactUsClick={this.handleContactUsClick}
+                        onDialogChange={this.handleDialogChange}
+                      ></GuestContainer>
+                    );
+                  } else {
+                    return (
+                      <MemberContainer
+                        onhandleLogout={this.onhandleLogout}
+                        onhandleTransfer={this.onhandleTransfer}
+                        onhandleWithdrawal={this.onhandleWithdrawal}
+                        onhandleDeposit={this.onhandleDeposit}
+                        onhandleInboxClick={this.handleInboxClick}
+                        onhandleRefreshBalanceClick={
+                          this.handleRefreshBalanceClick
+                        }
+                        wallet={this.props.wallet}
+                        account={this.props.account}
+                        game={this.props.game}
+                      ></MemberContainer>
+                    );
+                  }
+                })()}{" "}
+              </TopRightContainer>
+            </TopContainer>
+          </TopContainerWrap>
           <BottomContainer>
             <LogoContainer
               img={
@@ -816,8 +933,7 @@ class Header extends Component {
             ></LogoContainer>
             <RightMenuContainer>
               <RightMenuUL
-                className="top-menu"
-                className={`${
+                className={`top-menu ${
                   this.state.shouldShow === null
                     ? classes.maxMenu
                     : this.state.shouldShow
@@ -833,8 +949,11 @@ class Header extends Component {
                   }
                 }).map((item, index) => {
                   var list = this.props.game.homePageGameList.filter(
-                    (game) => item.gameType.indexOf(game.type) >= 0
+                    (game) =>
+                      item.gameType.indexOf(game.type) >= 0 &&
+                      game.abbreviation.toLowerCase()
                   );
+
                   if (list.length > 0) {
                     return (
                       <RightMenuLI
@@ -885,8 +1004,7 @@ class Header extends Component {
                                             {i18n.t("transfer.maintenance")}
                                           </Maintenance>
                                           {(() => {
-                                            var gameCode =
-                                              game.abbreviation.toLowerCase();
+                                            var gameCode = game.abbreviation.toLowerCase();
                                             if (
                                               config.features.SportsHideLogo
                                             ) {
@@ -946,6 +1064,16 @@ class Header extends Component {
                                               }
                                             }}
                                           ></GameImg>
+                                          <GameTitle index={index}>
+                                            {game.abbreviation.toLowerCase() ===
+                                              "imes" && item.path === "esports"
+                                              ? i18n.t(
+                                                  `${game.abbreviation}.sports`
+                                                )
+                                              : i18n.t(
+                                                  `${game.abbreviation}.${item.path}`
+                                                )}
+                                          </GameTitle>
                                         </GameFrameWrapper>
                                       </GameFrame>
                                     );
@@ -967,8 +1095,7 @@ class Header extends Component {
                                               {i18n.t("transfer.maintenance")}
                                             </Maintenance>
                                             {(() => {
-                                              var gameCode =
-                                                game.abbreviation.toLowerCase();
+                                              var gameCode = game.abbreviation.toLowerCase();
                                               if (
                                                 config.features.SportsHideLogo
                                               ) {
@@ -991,7 +1118,6 @@ class Header extends Component {
                                                 }
                                               }
                                             })()}
-
                                             <GameImg
                                               index={index}
                                               src={`${
@@ -1033,6 +1159,17 @@ class Header extends Component {
                                                 }
                                               }}
                                             ></GameImg>
+                                            <GameTitle index={index}>
+                                              {game.abbreviation.toLowerCase() ===
+                                                "imes" &&
+                                              item.path === "esports"
+                                                ? i18n.t(
+                                                    `${game.abbreviation}.sports`
+                                                  )
+                                                : i18n.t(
+                                                    `${game.abbreviation}.${item.path}`
+                                                  )}
+                                            </GameTitle>
                                           </GameFrameWrapper>
                                         </GameFrame>
                                       );
@@ -1074,11 +1211,14 @@ const mapStateToProps = (state) => {
     account: state.account,
     game: state.game,
     general: state.general,
+    wallet: state.wallet,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    getBanner: () => dispatch(generalAction.getBanner()),
+    getMarquee: (language) => dispatch(uiAction.getMarquee(language)),
     // updateScreenSize: (width, height) => {
     //   dispatch({ type: UPDATING_SCREEN_SIZE, width, height });
     // },

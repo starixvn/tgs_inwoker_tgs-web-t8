@@ -13,7 +13,7 @@
 // const Container = styled.div`
 //   width: 420px;
 
-//   background: url(${LoginBGPNG});
+//   background: #fff;//url(${LoginBGPNG});
 //   display: table;
 // `;
 // const CloseIconContainer = styled(CloseIcon)`

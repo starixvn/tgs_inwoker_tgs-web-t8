@@ -2,10 +2,9 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import IconReportRedPNG from "../../../../assets/images/icon-report.png";
 
-
-import {ReportService} from "../../../../api-services/services/ReportService";
-import {GameService} from "../../../../api-services/services/GameService";
-import {GeneralService} from "../../../../api-services/services/GeneralService";
+import { ReportService } from "../../../../api-services/services/ReportService";
+import { GameService } from "../../../../api-services/services/GameService";
+import { GeneralService } from "../../../../api-services/services/GeneralService";
 import AccountDetails from "./AccountDetails";
 import WithdrawalReport from "./WithdrawalReport";
 import DepositReport from "./DepositReport";
@@ -22,52 +21,80 @@ const Container = styled.div`
   width: 100%;
   min-height: 611px;
 `;
+
+const Header = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  height: 38px;
+  margin-bottom: 10px;
+  padding: 0 10px 10px;
+`;
 const Title = styled.div`
-  color: ${({ theme }) => theme.secondary};
+  align-items: baseline;
+  display: flex;
+  & h3 {
+    color: ${({ theme }) => theme.secondary};
+    font-size: 24px;
+    font-weight: 400;
+  }
 `;
-const TitleIcon = styled.div`
-  width: 34px;
-  height: 24px;
 
-  background: url(${IconReportRedPNG}) no-repeat left center;
-  background-size: 24px 24px;
-
-  float: left;
-`;
 const InnerWrap = styled.div`
-  width: 935px;
-
-  margin-top: 18px;
   box-sizing: border-box;
   background-color: #f7f7f7;
-  padding: 25px;
   position: relative;
   border-radius: 10px;
 `;
-const TabButton = styled.div`
-  width: 161px;
-  height: 50px;
-  font-size: 16px;
 
-  color: #747474;
-  background-color: #f7f7f7;
-  text-align: center;
-  padding-top: 14px;
-  box-sizing: border-box;
-  float: left;
-  margin-right: 8px;
-  margin-bottom: 20px;
-  border: solid 1px #e4eaff;
-  transition: all 0.3s;
+const TabContainer = styled.div`
+align-items: center;
+display: flex;
+justify-content: flex-start;
+border-bottom: 2px solid #ccc;
+box-sizing: border-box;
+overflow: visible;
+`;
+
+const TabButton = styled.span`
+box-sizing: border-box;
+    color: #666;
+    cursor: pointer;
+    display: block;
+    font-size: 16px;
+    font-stretch: normal;
+    font-style: normal;
+    font-weight: 300;
+    min-width: 100px;
+    padding: 16px;
+    position: relative;
 
   ${(props) =>
     props.active
       ? ` 
-      border: solid 1px ${props.theme.primary};
+      &:after {
+        background-color: ${props.theme.primary};
+    bottom: -2px;
+    content: "";
+    height: 3px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+      }
       color: ${props.theme.primary};`
       : ` `};
   &:hover {
     cursor: pointer;
+    color: ${(props) => props.theme.primary};
+    &:after {
+      background-color: ${(props) => props.theme.primary};
+      bottom: -2px;
+      content: "";
+      height: 3px;
+      left: 0;
+      position: absolute;
+      width: 100%;
+    }
   }
 `;
 const SplitLine = styled.div`
@@ -298,12 +325,14 @@ class Report extends Component {
   render() {
     return (
       <Container>
-        <Title>
-          <TitleIcon></TitleIcon>
-          {i18n.t("report.title")}
-        </Title>
-
+        <Header>
+          <Title>
+            <h3>{i18n.t("report.title")}</h3>
+          </Title>
+        </Header>
         <InnerWrap>
+          <TabContainer>
+
           {/* <TabButton
             active={this.state.tab === 1}
             onClick={() => this.handleTabClick(1)}
@@ -349,8 +378,8 @@ class Report extends Component {
           >
             {i18n.t("report.joinedPromo.title")}
           </TabButton>
+          </TabContainer>
 
-          <SplitLine></SplitLine>
           {(() => {
             switch (this.state.tab) {
               case 1:

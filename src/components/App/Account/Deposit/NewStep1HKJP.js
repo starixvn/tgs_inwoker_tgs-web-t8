@@ -14,6 +14,26 @@ import CustomButton from "../../../Share/Button";
 import LimitPopupPNG from "../../../../assets/images/limit-popup.png";
 import Common from "../../../../utils/Common";
 import config from "../../../../config/config";
+
+const FormContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const FormRightContainer = styled.div``;
+
+const FormLeftContainer = styled.div`
+  width: 280px;
+`;
+
+const FormActionContainer = styled.div`
+  margin: 40px 0;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+`;
+
 const CustomText = withStyles({
   root: {
     marginTop: "10px",
@@ -86,6 +106,7 @@ const CustomFormControl = withStyles((theme) => ({
     },
   },
 }))(FormControl);
+
 const TabButton = styled.div`
   height: 86px;
   font-size: 14px;
@@ -190,58 +211,101 @@ class NewStepOne extends Component {
       onNextClick,
       exchangeRate,
       isCrypto,
+      onDepositCancelClick,
     } = this.props;
     if (paymentType === null) return <></>;
 
     const methodList = paymentType.method;
     return (
       <>
-        <SubHeaderContainer>
-          <NumberContainer>1</NumberContainer>
-
-          <SubTitle>{i18n.t("deposit.msgPlsSelectPayment")}</SubTitle>
-        </SubHeaderContainer>
-        <SelectionContainer>
-          {methodList.map((item, index) => {
-            return (
-              <TunnelButton
-                key={index}
-                onClick={() => onMethodChange(index)}
-                active={selectedMethodIndex === index}
+        <FormContainer>
+          <FormLeftContainer>
+            <SubHeaderContainer>
+              <SubTitle>{i18n.t("deposit.msgPlsSelectPayment")}</SubTitle>
+            </SubHeaderContainer>
+          </FormLeftContainer>
+          <SelectionContainer>
+            <CustomFormControl>
+              <CustomSelect
+                variant="outlined"
+                value={this.props.selectedMethodIndex}
+                displayEmpty
+                onChange={onMethodChange}
+                native
               >
-                {i18n.t(item.methodcode)}
-              </TunnelButton>
-            );
-          })}
-        </SelectionContainer>
+                {methodList.map((data, key) => {
+                  return (
+                    <option value={key} key={key}>
+                      {i18n.t(data.methodcode)}
+                    </option>
+                  );
+                })}
+              </CustomSelect>
+            </CustomFormControl>
+            {/* {methodList.map((item, index) => {
+              return (
+                <TunnelButton
+                  key={index}
+                  onClick={() => onMethodChange(index)}
+                  active={selectedMethodIndex === index}
+                >
+                  {i18n.t(item.methodcode)}
+                </TunnelButton>
+              );
+            })} */}
+          </SelectionContainer>
+          <FormRightContainer></FormRightContainer>
+        </FormContainer>
 
-        <SplitLine></SplitLine>
         {(() => {
           if (methodList.length > 0 && selectedMethodIndex !== -1) {
             return (
               <>
-                <SubHeaderContainer>
-                  <NumberContainer>2</NumberContainer>
-
-                  <SubTitle>{i18n.t("deposit.msgPlsSelectMethod")}</SubTitle>
-                </SubHeaderContainer>
-                <SelectionContainer>
-                  {methodList[selectedMethodIndex].channel.map(
-                    (item, index) => {
-                      return (
-                        <TunnelButton
-                          key={index}
-                          onClick={() => onChannelChange(index)}
-                          active={selectedChannelIndex === index}
+                <FormContainer>
+                  <FormLeftContainer>
+                    <SubHeaderContainer>
+                      <SubTitle>
+                        {i18n.t("deposit.msgPlsSelectMethod")}
+                      </SubTitle>
+                    </SubHeaderContainer>
+                  </FormLeftContainer>
+                  <FormRightContainer>
+                    <SelectionContainer>
+                      <CustomFormControl>
+                        <CustomSelect
+                          variant="outlined"
+                          value={this.props.selectedChannelIndex}
+                          displayEmpty
+                          onChange={onChannelChange}
+                          native
                         >
-                          {item.channelname}
-                        </TunnelButton>
-                      );
-                    }
-                  )}
-                </SelectionContainer>
-
-                <SplitLine></SplitLine>
+                          {methodList[selectedMethodIndex].channel.map(
+                            (data, key) => {
+                              return (
+                                <option value={key} key={key}>
+                                  {data.channelname}
+                                </option>
+                              );
+                            }
+                          )}
+                        </CustomSelect>
+                      </CustomFormControl>
+                      {/* {methodList[selectedMethodIndex].channel.map(
+                        (item, index) => {
+                          return (
+                            <TunnelButton
+                              key={index}
+                              onClick={() => onChannelChange(index)}
+                              active={selectedChannelIndex === index}
+                            >
+                              {item.channelname}
+                            </TunnelButton>
+                          );
+                        }
+                      )} */}
+                    </SelectionContainer>
+                  </FormRightContainer>
+                </FormContainer>
 
                 {(() => {
                   if (
@@ -249,203 +313,242 @@ class NewStepOne extends Component {
                     paymentType.paymentcode.toUpperCase() === "APPLEPAY"
                   ) {
                     return (
-                      <>
-                        <SubHeaderContainer>
-                          <NumberContainer>3</NumberContainer>
-
-                          <SubTitle>
-                            {config.features.Deposit_EnglishName
-                              ? i18n.t("bet28.BankAccountName")
-                              : i18n.t("deposit.msgPlsEnterAccount")}
-                          </SubTitle>
-                        </SubHeaderContainer>
-                        <SelectionContainer>
-                          <TextField
-                            style={{
-                              height: "38px",
-                              width: "258px",
-                              float: "left",
-                              marginRight: "5px",
-                              padding: 0,
-                            }}
-                            placeholder={
-                              config.features.Deposit_EnglishName
-                                ? i18n.t("bet28.msgEnterBankAccountName")
-                                : i18n.t("deposit.msgPlsEnterAccount")
-                            }
-                            onChange={onNameChange}
-                            outputFormat="string"
-                            variant="outlined"
-                            autoComplete="off"
-                            value={name}
-                          ></TextField>
-                        </SelectionContainer>
-                        <SplitLine></SplitLine>
-                      </>
+                      !config.features.Deposit_RemoveName && (
+                        <>
+                          <FormContainer>
+                            <FormLeftContainer>
+                              <SubHeaderContainer>
+                                <SubTitle>
+                                  {config.features
+                                    .Deposit_CustomBankNameTranslation
+                                    ? i18n.t("mgm.msgPlsEnterAccount")
+                                    : config.features.Deposit_EnglishName
+                                    ? i18n.t("bet28.BankAccountName")
+                                    : i18n.t("deposit.msgPlsEnterAccount")}
+                                </SubTitle>
+                              </SubHeaderContainer>
+                            </FormLeftContainer>
+                            <FormRightContainer>
+                              <SelectionContainer>
+                                <TextField
+                                  style={{
+                                    height: "38px",
+                                    width: "258px",
+                                    float: "left",
+                                    marginRight: "5px",
+                                    padding: 0,
+                                  }}
+                                  placeholder={
+                                    config.features
+                                      .Deposit_CustomBankNameTranslation
+                                      ? i18n.t("mgm.msgPlsEnterAccount")
+                                      : config.features.Deposit_EnglishName
+                                      ? i18n.t("bet28.msgEnterBankAccountName")
+                                      : i18n.t("deposit.msgPlsEnterAccount")
+                                  }
+                                  onChange={onNameChange}
+                                  outputFormat="string"
+                                  variant="outlined"
+                                  autoComplete="off"
+                                  value={name}
+                                ></TextField>
+                              </SelectionContainer>
+                              {config.features.Deposit_AddTips && (
+                                <div style={{ marginLeft: 30, marginTop: 8 }}>
+                                  <Remark> {i18n.t("mgm.depositTips")}</Remark>
+                                </div>
+                              )}
+                            </FormRightContainer>
+                          </FormContainer>
+                        </>
+                      )
                     );
                   }
                 })()}
+                <FormContainer>
+                  <FormLeftContainer>
+                    <SubHeaderContainer>
+                      <SubTitle>
+                        {i18n.t("deposit.plsEnterDepositAmount")}
+                      </SubTitle>
+                    </SubHeaderContainer>
+                  </FormLeftContainer>
+                  <FormRightContainer>
+                    <SelectionContainer>
+                      <TextField
+                        style={{
+                          height: "38px",
+                          width: "220px",
+                          float: "left",
+                          marginRight: "5px",
+                          padding: 0,
+                        }}
+                        placeholder={i18n.t("deposit.plsEnterDepositAmount")}
+                        onChange={onAmountChange}
+                        outputFormat="string"
+                        variant="outlined"
+                        autoComplete="off"
+                        value={amount}
+                        pattern="[0-9]*"
+                        type={"number"}
+                      ></TextField>
 
-                <SubHeaderContainer>
-                  <NumberContainer>
-                    {paymentType.paymentcode.toUpperCase() === "MANUAL" ||
-                    paymentType.paymentcode.toUpperCase() === "APPLEPAY"
-                      ? "4"
-                      : "3"}
-                  </NumberContainer>
-
-                  <SubTitle>{i18n.t("deposit.plsEnterDepositAmount")}</SubTitle>
-                </SubHeaderContainer>
-                <SelectionContainer>
-                  <TextField
-                    style={{
-                      height: "38px",
-                      width: "220px",
-                      float: "left",
-                      marginRight: "5px",
-                      padding: 0,
-                    }}
-                    placeholder={i18n.t("deposit.plsEnterDepositAmount")}
-                    onChange={onAmountChange}
-                    outputFormat="string"
-                    variant="outlined"
-                    autoComplete="off"
-                    value={amount}
-                    pattern="[0-9]*"
-                    type={"number"}
-                  ></TextField>
-
-                  <LimitPopupContainer>
-                    <LimitLabel>{i18n.t("deposit.limitDeposit")} </LimitLabel>
-                    <LimitAmount>
-                      {Common.formatNumberWithThousand(
-                        methodList[selectedMethodIndex].channel[
-                          selectedChannelIndex
-                        ].transferlimit.from
-                      )}{" "}
-                      -{" "}
-                      {Common.formatNumberWithThousand(
-                        methodList[selectedMethodIndex].channel[
-                          selectedChannelIndex
-                        ].transferlimit.to
-                      )}
-                    </LimitAmount>
-                  </LimitPopupContainer>
-                  {(() => {
-                    if (
-                      methodList[selectedMethodIndex].methodcode === "Crypto"
-                    ) {
-                      if (paymentType.paymentcode.toUpperCase() === "LEEPAY") {
-                        return (
-                          <ExchangeRateContainer style={{ marginTop: "4px" }}>
-                            <LimitLabel>
-                              {i18n.t("deposit.exchangeRate")}:{" "}
-                            </LimitLabel>
-                            <LimitAmount>{` ${exchangeRate.buyprice}`}</LimitAmount>
-                            <LimitLabel style={{ marginLeft: "26px" }}>
-                              {i18n.t("deposit.expectedPayment")}
-                            </LimitLabel>{" "}
-                            <LimitAmount>{` ${
-                              isNaN(amount) === false
-                                ? (amount / exchangeRate.buyprice).toFixed(2)
-                                : 0
-                            }`}</LimitAmount>
-                          </ExchangeRateContainer>
-                        );
-                      } else {
-                        return Object.keys(exchangeRate).map((key) => {
-                          return Object.keys(exchangeRate[key]).map((key2) => {
-                            if (key2 === "HKD") {
-                              return (
-                                <ExchangeRateContainer
-                                  style={{ marginTop: "4px" }}
-                                >
-                                  <LimitLabel>
-                                    {i18n.t("deposit.exchangeRate")}:{" "}
-                                  </LimitLabel>
-                                  <LimitAmount>{` ${exchangeRate[key][key2].rate}`}</LimitAmount>
-                                  <LimitLabel style={{ marginLeft: "26px" }}>
-                                    {i18n.t("deposit.expectedPayment")}
-                                  </LimitLabel>{" "}
-                                  <LimitAmount>{` ${
-                                    isNaN(amount) === false
-                                      ? (
-                                          amount / exchangeRate[key][key2].rate
-                                        ).toFixed(2)
-                                      : 0
-                                  }`}</LimitAmount>
-                                </ExchangeRateContainer>
+                      <LimitPopupContainer>
+                        <LimitLabel>
+                          {i18n.t("deposit.limitDeposit")}{" "}
+                        </LimitLabel>
+                        <LimitAmount>
+                          {Common.formatNumberWithThousand(
+                            methodList[selectedMethodIndex].channel[
+                              selectedChannelIndex
+                            ].transferlimit.from
+                          )}{" "}
+                          -{" "}
+                          {Common.formatNumberWithThousand(
+                            methodList[selectedMethodIndex].channel[
+                              selectedChannelIndex
+                            ].transferlimit.to
+                          )}
+                        </LimitAmount>
+                      </LimitPopupContainer>
+                      {(() => {
+                        if (
+                          methodList[selectedMethodIndex].methodcode ===
+                          "Crypto"
+                        ) {
+                          if (
+                            paymentType.paymentcode.toUpperCase() === "LEEPAY"
+                          ) {
+                            return (
+                              <ExchangeRateContainer
+                                style={{ marginTop: "4px" }}
+                              >
+                                <LimitLabel>
+                                  {i18n.t("deposit.exchangeRate")}:{" "}
+                                </LimitLabel>
+                                <LimitAmount>{` ${exchangeRate.buyprice}`}</LimitAmount>
+                                <LimitLabel style={{ marginLeft: "26px" }}>
+                                  {i18n.t("deposit.expectedPayment")}
+                                </LimitLabel>{" "}
+                                <LimitAmount>{` ${
+                                  isNaN(amount) === false
+                                    ? (amount / exchangeRate.buyprice).toFixed(
+                                        2
+                                      )
+                                    : 0
+                                }`}</LimitAmount>
+                              </ExchangeRateContainer>
+                            );
+                          } else {
+                            return Object.keys(exchangeRate).map((key) => {
+                              return Object.keys(exchangeRate[key]).map(
+                                (key2) => {
+                                  if (key2 === "HKD") {
+                                    return (
+                                      <ExchangeRateContainer
+                                        style={{ marginTop: "4px" }}
+                                      >
+                                        <LimitLabel>
+                                          {i18n.t("deposit.exchangeRate")}:{" "}
+                                        </LimitLabel>
+                                        <LimitAmount>{` ${exchangeRate[key][key2].rate}`}</LimitAmount>
+                                        <LimitLabel
+                                          style={{ marginLeft: "26px" }}
+                                        >
+                                          {i18n.t("deposit.expectedPayment")}
+                                        </LimitLabel>{" "}
+                                        <LimitAmount>{` ${
+                                          isNaN(amount) === false
+                                            ? (
+                                                amount /
+                                                exchangeRate[key][key2].rate
+                                              ).toFixed(2)
+                                            : 0
+                                        }`}</LimitAmount>
+                                      </ExchangeRateContainer>
+                                    );
+                                  }
+                                }
                               );
-                            }
-                          });
-                        });
-                      }
-                    }
-                  })()}
-                  {paymentType.paymentcode.toUpperCase() === "UMPAY" && (
-                    <Remark>{i18n.t("deposit.ppRemark")}</Remark>
-                  )}
-                </SelectionContainer>
-                <SplitLine></SplitLine>
-                <SubHeaderContainer>
-                  <NumberContainer>
-                    {paymentType.paymentcode.toUpperCase() === "MANUAL" ||
-                    paymentType.paymentcode.toUpperCase() === "APPLEPAY"
-                      ? "5"
-                      : "4"}
-                  </NumberContainer>
+                            });
+                          }
+                        }
+                      })()}
+                      {paymentType.paymentcode.toUpperCase() === "UMPAY" && (
+                        <Remark>{i18n.t("deposit.ppRemark")}</Remark>
+                      )}
+                    </SelectionContainer>
+                  </FormRightContainer>
+                </FormContainer>
 
-                  <SubTitle>{i18n.t("deposit.promotion")}</SubTitle>
-                </SubHeaderContainer>
-                <SelectionContainer>
-                  <CustomFormControl>
-                    <CustomSelect
-                      variant="outlined"
-                      value={this.props.depositPromotion}
-                      displayEmpty
-                      onChange={this.props.handleDepositPromotionChange}
-                      native
-                    >
-                      <option value="">
-                        {i18n.t("deposit.msgPlsSelectPromotion")}
-                      </option>
-                      {this.props.promotionList.map((data, key) => {
-                        return (
-                          <option value={data.id} key={key}>
-                            {data.name}
+                <FormContainer>
+                  <FormLeftContainer>
+                    <SubHeaderContainer>
+                      <SubTitle>{i18n.t("deposit.promotion")}</SubTitle>
+                    </SubHeaderContainer>
+                  </FormLeftContainer>
+                  <FormRightContainer>
+                    <SelectionContainer>
+                      <CustomFormControl>
+                        <CustomSelect
+                          variant="outlined"
+                          value={this.props.depositPromotion}
+                          displayEmpty
+                          onChange={this.props.handleDepositPromotionChange}
+                          native
+                        >
+                          <option value="">
+                            {i18n.t("deposit.msgPlsSelectPromotion")}
                           </option>
-                        );
-                      })}
-                    </CustomSelect>
-                  </CustomFormControl>
-                </SelectionContainer>
+                          {this.props.promotionList.map((data, key) => {
+                            return (
+                              <option value={data.id} key={key}>
+                                {data.name}
+                              </option>
+                            );
+                          })}
+                        </CustomSelect>
+                      </CustomFormControl>
+                    </SelectionContainer>
+                  </FormRightContainer>
+                </FormContainer>
+                <FormActionContainer>
+                  <CustomButton
+                    name={i18n.t("common.cancel")}
+                    width={150}
+                    marginTop={0}
+                    float={"none"}
+                    marginLeft={0}
+                    handleClick={() => {
+                      onDepositCancelClick();
+                    }}
+                  ></CustomButton>
 
-                <SplitLine></SplitLine>
-                <CustomButton
-                  name={i18n.t("common.nextStep")}
-                  width={257}
-                  marginTop={0}
-                  float={"none"}
-                  marginLeft={290}
-                  handleClick={() => {
-                    onNextClick();
-                  }}
-                  disabled={
-                    selectedMethodIndex < 0 ||
-                    selectedChannelIndex < 0 ||
-                    amount <
-                      methodList[selectedMethodIndex].channel[
-                        selectedChannelIndex
-                      ].transferlimit.from ||
-                    amount >
-                      methodList[selectedMethodIndex].channel[
-                        selectedChannelIndex
-                      ].transferlimit.to ||
-                    ((paymentType.paymentcode.toUpperCase() === "MANUAL" ||
-                      paymentType.paymentcode.toUpperCase() === "APPLEPAY") &&
-                      name.length <= 0)
-                  }
-                ></CustomButton>
+                  <CustomButton
+                    name={i18n.t("common.nextStep")}
+                    width={150}
+                    marginTop={0}
+                    float={"none"}
+                    handleClick={() => {
+                      onNextClick();
+                    }}
+                    disabled={
+                      selectedMethodIndex < 0 ||
+                      selectedChannelIndex < 0 ||
+                      amount <
+                        methodList[selectedMethodIndex].channel[
+                          selectedChannelIndex
+                        ].transferlimit.from ||
+                      amount >
+                        methodList[selectedMethodIndex].channel[
+                          selectedChannelIndex
+                        ].transferlimit.to ||
+                      ((paymentType.paymentcode.toUpperCase() === "MANUAL" ||
+                        paymentType.paymentcode.toUpperCase() === "APPLEPAY") &&
+                        name.length <= 0)
+                    }
+                  ></CustomButton>
+                </FormActionContainer>
               </>
             );
           }

@@ -28,6 +28,14 @@ const onhandlePass2Change = (e) => {
 
 function ChangePassword(props) {
   const onhandleClick = () => {
+    var expr = /^.{6,20}$/;
+    if (!expr.test(local_props.password)) {
+      props.enqueueSnackbar(i18n.t("common.msgRegisterPassInvalid"), {
+        variant: "error",
+      });
+      return;
+    }
+
     if (local_props.rpassword !== local_props.password) {
       props.enqueueSnackbar(i18n.t("common.msgInvalidConfirmPass"), {
         variant: "error",

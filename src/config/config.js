@@ -1,17 +1,17 @@
 import featureList from "./features";
 
-var template = 2; //2 for T2, 3 for T3 (based on .xd file)
+var template = 8; //2 for T2, 3 for T3 (based on .xd file)
 const config = {
   baseUrl: window?.env ? "/api/" : "https://dev-t1.rpgp.cc/api/",
   client:
     window?.env?.client ||
     "I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ",
   currency: window?.env?.currency || "CNY",
-  brand: window?.env?.brand || process.env.REACT_APP_BRAND || "28BET",
+  brand: window?.env?.brand || process.env.REACT_APP_BRAND || "xxx",
   brandName: window?.env?.brandName
     ? window?.env?.brandName
     : window?.env?.brand || "GPI",
-  theme: window?.env?.theme || "red",
+  theme: window?.env?.theme || "wapT8",
   wapVersion: template,
   sourceUrl: window?.env?.sourceUrl || "https://images.srvptt.com/",
   defaultLanguage: window?.env?.defaultLanguage

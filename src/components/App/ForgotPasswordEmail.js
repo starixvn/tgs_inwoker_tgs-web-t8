@@ -13,7 +13,7 @@ import ErrorSwitcher from "../../utils/ErrorSwitcher";
 const Container = styled.div`
   width: 506px;
   height: 360px;
-  background: url(${LoginBGPNG});
+  background: #fff;//url(${LoginBGPNG});
   display: table;
 `;
 const CloseIconContainer = styled.div`

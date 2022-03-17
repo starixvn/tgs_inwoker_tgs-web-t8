@@ -18,14 +18,11 @@ import i18n from "../../../utils/i18n";
 import SecondSection from "./SecondSection";
 import ThirdSection from "./ThirdSection";
 import FourthSection from "./FourthSection";
+import FifthSection from "./FifthSection";
 import BGJPG from "../../../assets/images/home/section/bg.jpg";
-import Section1ChessPNG from "../../../assets/images/home/section/section1-chess.png";
 import Section1FishPNG from "../../../assets/images/home/section/section1-fish.png";
 import Section1LotteryPNG from "../../../assets/images/home/section/section1-lottery.png";
-import Section1SlotPNG from "../../../assets/images/home/section/section1-slot.png";
 import Section1ElectronPNG from "../../../assets/images/home/section/section1-electron.png";
-import Section1SportPNG from "../../../assets/images/home/section/section1-sport.png";
-import Section1LivePNG from "../../../assets/images/home/section/section1-live.png";
 import TextBgPNG from "../../../assets/images/home/section/text-bg.png";
 import ScrollAnimation from "react-animate-on-scroll";
 import { Grid } from "@material-ui/core";
@@ -59,7 +56,7 @@ const FirstSection = styled.div`
   margin: 0 auto;
   min-height: 460px;
   padding-top: 110px;
-  overflow: auto;
+  overflow: visible;
 `;
 const FirstSectionItemBg2 = styled.div`
   background: url(${TextBgPNG}) no-repeat;
@@ -92,8 +89,11 @@ const FirstSectionItemButton = styled(Grid)`
   margin-top: 25px;
   height: 34px;
   line-height: 2em;
+  transition: all .3s;
   &:hover {
     cursor: pointer;
+    background-color: ${({theme})=>theme.primary};
+    transition: all .3s;
   }
 `;
 
@@ -109,12 +109,16 @@ const FirstSectionItem = styled(Grid)`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  transition: transform .3s;
+  &:hover{
+    transform: scale(1.05);
+    transition: transform .3s;
+  }
 `;
 
 class Home extends Component {
   constructor(props) {
     super(props);
-
     var displayGame = this.getHomePageDisplayGame();
     this.state = {
       marqueeText: [],
@@ -126,15 +130,15 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    let promotionId = "";
-    let promotionChannelId = "";
+    // let promotionId = "";
+    // let promotionChannelId = "";
 
-    if (this.props.match.params) {
-      promotionId = this.props.match.params.promotionid || "";
-      promotionChannelId = this.props.match.params.promotionchannelid || "";
-    }
-    localStorage.setItem("promotionId", promotionId);
-    localStorage.setItem("promotionChannelId", promotionChannelId);
+    // if (this.props.match.params) {
+    //   promotionId = this.props.match.params.promotionid || "";
+    //   promotionChannelId = this.props.match.params.promotionchannelid || "";
+    // }
+    // localStorage.setItem("promotionId", promotionId);
+    // localStorage.setItem("promotionChannelId", promotionChannelId);
   }
   componentDidUpdate(preProps) {
     if (
@@ -286,11 +290,7 @@ class Home extends Component {
                       animateOnce={true}
                       style={{ overflow: "visible" }}
                     >
-                      <FirstSectionItem
-                        item
-                        spacing={0}
-                        img={item.img}
-                      >
+                      <FirstSectionItem item spacing={0} img={item.img}>
                         <FirstSectionItemBg
                           container
                           direction="row"
@@ -318,15 +318,39 @@ class Home extends Component {
               });
             })()}
           </FirstSection>
-          <SecondSection />
+          <SecondSection navigate={this.handleNavigateClick} />
+          <ScrollAnimation
+            animateIn="fadeInLeft"
+            duration={1}
+            animateOnce={true}
+            style={{ overflow: "visible" }}
+          >
+            <ThirdSection></ThirdSection>
+          </ScrollAnimation>
+          <ScrollAnimation
+            animateIn="fadeInRight"
+            duration={1}
+            animateOnce={true}
+            style={{ overflow: "visible" }}
+          >
+            <FourthSection></FourthSection>
+          </ScrollAnimation>
+          <ScrollAnimation
+            animateIn="fadeInLeft"
+            duration={1}
+            animateOnce={true}
+            style={{ overflow: "visible" }}
+          >
+            <FifthSection providerList={this.props.game.providerList}></FifthSection>
+          </ScrollAnimation>
         </SectionContainer>
-        {this.props.game.providerList.filter((e) => {
+        {/* {this.props.game.providerList.filter((e) => {
           return e.abbreviation === "KY";
         }).length === 0 ? (
           <FourthSection></FourthSection>
         ) : (
           <ThirdSection handleJoinGameClick={this.handleJoinGameClick} />
-        )}
+        )} */}
 
         {(() => {
           if (
@@ -339,6 +363,8 @@ class Home extends Component {
               <PopupAnnouncement
                 open={this.state.openAnnouncement}
                 onClose={() => {
+                  if (document.getElementById("audio") != null)
+                    document.getElementById("audio").play();
                   this.setState({ ...this.state, openAnnouncement: false });
                 }}
                 text={

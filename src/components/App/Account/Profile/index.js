@@ -1,13 +1,16 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import IconProfileRedPNG from "../../../../assets/images/icon-profile.png";
 import { connect } from "react-redux";
+import DynamicFont from "react-dynamic-font";
 
 import Dialog from "@material-ui/core/Dialog";
 import LoginBGPNG from "../../../../assets/images/login-bg.png";
 import IconLoginClosePNG from "../../../../assets/images/icon-login-close.png";
-import {accountAction} from "../../../../api-services/actions/accountAction";
-import {SHOWING_DIALOG} from "../../../../api-services/constant/actionType";
+import IconAddCardPNG from "../../../../assets/images/icon-addcard.png";
+
+import { accountAction } from "../../../../api-services/actions/accountAction";
+import { walletAction } from "../../../../api-services/actions/walletAction";
+import { SHOWING_DIALOG } from "../../../../api-services/constant/actionType";
 import { withStyles } from "@material-ui/core/styles";
 // import Address from "./Address";
 import ChangePassword from "./ChangePassword";
@@ -15,7 +18,7 @@ import Email from "./Email";
 import WithdrawalPassword from "./WithdrawalPassword";
 import ChangeWithdrawalPassword from "./ChangeWithdrawalPassword";
 
-import IDVerification from "./IDVerification";
+import IDVerification from "./id-verification";
 import PhoneVerification from "./PhoneVerification";
 // import SecurityQuestion from "./SecurityQuestion";
 // import ResetSecurityQuestion from "./ResetSecurityQuestion";
@@ -24,53 +27,66 @@ import QQ from "./QQ";
 import Wechat from "./Wechat";
 import i18n from "../../../../utils/i18n";
 import config from "../../../../config/config";
+import Common from "../../../../utils/Common";
+
 const Container = styled.div`
   padding: 20px 28px;
   box-sizing: border-box
-  background-color: #eaeaea;
+  //background-color: #eaeaea;
   width: 100%;
   min-height: 611px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const LeftContainer = styled.div`
+  width: 690px;
+`;
+
+const RightContainer = styled.div`
+  width: 440px;
+`;
+
+const Header = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
+  height: 38px;
+  margin-bottom: 10px;
+  padding: 0 10px 10px;
 `;
 const Title = styled.div`
-  color: ${({ theme }) => theme.secondary};
-`;
-const TitleIcon = styled.div`
-  width: 34px;
-  height: 24px;
-
-  background: url(${IconProfileRedPNG}) no-repeat left center;
-  background-size: 24px 24px;
-
-  float: left;
+  align-items: baseline;
+  display: flex;
+  & h3 {
+    color: ${({ theme }) => theme.secondary};
+    font-size: 24px;
+    font-weight: 400;
+  }
 `;
 const InnerWrap = styled.div`
-  width: 935px;
-  height: 610px;
-  margin-top: 18px;
-  box-sizing: border-box;
-  background-color: #f7f7f7;
-  padding: 25px;
-  border-radius: 10px;
+  height: auto;
+  margin-bottom: 20px;
 `;
 const ContentWrap = styled.div`
   margin-top: 12px;
   height: 44px;
   font-size: 14px;
   width: 100%;
-  border-bottom: 1px solid #e9e9e9;
+  display: flex;
 `;
 const ContentLabel = styled.div`
   color: #747474;
-  float: left;
   width: 160px;
-  margin-left: 18px;
   margin-top: 10px;
+  text-align: right;
 `;
 const ContentValue = styled.div`
   color: #16242a;
-  float: left;
-  margin-top: 10px;
   width: 500px;
+  margin-top: 10px;
+  margin-left: 10px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -81,15 +97,12 @@ const ContentButton = styled.div`
   height: 32px;
   border-radius: 3.8px;
   color: #fff;
-  float: right;
   margin-right: 5px;
-
   border-radius: 6px;
-
-  border: solid 1px ${({ theme }) => theme.primary};
-  color: ${({ theme }) => theme.primary};
+  background-color: ${(props)=>props.theme.primary};
   &:hover {
     cursor: pointer;
+    filter: grayscale(1);
   }
 `;
 // const ButtonDisable = styled(ContentButton)`
@@ -104,8 +117,16 @@ const ContentButtonLabel = styled.div`
   margin-top: 5px;
 `;
 
+const VerifiedSpan = styled.span`
+  color: ${({ theme }) => theme.primary};
+  user-select: none;
+`;
+
 function GetContentWrap(accountInfo, label, attr, func, label2) {
   let attrValue = accountInfo[attr];
+  let isMemberName = false;
+  let verified = accountInfo["check_pass_account"];
+  let containMemberName = accountInfo["member_name"];
   if (attr === "member_address") {
     if (attrValue !== "") {
       attrValue +=
@@ -139,6 +160,14 @@ function GetContentWrap(accountInfo, label, attr, func, label2) {
     }
   }
 
+  if (attr === "member_name") {
+    isMemberName = true;
+
+    if (attrValue !== "") {
+      attrValue = accountInfo["member_name"] ? accountInfo["member_name"] : "";
+    }
+  }
+
   let isDisable = false;
   let buttonValue = i18n.t("profile.edit");
   let requiredVerify =
@@ -148,6 +177,7 @@ function GetContentWrap(accountInfo, label, attr, func, label2) {
     attr === "member_birthday";
 
   let isVerify = false;
+  let hide = false;
 
   if (requiredVerify) {
     if (attr === "member_name" || attr === "member_birthday") {
@@ -160,6 +190,9 @@ function GetContentWrap(accountInfo, label, attr, func, label2) {
     }
     if (attr === "member_phone") {
       isVerify = accountInfo.check_pass_phone;
+      if (config.features.Profile_NotAllowChangePhone && isVerify) {
+        hide = true;
+      }
     }
   }
 
@@ -204,14 +237,48 @@ function GetContentWrap(accountInfo, label, attr, func, label2) {
     }
   }
 
+  var currentFormStatus = accountInfo.identityformstatus;
+  var hasSubmitted = accountInfo.identityformid ? true : false;
+
+  var status = "";
+
+  if (currentFormStatus === 0 && hasSubmitted === false) {
+    //api沒給表單id ，表示可以上傳
+    status = "no";
+  }
+  if (
+    (currentFormStatus === 1 && hasSubmitted === true) ||
+    currentFormStatus === 1
+  ) {
+    status = "yes";
+  }
+  if (
+    (currentFormStatus === 2 && hasSubmitted === true) ||
+    currentFormStatus === 2
+  ) {
+    //有給表單id但是狀態是拒絕，也可以上傳
+    status = "rejected";
+  }
+  if (currentFormStatus === 0 && hasSubmitted === true) {
+    //有給表單id但狀態沒驗證，不能上傳
+    status = "verifying";
+  }
+
   return (
     <ContentWrap>
       <ContentLabel>{label}:</ContentLabel>
       <ContentValue style={isDisable ? { color: "#acacac" } : {}}>
-        {attrValue}
+        {attrValue}{" "}
+        {
+          <VerifiedSpan>
+            {isMemberName &&
+              containMemberName &&
+              "(" + i18n.t("verified." + status) + ")"}
+          </VerifiedSpan>
+        }
       </ContentValue>
       {(() => {
-        if (buttonValue !== "") {
+        if (buttonValue !== "" && hide !== true) {
           return (
             <ContentButton onClick={() => func(attr)}>
               <ContentButtonLabel>{buttonValue}</ContentButtonLabel>
@@ -222,15 +289,185 @@ function GetContentWrap(accountInfo, label, attr, func, label2) {
     </ContentWrap>
   );
 }
+
+const BankCardContainer = styled.div`
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 10px;
+`;
+
+const BankCardItem = styled.div`
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  height: 100px;
+  padding-right: 20px;
+`;
+const BankCardTitle = styled.div`
+  background-image: linear-gradient(180deg, #787878, #3c3b3b);
+  border-bottom: 1px solid #ccc;
+  box-sizing: border-box;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  height: 100px;
+  justify-content: center;
+  padding: 0 16px;
+  position: relative;
+  width: 105px;
+  font-size: 14px;
+  &:after {
+    border-bottom: 99px solid #fff;
+    border-left: 16px solid transparent;
+    content: "";
+    height: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+`;
+const BankCardInfo = styled.div`
+  flex: 1;
+  padding-left: 10px;
+`;
+const BankCardAdd = styled.div`
+  padding-left: 10px;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+const BankCardAddIcon = styled.div`
+  width: 30px;
+  height: 30px;
+  background: url(${IconAddCardPNG}) no-repeat center;
+  background-size: contain;
+`;
+const BankCardAddText = styled.div`
+  margin-left: 15px;
+  font-size: 20px;
+  font-weight: 500;
+`;
+const BankCardAccount = styled.div`
+  color: #777;
+  margin: 10px 0 4px;
+`;
+const BankCardNumber = styled.div`
+  color: #ccc;
+  word-break: break-all;
+  font-size: 14px;
+`;
+const BankCardType = styled.div`
+  color: #ccc;
+  font-size: 14px;
+`;
+const BankCardAction = styled.div`
+  border: 1px solid #000000;
+  border-radius: 5px;
+  color: #000000;
+  cursor: pointer;
+  height: 40px;
+  line-height: 40px;
+  margin-left: 10px;
+  text-align: center;
+  width: 114px;
+`;
+
+const WalletContainer = styled.div``;
+
+const AllWalletItem = styled.div`
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  height: 100px;
+  padding-right: 20px;
+`;
+const AllWalletTitle = styled.div`
+  background-image: linear-gradient(180deg, #889ddf,${({ theme }) => theme.primary});
+  border-bottom: 1px solid #ccc;
+  box-sizing: border-box;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  height: 100px;
+  justify-content: center;
+  padding: 0 16px;
+  position: relative;
+  width: 105px;
+  font-size: 14px;
+  &:after {
+    border-bottom: 99px solid #fff;
+    border-left: 16px solid transparent;
+    content: "";
+    height: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+`;
+
+const AllWalletInfo = styled.div`
+  flex: 1;
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 100px;
+  text-align: right;
+`;
+
+const WalletItemList = styled.div`
+  border: 1px solid #ccc;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-top: 0;
+  overflow: hidden;
+`;
+
+const WalletItem = styled.div`
+  height: 45px;
+  padding: 0 20px;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  background-color: #ffffff;
+  &:nth-child(2n) {
+    background-color: #f5f5f5;
+  }
+`;
+
+const WalletItemTitle = styled.div`
+  color: #282828;
+  font-size: 14px;
+  font-stretch: normal;
+  font-style: normal;
+  font-weight: 300;
+  text-align: left;
+`;
+
+const WalletItemInfo = styled.div`
+  text-align: right;
+`;
+
 const StyledDialog = withStyles({
   root: {
     boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
   },
   paper: {
-    background: `url(${LoginBGPNG}) no-repeat transparent`,
     backgroundSize: "cover",
-    borderRadius: "15px",
-    border: "solid 1px #ffffff",
+    borderRadius: "5px",
     width: "420px",
   },
 })(Dialog);
@@ -240,16 +477,22 @@ const DialogContainer = styled.div`
   display: table;
 `;
 const DialogCloseIconContainer = styled.div`
-  background: url(${IconLoginClosePNG}) no-repeat center;
+  //background: url(${IconLoginClosePNG}) no-repeat center;
   width: 50px;
   height: 100%;
   float: right;
-  &:hover {
-    cursor: pointer;
-  }
+  position: absolute;
+  right: 5px;
+  top: 0px;
+  user-select: none;
+  cursor: pointer;
+  font-size: 24px;
+  padding: 8px 12px;
+  color: #fff;
 `;
 const DialogHeader = styled.div`
   height: 50px;
+  background-color: ${({theme})=>theme.primary};
 `;
 const DialogHeadertitle = styled.div`
   text-align: center;
@@ -258,7 +501,7 @@ const DialogHeadertitle = styled.div`
   float: left;
   font-size: 18px;
   font-weight: bold;
-  color: ${({ theme }) => theme.secondary};
+  color: #ffffff;
   width: 320px;
 `;
 class Profile extends Component {
@@ -266,10 +509,12 @@ class Profile extends Component {
     openDialog: false,
     dialogTitle: "",
   };
-  componentDidMount() {
+  async componentDidMount() {
     if (this.props.popup) {
       this.handleButtonClick(this.props.popup);
     }
+    if (this.props.wallet.bankCardList.length === 0)
+      this.props.getBankCardList();
   }
   componentDidUpdate(preProps) {
     if (preProps.popup !== this.props.popup) {
@@ -533,58 +778,92 @@ class Profile extends Component {
   handleCloseDialog = () => {
     this.setState({ ...this.state, openDialog: false });
   };
+  handleManageCard = (cardId) => {
+    this.props.onhandleManageCardClick(cardId);
+  }
+  handleAddCard = () => {
+    if (config.features.ChangesNotAllowed) {
+      this.props.enqueueSnackbar(i18n.t("card.toEdit"), {
+        variant: "error",
+      });
+    } else {
+      this.props.onhandleAddCardClick();
+    }
+  }
+  handleFilterBankNumber = (item) => {
+    let last4Digits = "";
+    if (item.banktype === "ThirdParty" || item.banktype === "FPS") {
+      if (item.detail.phone) {
+        last4Digits = item.detail.phone.slice(-4);
+        return last4Digits.padStart(item.detail.phone.length, "*");
+      } else if (item.detail.address) {
+        last4Digits = item.detail.address.slice(-4);
+        return last4Digits.padStart(item.detail.address.length, "*");
+      }
+    } else {
+      if (item.detail.bankAccount) {
+        last4Digits = item.detail.bankAccount.slice(-4);
+        return last4Digits.padStart(item.detail.bankAccount.length, "*");
+      } else if (item.detail.address) {
+        last4Digits = item.detail.address.slice(-4);
+        return last4Digits.padStart(item.detail.address.length, "*");
+      }
+    }
+  }
   render() {
     return (
       <Container>
-        <Title>
-          <TitleIcon></TitleIcon>
-          {i18n.t("profile.title")}
-        </Title>
-        <InnerWrap>
-          {config.features.ICVerification &&
-            GetContentWrap(
-              this.props.account.info,
-              i18n.t("profile.nameVerify.title"),
-              "member_name",
-              this.handleButtonClick
-            )}
+        <LeftContainer>
+          <Header>
+            <Title>
+              <h3>{i18n.t("profile.title")}</h3>
+            </Title>
+          </Header>
+          <InnerWrap>
+            {config.features.ICVerification &&
+              GetContentWrap(
+                this.props.account.info,
+                i18n.t("profile.nameVerify.title"),
+                "member_name",
+                this.handleButtonClick
+              )}
 
-          {/* {GetContentWrap(
+            {/* {GetContentWrap(
             this.props.account.info,
             i18n.t("profile.phone.title"),
             "member_phone",
             this.handleButtonClick
           )} */}
-          {config.features.SMSVerification &&
-            GetContentWrap(
-              this.props.account.info,
-              i18n.t("common.phoneNumber"),
-              "member_phone",
-              this.handleButtonClick
-            )}
+            {config.features.SMSVerification &&
+              GetContentWrap(
+                this.props.account.info,
+                i18n.t("common.phoneNumber"),
+                "member_phone",
+                this.handleButtonClick
+              )}
 
-          {config.features.EmailVerification &&
-            GetContentWrap(
-              this.props.account.info,
-              i18n.t("common.emailAddress"),
-              "member_email",
-              this.handleButtonClick
-            )}
-          {config.features.QQWeChat &&
-            GetContentWrap(
-              this.props.account.info,
-              "QQ",
-              "member_qq",
-              this.handleButtonClick
-            )}
-          {config.features.QQWeChat &&
-            GetContentWrap(
-              this.props.account.info,
-              i18n.t("common.wechatNumber"),
-              "member_wechat",
-              this.handleButtonClick
-            )}
-          {/* {GetContentWrap(
+            {config.features.EmailVerification &&
+              GetContentWrap(
+                this.props.account.info,
+                i18n.t("common.emailAddress"),
+                "member_email",
+                this.handleButtonClick
+              )}
+            {config.features.QQWeChat &&
+              GetContentWrap(
+                this.props.account.info,
+                "QQ",
+                "member_qq",
+                this.handleButtonClick
+              )}
+            {config.features.QQWeChat &&
+              GetContentWrap(
+                this.props.account.info,
+                i18n.t("common.wechatNumber"),
+                "member_wechat",
+                this.handleButtonClick
+              )}
+            {/* {GetContentWrap(
             this.props.account.info,
             "电子邮件",
             "member_email",
@@ -608,7 +887,7 @@ class Profile extends Component {
             "member_birthday",
             this.handleButtonClick
           )} */}
-          {/* {(() => {
+            {/* {(() => {
             if (config.brand !== "HKJP" && config.brand !== "GPI") {
               return GetContentWrap(
                 this.props.account.info,
@@ -620,13 +899,13 @@ class Profile extends Component {
             }
           })()} */}
 
-          {GetContentWrap(
-            this.props.account.info,
-            i18n.t("profile.password.title"),
-            "member_password",
-            this.handleButtonClick
-          )}
-          {/* {GetContentWrap(
+            {GetContentWrap(
+              this.props.account.info,
+              i18n.t("profile.password.title"),
+              "member_password",
+              this.handleButtonClick
+            )}
+            {/* {GetContentWrap(
             this.props.account.info,
             "安全问题",
             "member_question",
@@ -638,7 +917,99 @@ class Profile extends Component {
             "member_address",
             this.handleButtonClick
           )} */}
-        </InnerWrap>
+          </InnerWrap>
+          <InnerWrap>
+          <BankCardContainer>
+            {this.props.wallet.bankCardList.map((item, index) => {
+              return (
+                <BankCardItem key={index}>
+                  <BankCardTitle>{i18n.t("withdrawal.bankCard")}</BankCardTitle>
+                  <BankCardInfo>
+                    <BankCardNumber>
+                    <DynamicFont content={this.handleFilterBankNumber(item)}>
+                    </DynamicFont>
+                    </BankCardNumber>
+                    <BankCardAccount> {i18n.t("deposit.details.account")}</BankCardAccount>
+                    <BankCardType>
+                      {item.banktype === "bank"
+                        ? item.detail.bankName
+                        : item.banktype}
+                    </BankCardType>
+                  </BankCardInfo>
+                  <BankCardAction onClick={()=>{this.handleManageCard(item.id);}}>{i18n.t("card.checkDetails")}</BankCardAction>
+                </BankCardItem>
+              );
+            })}
+            {this.props.wallet.bankCardList.length < 4 &&
+            <BankCardItem>
+              <BankCardTitle>{i18n.t("withdrawal.bankCard")}</BankCardTitle>
+              <BankCardAdd onClick={()=>{this.handleAddCard();}}>
+                <BankCardAddIcon></BankCardAddIcon>
+                <BankCardAddText>{i18n.t("card.msgAddCard")}</BankCardAddText>
+              </BankCardAdd>
+            </BankCardItem>
+            }
+          </BankCardContainer>
+          </InnerWrap>
+        </LeftContainer>
+        <RightContainer>
+          <WalletContainer>
+            <AllWalletItem>
+              <AllWalletTitle>
+                {i18n.t("web.account.header.total")}
+              </AllWalletTitle>
+              <AllWalletInfo>
+              <DynamicFont
+                content={Common.formatNumberWithThousand(
+                  this.props.game.providerList.reduce(
+                    (total, item) =>
+                      item.transferwallet === true
+                        ? (total += item.balance)
+                        : (total += 0),
+                    0
+                  ) + this.props.wallet.mainBalance
+                ).toString()}
+              />
+              </AllWalletInfo>
+            </AllWalletItem>
+            <WalletItemList>
+              <WalletItem>
+                <WalletItemTitle>
+                  {i18n.t("web.account.header.mainWallet")}
+                </WalletItemTitle>
+                <WalletItemInfo>
+                  {" "}
+                  <DynamicFont
+                    content={
+                      this.props.wallet.mainSymbol +
+                      Common.formatNumberWithThousand(
+                        this.props.wallet.mainBalance
+                      )
+                    }
+                  />
+                </WalletItemInfo>
+              </WalletItem>
+              {this.props.game.providerList
+                .filter(
+                  (item) => item.status === 0 && item.transferwallet === true
+                )
+                .map((item, key) => (
+                  <WalletItem key={item.id}>
+                    <WalletItemTitle>{item.name}</WalletItemTitle>
+                    <WalletItemInfo>
+                      <DynamicFont
+                        content={
+                          item.maintenance === 1
+                            ? i18n.t("transfer.maintenance")
+                            : Common.formatNumberWithCommas(item.balance).toString()
+                        }
+                      />
+                    </WalletItemInfo>
+                  </WalletItem>
+                ))}
+            </WalletItemList>
+          </WalletContainer>
+        </RightContainer>
         <StyledDialog
           open={this.state.openDialog}
           onClose={this.handleCloseDialog}
@@ -649,7 +1020,7 @@ class Profile extends Component {
             <DialogHeadertitle>{this.state.dialogTitle}</DialogHeadertitle>
             <DialogCloseIconContainer
               onClick={this.handleCloseDialog}
-            ></DialogCloseIconContainer>
+            >✖</DialogCloseIconContainer>
           </DialogHeader>
           <DialogContainer>{this.state.dialogComponent}</DialogContainer>
         </StyledDialog>
@@ -657,12 +1028,26 @@ class Profile extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    account: state.account,
+    wallet: state.wallet,
+    game: state.game,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
+    getBalanceList: (token) => dispatch(walletAction.getBalanceList()),
+    getBankCardList: () => dispatch(walletAction.getBankCardList()),
+    deleteBankCard: (id) => dispatch(walletAction.deleteBankCard(id)),
+    addBankCard: (channelid, bankType, detail) =>
+      dispatch(walletAction.addBankCard(channelid, bankType, detail)),
     getIDCardNo: () => dispatch(accountAction.getIDCardNo()),
     showDialog: (payload) => {
       dispatch({ type: SHOWING_DIALOG, payload });
     },
   };
 };
-export default connect(null, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

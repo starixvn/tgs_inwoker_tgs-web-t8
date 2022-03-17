@@ -1,7 +1,7 @@
 import "react-app-polyfill/ie11";
 import "react-app-polyfill/stable";
 
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import { Router, Route, Switch, Redirect } from "react-router";
@@ -20,6 +20,7 @@ import JoinGame from "./components/Share/JoinGame";
 import Deposit from "./components/Share/Deposit";
 import RedirectPage from "./components/Share/Redirect";
 import JoinLobbyGame from "./components/Share/JoinLobbyGame";
+import JoinLotteryGame from "./components/Share/JoinLotteryGame";
 import Maintenance from "./components/Share/Maintenance";
 // import IPRestrict from "./components/App/IPRestrict";
 // import CS from "./components/App/CS";
@@ -45,9 +46,11 @@ import Common from "./utils/Common";
 import { ThemeProvider } from "styled-components";
 import { themeList } from "./theme";
 import { GlobalStyles } from "./global";
-import JoinLotteryGame from "./components/App/Lottery/JoinLotteryGame";
+
 import featureList from "./config/features";
 import FeatureGetter from "./components/Share/feature-getter";
+import AudioPlayer from "./components/Share/audioplayer";
+
 require("es6-promise").polyfill();
 const store = createStore(rootReducer, applyMiddleware(thunk));
 InterceptorService.setupInterceptors(store);
@@ -184,11 +187,11 @@ const muiTheme = createMuiTheme({
       root: {
         fontSize: "24px",
         maxWidth: "375px",
-        color: "#ffffff !important",
+
         minWidth: "210px",
         height: "64px",
         "&.Mui-selected": {
-          color: "#FDE740  !important",
+          color: "#658AF8  !important",
         },
       },
     },
@@ -200,6 +203,7 @@ const AppWrapper = () => {
   return (
     <Provider store={store}>
       <FeatureGetter />
+      {Config.features.BackgroundMusic && <AudioPlayer />}
       <StylesProvider injectFirst>
         <MuiThemeProvider theme={muiTheme}>
           <ThemeProvider theme={muiThemeMode}>

@@ -23,7 +23,7 @@ const FilterContainer = styled.div`
   padding: 10px;
 `;
 const InnerWrap = styled.div`
-  width: 888px;
+  width: 100%;
   float: left;
   margin-top: 8px;
   box-sizing: border-box;

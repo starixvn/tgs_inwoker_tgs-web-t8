@@ -5,29 +5,32 @@ const StyleButton = styled.div`
   height: 94px;
   border-radius: 8px;
 
-  border: solid 1px #ffffff;
   ${(props) =>
     props.styledtype === "2"
-      ? "background-color: " + props.theme.secondary + ";"
-      : "background-image: linear-gradient(to top, " +
-        props.theme.primaryGradient +
-        ", " +
-        props.theme.primary +
-        ");"}
+      ? "background: #ABABAB;"
+      : `background: ${props.theme.primary}`}
 
   margin:0 auto;
   font-size: 34px;
 
-  color: #ffffff;
+  color: ${({ theme }) => theme.buttonText};
 
   padding-top: 20px;
   text-align: center;
+
+  ${({ disabled }) => {
+    return disabled ? " opacity: 0.6;pointer-events: none;" : "";
+  }}
 `;
 
 class ButtonWap extends Component {
   render() {
     return (
-      <StyleButton onClick={this.props.onClick} {...this.props}>
+      <StyleButton
+        onClick={this.props.onClick}
+        {...this.props}
+        disabled={this.props.disableButton}
+      >
         {this.props.name}
       </StyleButton>
     );

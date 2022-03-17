@@ -16,7 +16,7 @@
 // const Container = styled.div`
 //   width: 420px;
 //   padding: 27px 32px;
-//   background: url(${LoginBGPNG});
+//   background: #fff;//url(${LoginBGPNG});
 //   display: table;
 //   text-align: center;
 // `;

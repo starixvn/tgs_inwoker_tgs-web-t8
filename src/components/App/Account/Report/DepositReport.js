@@ -24,8 +24,16 @@ const FilterContainer = styled.div`
   float: left;
   padding: 10px;
 `;
+const CustomFilterContainer = styled.div`
+  width: 100%;
+  background-color: #f7f7f7;
+  float: left;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+`;
 const InnerWrap = styled.div`
-  width: 888px;
+  width: 100%;
   float: left;
   margin-top: 8px;
   box-sizing: border-box;
@@ -152,6 +160,7 @@ class DepositReport extends Component {
             defaultDateTo={this.state.dateRange.dateTo}
           ></DateSelection>
           <div className="clear"></div>
+          <CustomFilterContainer>
           <Label>{i18n.t("report.status")}</Label>
           <CustomFormControl>
             <Select
@@ -170,6 +179,7 @@ class DepositReport extends Component {
               })}
             </Select>
           </CustomFormControl>
+          </CustomFilterContainer>
         </FilterContainer>
         <InnerWrap>
           <TableList

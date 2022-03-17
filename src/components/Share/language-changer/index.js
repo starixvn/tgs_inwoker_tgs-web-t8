@@ -4,6 +4,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import i18n from "../../../utils/i18n";
 import ArrowDown from "../../../assets/images/arrowdown.svg";
 import styled from "styled-components";
+import { AppHistory } from "../../../history/History";
 
 const ArrowDownImg = styled.img`
   height: 8px;
@@ -12,14 +13,14 @@ const ArrowDownImg = styled.img`
 `;
 
 const TheButtonWrapper = styled.div`
-  padding-top: 14px;
   cursor: pointer;
   user-select: none;
   display: flex;
   align-items: center;
+  line-height: 38px;
 `;
 
-const LanguageChanger = ({ language }) => {
+const LanguageChanger = ({ language, changeLanguage }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -61,7 +62,10 @@ const LanguageChanger = ({ language }) => {
             <MenuItem
               key={index}
               onClick={() => {
-                window.location.href = `/${data.culturecode}`;
+                i18n.changeLanguage(data.culturecode);
+                AppHistory.replace(data.culturecode);
+                changeLanguage(data.culturecode);
+                setAnchorEl(null);
               }}
             >
               {

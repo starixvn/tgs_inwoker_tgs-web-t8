@@ -14,11 +14,7 @@ const Container = styled.div`
   display: ${({ hide }) => {
     return hide ? "none" : "block";
   }}
-  background-image: linear-gradient(
-    to top,
-    ${({ theme }) => theme.primaryGradient},
-    ${({ theme }) => theme.primary}
-  );
+  background: #262626;
 `;
 
 const MiddleContainer = styled.div`
@@ -183,7 +179,7 @@ function Footer(props) {
         </TopContainer>
       </InnerWrap> */}
 
-      <MiddleContainer>
+      {/* <MiddleContainer>
         <MiddleInnerWrap>
           <Slider {...settings}>
             {(() => {
@@ -214,7 +210,7 @@ function Footer(props) {
                 });
             })()}
           </Slider>
-          {/* <ProductUL>
+          <ProductUL>
            
             <ProductLI>
               <ProductImg src={Provider1PNG}></ProductImg>
@@ -246,9 +242,9 @@ function Footer(props) {
             <ProductLI>
               <ProductImg src={Provider10PNG}></ProductImg>
             </ProductLI> 
-          </ProductUL>*/}
+          </ProductUL>
         </MiddleInnerWrap>
-      </MiddleContainer>
+      </MiddleContainer> */}
       <BottomContainer>
         <CopyRightLine1>{i18n.t("web.footer.copyright")}</CopyRightLine1>
         <CopyRightLine2>

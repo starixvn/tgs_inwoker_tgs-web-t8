@@ -32,37 +32,35 @@ import Report from "./Report/index";
 import Transfer from "./Transfer/index";
 import Deposit from "./Deposit/index";
 
-
-import {walletAction} from "../../../api-services/actions/walletAction";
+import { walletAction } from "../../../api-services/actions/walletAction";
 import Withdrawal from "./Withdrawal/index";
 
 import i18n from "../../../utils/i18n";
 import BGJPG from "../../../assets/images/bg.jpg";
 import Common from "../../../utils/Common";
 import Affiliate from "./Affiliate";
+import VIP from "./Vip/index";
 import config from "../../../config/config";
+import CardManagement from "./Profile/CardManagement";
 const baseRouteUrl = Common.baseRouteUrl;
 const Container = styled.div`
   width: 100%;
-  background: url(${BGJPG});
+  background: #e7e7e7; //url(${BGJPG});
 `;
 const InnerContainer = styled.div`
   margin: 35px auto;
-  width: 1230px;
+  width: 1200px;
+  min-height: 690px;
   overflow: auto;
-  background-color: rgba(255, 255, 255, 0.8);
+  //background-color: rgba(255, 255, 255, 0.8);
   padding-bottom: 15px;
 `;
 
 const Main = styled.div`
-  margin-left: 12px;
-
   height: 100%;
-  width: 1206px;
-
-  border-radius: 10px;
-
-  background-color: #d9d9d9;
+  border-radius: 5px;
+  background-color: #f7f7f7;
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 25%);
 `;
 const LeftMenu = styled.div`
   background-color: #d9d9d9;
@@ -188,6 +186,7 @@ class Account extends Component {
       }
       this.getAllGameBalance();
     }
+    this.props.onloadHideAppBar();
   }
   componentDidUpdate(preProps) {
     if (
@@ -197,6 +196,10 @@ class Account extends Component {
     ) {
       this.getAllGameBalance();
     }
+  }
+
+  componentWillUnmount() {
+    this.props.onloadShowAppBar();
   }
   getAllGameBalance = () => {
     this.props.game.providerList
@@ -233,19 +236,31 @@ class Account extends Component {
   };
   handleIDVerifyClick = () => {
     this.props.history.push(
-      "/" + i18n.language + "/account/profile/member_name"
+      "/" + i18n.language + "/account/profile/popup/member_name"
     );
   };
   handlePhoneVerifyClick = () => {
     this.props.history.push(
-      "/" + i18n.language + "/account/profile/member_phone"
+      "/" + i18n.language + "/account/profile/popup/member_phone"
     );
   };
   handleEmailVerifyClick = () => {
     this.props.history.push(
-      "/" + i18n.language + "/account/profile/member_email"
+      "/" + i18n.language + "/account/profile/popup/member_email"
     );
   };
+
+  handleAddCardClick = () => {
+    this.props.history.push("/" + i18n.language + "/account/bankcard/add");
+  };
+
+  handleManageCardClick = (cardId) => {
+    this.props.history.push({
+      pathname: "/" + i18n.language + "/account/bankcard/edit",
+      state: { cardId: cardId },
+    });
+  };
+
   genImgComponent = (link) => {
     switch (link) {
       case "deposit":
@@ -318,6 +333,9 @@ class Account extends Component {
             vip={this.props.account.vip}
             wallet={this.props.wallet}
             game={this.props.game}
+            general={this.props.general}
+            activePage={this.state.activePage}
+            setActivePage={this.setActivePage}
             onhandleClickTab={this.handleClickTab}
             onhandleRefreshClick={this.handleRefreshClick}
             onhandleMoreBenefitClick={this.handleMoreBenefitClick}
@@ -327,132 +345,119 @@ class Account extends Component {
           ></Header>
 
           <Main>
-            <LeftMenu>
-              <MenuTitle>{i18n.t("web.account.fund")}</MenuTitle>
-              {this.genMenuButtonDiv(i18n.t("web.account.deposit"), "deposit")}
-              {this.genMenuButtonDiv(
-                i18n.t("web.account.withdrawal"),
-                "withdrawal"
-              )}
-
-              {this.props.game.containTransferWallet &&
-                this.genMenuButtonDiv(
-                  i18n.t("web.account.transfer"),
-                  "transfer"
-                )}
-
-              {this.genMenuButtonDiv(i18n.t("web.account.report"), "report")}
-
-              <MenuTitle>{i18n.t("web.account.personal")}</MenuTitle>
-              {this.genMenuButtonDiv(i18n.t("web.account.profile"), "profile")}
-
-              {this.genMenuButtonDiv(i18n.t("web.account.inbox"), "inbox")}
-
-              {config.features.HaveAffiliateFeature &&
-                this.genMenuButtonDiv(
-                  i18n.t("web.account.affiliate"),
-                  "affiliate"
-                )}
-            </LeftMenu>
-            <RightContent>
-              <Router history={AppHistory}>
-                <Switch>
-                  <Route
-                    exact
-                    path={baseRouteUrl + "/account/deposit/:promotionid?"}
-                    render={(props) => (
-                      <Deposit
-                        token={this.props.account.token}
-                        account={this.props.account}
-                      />
-                    )}
-                  />
-                  <Route
-                    exact
-                    path={baseRouteUrl + "/account/manual/:paymentId"}
-                    render={(props) => (
-                      <Deposit
-                        setActivePage={this.setActivePage}
-                        token={this.props.account.token}
-                        account={this.props.account}
-                      />
-                    )}
-                  />
-                  <Route
-                    exact
-                    path={baseRouteUrl + "/account/withdrawal"}
-                    render={(props) => (
-                      <Withdrawal
-                        token={this.props.account.token}
-                        onhandleClickTab={this.handleClickTab}
-                        onhandleCSClick={this.props.onhandleCSClick}
-                        account={this.props.account}
-                      />
-                    )}
-                  />
-
-                  <Route
-                    exact
-                    path={baseRouteUrl + "/account/inbox"}
-                    render={(props) => (
-                      <Inbox token={this.props.account.token} />
-                    )}
-                  />
-                  <Route
-                    exact
-                    path={baseRouteUrl + "/account/report"}
-                    render={(props) => (
-                      <Report
-                        token={this.props.account.token}
-                        transferwallet={this.props.game.containTransferWallet}
-                      />
-                    )}
-                  />
-                  {this.props.game.containTransferWallet && (
-                    <Route
-                      exact
-                      path={baseRouteUrl + "/account/transfer"}
-                      render={(props) => (
-                        <Transfer
-                          token={this.props.account.token}
-                          getAllGameBalance={this.getAllGameBalance}
-                        />
-                      )}
+            <Router history={AppHistory}>
+              <Switch>
+                <Route
+                  exact
+                  path={baseRouteUrl + "/account/deposit/:promotionid?"}
+                  render={(props) => (
+                    <Deposit
+                      token={this.props.account.token}
+                      account={this.props.account}
                     />
                   )}
+                />
+                <Route
+                  exact
+                  path={baseRouteUrl + "/account/manual/:paymentId"}
+                  render={(props) => (
+                    <Deposit
+                      setActivePage={this.setActivePage}
+                      token={this.props.account.token}
+                      account={this.props.account}
+                    />
+                  )}
+                />
+                <Route
+                  exact
+                  path={baseRouteUrl + "/account/withdrawal"}
+                  render={(props) => (
+                    <Withdrawal
+                      token={this.props.account.token}
+                      onhandleClickTab={this.handleClickTab}
+                      onhandleCSClick={this.props.onhandleCSClick}
+                      account={this.props.account}
+                    />
+                  )}
+                />
 
+                <Route
+                  exact
+                  path={baseRouteUrl + "/account/inbox"}
+                  render={(props) => <Inbox token={this.props.account.token} />}
+                />
+                <Route
+                  exact
+                  path={baseRouteUrl + "/account/report"}
+                  render={(props) => (
+                    <Report
+                      token={this.props.account.token}
+                      transferwallet={this.props.game.containTransferWallet}
+                    />
+                  )}
+                />
+                {this.props.game.containTransferWallet && (
                   <Route
                     exact
-                    path={baseRouteUrl + "/account/profile/:popup?"}
+                    path={baseRouteUrl + "/account/transfer"}
                     render={(props) => (
-                      <Profile
+                      <Transfer
+                        token={this.props.account.token}
+                        getAllGameBalance={this.getAllGameBalance}
+                      />
+                    )}
+                  />
+                )}
+                <Route
+                  exact
+                  path={baseRouteUrl + "/account/profile/:popup?"}
+                  render={(props) => (
+                    <Profile
+                      account={this.props.account}
+                      onhandleCSClick={this.props.onhandleCSClick}
+                      onhandleAddCardClick={this.handleAddCardClick}
+                      onhandleManageCardClick={this.handleManageCardClick}
+                      popup={this.props.match.params.popup}
+                    />
+                  )}
+                />
+                <Route
+                  exact
+                  path={baseRouteUrl + "/account/bankcard/:type"}
+                  render={(props) => (
+                    <CardManagement
+                      account={this.props.account}
+                      onhandleCSClick={this.props.onhandleCSClick}
+                    />
+                  )}
+                />
+
+                <Route
+                  exact
+                  path={baseRouteUrl + "/account/vip"}
+                  render={(props) => <VIP token={this.props.account.token} />}
+                />
+
+                {config.features.HaveAffiliateFeature && (
+                  <Route
+                    exact
+                    path={baseRouteUrl + "/account/affiliate"}
+                    render={(props) => (
+                      <Affiliate
+                        token={this.props.account.token}
                         account={this.props.account}
                         onhandleCSClick={this.props.onhandleCSClick}
                         popup={this.props.match.params.popup}
                       />
                     )}
                   />
-                  {config.features.HaveAffiliateFeature && (
-                    <Route
-                      exact
-                      path={baseRouteUrl + "/account/affiliate"}
-                      render={(props) => (
-                        <Affiliate
-                          token={this.props.account.token}
-                          account={this.props.account}
-                          onhandleCSClick={this.props.onhandleCSClick}
-                          popup={this.props.match.params.popup}
-                        />
-                      )}
-                    />
-                  )}
+                )}
 
-                  <Redirect
-                    to={"/" + i18n.language + "/account/profile"}
-                  ></Redirect>
-                </Switch>
-              </Router>
-            </RightContent>
+                <Redirect
+                  to={"/" + i18n.language + "/account/profile"}
+                ></Redirect>
+              </Switch>
+            </Router>
           </Main>
         </InnerContainer>
       </Container>
@@ -464,6 +469,7 @@ const mapStateToProps = (state) => {
     account: state.account,
     wallet: state.wallet,
     game: state.game,
+    general: state.general,
   };
 };
 const mapDispatchToProps = (dispatch) => {

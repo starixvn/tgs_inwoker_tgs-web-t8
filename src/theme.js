@@ -25,6 +25,7 @@ export const themeRed = {
     process.env.PUBLIC_URL + `/assets/images/wapp/resource/T2/supportbg.png`
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  balance: "#fde73f",
 };
 
 export const themeBlue = {
@@ -54,6 +55,7 @@ export const themeBlue = {
     process.env.PUBLIC_URL + `/assets/images/wapp/resource/T2/supportbg.png`
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  balance: "#fde73f",
 };
 
 export const themeBlack = {
@@ -83,6 +85,7 @@ export const themeBlack = {
     process.env.PUBLIC_URL + `/assets/images/wapp/resource/T2/supportbg.png`
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  balance: "#fde73f",
 };
 export const MESS8 = {
   variant: "red",
@@ -107,6 +110,7 @@ export const MESS8 = {
   bottomNavAction: "#404040",
   body: "#F0EFF5",
   bodyBackground: "#F0EFF5",
+  balance: "#fde73f",
 };
 export const wapT2 = {
   appbar: "#C69C6A",
@@ -138,6 +142,7 @@ export const wapT2 = {
     process.env.PUBLIC_URL + `/assets/images/wapp/resource/T2/supportbg.png`
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  balance: "#fde73f",
 };
 
 export const wapT3 = {
@@ -170,6 +175,7 @@ export const wapT3 = {
     process.env.PUBLIC_URL + `/assets/images/wapp/resource/T3/supportbg.png`
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  balance: "#fde73f",
 };
 
 export const wapT4 = {
@@ -188,6 +194,7 @@ export const wapT4 = {
     process.env.PUBLIC_URL + `/assets/images/wapp/resource/T4/background.png`
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  balance: "#fde73f",
 
   primary: "#ff9900",
   primaryRgb: "27, 134, 199",
@@ -211,6 +218,7 @@ export const wapT4 = {
     process.env.PUBLIC_URL + `/assets/images/wapp/resource/T4/supportbg.png`
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  balance: "#fde73f",
 };
 
 export const wapT5 = {
@@ -241,6 +249,7 @@ export const wapT5 = {
     process.env.PUBLIC_URL + `/assets/images/wapp/resource/T5/supportbg.png`
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  balance: "#fde73f",
 };
 
 export const wapT6 = {
@@ -267,8 +276,9 @@ export const wapT6 = {
   bottomNavAction: "#fff",
   tabbar: "#121315",
   cardText: "#000",
-
+  balance: "#fde73f",
   supportBg: "#121315",
+  gameTab: "#fff",
 };
 
 export const wapT7 = {
@@ -295,10 +305,94 @@ export const wapT7 = {
   bottomNavAction: "#fff",
   tabbar: "#121315",
   cardText: "#000",
-
+  balance: "#fde73f",
   supportBg: "#121315",
+  gameTab: "#fff",
 };
 
+export const wapT8 = {
+  appbar: "#fff",
+  loginBody: "#F0EFF5",
+  loginText: "#676767",
+  body: "#F0EFF5",
+  bodyBackground: "#F0EFF5",
+  variant: "wapT8",
+  primary: "#658AF8",
+  primaryRgb: "101, 138, 248",
+  primaryText: "#000",
+  primaryGradient: "#658AF8",
+  primaryGradientRgb: "101, 138, 248",
+  primaryHightlight: "#fde73f",
+  secondary: "#676767",
+  secondaryText: "rgba(0,0,0,0.5)",
+  tertiary: "rgba(255, 255, 255, 0.5)",
+  tertiaryText: "rgba(255, 255, 255, 0.5)",
+  buttonText: "#ffffff",
+  buttonBackground: "#658AF8",
+  buttonText2: "#fff",
+  bottomnav: "#f5f5f5",
+  balance: "#658AF8",
+  bottomnavrad: "35px 35px 0px 0px",
+  bottomNavAction: "#585858",
+  tabbar: "#fff",
+  cardText: "#676767",
+  supportBg: `url(${
+    process.env.PUBLIC_URL + `/assets/images/wapp/resource/T5/supportbg.png`
+  })
+  no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  gameTab: "#fff",
+  gamelisterBg: "#fff",
+  gamelisterOriginalColor: "#9fa3b4",
+  gamelisterOriginalText: "#000",
+  gamelisterBorder: "solid 2px #fff",
+  gamelisterSelectedText: "#fff",
+  gamelisterSelectedIcon: "#fff",
+  gamelisterSelectedButton: " rgb(140,166,241)",
+};
+
+export const GMO = {
+  appbar:
+    "linear-gradient(180deg, rgba(0,1,41,1) 50%, rgba(95,113,162,0) 100%)",
+  loginBody: "#000",
+  loginText: "#fff",
+  body: "#000",
+  bodyBackground: "#000",
+  variant: "wapT8",
+  primary: "#e9a60b",
+  primaryRgb: "101, 138, 248",
+  primaryText: "#fff",
+  primaryGradient: " #e9a60b",
+  primaryGradientRgb: "101, 138, 248",
+  primaryHightlight: "#fde73f",
+  secondary: "#fff",
+  secondaryText: "rgba(0,0,0,0.5)",
+  tertiary: "rgba(255, 255, 255, 1) !important",
+  tertiaryText: "rgba(255, 255, 255, 1)",
+  buttonText: "#000",
+  buttonBackground: "#fff",
+  buttonText2: "#000",
+  bottomnav:
+    "linear-gradient(0deg, rgb(2, 31, 96) 25%, rgba(95,113,162,0) 100%)",
+  balance: "#e9a60b",
+  bottomnavrad: "35px 35px 0px 0px",
+  bottomNavAction: "#fff",
+  tabbar: "#e9a60b",
+  cardText: "#676767",
+  supportBg: `url(${
+    process.env.PUBLIC_URL + `/assets/images/wapp/resource/T3/supportbg.png`
+  })
+  no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  gameTab: "#fff",
+  gamelisterBg:
+    "linear-gradient(0deg, rgb(8, 15, 33) 25%, rgba(95,113,162,0) 100%)",
+  gamelisterBorder: "solid 2px #FEFFA1",
+  gamelisterOriginalColor: "#fff",
+  gamelisterOriginalText: "#fff",
+  gamelisterSelectedText: "#FEFFA1",
+  gamelisterSelectedIcon: "linear-gradient(0deg, #FEFFA1 25%, #e9a60b 100%)",
+  gamelisterSelectedButton:
+    "linear-gradient(80deg, rgb(7, 24, 66) 25%, rgb(21, 44, 98) 100%)",
+};
 export const themeList = {
   red: themeRed,
   blue: themeBlue,
@@ -309,6 +403,8 @@ export const themeList = {
   wapT5: wapT5,
   wapT6: wapT6,
   wapT7: wapT7,
+  wapT8: wapT8,
   MESS8: MESS8,
   "28BET": MESS8,
+  GMO: GMO,
 };

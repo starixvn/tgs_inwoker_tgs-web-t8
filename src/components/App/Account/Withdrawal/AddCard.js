@@ -60,6 +60,9 @@ const CustomSelect = withStyles((theme) => ({
   root: {
     fontSize: "14px",
     color: "#818181",
+    "&.MuiSelect-outlined.MuiSelect-outlined": {
+      paddingRight: 44,
+    },
   },
 }))(Select);
 const CustomFormControl = withStyles((theme) => ({
@@ -136,9 +139,8 @@ class AddCard extends Component {
   formatChannelList = () => {
     var channel = [];
     if (this.props.withdrawalList.length > 0) {
-      var channelList = this.props.withdrawalList[
-        this.state.selectedBankTypeIndex
-      ].channel;
+      var channelList =
+        this.props.withdrawalList[this.state.selectedBankTypeIndex].channel;
       var addedChannel = [];
       if (this.props.withdrawalList.length > 0) {
         for (var i = 0; i < channelList.length; i++) {
@@ -240,6 +242,13 @@ class AddCard extends Component {
         });
         return;
       }
+
+      if (this.state.phone.length < 8) {
+        this.props.enqueueSnackbar(i18n.t("common.noReachMin"), {
+          variant: "error",
+        });
+        return;
+      }
       detail = {
         username: this.state.name,
         phone: this.state.phone,
@@ -266,6 +275,21 @@ class AddCard extends Component {
   render() {
     const { withdrawalList } = this.props;
 
+    const bankList = [
+      "กสิกรไทย (Kasikorn Bank- KKR)",
+      "ไทยพาณิชย์ (Siam Commercial Bank - SCB)",
+      "กรุงไทย (KrungThai Bank - KTB)",
+      "กรุงเทพ (Bankok Bank - BBL)",
+      "ออมสิน (Government Savings Bank - GSB)",
+      "ทหารไทยธนาชาต (TMBThanachart Bank - TTB)",
+      "กรุงศรี (Bank of Ayudhya - KrungSri)",
+      "ธ.ก.ส (Bank for Agriculture and Agricultural Cooperatives - BAAC)",
+      "ยูโอบี (United Overseas Bank - UOB)",
+      "ซีไอเอ็มบีไทย (CIMB THAI - CIMB)",
+      "เกียรตินาคินภทัร (Kiatnakin Phatra Bank - KKP)",
+      "อาคารสงเคราะห์ (Government Housing Bank - GH)",
+    ];
+
     return (
       <Container>
         <SubTitle>{i18n.t("card.addCard.title")}</SubTitle>
@@ -291,27 +315,33 @@ class AddCard extends Component {
           </CustomFormControl>
         </TextFieldContainer>
 
-        <TextFieldLabel>{i18n.t("common.withdrawalChannel")}</TextFieldLabel>
-        <TextFieldContainer>
-          <CustomFormControl>
-            <CustomSelect
-              native
-              variant="outlined"
-              displayEmpty
-              value={this.state.selectedChannelIndex}
-              onChange={this.handleChannelChange}
-            >
-              {withdrawalList.length > 0 &&
-                this.state.channelList.map((item, index) => {
-                  return (
-                    <option value={index} key={index}>
-                      {i18n.t(item.channelcode)}
-                    </option>
-                  );
-                })}
-            </CustomSelect>
-          </CustomFormControl>
-        </TextFieldContainer>
+        {!config.features.AddCard_HideChannel && (
+          <>
+            <TextFieldLabel>
+              {i18n.t("common.withdrawalChannel")}
+            </TextFieldLabel>
+            <TextFieldContainer>
+              <CustomFormControl>
+                <CustomSelect
+                  native
+                  variant="outlined"
+                  displayEmpty
+                  value={this.state.selectedChannelIndex}
+                  onChange={this.handleChannelChange}
+                >
+                  {withdrawalList.length > 0 &&
+                    this.state.channelList.map((item, index) => {
+                      return (
+                        <option value={index} key={index}>
+                          {i18n.t(item.channelname)}
+                        </option>
+                      );
+                    })}
+                </CustomSelect>
+              </CustomFormControl>
+            </TextFieldContainer>
+          </>
+        )}
         {(() => {
           if (
             withdrawalList.length > 0 &&
@@ -319,39 +349,52 @@ class AddCard extends Component {
           ) {
             return (
               <>
-                {(() => {
-                  if (
-                    this.state.channelList.length > 0 &&
-                    this.state.channelList[this.state.selectedChannelIndex]
-                      .channelcode !== "CustomBank"
-                  ) {
-                    return null;
-                  } else {
-                    return (
-                      <>
-                        <TextFieldLabel>
+                <TextFieldLabel>
+                  {config.features.AddCard_DisplayFPS
+                    ? i18n.t("hk28.card.addCard.BankName")
+                    : i18n.t("card.addCard.BankName")}
+                </TextFieldLabel>
+                <TextFieldContainer>
+                  {config.features.AddCard_BankDropdown ? (
+                    <CustomFormControl>
+                      <CustomSelect
+                        native
+                        variant="outlined"
+                        displayEmpty
+                        value={this.state.bankName}
+                        onChange={this.handleBankNameChange}
+                      >
+                        <option value="" selected disabled>
                           {config.features.AddCard_DisplayFPS
-                            ? i18n.t("hk28.card.addCard.BankName")
-                            : i18n.t("card.addCard.BankName")}
-                        </TextFieldLabel>
-                        <TextFieldContainer>
-                          <CustomTextField
-                            marginTop={10}
-                            placeholder={
-                              config.features.AddCard_DisplayFPS
-                                ? i18n.t("hk28.card.addCard.msgEnterBankName")
-                                : i18n.t("card.addCard.msgEnterBankName")
-                            }
-                            width={395}
-                            height={38}
-                            float={"none"}
-                            handleTextFieldChange={this.handleBankNameChange}
-                          ></CustomTextField>
-                        </TextFieldContainer>
-                      </>
-                    );
-                  }
-                })()}
+                            ? i18n.t("hk28.card.addCard.msgEnterBankName")
+                            : i18n.t("card.addCard.msgEnterBankName")}
+                        </option>
+                        {bankList.length > 0 &&
+                          bankList.map((item, index) => {
+                            return (
+                              <option value={item} key={index}>
+                                {item}
+                              </option>
+                            );
+                          })}
+                      </CustomSelect>
+                    </CustomFormControl>
+                  ) : (
+                    <CustomTextField
+                      marginTop={10}
+                      placeholder={
+                        config.features.AddCard_DisplayFPS
+                          ? i18n.t("hk28.card.addCard.msgEnterBankName")
+                          : i18n.t("card.addCard.msgEnterBankName")
+                      }
+                      width={395}
+                      height={38}
+                      float={"none"}
+                      handleTextFieldChange={this.handleBankNameChange}
+                    ></CustomTextField>
+                  )}
+                </TextFieldContainer>
+
                 {(() => {
                   if (config.features.AddCard_BankBranch) {
                     return (
@@ -408,12 +451,18 @@ class AddCard extends Component {
             "FPS") ? (
           <div>
             <TextFieldLabel>
-              {i18n.t("profile.nameVerify.title")}
+              {config.features.AddCard_InputAddFPS
+                ? i18n.t("custom.addcard.name")
+                : i18n.t("profile.nameVerify.title")}
             </TextFieldLabel>
             <TextFieldContainer>
               <CustomTextField
                 marginTop={10}
-                placeholder={i18n.t("profile.nameVerify.msgPlsEnterName")}
+                placeholder={
+                  config.features.AddCard_InputAddFPS
+                    ? i18n.t("custom.addcard.msgPlsEnterName")
+                    : i18n.t("profile.nameVerify.msgPlsEnterName")
+                }
                 width={395}
                 height={38}
                 maxLength={50}
@@ -422,7 +471,9 @@ class AddCard extends Component {
               ></CustomTextField>
             </TextFieldContainer>
             <TextFieldLabel>
-              {config.features.AddCard_DisplayFPS
+              {config.features.AddCard_InputAddFPS
+                ? i18n.t("custom.addcard.phoneNumber")
+                : config.features.AddCard_DisplayFPS
                 ? i18n.t("bet28.phoneNumber")
                 : i18n.t("common.phoneNumber")}
             </TextFieldLabel>
@@ -430,13 +481,15 @@ class AddCard extends Component {
               <CustomTextField
                 marginTop={10}
                 placeholder={
-                  config.features.AddCard_DisplayFPS
+                  config.features.AddCard_InputAddFPS
+                    ? i18n.t("custom.addcard.msgEnterPhone")
+                    : config.features.AddCard_DisplayFPS
                     ? i18n.t("bet28.msgEnterPhone")
                     : i18n.t("common.msgEnterPhone")
                 }
                 width={395}
                 height={38}
-                maxLength={50}
+                maxLength={10}
                 float={"none"}
                 handleTextFieldChange={this.handlePhoneChange}
               ></CustomTextField>
@@ -445,7 +498,9 @@ class AddCard extends Component {
         ) : (
           <div>
             <TextFieldLabel>
-              {config.features.AddCard_DisplayFPS
+              {config.features.AddCard_DisplayGCash
+                ? i18n.t("piso.withdrawalNumber")
+                : config.features.AddCard_DisplayFPS
                 ? i18n.t("hk28.withdrawalNumber")
                 : i18n.t("common.withdrawalNumber")}
             </TextFieldLabel>
@@ -453,7 +508,9 @@ class AddCard extends Component {
               <CustomTextField
                 marginTop={10}
                 placeholder={
-                  config.features.AddCard_DisplayFPS
+                  config.features.AddCard_DisplayGCash
+                    ? i18n.t("piso.msgEnterWithdrawalNumber")
+                    : config.features.AddCard_DisplayFPS
                     ? i18n.t("hk28.msgEnterWithdrawalNumber")
                     : i18n.t("common.msgEnterWithdrawalNumber")
                 }

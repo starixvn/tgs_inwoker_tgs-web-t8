@@ -15,9 +15,8 @@ import Select from "@material-ui/core/Select";
 
 import CurrencyTextField from "@unicef/material-ui-currency-textfield";
 
-
-import {walletAction} from "../../../../api-services/actions/walletAction";
-import {RESET_WALLETRESULT} from "../../../../api-services/constant/actionType";
+import { walletAction } from "../../../../api-services/actions/walletAction";
+import { RESET_WALLETRESULT } from "../../../../api-services/constant/actionType";
 import IconRefreshPNG from "../../../../assets/images/icon-refresh.png";
 import Loading from "../../Loading";
 import Common from "../../../../utils/Common";
@@ -41,56 +40,98 @@ const Container = styled.div`
   min-height: 611px;
 
 `;
+
+const Header = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
+  height: 38px;
+  margin-bottom: 10px;
+  padding: 0 10px 10px;
+`;
+
 const Title = styled.div`
-  color: ${({ theme }) => theme.secondary};
+  align-items: baseline;
+  display: flex;
+  & h3 {
+    color: ${({ theme }) => theme.secondary};
+    font-size: 24px;
+    font-weight: 400;
+  }
 `;
-const TitleIcon = styled.div`
-  width: 34px;
-  height: 24px;
 
-  background: url(${IconTransferRedPNG}) no-repeat left center;
-  background-size: 24px 24px;
-
-  float: left;
-`;
 const InnerWrap = styled.div`
-  width: 935px;
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 20px;
+`;
 
-  margin-top: 18px;
-  box-sizing: border-box;
-  background-color: #f7f7f7;
-  padding: 25px 20px;
+const WalletWrap = styled(InnerWrap)`
+  justify-content: space-around;
+`;
+
+const AllWalletItem = styled.div`
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  overflow: hidden;
   position: relative;
-  border-radius: 10px;
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  height: 100px;
+  padding-right: 20px;
 `;
-const WalletFrame = styled.div`
-  width: 297px;
-  height: 133px;
-  float: left;
+const AllWalletTitle = styled.div`
+  background-image: linear-gradient(
+    180deg,
+    #889ddf,
+    ${({ theme }) => theme.primary}
+  );
+  border-bottom: 1px solid #ccc;
+  box-sizing: border-box;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  height: 100px;
+  justify-content: center;
+  padding: 0 16px;
+  position: relative;
+  width: 105px;
+  font-size: 14px;
+  &:after {
+    border-bottom: 99px solid #fff;
+    border-left: 16px solid transparent;
+    content: "";
+    height: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
 `;
-const MainWallet = styled(WalletFrame)`
-  background: url(${TransferMWalletPNG}) no-repeat center;
+
+const AllWalletInfo = styled.div`
+  flex: 1;
+  width: 200px;
 `;
-const TransferWallet = styled(WalletFrame)`
-  background: url(${TransferTWalletPNG}) no-repeat center;
+
+const WalletNumber = styled.div`
+  font-weight: 300;
+  font-size: 28px;
+  word-break: break-all;
+  text-align: right;
 `;
-const TotalWallet = styled(WalletFrame)`
-  background: url(${TransferTotalPNG}) no-repeat center;
-`;
-const WalletTitle = styled.div`
-  font-size: 18px;
-  font-weight: bold;
-  margin: 14px 0 0 14px;
-  color: ${({ theme }) => theme.secondary};
-  float: left;
-`;
+
 const RefreshButton = styled.div`
   width: 28px;
   height: 29px;
   border-radius: 4.7px;
 
   float: right;
-  margin: 13px 17px 0 15px;
+  margin: auto 0 auto 10px;
   background-image: linear-gradient(
     to top,
     ${({ theme }) => theme.primaryGradient},
@@ -108,28 +149,9 @@ const RefreshButtonIcon = styled.div`
     animation: ${rotateKeyFrame} 1s linear 0s infinite;
   }
 `;
-const WalletAmount = styled.div`
-  font-family: Arial;
-  font-size: 30px;
-  font-weight: bold;
-  color: ${({ theme }) => theme.secondary};
-  float: right;
-  margin: 45px 10px 0 0;
-  width: 230px;
-  text-align: right;
-  overflow: hidden;
-`;
 
-const SubTitle = styled.div`
-  font-size: 18px;
-  font-weight: bold;
-  color: ${({ theme }) => theme.secondary};
-  border-bottom: #e0e0e0 1px solid;
-  display: inline-block;
-  width: 100%;
-  margin: 25px 0 5px 0;
-  padding-bottom: 8px;
-`;
+const QuickTransferWrap = styled(InnerWrap)``;
+
 const QuickTransferContainer = styled.div`
   float: left;
   margin: 30px 0 0 40px;
@@ -178,6 +200,8 @@ const QuickTransferButton = styled.div`
   }
 `;
 
+const GameWalletWrap = styled(InnerWrap)``;
+
 const GameTranferWallet = styled.div`
   width: 280px;
   height: 98px;
@@ -191,6 +215,30 @@ const GameTranferLeftWrap = styled.div`
   width: 100px;
   padding: 10px 0;
   float: left;
+  background-image: linear-gradient(
+    180deg,
+    #889ddf,
+    ${({ theme }) => theme.primary}
+  );
+  border-bottom: 1px solid #ccc;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100px;
+  justify-content: center;
+  padding: 0 16px;
+  position: relative;
+  width: 105px;
+  font-size: 14px;
+  &:after {
+    border-bottom: 99px solid #f6f6f6;
+    border-left: 16px solid transparent;
+    content: "";
+    height: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
 `;
 const GameIcon = styled.div`
   height: 50px;
@@ -204,7 +252,7 @@ const GameIcon = styled.div`
 const GameName = styled.div`
   font-size: 14px;
   text-align: center;
-  color: #aeaeae;
+  color: #fff;
   margin-top: 5px;
 `;
 const GameWalletAmount = styled.div`
@@ -597,13 +645,24 @@ class Transfer extends Component {
   render() {
     return (
       <Container>
-        <Title>
-          <TitleIcon></TitleIcon>
-          {i18n.t("transfer.title")}
-        </Title>
-        <InnerWrap>
-          <MainWallet>
-            <WalletTitle>{i18n.t("transfer.mainAccount")}</WalletTitle>
+        <Header>
+          <Title>
+            <h3>{i18n.t("transfer.title")}</h3>
+          </Title>
+        </Header>
+
+        <WalletWrap>
+          <AllWalletItem>
+            <AllWalletTitle>{i18n.t("transfer.mainAccount")}</AllWalletTitle>
+            <AllWalletInfo>
+              <WalletNumber>
+                <DynamicFont
+                  content={Common.formatNumberWithThousand(
+                    this.props.wallet.mainBalance
+                  ).toString()}
+                />
+              </WalletNumber>
+            </AllWalletInfo>
             <RefreshButton
               onClick={() => {
                 this.props.getAllGameBalance();
@@ -612,21 +671,35 @@ class Transfer extends Component {
             >
               <RefreshButtonIcon></RefreshButtonIcon>
             </RefreshButton>
-            <div className="clear"></div>
+          </AllWalletItem>
 
-            <WalletAmount style={{ margin: "39px 10px 0 0" }}>
-              <DynamicFont
-                content={Common.formatNumberWithThousand(
-                  this.props.wallet.mainBalance
-                )}
-              />
-            </WalletAmount>
-          </MainWallet>
           {this.props.game.containTransferWallet && (
-            <TransferWallet>
-              <WalletTitle>{i18n.t("transfer.transferWallet")}</WalletTitle>
+            <AllWalletItem>
+              <AllWalletTitle>
+                {i18n.t("transfer.transferWallet")}
+              </AllWalletTitle>
+              <AllWalletInfo>
+                <WalletNumber>
+                  <DynamicFont
+                    content={Common.formatNumberWithThousand(
+                      this.props.game.providerList.reduce(
+                        (total, item) =>
+                          item.transferwallet === true
+                            ? (total += item.balance)
+                            : (total += 0),
+                        0
+                      )
+                    ).toString()}
+                  />
+                </WalletNumber>
+              </AllWalletInfo>
+            </AllWalletItem>
+          )}
 
-              <WalletAmount>
+          <AllWalletItem>
+            <AllWalletTitle>{i18n.t("transfer.totalFund")}</AllWalletTitle>
+            <AllWalletInfo>
+              <WalletNumber>
                 <DynamicFont
                   content={Common.formatNumberWithThousand(
                     this.props.game.providerList.reduce(
@@ -635,34 +708,27 @@ class Transfer extends Component {
                           ? (total += item.balance)
                           : (total += 0),
                       0
-                    )
-                  )}
+                    ) + this.props.wallet.mainBalance
+                  ).toString()}
                 />
-              </WalletAmount>
-            </TransferWallet>
-          )}
-          <TotalWallet>
-            <WalletTitle>{i18n.t("transfer.totalFund")}</WalletTitle>
+              </WalletNumber>
+            </AllWalletInfo>
+          </AllWalletItem>
+        </WalletWrap>
 
-            <WalletAmount>
-              <DynamicFont
-                content={Common.formatNumberWithThousand(
-                  this.props.game.providerList.reduce(
-                    (total, item) =>
-                      item.transferwallet === true
-                        ? (total += item.balance)
-                        : (total += 0),
-                    0
-                  ) + this.props.wallet.mainBalance
-                )}
-              />
-            </WalletAmount>
-          </TotalWallet>
-          <SubTitle>
+        <Header>
+          <Title>
+            <h3>{i18n.t("transfer.quickTransfer")}</h3>
+          </Title>
+        </Header>
+
+        {/* <SubTitle>
             <SubtitleContent>
               <div>{i18n.t("transfer.quickTransfer")}</div>
             </SubtitleContent>
-          </SubTitle>
+          </SubTitle> */}
+
+        <QuickTransferWrap>
           <QuickTransferContainer>
             <CustomFormControl>
               <CustomSelect
@@ -747,20 +813,28 @@ class Transfer extends Component {
               {i18n.t("transfer.transfer")}
             </QuickTransferButton>
           </QuickTransferContainer>
-          <SubTitle>{i18n.t("transfer.transferWallet")}</SubTitle>{" "}
-          <CustomSwitchContainer>
-            <div>
-              {i18n.t("transfer.autoTransfer")} (
-              {this.props.wallet.autotransfer === true
-                ? i18n.t("transfer.on")
-                : i18n.t("transfer.off")}
-              )
-            </div>
-            <CustomSwitch
-              checked={this.props.wallet.autotransfer === true}
-              onChange={this.handleSwitchAutoTransfer}
-            />
-          </CustomSwitchContainer>
+        </QuickTransferWrap>
+        <Header>
+          <Title>
+            <h3>{i18n.t("transfer.transferWallet")}</h3>
+          </Title>
+        </Header>
+        {/* <SubTitle>{i18n.t("transfer.transferWallet")}</SubTitle>{" "} */}
+        <CustomSwitchContainer>
+          <div>
+            {i18n.t("transfer.autoTransfer")} (
+            {this.props.wallet.autotransfer === true
+              ? i18n.t("transfer.on")
+              : i18n.t("transfer.off")}
+            )
+          </div>
+          <CustomSwitch
+            checked={this.props.wallet.autotransfer === true}
+            onChange={this.handleSwitchAutoTransfer}
+          />
+        </CustomSwitchContainer>
+
+        <GameWalletWrap>
           <TransferContainer>
             {this.props.game.providerList
               .filter(
@@ -792,14 +866,14 @@ class Transfer extends Component {
                 </GameTranferWallet>
               ))}
           </TransferContainer>
-          <Loading
-            show={
-              this.state.loading ||
-              this.props.wallet.transferLoading ||
-              this.props.wallet.updateBalanceloading
-            }
-          ></Loading>
-        </InnerWrap>
+        </GameWalletWrap>
+        <Loading
+          show={
+            this.state.loading ||
+            this.props.wallet.transferLoading ||
+            this.props.wallet.updateBalanceloading
+          }
+        ></Loading>
         <Messagebox
           open={this.state.showMessagebox}
           message={this.state.messageboxText}

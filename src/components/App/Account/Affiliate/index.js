@@ -15,17 +15,24 @@ const Container = styled.div`
   width: 100%;
   min-height: 611px;
 `;
-const Title = styled.div`
-  color: ${({ theme }) => theme.secondary};
+const Header = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
+  height: 38px;
+  margin-bottom: 10px;
+  padding: 0 10px 10px;
 `;
-const TitleIcon = styled.div`
-  width: 34px;
-  height: 24px;
 
-  background: url(${IconBonusRedPNG}) no-repeat left center;
-  background-size: 24px 24px;
-
-  float: left;
+const Title = styled.div`
+  align-items: baseline;
+  display: flex;
+  & h3 {
+    color: ${({ theme }) => theme.secondary};
+    font-size: 24px;
+    font-weight: 400;
+  }
 `;
 
 const TabButton = styled.div`
@@ -66,8 +73,6 @@ const SplitLine = styled.div`
   margin: 20px 0;
 `;
 const InnerWrap = styled.div`
-  width: 935px;
-
   margin-top: 18px;
   box-sizing: border-box;
   background-color: #f7f7f7;
@@ -101,10 +106,11 @@ class Affiliate extends Component {
   render() {
     return (
       <Container>
+      <Header>
         <Title>
-          <TitleIcon></TitleIcon>
-          {i18n.t("affiliate.title")}
+          <h3>{i18n.t("affiliate.title")}</h3>
         </Title>
+      </Header>
 
         <InnerWrap>
           {

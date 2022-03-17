@@ -12,37 +12,34 @@ import ScrollAnimation from "react-animate-on-scroll";
 const Container = styled.div`
   width: 100%;
   height: auto;
-  min-height: 850px;
-  padding: 70px 0px;
+  min-height: 780px;
   position: relative;
   background: url(${(props) =>
       process.env.PUBLIC_URL +
-      "/assets/images/pcGamePage/esports/bg" +
+      "/assets/images/pcGamePage/esports/background" +
       (props.GamePage_SpecificBackground ? "-hk28" : "") +
       ".jpg"})
     no-repeat center;
 `;
 
-const GirlImage = styled.div`
-  background: url(${(props) => props.img}) no-repeat;
-  width: 308px;
-  height: 172px;
-  float: right;
-  &:hover {
-    cursor: pointer;
-  }
-`;
-const LeftSlide = styled(ScrollAnimation)`
-  display: flex;
-`;
-const RightSlide = styled(ScrollAnimation)`
-  display: flex;
-`;
-const ItemContainer = styled.div`
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+const NoContentText = styled.div`
+  color: #000;
+  font-size: ${(props) =>
+    props.lang === "zh-CN" || props.lang === "zh-TW" ? `3.2em` : `2.3em`};
+  text-shadow: 0 0 18px #ffe14e;
+  -webkit-text-stroke: 0.5px white;
+  font-weight: bold;
+  width: 450px;
+  height: auto;
+  margin-left: 180px;
   overflow: visible;
+  font-family: "微軟正黑粗";
+  &:first-child {
+    margin-top: 210px;
+  }
+  &:last-child {
+    ${(props) => (props.lang === "en-US" ? `font-size: 3.2em;` : ``)}
+  }
 `;
 
 const Maintenance = styled.div`
@@ -61,38 +58,128 @@ const Maintenance = styled.div`
   cursor: not-allowed;
 `;
 
-const ImageWrapper = styled.div`
+const SportsWrapper = styled.div`
+  margin: 0 auto;
+  width: 1280px;
+`;
+
+const LeftContainer = styled.div`
+  top: 0;
+  left: 165px;
+  position: absolute;
+  height: 835px;
+`;
+
+const LeftNavItemContainer = styled.ul`
+  list-style-type: none;
+  display: grid;
+  overflow: auto;
+  height: 765px;
+  align-content: center;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const GameImage = styled.img`
+  height: 100%;
+  width: 100%;
+  transition: transform 0.3s;
+`;
+
+const GameTitle = styled.div`
+  height: 45px;
+  width: 100%;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 1.5em;
+  font-weight: bold;
+  position: absolute;
+  bottom: 0;
+  background: url(${process.env.PUBLIC_URL}"/assets/images/pcGamePage/esports/btn-esports.png") no-repeat;
+  text-align: center;
+  line-height: 1.8em;
+`;
+
+const LeftNavItem = styled.li`
+  box-shadow: 0 3px 8px rgb(0 0 0 / 80%);
+  cursor: pointer;
+  overflow: hidden;
   position: relative;
+  width: 354px;
+  height: 180px;
+  border-radius: 10px;
+  margin: 20px 0;
+  &:hover ${GameImage} {
+    transform: scale(1.05);
+    transition: transform 0.3s;
+  }
 
   ${({ maintenance }) => {
     return maintenance
       ? `
-
+  
     ${Maintenance}{
-     
       display: flex;
     }
-    ${GirlImage}{
+    ${GameImage}, ${GameTitle}{
       filter: brightness(40%) grayscale(200%);
     }
-    
-    
     `
       : ``;
   }}
 `;
+
+const NoContentContainer = (props) => {
+  switch (props.lang) {
+    case "th-TH":
+    case "vi-VN":
+      return (
+        <Container
+          style={{
+            background:
+              "url(" +
+              process.env.PUBLIC_URL +
+              `/assets/images/pcGamePage/no.jpg) no-repeat center`,
+          }}
+        >
+          <NoContentText lang={i18n.language}>
+            {i18n.t("promotion.emptyLine1")}
+          </NoContentText>
+          <NoContentText lang={i18n.language}>
+            {i18n.t("promotion.emptyLine2")}
+          </NoContentText>
+        </Container>
+      );
+    case "en-US":
+    case "zh-CN":
+    case "zh-TW":
+    default:
+      return (
+        <Container
+          style={{
+            background:
+              "url(" +
+              process.env.PUBLIC_URL +
+              `/assets/images/pcGamePage/no_${i18n.language}.jpg) no-repeat center`,
+          }}
+        ></Container>
+      );
+  }
+};
+
 class ESports extends Component {
   constructor(props) {
     super(props);
 
-    var sportsList = props.game.homePageGameList.filter((item) => {
+    var esportsList = props.game.homePageGameList.filter((item) => {
       return item.type === GameTypeEnum.ESPORTS;
     });
 
     this.state = {
-      selected: sportsList[0],
-
-      list: sportsList,
+      selected: 0,
+      selectedGame: "",
+      list: esportsList,
     };
   }
 
@@ -102,15 +189,14 @@ class ESports extends Component {
       preProps.game.homePageGameList.length !==
       this.props.game.homePageGameList.length
     ) {
-      var sportsList = this.props.game.homePageGameList.filter((item) => {
+      var esportsList = this.props.game.homePageGameList.filter((item) => {
         return item.type === GameTypeEnum.ESPORTS;
       });
 
       this.setState({
         ...this.state,
-        selected: sportsList[0],
-
-        list: sportsList,
+        selected: 0,
+        list: esportsList,
       });
     }
   }
@@ -131,82 +217,41 @@ class ESports extends Component {
     }
   };
   render() {
-    return (
-      <Container
-        GamePage_SpecificBackground={
-          config.features.GamePage_SpecificBackground
-        }
-      >
-        <ItemContainer style={{ marginTop: 370 }}>
-          <LeftSlide
-            animateIn="fadeInLeft"
-            duration={1}
-            animateOnce={true}
-            style={{ overflow: "visible" }}
-          >
-            {this.state.list
-              .slice(0, 4)
-              .reverse()
-              .map((item, index) => {
-                return (
-                  <ImageWrapper maintenance={item.status != 0}>
-                    <Maintenance>{i18n.t("transfer.maintenance")}</Maintenance>
-                    <GirlImage
-                      img={
-                        process.env.PUBLIC_URL +
-                        "/assets/images/pcGamePage/sports/" +
-                        (config.features.SportsHideLogo ? "hkjp/" : "") +
-                        item.abbreviation.toLowerCase() +
-                        (config.features.SportsHideLogo
-                          ? "-" + i18n.language
-                          : "") +
-                        ".png"
-                      }
+    return this.state.list.length ? (
+      <Container>
+        <SportsWrapper>
+          <LeftContainer>
+            <ScrollAnimation
+              animateIn="fadeInLeft"
+              duration={1}
+              animateOnce={true}
+              style={{ overflow: "visible" }}
+            >
+              <LeftNavItemContainer>
+                {this.state.list.map((data, index) => {
+                  return (
+                    <LeftNavItem
+                      selected={this.state.selected === index}
                       onClick={() => {
-                        this.handleJoinGameClick(item.abbreviation, item.type);
+                        if(data.status === 0)
+                        {
+                          this.handleJoinGameClick(data.abbreviation, data.type);
+                        }
                       }}
-                    />
-                  </ImageWrapper>
-                );
-              })}
-          </LeftSlide>
-        </ItemContainer>
-        <ItemContainer style={{ marginTop: 560 }}>
-          <RightSlide
-            animateIn="fadeInRight"
-            duration={1}
-            animateOnce={true}
-            style={{ overflow: "visible" }}
-          >
-            {this.state.list.map((item, index) => {
-              if (index >= 4) {
-                return (
-                  <ImageWrapper maintenance={item.status != 0}>
-                    <Maintenance>{i18n.t("transfer.maintenance")}</Maintenance>
-                    <GirlImage
-                      img={
-                        process.env.PUBLIC_URL +
-                        "/assets/images/pcGamePage/sports/" +
-                        (config.features.SportsHideLogo ? "hkjp/" : "") +
-                        item.abbreviation.toLowerCase() +
-                        (config.features.SportsHideLogo
-                          ? "-" + i18n.language
-                          : "") +
-                        ".png"
-                      }
-                      onClick={() => {
-                        this.handleJoinGameClick(item.abbreviation, item.type);
-                      }}
-                    />
-                  </ImageWrapper>
-                );
-              } else {
-                return null;
-              }
-            })}
-          </RightSlide>
-        </ItemContainer>
+                      maintenance={data.status !== 0}
+                    >
+                      <Maintenance>{i18n.t("transfer.maintenance")}</Maintenance>
+                      <GameImage src={process.env.PUBLIC_URL + `/assets/images/pcGamePage/esports/${data.abbreviation.toLowerCase()}.png`}></GameImage>
+                      <GameTitle>{data.abbreviation}</GameTitle>
+                    </LeftNavItem>
+                  );
+                })}
+              </LeftNavItemContainer>
+            </ScrollAnimation>
+          </LeftContainer>
+        </SportsWrapper>
       </Container>
+    ) : (<NoContentContainer lang={i18n.language}></NoContentContainer>
     );
   }
 }

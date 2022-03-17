@@ -8,6 +8,8 @@ const Container = styled.div`
   width: 100%;
   color: #7b7b7b;
   font-size: 14px;
+  display: flex;
+  justify-content: center;
 `;
 
 const TabButton = styled.div`

@@ -1,306 +1,394 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled, { css, keyframes } from "styled-components";
-import Common from "../../../utils/Common";
-import BtnRedPNG from "../../../assets/images/btn-red.png";
-import BtnRedHoverPNG from "../../../assets/images/btn-red-hover.png";
+import { AppHistory } from "../../../history/History";
 
-import {GameService} from "../../../../api-services/services/GameService";
-import {SHOW_LOGIN} from "../../../../api-services/constant/actionType";
-import {GameTypeEnum,GameEnum} from "../../../../api-services/utils/Enum";
-import BtnJoinPNG from "../../../assets/images/btn-join.png";
-import BtnJoinHoverPNG from "../../../assets/images/btn-join-hover.png";
-import _633Lottery from "../../../assets/images/lottery/633-lotteryball.png";
-import _633Description from "../../../assets/images/lottery/633-lotterydescription.png";
+import { GameService } from "../../../api-services/services/GameService";
+import { SHOW_LOGIN } from "../../../api-services/constant/actionType";
+import { GameTypeEnum, GameEnum } from "../../../api-services/utils/Enum";
+
+import SlotAllPNG from "../../../assets/images/slot-all.png";
+import SlotAllInactivePNG from "../../../assets/images/slot-all-inactive.png";
 
 import i18n from "../../../utils/i18n";
-
-import JDBLogo from "../../../assets/images/fish/jdb_logo.png";
+import config from "../../../config/config";
+import Common from "../../../utils/Common";
 
 const Container = styled.div`
   width: 100%;
-  height: 800px;
+  height: auto;
+  min-height: 780px;
   position: relative;
   background: url(${(props) =>
-      `${process.env.PUBLIC_URL}/assets/images/pcGamePage/fish/bg.jpg`})
+      process.env.PUBLIC_URL +
+      "/assets/images/pcGamePage/fish/background" +
+      (props.GamePage_SpecificBackground ? "-hk28" : "") +
+      ".jpg"})
     no-repeat;
-  background-position: center -110px;
+  background-attachment: fixed;
+  background-size: cover;
 `;
 
-const leftRightLeft = keyframes`
-from  {
-  -webkit-transform:translate3d(-30px,0,0);
-  opacity:0;
-  transform:translate3d(-30px,0,0);
- 
-}
-to{
-  -webkit-transform:translateZ(0);
-  opacity:1;
-  transform:translateZ(0);
-}
-  `;
-const leftRightLeftHide = keyframes`
-  from{
-    -webkit-transform:translateZ(0);
-    opacity:1;
-    transform:translateZ(0);
+const NoContentText = styled.div`
+  color: #000;
+  font-size: ${(props) =>
+    props.lang === "zh-CN" || props.lang === "zh-TW" ? `3.2em` : `2.3em`};
+  text-shadow: 0 0 18px #ffe14e;
+  -webkit-text-stroke: 0.5px white;
+  font-weight: bold;
+  width: 450px;
+  height: auto;
+  margin-left: 180px;
+  overflow: visible;
+  font-family: "微軟正黑粗";
+  &:first-child {
+    margin-top: 210px;
   }
-  to{
-    -webkit-transform:translate3d(-30px,0,0);
-    opacity:0;
-    transform:translate3d(-30px,0,0);
+  &:last-child {
+    ${(props) => (props.lang === "en-US" ? `font-size: 3.2em;` : ``)}
   }
-    `;
+`;
 
-const rightLeftRight = keyframes`
-from{
-  -webkit-transform:translate3d(30px,0,0);
-  opacity:0;
-  transform:translate3d(30px,0,0);
-
-}
-to{
-  -webkit-transform:translateZ(0);
-  opacity:1;
-  transform:translateZ(0);
-
-}
-  `;
-const rightLeftRightHide = keyframes`
-  from{
-    -webkit-transform:translateZ(0);
-    opacity:1;
-    transform:translateZ(0)
-;
-  }
-  to{
-    -webkit-transform:translate3d(30px,0,0);
-    opacity:0;
-    transform:translate3d(30px,0,0);
-  }
-    `;
-
-const TabContainer = styled.div`
-  width: 950px;
-  z-index: 3;
-
+const GameTabContainer = styled.div`
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  width: 70%;
-
-  margin: 10px auto;
+  overflow: auto;
+  padding-right: 60px;
+  background-color: #b2b2b2;
+`;
+const GameTab = styled.div`
+  cursor: pointer;
+  flex-shrink: 0;
+  font-size: 14px;
+  height: 96px;
+  padding: 3px;
   position: relative;
+  text-align: center;
+  transition: color 0.4s, filter 0.4s;
+  z-index: 1;
+  filter: ${(props) =>
+    props.active === true
+      ? `brightness(500%) grayscale(100%);`
+      : `brightness(50%) grayscale(100%);`};
+  margin: 0 auto;
+  background: url(${(props) =>
+      process.env.PUBLIC_URL +
+      `/assets/images/pcGamePage/slots/` +
+      props.img +
+      (props.active === true ? `-white` : `-color`) +
+      `.png`})
+    no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: 100px;
+`;
+
+const GameTabAll = styled(GameTab)`
+  background: url(${(props) =>
+      props.active === true ? `${SlotAllPNG}` : `${SlotAllInactivePNG}`})
+    no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: 100px;
+`;
+
+const DisabledOverlay = styled.div`
+  height: 100%;
+  width: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.75);
+  position: absolute;
+  color: white;
+  font-weight: bold;
+  pointer-event: none;
+  text-transform: capitalize;
+  z-index: 3;
+  cursor: not-allowed;
   text-align: center;
 `;
 
-const ButtonTab = styled.button`
-  width: 200px;
-  border: none;
-  height: 60px;
-  outline: none;
+const GameTabButton = styled.div`
+  width: 141px;
+  height: 95px;
+  background-color: #B2B2B2;
+  position: relative;
   float: left;
-  color: #fff;
-  font-size: 20px;
-  font-weight: bold;
-  ${(props) => {
-    if (props.selected === true) {
-      return `background: url(${BtnRedHoverPNG}) no-repeat center 3px;
+  z-index: 1;
 
-      `;
-    } else {
-      return ` &:hover {
-        cursor: pointer;
-        background: url(${BtnRedHoverPNG}) no-repeat center 3px;
-      }
-      background: url(${BtnRedPNG}) no-repeat center 3px;`;
-    }
-  }}
-`;
-
-const LotteryGames = styled.div`
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  transition: animation 1s;
-  pointer-events: none;
-
-  background: url(${(props) =>
-      `${
-        process.env.PUBLIC_URL
-      }/assets/images/pcGamePage/lottery/left/${props.abbreviation.toLowerCase()}.png`})
-    no-repeat center bottom;
-
-  ${(props) =>
-    props.index === 0
-      ? ""
-      : props.loaded
-      ? `
-          visibility:hidden;
-          `
-      : `
-        visibility:visible;
-          `}
-  animation: ${(props) =>
-    props.transition
-      ? css`
-          ${leftRightLeft} 800ms   forwards;
-        `
-      : css`
-          ${leftRightLeftHide} 400ms   forwards;
-        `};
-`;
-
-const ButtonJoin = styled.div`
-  background: url(${BtnJoinPNG}) no-repeat center;
-  width: 236px;
-  height: 71px;
-  position: absolute;
-  top: 400px;
-  right: 50%;
-  margin-right: -430px;
   &:hover {
     cursor: pointer;
-    background: url(${BtnJoinHoverPNG}) no-repeat center;
   }
-  color: #fff;
-  font-size: 30px;
-  text-shadow: #000;
-  font-weight: bold;
-  text-align: center;
-  padding: 0px 0px 0px 50px;
-  line-height: 71px;
-`;
-const LiveGameDescription = styled.div`
-  height: 100%;
-  width: 390px;
-  position: absolute;
-  top: 300px;
-  right: 50%;
-  margin-right: -506px;
-  color: #000;
-  font-size: 16px;
-  text-align: center;
-`;
 
-const RightContainer = styled.div`
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  opacity: 0;
+  &:hover:after {
+    background-color: #0091FE;
+    transform: scaleY(1);
+  }
+
+  &:after { 
+    content: "";
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    transform: scaleY(0);
+    transition: transform .4s;
+    width: 100%;
+    z-index: -1;
+  }
+
+  &:first-child {
+    margin-left: auto;
+  }
+  &:last-child {
+    margin-right: auto;
+  }
+
   ${(props) =>
-    props.transition
+    props.active
+      ? `  background-color: #0091FE; `
+      : `  background-color: #B2B2B2;`};
+
+  ${({ maintenance }) => {
+    return maintenance
       ? `
-       pointer-events:all;
-      `
-      : `
-    pointer-events:none;
-      `};
-  animation: ${(props) =>
-    props.transition
-      ? css`
-          ${rightLeftRight} 800ms   forwards;
+          pointer-events: none !important;
+        ${DisabledOverlay}{
+          display: flex; 
+          pointer-events: none !important;
+          cursor: not-allowed;
+        }
+    
+        ${GameTab}{
+          pointer-events: none;
+         
+        }
         `
-      : css`
-          ${rightLeftRightHide} 400ms   forwards;
-        `};
-  background: url(${(props) =>
-      `${
-        process.env.PUBLIC_URL
-      }/assets/images/pcGamePage/lottery/right/${props.abbreviation.toLowerCase()}.png`})
-    no-repeat center bottom;
-  ${(props) =>
-    props.index === 0
-      ? ""
-      : props.loaded
-      ? `
-            visibility:hidden;
-            `
-      : `
-          visibility:visible;
-            `}
+      : ``;
+  }}
+
+  &:hover ${GameTab} {
+    background: url(${(props) =>
+      process.env.PUBLIC_URL +
+      `/assets/images/pcGamePage/slots/` +
+      props.img +
+      `-white.png`})
+      no-repeat;
+      background-position: center;
+      background-size: contain;
+    filter: brightness(500%) grayscale(100%);
+    transition: filter 3s;
+  }
+  &:hover ${GameTabAll} {
+    background: url(${SlotAllInactivePNG})
+      no-repeat;
+      background-position: center;
+      background-size: contain;
+    filter: brightness(500%) grayscale(100%);
+    transition: filter 1s;
+  }
 `;
 
-const CenterText = styled.div`
-  text-align: center;
-  font-family: AdobeHeitiR;
-  line-height: 1.25rem;
-  margin-bottom: 50px;
-`;
-
-const LogoHolder = styled.div`
-  width: 300px;
-  height: 200px;
-  background: url(${(props) => props.src}) no-repeat;
-  background-size: contain;
-  position: absolute;
-  right: 50%;
-  top: 60px;
-  margin-right: 238px;
-`;
-
-const ImageHolder = styled.img`
-  width: 100%;
-  margin-left: 1px;
-  margin-top: -11px;
-`;
 const GameContainer = styled.div`
-  position: absolute;
-  top: 460px;
-  left: 50%;
-  width: 910px;
-  transform: translateX(-50%);
+  width: 1280px;
+  align-items: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  margin-top: 75px;
 `;
 const GameItem = styled.div`
-  width: 300px;
-  height: 150px;
-  background: url(${(props) => props.img}) no-repeat;
-  background-size: contain;
-  float: left;
-  &:hover {
-    cursor: pointer;
+  width: 190px;
+  height: auto;
+  margin: 20px 25px;
+  text-align: center;
+`;
+
+const GameItemImage = styled.div`
+  cursor: pointer;
+  background-color: transparent;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  filter: drop-shadow(0 10px 6px rgba(0, 0, 0, 0.7));
+  transition: 0.3s ease;
+  display: block;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  padding-top: 10px;
+  ${GameItem}:hover & {
+    transform: translateY(-4px);
+  }
+
+  & > img {
+    width: 150px;
+    height: 150px;
   }
 `;
+
+const GameItemTitle = styled.div`
+  font-size: 16px;
+  text-align: center;
+  transition: 0.3s;
+  width: 100%;
+  color: #ffffff;
+  margin-top: 15px;
+`;
+
+const GameItemActionContainer = styled.div``;
+
+const GameItemButton = styled.button`
+  background-color: ${({ theme }) => theme.primary};
+  border: 0;
+  border-radius: 22.5px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  height: 45px;
+  padding: 0 40px;
+  font-size: 14px;
+  padding: 0;
+  transition: background-color 0.4s, transform 0.4s;
+  width: 80%;
+
+  &:hover {
+    transform: scale3d(1.06, 1.06, 1);
+  }
+`;
+
+const GameItemJoinGameButton = styled(GameItemButton)`
+  margin-top: 18px;
+  &:hover {
+    filter: grayscale(0.3);
+  }
+`;
+
+const NoContentContainer = (props) => {
+  switch (props.lang) {
+    case "th-TH":
+    case "vi-VN":
+      return (
+        <Container
+          style={{
+            background:
+              "url(" +
+              process.env.PUBLIC_URL +
+              `/assets/images/pcGamePage/no.jpg) no-repeat`,
+            backgroundAttachment: "fixed",
+            backgroundSize: "cover",
+          }}
+        >
+          <NoContentText lang={i18n.language}>
+            {i18n.t("promotion.emptyLine1")}
+          </NoContentText>
+          <NoContentText lang={i18n.language}>
+            {i18n.t("promotion.emptyLine2")}
+          </NoContentText>
+        </Container>
+      );
+    case "en-US":
+    case "zh-CN":
+    case "zh-TW":
+    default:
+      return (
+        <Container
+          style={{
+            background:
+              "url(" +
+              process.env.PUBLIC_URL +
+              `/assets/images/pcGamePage/no_${i18n.language}.jpg) no-repeat`,
+            backgroundAttachment: "fixed",
+            backgroundSize: "cover",
+          }}
+        ></Container>
+      );
+  }
+};
 class Fishing extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       loaded: false,
-
+      gameList: [],
       page: 1,
       limit: 25,
       total: 0,
       type: GameTypeEnum.FISH,
-
-      platform: GameEnum.JDB,
+      platform: this.props.match.params.platform
+        ? this.props.match.params.platform
+        : "",
     };
   }
   componentDidMount() {
     this.getGameList();
   }
-  componentDidUpdate(preProps, preStates) {}
-  handleJoinGameClick = (gid) => {
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.type !== this.state.type ||
+      prevProps.match.params.platform !== this.props.match.params.platform ||
+      prevProps.match.url !== this.props.match.url
+    ) {
+      if (prevProps.match.url !== this.props.match.url) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+
+        var platform = this.props.match.params.platform
+          ? this.props.match.params.platform
+          : "";
+
+        this.getGameList(1, platform, GameTypeEnum.FISH);
+      } else if (
+        prevProps.match.params.platform !== this.props.match.params.platform
+      ) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        this.setState({
+          ...this.state,
+          platform: this.props.match.params.platform
+            ? this.props.match.params.platform
+            : "",
+        });
+      } else {
+        this.getGameList();
+      }
+    }
+  }
+
+  handleJoinGameClick = (gpcode, gpid) => {
     if (this.props.token) {
-      Common.PopupCenter(
-        "/" +
-          i18n.language +
-          "/joingame/" +
-          GameTypeEnum.FISH +
-          "/" +
-          GameEnum.JDB +
-          "/" +
-          gid,
-        1280,
-        720
-      );
+      this.props.history.push(`/${i18n.language}/fish/play/${gpcode}/${gpid}`);
     } else {
       this.props.showLogin(true);
     }
   };
+
+  handleParentClick = (platform) => {
+    const type =
+      this.props.match.url.indexOf("fish") >= 0
+        ? "fish"
+        : this.props.match.url.indexOf("slots") >= 0
+        ? "slots"
+        : "electron";
+    AppHistory.push(`/${i18n.language}/${type}/${platform}`);
+  };
+
+  // handleJoinGameClick = (gid) => {
+  //   if (this.props.token) {
+  //     Common.PopupCenter(
+  //       "/" +
+  //         i18n.language +
+  //         "/joingame/" +
+  //         GameTypeEnum.FISH +
+  //         "/" +
+  //         GameEnum.JDB +
+  //         "/" +
+  //         gid,
+  //       1280,
+  //       720
+  //     );
+  //   } else {
+  //     this.props.showLogin(true);
+  //   }
+  // };
   getGameList(
     page = this.state.page,
     platform = this.state.platform,
@@ -346,56 +434,78 @@ class Fishing extends Component {
   };
 
   render() {
-    return (
+    let list = null;
+    if (this.state.gameList.length > 0) {
+      list = this.state.gameList
+        .filter((s) => {
+          return s.isactive === true; // show only active game.
+        })
+        .map((el, i) => (
+          <GameItem>
+            <GameItemImage
+              onClick={() => this.handleJoinGameClick(el.gpcode, el.id)}
+            >
+              <img
+                src={`${
+                  config.sourceUrl
+                }${el.gpcode.toUpperCase()}/${Common.getCDNLanguagePrefix()}/${
+                  el.code
+                }.jpg`}
+                alt={i}
+              ></img>
+            </GameItemImage>
+            <GameItemTitle>{el.name}</GameItemTitle>
+            <GameItemActionContainer>
+              <GameItemJoinGameButton
+                onClick={() => this.handleJoinGameClick(el.gpcode, el.id)}
+              >
+                {i18n.t("common.joinGame")}
+              </GameItemJoinGameButton>
+            </GameItemActionContainer>
+          </GameItem>
+        ));
+    }
+
+    return this.state.gameList.length ? (
       <Container>
-        <LogoHolder src={JDBLogo} />
-        <GameContainer>
-          <GameItem
-            img={(props) =>
-              `${process.env.PUBLIC_URL}/assets/images/pcGamePage/fish/Dragon_Fishing.png`
-            }
-            onClick={() => this.handleJoinGameClick(700001)}
-          ></GameItem>
-          <GameItem
-            img={(props) =>
-              `${process.env.PUBLIC_URL}/assets/images/pcGamePage/fish/Dragon_Fishing_II.png`
-            }
-            onClick={() => this.handleJoinGameClick(700002)}
-          ></GameItem>
-          <GameItem
-            img={(props) =>
-              `${process.env.PUBLIC_URL}/assets/images/pcGamePage/fish/Cai_Shen_Fishing.png`
-            }
-            onClick={() => this.handleJoinGameClick(700003)}
-          ></GameItem>
-        </GameContainer>
-        <GameContainer style={{ top: "580px", width: "1210px" }}>
-          <GameItem
-            img={(props) =>
-              `${process.env.PUBLIC_URL}/assets/images/pcGamePage/fish/Five_Dragons_Fishing.png`
-            }
-            onClick={() => this.handleJoinGameClick(700004)}
-          ></GameItem>
-          <GameItem
-            img={(props) =>
-              `${process.env.PUBLIC_URL}/assets/images/pcGamePage/fish/Fishing_YiLuFa.png`
-            }
-            onClick={() => this.handleJoinGameClick(700005)}
-          ></GameItem>
-          <GameItem
-            img={(props) =>
-              `${process.env.PUBLIC_URL}/assets/images/pcGamePage/fish/Dragon_Master.png`
-            }
-            onClick={() => this.handleJoinGameClick(700006)}
-          ></GameItem>
-          <GameItem
-            img={(props) =>
-              `${process.env.PUBLIC_URL}/assets/images/pcGamePage/fish/FishingDisco.png`
-            }
-            onClick={() => this.handleJoinGameClick(700007)}
-          ></GameItem>
-        </GameContainer>
+        <GameTabContainer>
+          <GameTabButton
+            active={this.state.platform == ""}
+            onClick={() => this.handleParentClick("")}
+          >
+            <GameTabAll active={this.state.platform == ""}></GameTabAll>
+          </GameTabButton>
+
+          {this.props.game.homePageGameList
+
+            .filter((ele) => {
+              return ele.type === this.state.type; //check for only fish enum.
+            })
+
+            .map((row, index) => {
+              return (
+                <GameTabButton
+                  key={index}
+                  img={row.abbreviation.toLowerCase()}
+                  active={this.state.platform == row.abbreviation}
+                  onClick={() => this.handleParentClick(row.abbreviation)}
+                  maintenance={row.status != 0}
+                >
+                  <DisabledOverlay>
+                    {i18n.t("transfer.maintenance")}
+                  </DisabledOverlay>
+                  <GameTab
+                    img={row.abbreviation.toLowerCase()}
+                    active={this.state.platform == row.abbreviation}
+                  ></GameTab>
+                </GameTabButton>
+              );
+            })}
+        </GameTabContainer>
+        <GameContainer>{list}</GameContainer>
       </Container>
+    ) : (
+      <NoContentContainer lang={i18n.language}></NoContentContainer>
     );
   }
 }

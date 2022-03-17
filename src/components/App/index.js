@@ -18,6 +18,7 @@ import { SHOW_LOGIN } from "../../api-services/constant/actionType";
 
 import LiveGame from "./LiveGame/index";
 import Slots from "./Slots/index";
+import Fishing from "./Fishing/index";
 import SlotPlay from "./Slots/Play";
 import Qipai from "./Qipai/index";
 import Sports from "./Sports/index";
@@ -61,6 +62,7 @@ class App extends Component {
     showCS: false,
     isIpRestrict: false,
     inbox: "",
+    hideAppBar: false
   };
   async componentDidMount() {
     if (this.props.general.token === "") {
@@ -83,7 +85,24 @@ class App extends Component {
     // this.props.getBanner();
     // this.props.getGamePlatformList();
     //this.props.getHomePageGameList();
+    const urlpath = this.props.location.pathname.split("/");
 
+    if (urlpath.length === 4) {
+      if (urlpath[2] === "a") {
+        localStorage.setItem("promotionId", urlpath[3] || "");
+        localStorage.setItem("upper", ""); //reset
+        localStorage.setItem("invitationtype", "a");
+      }
+      if (urlpath[2] === "p") {
+        localStorage.setItem("upper", urlpath[3] || "");
+        localStorage.setItem("promotionId", ""); //reset
+        localStorage.setItem("invitationtype", "p");
+      }
+    } else {
+      localStorage.setItem("invitationtype", "");
+      localStorage.setItem("upper", ""); //reset
+      localStorage.setItem("promotionId", ""); //reset
+    }
     let urlParams = new URLSearchParams(this.props.location.search);
     if (urlParams.has("goto")) {
       const gotoValue = urlParams.get("goto");
@@ -239,6 +258,13 @@ class App extends Component {
     }
   };
 
+  onloadShowAppBar = () => {
+    this.setState({...this.state, hideAppBar: false});
+  }
+  onloadHideAppBar = () => {
+    this.setState({...this.state, hideAppBar: true});
+  }
+
   render() {
     return (
       <Router history={AppHistory}>
@@ -256,6 +282,7 @@ class App extends Component {
                 <Header
                   inbox={this.state.inbox}
                   onhandleShowCSClick={this.handleShowCSClick}
+                  hide={this.state.hideAppBar}
                 ></Header>
                 <EmptyHeader></EmptyHeader>
                 <Main>
@@ -273,6 +300,7 @@ class App extends Component {
                         <Home
                           onhandleShowCSClick={this.handleShowCSClick}
                           onhandleDepositClick={this.handleDepositClick}
+                          onloadShowAppBar={this.onloadShowAppBar}
                         />
                       )}
                     />
@@ -326,7 +354,7 @@ class App extends Component {
                     <Route
                       exact
                       path={baseRouteUrl + "/fish/:platform?"}
-                      component={Slots}
+                      component={Fishing}
                     />
                     <Route
                       exact
@@ -394,6 +422,8 @@ class App extends Component {
                           token={this.props.account.token}
                           onhandleCSClick={this.GetSupportUrl}
                           inbox={this.state.inbox}
+                          onloadHideAppBar={this.onloadHideAppBar}
+                          onloadShowAppBar={this.onloadShowAppBar}
                         />
                       )}
                     />

@@ -1,44 +1,59 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import i18n from "../../../../utils/i18n"
-import SuccessPNG from "../../../../assets/images/success.png"
+import i18n from "../../../../utils/i18n";
+import SuccessPNG from "../../../../assets/images/success.png";
 import CustomButton from "../../../Share/Button";
+import { AppHistory } from "../../../../history/History";
 const Container = styled.div`
-padding-top:50px;
+  padding-top: 50px;
 `;
 const ImgSuccess = styled.img`
-margin:0 auto;
-display:block;
-width:100px;
-`
+  margin: 0 auto;
+  display: block;
+  width: 100px;
+`;
 const SuccessMessage = styled.div`
-font-size: 20px;
-color: #818181;
-text-align:center;
-margin-top:20px;
-`
+  font-size: 20px;
+  color: #818181;
+  text-align: center;
+  margin-top: 20px;
+`;
+const ButtonContainer = styled.div`
+  margin: 0 auto;
+  display: table;
+  width: 540px;
+  display: flex;
+  justify-content: center;
+`;
 class Success extends Component {
-
-
-
-
-    render() {
-        return (
-            <Container>
-                <ImgSuccess src={SuccessPNG}></ImgSuccess>
-                <SuccessMessage>
-                    {i18n.t("withdrawal.msgSuccess")}
-                </SuccessMessage>
-                <CustomButton
-                    name={i18n.t("common.confirm")}
-                    width={257}
-                    marginTop={30}
-                    float={"none"}
-                    marginLeft={310}
-                    handleClick={this.props.handleConfirmClick}
-                ></CustomButton>
-            </Container>
-        );
-    }
+  gotoVerify = () => {
+    AppHistory.push("/" + i18n.language + "/account/profile/member_name");
+  };
+  render() {
+    return (
+      <Container>
+        <ImgSuccess src={SuccessPNG}></ImgSuccess>
+        <SuccessMessage>{i18n.t("withdrawal.msgSuccess")}</SuccessMessage>
+        <ButtonContainer>
+          <CustomButton
+            name={i18n.t("common.confirm")}
+            width={257}
+            marginTop={30}
+            float={"none"}
+            handleClick={this.props.handleConfirmClick}
+          ></CustomButton>
+          {!this.props.verified && (
+            <CustomButton
+              name={i18n.t("verified.goVerify")}
+              width={257}
+              grayMode
+              float={"none"}
+              handleClick={this.gotoVerify}
+            ></CustomButton>
+          )}
+        </ButtonContainer>
+      </Container>
+    );
+  }
 }
 export default Success;

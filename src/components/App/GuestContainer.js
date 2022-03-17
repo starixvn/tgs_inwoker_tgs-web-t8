@@ -28,26 +28,33 @@ import { withSnackbar } from "notistack";
 import i18n from "../../utils/i18n";
 import config from "../../config/config";
 import ForgotPasswordPhone from "./ForgotPasswordPhone";
-const Container = styled.div``;
-const BtnLoginRegister = styled.div`
-  float: right;
-  font-size: 17px;
-  text-align: center;
-  color: #f6f6f6;
-
+const Container = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  height: 38px;
+  width: 250px;
+`;
+const BtnLoginRegister = styled.button`
+  background-color: ${(props) => props.theme.primary};
+  border-radius: 7px;
+  color: #fff;
+  font-size: 13px;
+  line-height: 30px;
+  margin: auto 5px;
+  height: 30px;
+  padding: 0 20px;
+  user-select: none;
+  appearance: none;
+  border: 0;
+  cursor: pointer;
   &:hover {
-    color: #fde73f;
-    cursor: pointer;
+    filter: grayscale(0.3);
   }
 `;
-const BtnRegister = styled(BtnLoginRegister)`
-  margin-left: 5px;
-  margin-right: 10px;
-`;
+const BtnRegister = styled(BtnLoginRegister)``;
 
-const BtnLogin = styled(BtnLoginRegister)`
-  margin-right: 5px;
-`;
+const BtnLogin = styled(BtnLoginRegister)``;
 
 const BtnSpliter = styled.div`
   float: right;
@@ -119,12 +126,14 @@ class GuestContainer extends Component {
       openDialog: true,
       openDialogName: dialogName,
     });
+    this.props.onDialogChange(dialogName);
     this.props.showLogin(true);
   };
 
   onhandleCloseDialog = () => {
     this.setState({ ...this.state, openDialog: false });
     this.props.showLogin(false);
+    this.props.onDialogChange("");
   };
 
   // onhandleLoginSuccess = token => {
@@ -138,6 +147,7 @@ class GuestContainer extends Component {
       openDialog: true,
       openDialogName: "register",
     });
+    this.props.onDialogChange("register");
     this.props.showLogin(false);
   };
   onhandleActivation = (username = "", pass = "") => {
@@ -148,6 +158,7 @@ class GuestContainer extends Component {
       username: username,
       pass: pass,
     });
+    this.props.onDialogChange("activation");
     this.props.showLogin(false);
   };
   onhandleForgotPassword = () => {
@@ -156,6 +167,7 @@ class GuestContainer extends Component {
       openDialog: true,
       openDialogName: "forgotpassword",
     });
+
     this.props.showLogin(false);
   };
 
@@ -404,6 +416,14 @@ class GuestContainer extends Component {
       // this.props.getIDCardNo();
       // this.props.getInviteLink();
       // this.props.getDepositChannel();
+
+      if (this.state.openDialogName === "activation") {
+        if (config.features.NavigateToAddCard) {
+          this.props.history.push(
+            "/" + i18n.language + "/account/withdrawal?do=addCard"
+          );
+        }
+      }
     }
   };
   onhandleOnlineSupport = () => {
@@ -425,23 +445,16 @@ class GuestContainer extends Component {
         {config.features.SMSVerification && (
           <React.Fragment>
             <BtnRegister onClick={() => this.onhandleActivation()}>
-              <BtnLoginRegisterLabel>
-                {i18n.t("web.register.activation")}
-              </BtnLoginRegisterLabel>
+              {i18n.t("web.register.activation")}
             </BtnRegister>
-            <BtnSpliter> | </BtnSpliter>
           </React.Fragment>
         )}
         <BtnRegister onClick={() => this.onhandleRegister()}>
-          <BtnLoginRegisterLabel>
-            {i18n.t("common.register")}
-          </BtnLoginRegisterLabel>
+          {i18n.t("common.register")}
         </BtnRegister>
-        <BtnSpliter> | </BtnSpliter>
+
         <BtnLogin onClick={() => this.handleClickOpenDialog("login")}>
-          <BtnLoginRegisterLabel>
-            {i18n.t("common.login")}
-          </BtnLoginRegisterLabel>
+          {i18n.t("common.login")}
         </BtnLogin>
         <StyledDialog
           open={this.state.openDialog || this.props.ui.showLogin}

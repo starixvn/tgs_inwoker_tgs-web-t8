@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { connect } from "react-redux";
 import styled from "styled-components";
 import CustomTextField from "../../../Share/TextField";
 import CustomButton from "../../../Share/Button";
@@ -104,4 +104,4 @@ const QQ = (props) => {
   );
 };
 
-export default withSnackbar(QQ);
+export default connect(null, null)(withSnackbar(QQ));

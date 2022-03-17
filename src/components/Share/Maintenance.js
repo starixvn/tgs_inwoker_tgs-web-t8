@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import i18n from "../../utils/i18n";
 import QRCode from "qrcode.react";
-import MaintenancePNG from "../../assets/images/maintenance-blank.png";
+import MaintenancePNG from "../../assets/images/maintenance-blank.jpg";
 import { Dialog } from "@material-ui/core";
 import { connect } from "react-redux";
 import Common from "../../utils/Common";

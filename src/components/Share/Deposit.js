@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Loading from "../App/Loading";
 import Maintenance from "./Maintenance";
 import config from "../../config/config";
-import {walletAction} from "../../api-services/actions/walletAction";
+import { walletAction } from "../../api-services/actions/walletAction";
 class Deposit extends Component {
   state = {
     loading: true,
@@ -21,9 +21,19 @@ class Deposit extends Component {
     var depositPromotion = this.props.match.params.promotion.trim();
     var amount = this.props.match.params.amount.replace(/,/g, "");
     var name = this.props.match.params.name;
+    var account = this.props.match.params.account;
     if (paymentcode.toUpperCase() === "MANUAL") {
       // handle manual deposit
       if (methodcode === "BankTransfer") {
+        this.props.doBankDeposit(
+          name,
+          account,
+          amount,
+          channelid,
+          depositPromotion
+        );
+      }
+      if (methodcode === "FPS") {
         this.props.doBankDeposit(name, amount, channelid, depositPromotion);
       }
       if (methodcode === "ThirdParty") {
@@ -102,9 +112,28 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    doBankDeposit: (account, amount, paymentid, promotionid, banktype) => {
+    doBankDeposit: (
+      name,
+      account,
+      amount,
+      paymentid,
+      promotionid,
+      banktype
+    ) => {
       dispatch(
         walletAction.doBankDeposit(
+          name,
+          account,
+          amount,
+          paymentid,
+          promotionid,
+          banktype
+        )
+      );
+    },
+    doFPSDeposit: (account, amount, paymentid, promotionid, banktype) => {
+      dispatch(
+        walletAction.doFPSDeposit(
           account,
           amount,
           paymentid,

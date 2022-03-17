@@ -21,7 +21,7 @@ const Container = styled.div`
   padding-top: 20px;
 
   position: relative;
-  background: url(${BGJPG}) no-repeat top center #19262f;
+  background: #000;//url(${BGJPG}) no-repeat top center #19262f;
   min-height: 800px;
 `;
 
@@ -36,8 +36,147 @@ const PromoDetailContainer = styled(Grid)`
   width: 100%;
   position: relative;
   background: white;
-  padding: 18px 15px;
+  //padding: 18px 15px;
   border-radius: 20px;
+  height: 700px;
+`;
+
+const PromoDetailHeaderContainer = styled.div`
+justify-content: flex-end;
+box-sizing: border-box;
+width: 100%;
+background-color: ${({theme})=>theme.primary};
+height: 50px;
+    padding: 0 20px;`;
+
+const PromoDetailBodyContainer = styled.div`
+  padding: 18px 0;
+  height: 650px;
+`;
+
+const PromoDetailLeftContainer = styled.div`
+  background-color: rgba(204, 204, 204, 0.1);
+  box-shadow: 1px 0 0 0 rgb(204 204 204 / 30%);
+  box-sizing: border-box;
+  height: calc(100% - 50px);
+  max-width: 350px;
+  position: absolute;
+  top: 50px;
+  transition: 0.2s ease;
+  z-index: 1;
+  overflow: visible;
+  ${({ isToggled }) =>
+    isToggled ? `padding: 10px; width:0;` : `padding: 15px; width: 35%;`}
+
+  & img {
+    ${({ isToggled }) => (isToggled ? `display: none;` : `display: block;`)}
+    width: 100%;
+  }
+
+  & h1 {
+    ${({ isToggled }) => (isToggled ? `display: none;` : ``)}
+    font-size: 21px;
+    line-height: 1.4;
+    margin: 15px 0;
+  }
+`;
+
+const PromoDetailToggleButton = styled.div`
+  align-items: center;
+  display: block;
+  display: flex;
+  height: 80px;
+  justify-content: center;
+  position: absolute;
+  right: -40px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 80px;
+  z-index: 10;
+  &:after {
+    ${({ isToggled }) => (isToggled ? ` content: "❯";` : ` content: "❮";`)}
+    speak: none;
+    align-items: center;
+    background-color: rgba(239, 239, 239, 0.9);
+    border-radius: 50%;
+    box-shadow: 0 1px 5px rgb(0 0 0 / 50%);
+    color: #085e49;
+    cursor: pointer;
+    display: flex;
+    font-family: iconmps !important;
+    font-size: 20px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 400;
+    height: 30px;
+    justify-content: center;
+    line-height: 1;
+    text-transform: none;
+    transition: 0.3s ease;
+    width: 30px;
+  }
+`;
+
+const PromoDetailRightContainer = styled.div`
+  box-sizing: border-box;
+  height: calc(100% - 50px);
+  overflow: auto;
+  ${({ isToggled }) =>
+    isToggled
+      ? `     
+      margin-left: 0;
+      padding: 20px 50px 80px;
+      width: 100%;`
+      : `     
+      margin: 0 0 0 35%;  
+      padding: 15px;  
+      width: 65%;
+    `}
+
+`;
+
+const PromoDetailJoinButton = styled.button`
+  background-color: ${({theme})=>theme.primary};
+  border: 0;
+  border-radius: 22.5px;
+  color: #fff;
+  font-size: 16px;
+  height: 45px;
+  padding: 0 30px;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 20%);
+  cursor: pointer;
+  transition: 0.3s ease;
+
+  ${({ uiDisabled }) => {
+    return uiDisabled
+      ? `
+  opacity: 0.65;
+  cursor: not-allowed;`
+      : ``;
+  }}
+  &:hover {
+    transform: scale3d(1.06, 1.06, 1);
+  }
+`;
+
+const PromoDetailFooterContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  background: transparent;
+  bottom: 0;
+  box-sizing: border-box;
+  left: 0;
+  padding: 20px;
+  position: absolute;
+  transition: 0.2s ease;
+  z-index: 5;
+  ${({ isToggled }) =>
+    isToggled
+      ? `   max-width: 100%;
+    width: 100%;`
+      : `   max-width: 350px;  width: 35%;
+
+    `}
 `;
 
 const PromoDetailImage = styled.div`
@@ -49,7 +188,7 @@ const PromoDetailImage = styled.div`
 `;
 
 const EventTitle = styled.div`
-  color: #7e0000;
+  color: ${({theme})=>theme.primary};;
   margin-bottom: 10px;
   font-size: 16px;
   font-family: Arial;
@@ -133,14 +272,14 @@ const DialogContent = styled.div`
 
 const CloseButton = styled.div`
   position: absolute;
-  right: 22px;
-  top: 24px;
+  right: 5px;
+  top: 0px;
   user-select: none;
   cursor: pointer;
   font-size: 24px;
-  background: #fff;
+  //background: #fff;
   padding: 8px 12px;
-  color: #000;
+  color: #fff;
 `;
 class PromotionDetails extends Component {
   constructor(props) {
@@ -179,6 +318,7 @@ class PromotionDetails extends Component {
       term: term,
       joined: false,
       openDialog: false,
+      isToggled: false,
     };
   }
 
@@ -293,6 +433,10 @@ class PromotionDetails extends Component {
     this.setState({ ...this.state, openDialog: true });
   };
 
+  handleToggleButton = () => {
+    this.setState({ ...this.state, isToggled: !this.state.isToggled });
+  };
+
   goBack() {
     AppHistory.replace("/" + i18n.language + "/promotion");
   }
@@ -302,8 +446,89 @@ class PromotionDetails extends Component {
       <Container>
         <MContainer>
           <PromoDetailContainer container direction="column">
-            <CloseButton onClick={this.goBack}>✖</CloseButton>
-            <PromoDetailImage
+            <PromoDetailHeaderContainer>
+              <CloseButton onClick={this.goBack}>✖</CloseButton>
+            </PromoDetailHeaderContainer>
+            <PromoDetailBodyContainer>
+              <PromoDetailLeftContainer isToggled={this.state.isToggled}>
+                <img
+                  src={
+                    this.state.details.localization.desktopBanner &&
+                    this.state.details.localization.desktopBanner !== null
+                      ? this.state.details.localization.desktopBanner
+                      : this.state.details.desktopBanner
+                  }
+                  alt={this.state.details.name}
+                ></img>
+                <h1>{this.state.details.name}</h1>
+                <PromoDetailToggleButton
+                  isToggled={this.state.isToggled}
+                  onClick={this.handleToggleButton}
+                ></PromoDetailToggleButton>
+              </PromoDetailLeftContainer>
+              <PromoDetailRightContainer isToggled={this.state.isToggled}>
+                <EventTitle>{i18n.t("promotion.promoTarget")}：</EventTitle>
+                <EventText>
+                  {this.state.details.vipLevels.map((a, index) => {
+                    return (
+                      <span key={index}>
+                        VIP{a}
+                        {index < this.state.details.vipLevels.length - 1 &&
+                          ", "}
+                      </span>
+                    );
+                  })}
+                </EventText>
+                <EventTitle>{i18n.t("promotion.promoDate")}：</EventTitle>
+                <EventText>
+                  {moment(this.state.details.from).format(
+                    "YYYY/MM/DD HH:mm:ss"
+                  )}
+                  {" - "}
+                  {moment(this.state.details.to).format("YYYY/MM/DD HH:mm:ss")}
+                </EventText>
+                <EventText>
+                  <PromoDesc
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        "<div >" +
+                        (() => {
+                          if (
+                            this.state.details.localization !== null &&
+                            this.state.details.localization.content &&
+                            this.state.details.localization.content !== null
+                          ) {
+                            return this.state.details.localization.content;
+                          } else {
+                            return this.state.details.content;
+                          }
+                        })() +
+                        "</div>",
+                    }}
+                  ></PromoDesc>
+                  {this.state.term !== "" && (
+                    <TNCContainer onClick={this.handleShowDialog}>
+                      {i18n.t("common.termsAndCondition")}
+                    </TNCContainer>
+                  )}
+                </EventText>
+              </PromoDetailRightContainer>
+            </PromoDetailBodyContainer>
+            <PromoDetailFooterContainer isToggled={this.state.isToggled}>
+              <PromoDetailJoinButton
+                uiDisabled={this.state.joined}
+                onClick={() =>
+                  !this.state.joined &&
+                  this.handlejoinPromotionClick(
+                    this.state.details.id,
+                    this.state.details.promotionType
+                  )
+                }
+              >
+                {i18n.t("promotion.joinPromo")}
+              </PromoDetailJoinButton>
+            </PromoDetailFooterContainer>
+            {/* <PromoDetailImage
               img={(() => {
                 if (this.state.details.localization !== null) {
                   if (
@@ -380,7 +605,7 @@ class PromotionDetails extends Component {
                   {i18n.t("promotion.joinPromo")}
                 </PromoButtonText>
               </PromoButtonContainer>
-            </Grid>
+            </Grid> */}
           </PromoDetailContainer>
         </MContainer>
         <StyledDialog
