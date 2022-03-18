@@ -358,10 +358,10 @@ export const GMO = {
   body: "#000",
   bodyBackground: "#000",
   variant: "wapT8",
-  primary: "#e9a60b",
+  primary: "#cea866",
   primaryRgb: "101, 138, 248",
   primaryText: "#fff",
-  primaryGradient: " #e9a60b",
+  primaryGradient: "#cea866",
   primaryGradientRgb: "101, 138, 248",
   primaryHightlight: "#fde73f",
   secondary: "#fff",
@@ -373,10 +373,10 @@ export const GMO = {
   buttonText2: "#000",
   bottomnav:
     "linear-gradient(0deg, rgb(2, 31, 96) 25%, rgba(95,113,162,0) 100%)",
-  balance: "#e9a60b",
+  balance: "#cea866",
   bottomnavrad: "35px 35px 0px 0px",
   bottomNavAction: "#fff",
-  tabbar: "#e9a60b",
+  tabbar: "#cea866",
   cardText: "#676767",
   supportBg: `url(${
     process.env.PUBLIC_URL + `/assets/images/wapp/resource/T3/supportbg.png`

@@ -89,16 +89,21 @@ const FirstSectionItemButton = styled(Grid)`
   margin-top: 25px;
   height: 34px;
   line-height: 2em;
-  transition: all .3s;
+  transition: all 0.3s;
   &:hover {
     cursor: pointer;
-    background-color: ${({theme})=>theme.primary};
-    transition: all .3s;
+    background-color: ${({ theme }) => theme.primary};
+    transition: all 0.3s;
   }
 `;
 
 const FirstSectionItem = styled(Grid)`
-  background: url(${(props) => props.img}) no-repeat;
+  background: url(${(props) => {
+      return (
+        process.env.PUBLIC_URL + `/assets/images/pcHomePage/${props.img}.png`
+      );
+    }})
+    no-repeat;
   background-position: 0% 100%;
   margin: 0 auto;
   width: 469px;
@@ -109,10 +114,10 @@ const FirstSectionItem = styled(Grid)`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  transition: transform .3s;
-  &:hover{
+  transition: transform 0.3s;
+  &:hover {
     transform: scale(1.05);
-    transition: transform .3s;
+    transition: transform 0.3s;
   }
 `;
 
@@ -132,7 +137,6 @@ class Home extends Component {
   componentDidMount() {
     // let promotionId = "";
     // let promotionChannelId = "";
-
     // if (this.props.match.params) {
     //   promotionId = this.props.match.params.promotionid || "";
     //   promotionChannelId = this.props.match.params.promotionchannelid || "";
@@ -220,6 +224,15 @@ class Home extends Component {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   };
 
+  brandSwitcher = (brand) => {
+    switch (brand) {
+      case "GMO":
+        return "GMO";
+      default:
+        return "";
+    }
+  };
+
   render() {
     return (
       <HomeContainer>
@@ -244,7 +257,7 @@ class Home extends Component {
                 {
                   path: `electron`,
                   title: i18n.t("web.home.Section1Electron"),
-                  img: Section1ElectronPNG,
+                  img: "section1-electron",
                   gameType: [GameTypeEnum.TABLEGAME],
                   sortingHK28: 6,
                   sorting: 1,
@@ -252,7 +265,7 @@ class Home extends Component {
                 {
                   path: `fish`,
                   title: i18n.t("web.home.Section1Fishing"),
-                  img: Section1FishPNG,
+                  img: "section1-fish",
                   gameType: [GameTypeEnum.FISH],
                   sortingHK28: 5,
                   sorting: 3,
@@ -260,7 +273,7 @@ class Home extends Component {
                 {
                   path: "lottery",
                   title: i18n.t("web.home.Section1Lottery"),
-                  img: Section1LotteryPNG,
+                  img: "section1-lottery",
                   gameType: [GameTypeEnum.LOTTERYLOBBY],
                   sortingHK28: 7,
                   sorting: 2,
@@ -290,7 +303,11 @@ class Home extends Component {
                       animateOnce={true}
                       style={{ overflow: "visible" }}
                     >
-                      <FirstSectionItem item spacing={0} img={item.img}>
+                      <FirstSectionItem
+                        item
+                        spacing={0}
+                        img={item.img + this.brandSwitcher(config.brand)}
+                      >
                         <FirstSectionItemBg
                           container
                           direction="row"
@@ -341,7 +358,9 @@ class Home extends Component {
             animateOnce={true}
             style={{ overflow: "visible" }}
           >
-            <FifthSection providerList={this.props.game.providerList}></FifthSection>
+            <FifthSection
+              providerList={this.props.game.providerList}
+            ></FifthSection>
           </ScrollAnimation>
         </SectionContainer>
         {/* {this.props.game.providerList.filter((e) => {
