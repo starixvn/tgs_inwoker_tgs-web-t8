@@ -46,15 +46,11 @@ const TitleContainer = styled.div`
   text-align: center;
 
   font-size: 42px;
-
-  color: ${({ theme }) => theme.secondary};
 `;
 const SubTitleContainer = styled.div`
   text-align: center;
 
   font-size: 18px;
-
-  color: ${({ theme }) => theme.secondary};
 `;
 const FormContainer = styled.div`
   margin: 10px 78px 0 78px;
@@ -132,8 +128,6 @@ const Description = styled.div`
   font-size: 14px;
 
   line-height: 1.43;
-
-  color: ${({ theme }) => theme.secondary};
 `;
 
 const useStyles = makeStyles((theme) => ({
