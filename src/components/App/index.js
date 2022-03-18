@@ -54,7 +54,7 @@ const Main = styled.div`
 `;
 const EmptyHeader = styled.div`
   height: 106px;
-  background: #000000;
+  background: none;
 `;
 
 class App extends Component {
@@ -62,7 +62,7 @@ class App extends Component {
     showCS: false,
     isIpRestrict: false,
     inbox: "",
-    hideAppBar: false
+    hideAppBar: false,
   };
   async componentDidMount() {
     if (this.props.general.token === "") {
@@ -259,11 +259,11 @@ class App extends Component {
   };
 
   onloadShowAppBar = () => {
-    this.setState({...this.state, hideAppBar: false});
-  }
+    this.setState({ ...this.state, hideAppBar: false });
+  };
   onloadHideAppBar = () => {
-    this.setState({...this.state, hideAppBar: true});
-  }
+    this.setState({ ...this.state, hideAppBar: true });
+  };
 
   render() {
     return (
@@ -284,7 +284,7 @@ class App extends Component {
                   onhandleShowCSClick={this.handleShowCSClick}
                   hide={this.state.hideAppBar}
                 ></Header>
-                <EmptyHeader></EmptyHeader>
+
                 <Main>
                   <Switch>
                     <Route
@@ -304,86 +304,88 @@ class App extends Component {
                         />
                       )}
                     />
-                    <Route
-                      exact
-                      path={baseRouteUrl + "/live"}
-                      component={LiveGame}
-                    />
-                    <Route
-                      exact
-                      path={baseRouteUrl + "/chess"}
-                      component={Qipai}
-                    />
-                    <Route
-                      exact
-                      path={baseRouteUrl + "/sports"}
-                      component={Sports}
-                    />
-                    {
+                    <>
+                      <EmptyHeader></EmptyHeader>
                       <Route
                         exact
-                        path={baseRouteUrl + "/esports"}
-                        component={eSports}
+                        path={baseRouteUrl + "/live"}
+                        component={LiveGame}
                       />
-                    }
-                    <Route
-                      exact
-                      path={baseRouteUrl + "/sports/play/:params/:type"}
-                      component={SportsPlay}
-                    />
-                    <Route
-                      exact
-                      path={baseRouteUrl + "/lottery"}
-                      component={Lottery}
-                    />
-                    <Route
-                      exact
-                      path={baseRouteUrl + "/lottery/play/:params?"}
-                      component={LotteryPlay}
-                    />
-                    <Route
-                      exact
-                      path={baseRouteUrl + "/slots/:platform?"}
-                      component={Slots}
-                    />
-                    <Route
-                      exact
-                      path={baseRouteUrl + "/electron/:platform?"}
-                      component={Slots}
-                    />
-                    <Route
-                      exact
-                      path={baseRouteUrl + "/fish/:platform?"}
-                      component={Fishing}
-                    />
-                    <Route
-                      exact
-                      path={baseRouteUrl + "/slots/play/:type/:params"}
-                      component={SlotPlay}
-                    />
-                    <Route
-                      exact
-                      path={baseRouteUrl + "/electron/play/:type/:params"}
-                      component={SlotPlay}
-                    />
-                    <Route
-                      exact
-                      path={baseRouteUrl + "/fish/play/:type/:params"}
-                      component={SlotPlay}
-                    />
-                    <Route
-                      exact
-                      path={baseRouteUrl + "/promotion"}
-                      render={(props) => (
-                        <Promotion token={this.props.account.token} />
-                      )}
-                    />
-                    <Route
-                      exact
-                      path={baseRouteUrl + "/promotion/:id"}
-                      render={(props) => <PromotionDetails />}
-                    />
-                    {/* <Route
+                      <Route
+                        exact
+                        path={baseRouteUrl + "/chess"}
+                        component={Qipai}
+                      />
+                      <Route
+                        exact
+                        path={baseRouteUrl + "/sports"}
+                        component={Sports}
+                      />
+                      {
+                        <Route
+                          exact
+                          path={baseRouteUrl + "/esports"}
+                          component={eSports}
+                        />
+                      }
+                      <Route
+                        exact
+                        path={baseRouteUrl + "/sports/play/:params/:type"}
+                        component={SportsPlay}
+                      />
+                      <Route
+                        exact
+                        path={baseRouteUrl + "/lottery"}
+                        component={Lottery}
+                      />
+                      <Route
+                        exact
+                        path={baseRouteUrl + "/lottery/play/:params?"}
+                        component={LotteryPlay}
+                      />
+                      <Route
+                        exact
+                        path={baseRouteUrl + "/slots/:platform?"}
+                        component={Slots}
+                      />
+                      <Route
+                        exact
+                        path={baseRouteUrl + "/electron/:platform?"}
+                        component={Slots}
+                      />
+                      <Route
+                        exact
+                        path={baseRouteUrl + "/fish/:platform?"}
+                        component={Fishing}
+                      />
+                      <Route
+                        exact
+                        path={baseRouteUrl + "/slots/play/:type/:params"}
+                        component={SlotPlay}
+                      />
+                      <Route
+                        exact
+                        path={baseRouteUrl + "/electron/play/:type/:params"}
+                        component={SlotPlay}
+                      />
+                      <Route
+                        exact
+                        path={baseRouteUrl + "/fish/play/:type/:params"}
+                        component={SlotPlay}
+                      />
+                      <Route
+                        exact
+                        path={baseRouteUrl + "/promotion"}
+                        render={(props) => (
+                          <Promotion token={this.props.account.token} />
+                        )}
+                      />
+                      <Route
+                        exact
+                        path={baseRouteUrl + "/promotion/:id"}
+                        render={(props) => <PromotionDetails />}
+                      />
+                      {/* <Route
                       exact
                       path={baseRouteUrl + "/vip"}
                       render={(props) => (
@@ -396,42 +398,43 @@ class App extends Component {
                       path={baseRouteUrl + "/registersuccess/:username"}
                       component={RegisterSuccess}
                     />*/}
-                    <Route
-                      exact
-                      path={baseRouteUrl + "/maintenance"}
-                      render={(props) => (
-                        <Maintenance
-                          onhandleCSClick={this.GetSupportUrl}
-                          brandComm={this.props.getBrandCommunicationList}
-                          alert={this.props.enqueueSnackbar}
-                        />
-                      )}
-                    />
-                    <Route
-                      exact
-                      path={baseRouteUrl + "/banned"}
-                      render={(props) => (
-                        <Banned onhandleCSClick={this.GetSupportUrl} />
-                      )}
-                    />
-                    <Route
-                      exact
-                      path={baseRouteUrl + "/account/:tab/:popup?"}
-                      render={(props) => (
-                        <Account
-                          token={this.props.account.token}
-                          onhandleCSClick={this.GetSupportUrl}
-                          inbox={this.state.inbox}
-                          onloadHideAppBar={this.onloadHideAppBar}
-                          onloadShowAppBar={this.onloadShowAppBar}
-                        />
-                      )}
-                    />
-                    <Route
-                      exact
-                      path={baseRouteUrl + "/download"}
-                      component={Download}
-                    />
+                      <Route
+                        exact
+                        path={baseRouteUrl + "/maintenance"}
+                        render={(props) => (
+                          <Maintenance
+                            onhandleCSClick={this.GetSupportUrl}
+                            brandComm={this.props.getBrandCommunicationList}
+                            alert={this.props.enqueueSnackbar}
+                          />
+                        )}
+                      />
+                      <Route
+                        exact
+                        path={baseRouteUrl + "/banned"}
+                        render={(props) => (
+                          <Banned onhandleCSClick={this.GetSupportUrl} />
+                        )}
+                      />
+                      <Route
+                        exact
+                        path={baseRouteUrl + "/account/:tab/:popup?"}
+                        render={(props) => (
+                          <Account
+                            token={this.props.account.token}
+                            onhandleCSClick={this.GetSupportUrl}
+                            inbox={this.state.inbox}
+                            onloadHideAppBar={this.onloadHideAppBar}
+                            onloadShowAppBar={this.onloadShowAppBar}
+                          />
+                        )}
+                      />
+                      <Route
+                        exact
+                        path={baseRouteUrl + "/download"}
+                        component={Download}
+                      />
+                    </>
                     <Redirect to={"/" + i18n.language} />
                   </Switch>
                 </Main>

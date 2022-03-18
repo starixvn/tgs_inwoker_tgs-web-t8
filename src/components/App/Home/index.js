@@ -36,6 +36,9 @@ const HomeContainer = styled.div`
 `;
 const SliderContainer = styled.div`
   position: relative;
+  margin-top: ${({ moveUp }) => {
+    return moveUp && "106px";
+  }};
 `;
 
 const MarqueeContainer = styled.div`
@@ -236,7 +239,7 @@ class Home extends Component {
   render() {
     return (
       <HomeContainer>
-        <SliderContainer>
+        <SliderContainer moveUp={config.brand !== "GMO"}>
           <Slider list={this.props.ui.board_list}></Slider>
           {/* <MarqueeContainer>
             <Marquee text={this.props.ui.marqueeText}></Marquee>
@@ -350,7 +353,9 @@ class Home extends Component {
             animateOnce={true}
             style={{ overflow: "visible" }}
           >
-            <FourthSection></FourthSection>
+            <FourthSection
+              brand={this.brandSwitcher(config.brand)}
+            ></FourthSection>
           </ScrollAnimation>
           <ScrollAnimation
             animateIn="fadeInLeft"

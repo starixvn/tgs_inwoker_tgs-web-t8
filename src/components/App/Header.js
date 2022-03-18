@@ -348,7 +348,6 @@ const RightMenuLI = styled.li`
 
 const StyledAppBar = withStyles((theme) => ({
   root: {
-    backgroundColor: "#000000",
     "& .MuiToolbar-regular": {
       margin: "0 auto",
     },
@@ -359,6 +358,8 @@ const CustomAppBar = styled(StyledAppBar)`
   display: ${({ hide }) => {
     return hide ? "none" : "block";
   }};
+  background: ${({ theme }) => theme.pcAppBar};
+  box-shadow: none;
 `;
 
 const GameFrameWrapper = styled.div`

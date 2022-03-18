@@ -29,7 +29,13 @@ const FeatureContainer = styled.div`
 const FeatureBg = styled.div`
   width: 599px;
   height: 205px;
-  background: url(${FeatureBackgroundPNG}) no-repeat;
+  background: url(${(props) => {
+      return (
+        process.env.PUBLIC_URL +
+        `/assets/images/pcHomePage/rectangle${props.brand}.png`
+      );
+    }})
+    no-repeat;
   display: flex;
   align-items: center;
   color: #fff;
@@ -106,7 +112,7 @@ const FourthSection = (props) => {
         <FeatureContainer>
           {featureList.map((feature, index) => {
             return (
-              <FeatureBg>
+              <FeatureBg brand={props.brand}>
                 <FeatureIcon src={feature.icon} alt={index}></FeatureIcon>
                 <FeatureRightContainer>
                   <FeatureTitle lang={i18n.language}>
