@@ -311,6 +311,7 @@ export const wapT7 = {
 };
 
 export const wapT8 = {
+  pcAppBar: "#000",
   appbar: "#fff",
   loginBody: "#F0EFF5",
   loginText: "#676767",
@@ -320,7 +321,7 @@ export const wapT8 = {
   primary: "#658AF8",
   primaryRgb: "101, 138, 248",
   primaryText: "#000",
-  primaryGradient: "#658AF8",
+  primaryGradient: "#889ddf",
   primaryGradientRgb: "101, 138, 248",
   primaryHightlight: "#fde73f",
   secondary: "#676767",
@@ -348,9 +349,12 @@ export const wapT8 = {
   gamelisterSelectedText: "#fff",
   gamelisterSelectedIcon: "#fff",
   gamelisterSelectedButton: " rgb(140,166,241)",
+  pcFooter: "background: #262626;",
 };
 
 export const GMO = {
+  pcAppBar:
+    "linear-gradient(180deg, rgba(0,1,41,1) 50%, rgba(95,113,162,0) 100%)",
   appbar:
     "linear-gradient(180deg, rgba(0,1,41,1) 50%, rgba(95,113,162,0) 100%)",
   loginBody: "#000",
@@ -358,10 +362,10 @@ export const GMO = {
   body: "#000",
   bodyBackground: "#000",
   variant: "wapT8",
-  primary: "#e9a60b",
+  primary: "#cea866",
   primaryRgb: "101, 138, 248",
   primaryText: "#fff",
-  primaryGradient: " #e9a60b",
+  primaryGradient: "#cea866",
   primaryGradientRgb: "101, 138, 248",
   primaryHightlight: "#fde73f",
   secondary: "#fff",
@@ -373,10 +377,10 @@ export const GMO = {
   buttonText2: "#000",
   bottomnav:
     "linear-gradient(0deg, rgb(2, 31, 96) 25%, rgba(95,113,162,0) 100%)",
-  balance: "#e9a60b",
+  balance: "#cea866",
   bottomnavrad: "35px 35px 0px 0px",
   bottomNavAction: "#fff",
-  tabbar: "#e9a60b",
+  tabbar: "#cea866",
   cardText: "#676767",
   supportBg: `url(${
     process.env.PUBLIC_URL + `/assets/images/wapp/resource/T3/supportbg.png`
@@ -392,6 +396,8 @@ export const GMO = {
   gamelisterSelectedIcon: "linear-gradient(0deg, #FEFFA1 25%, #e9a60b 100%)",
   gamelisterSelectedButton:
     "linear-gradient(80deg, rgb(7, 24, 66) 25%, rgb(21, 44, 98) 100%)",
+  pcFooter:
+    "background:linear-gradient(0deg, rgb(2, 31, 96) 25%, rgba(95,113,162,0) 100%);height:200px;display:flex;align-items:center",
 };
 export const themeList = {
   red: themeRed,
