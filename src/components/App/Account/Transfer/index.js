@@ -55,7 +55,7 @@ const Title = styled.div`
   align-items: baseline;
   display: flex;
   & h3 {
-    color: ${({ theme }) => theme.secondary};
+    color: #676767;
     font-size: 24px;
     font-weight: 400;
   }
@@ -88,7 +88,7 @@ const AllWalletItem = styled.div`
 const AllWalletTitle = styled.div`
   background-image: linear-gradient(
     180deg,
-    #889ddf,
+    ${({ theme }) => theme.primaryGradient},
     ${({ theme }) => theme.primary}
   );
   border-bottom: 1px solid #ccc;
@@ -217,7 +217,7 @@ const GameTranferLeftWrap = styled.div`
   float: left;
   background-image: linear-gradient(
     180deg,
-    #889ddf,
+    ${({ theme }) => theme.primaryGradient},
     ${({ theme }) => theme.primary}
   );
   border-bottom: 1px solid #ccc;
