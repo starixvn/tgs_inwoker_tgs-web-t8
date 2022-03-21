@@ -59,7 +59,7 @@ pipeline {
                         envItems.each { key, value -> 
                             env."tgs_${key}" = value;
                         }
-                        componentArray = "${env.tgs_lobby_t6_components}".split(",")
+                        componentArray = "${env.tgs_lobby_t8_components}".split(",")
                     }
                 }
 

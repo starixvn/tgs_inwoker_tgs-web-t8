@@ -60,7 +60,7 @@ const Title = styled.div`
   align-items: baseline;
   display: flex;
   & h3 {
-    color: ${({ theme }) => theme.secondary};
+    color: #676767;
     font-size: 24px;
     font-weight: 400;
   }
@@ -99,7 +99,7 @@ const ContentButton = styled.div`
   color: #fff;
   margin-right: 5px;
   border-radius: 6px;
-  background-color: ${(props)=>props.theme.primary};
+  background-color: ${(props) => props.theme.primary};
   &:hover {
     cursor: pointer;
     filter: grayscale(1);
@@ -397,7 +397,11 @@ const AllWalletItem = styled.div`
   padding-right: 20px;
 `;
 const AllWalletTitle = styled.div`
-  background-image: linear-gradient(180deg, #889ddf,${({ theme }) => theme.primary});
+  background-image: linear-gradient(
+    180deg,
+    ${({ theme }) => theme.primaryGradient},
+    ${({ theme }) => theme.primary}
+  );
   border-bottom: 1px solid #ccc;
   box-sizing: border-box;
   color: #fff;
@@ -492,7 +496,7 @@ const DialogCloseIconContainer = styled.div`
 `;
 const DialogHeader = styled.div`
   height: 50px;
-  background-color: ${({theme})=>theme.primary};
+  background-color: ${({ theme }) => theme.primary};
 `;
 const DialogHeadertitle = styled.div`
   text-align: center;
@@ -780,7 +784,7 @@ class Profile extends Component {
   };
   handleManageCard = (cardId) => {
     this.props.onhandleManageCardClick(cardId);
-  }
+  };
   handleAddCard = () => {
     if (config.features.ChangesNotAllowed) {
       this.props.enqueueSnackbar(i18n.t("card.toEdit"), {
@@ -789,7 +793,7 @@ class Profile extends Component {
     } else {
       this.props.onhandleAddCardClick();
     }
-  }
+  };
   handleFilterBankNumber = (item) => {
     let last4Digits = "";
     if (item.banktype === "ThirdParty" || item.banktype === "FPS") {
@@ -809,7 +813,7 @@ class Profile extends Component {
         return last4Digits.padStart(item.detail.address.length, "*");
       }
     }
-  }
+  };
   render() {
     return (
       <Container>
@@ -919,37 +923,55 @@ class Profile extends Component {
           )} */}
           </InnerWrap>
           <InnerWrap>
-          <BankCardContainer>
-            {this.props.wallet.bankCardList.map((item, index) => {
-              return (
-                <BankCardItem key={index}>
+            <BankCardContainer>
+              {this.props.wallet.bankCardList.map((item, index) => {
+                return (
+                  <BankCardItem key={index}>
+                    <BankCardTitle>
+                      {i18n.t("withdrawal.bankCard")}
+                    </BankCardTitle>
+                    <BankCardInfo>
+                      <BankCardNumber>
+                        <DynamicFont
+                          content={this.handleFilterBankNumber(item)}
+                        ></DynamicFont>
+                      </BankCardNumber>
+                      <BankCardAccount>
+                        {" "}
+                        {i18n.t("deposit.details.account")}
+                      </BankCardAccount>
+                      <BankCardType>
+                        {item.banktype === "bank"
+                          ? item.detail.bankName
+                          : item.banktype}
+                      </BankCardType>
+                    </BankCardInfo>
+                    <BankCardAction
+                      onClick={() => {
+                        this.handleManageCard(item.id);
+                      }}
+                    >
+                      {i18n.t("card.checkDetails")}
+                    </BankCardAction>
+                  </BankCardItem>
+                );
+              })}
+              {this.props.wallet.bankCardList.length < 4 && (
+                <BankCardItem>
                   <BankCardTitle>{i18n.t("withdrawal.bankCard")}</BankCardTitle>
-                  <BankCardInfo>
-                    <BankCardNumber>
-                    <DynamicFont content={this.handleFilterBankNumber(item)}>
-                    </DynamicFont>
-                    </BankCardNumber>
-                    <BankCardAccount> {i18n.t("deposit.details.account")}</BankCardAccount>
-                    <BankCardType>
-                      {item.banktype === "bank"
-                        ? item.detail.bankName
-                        : item.banktype}
-                    </BankCardType>
-                  </BankCardInfo>
-                  <BankCardAction onClick={()=>{this.handleManageCard(item.id);}}>{i18n.t("card.checkDetails")}</BankCardAction>
+                  <BankCardAdd
+                    onClick={() => {
+                      this.handleAddCard();
+                    }}
+                  >
+                    <BankCardAddIcon></BankCardAddIcon>
+                    <BankCardAddText>
+                      {i18n.t("card.msgAddCard")}
+                    </BankCardAddText>
+                  </BankCardAdd>
                 </BankCardItem>
-              );
-            })}
-            {this.props.wallet.bankCardList.length < 4 &&
-            <BankCardItem>
-              <BankCardTitle>{i18n.t("withdrawal.bankCard")}</BankCardTitle>
-              <BankCardAdd onClick={()=>{this.handleAddCard();}}>
-                <BankCardAddIcon></BankCardAddIcon>
-                <BankCardAddText>{i18n.t("card.msgAddCard")}</BankCardAddText>
-              </BankCardAdd>
-            </BankCardItem>
-            }
-          </BankCardContainer>
+              )}
+            </BankCardContainer>
           </InnerWrap>
         </LeftContainer>
         <RightContainer>
@@ -959,17 +981,17 @@ class Profile extends Component {
                 {i18n.t("web.account.header.total")}
               </AllWalletTitle>
               <AllWalletInfo>
-              <DynamicFont
-                content={Common.formatNumberWithThousand(
-                  this.props.game.providerList.reduce(
-                    (total, item) =>
-                      item.transferwallet === true
-                        ? (total += item.balance)
-                        : (total += 0),
-                    0
-                  ) + this.props.wallet.mainBalance
-                ).toString()}
-              />
+                <DynamicFont
+                  content={Common.formatNumberWithThousand(
+                    this.props.game.providerList.reduce(
+                      (total, item) =>
+                        item.transferwallet === true
+                          ? (total += item.balance)
+                          : (total += 0),
+                      0
+                    ) + this.props.wallet.mainBalance
+                  ).toString()}
+                />
               </AllWalletInfo>
             </AllWalletItem>
             <WalletItemList>
@@ -1001,7 +1023,9 @@ class Profile extends Component {
                         content={
                           item.maintenance === 1
                             ? i18n.t("transfer.maintenance")
-                            : Common.formatNumberWithCommas(item.balance).toString()
+                            : Common.formatNumberWithCommas(
+                                item.balance
+                              ).toString()
                         }
                       />
                     </WalletItemInfo>
@@ -1018,9 +1042,9 @@ class Profile extends Component {
         >
           <DialogHeader>
             <DialogHeadertitle>{this.state.dialogTitle}</DialogHeadertitle>
-            <DialogCloseIconContainer
-              onClick={this.handleCloseDialog}
-            >✖</DialogCloseIconContainer>
+            <DialogCloseIconContainer onClick={this.handleCloseDialog}>
+              ✖
+            </DialogCloseIconContainer>
           </DialogHeader>
           <DialogContainer>{this.state.dialogComponent}</DialogContainer>
         </StyledDialog>

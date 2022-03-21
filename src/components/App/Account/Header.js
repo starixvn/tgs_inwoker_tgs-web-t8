@@ -16,16 +16,6 @@ import IconBonusPNG from "../../../assets/images/icon-bonus.png";
 import IconInboxPNG from "../../../assets/images/icon-inbox.png";
 import IconVIPPNG from "../../../assets/images/icon-vip-hover.png";
 
-import IconDepositActivePNG from "../../../assets/images/icon-deposit-active.png";
-import IconWithdrawActivePNG from "../../../assets/images/icon-withdraw-active.png";
-import IconTransferActivePNG from "../../../assets/images/icon-transfer-active.png";
-import IconReportActivePNG from "../../../assets/images/icon-report-active.png";
-import IconProfileActivePNG from "../../../assets/images/icon-profile-active.png";
-
-import IconBonusActivePNG from "../../../assets/images/icon-bonus-active.png";
-import IconInboxActivePNG from "../../../assets/images/icon-inbox-active.png";
-import IconVIPActivePNG from "../../../assets/images/icon-vip-active.png";
-
 import i18n from "../../../utils/i18n";
 import Common from "../../../utils/Common";
 import config from "../../../config/config";
@@ -73,7 +63,6 @@ const TopContainer = styled.div`
   float: right;
   color: #fff;
 `;
-
 
 const BottomContainer = styled.div`
   margin: 0 auto;
@@ -128,6 +117,19 @@ const RightMenuTextSpan = styled.span`
   text-align: center;
 `;
 
+const MenuImgFrame = styled.div`
+  height: 41px;
+  width: 45px;
+  float: left;
+  display: block;
+  background-size: 25px 25px;
+  background-color: ${({ active, theme }) => {
+    return active ? theme.primary : "#fff";
+  }};
+  mask: ${(props) => {
+    return `url(${`${props.img}`}) no-repeat center center;`;
+  }};
+`;
 
 const RightMenuLI = styled.li`
   position: relative;
@@ -147,10 +149,14 @@ const RightMenuLI = styled.li`
   @media (max-width: 650px) {
     width: 100px;
   }
-  
+
   &:hover {
     color: ${({ theme }) => theme.primary};
     cursor: pointer;
+
+    ${MenuImgFrame} {
+      background: ${({ theme }) => theme.primary};
+    }
   }
   background-repeat: no-repeat;
   background-position: 15% center;
@@ -163,22 +169,6 @@ const RightMenuLI = styled.li`
       : `
   
   `}
-`;
-
-const MenuImgFrame = styled.div`
-  height: 41px;
-  width: 45px;
-  float: left;
-  display: block;
-  background-size: 25px 25px;
-  ${(props) =>
-    props.active
-      ? `background: url(${props.activeImg}) no-repeat center center;`
-      : `background: url(${props.img}) no-repeat center center;`}
-
-  ${RightMenuLI}:hover & {
-    background: url(${(props) => props.activeImg}) no-repeat center center;
-  }
 `;
 
 const styles = {
@@ -205,8 +195,7 @@ const styles = {
     margin: "30px 0 0 0",
     transition: "all .3s",
   },
-  maxLabel: {
-  },
+  maxLabel: {},
   minLabel: {
     transition: "all .3s",
     transform: "translate(18px, -30px)",
@@ -231,56 +220,48 @@ function Header(props) {
       title: i18n.t("web.account.profile"),
       canDisplay: true,
       img: IconProfilePNG,
-      activeImg: IconProfileActivePNG
     },
     {
       path: "deposit",
       title: i18n.t("web.account.deposit"),
       canDisplay: true,
       img: IconDepositPNG,
-      activeImg: IconDepositActivePNG
     },
     {
       path: "withdrawal",
       title: i18n.t("web.account.withdrawal"),
       canDisplay: true,
       img: IconWithdrawPNG,
-      activeImg: IconWithdrawActivePNG
     },
     {
       path: "transfer",
       title: i18n.t("web.account.transfer"),
       canDisplay: props.game.containTransferWallet,
       img: IconTransferPNG,
-      activeImg: IconTransferActivePNG
     },
     {
       path: "report",
       title: i18n.t("web.account.report"),
       canDisplay: true,
       img: IconReportPNG,
-      activeImg: IconReportActivePNG
     },
     {
       path: "affiliate",
       title: i18n.t("web.account.affiliate"),
       canDisplay: config.features.HaveAffiliateFeature,
       img: IconBonusPNG,
-      activeImg: IconBonusActivePNG
     },
     {
       path: "vip",
       title: "VIP",
       canDisplay: true,
       img: IconVIPPNG,
-      activeImg: IconVIPActivePNG
     },
     {
       path: "inbox",
       title: i18n.t("web.account.inbox"),
       canDisplay: true,
       img: IconInboxPNG,
-      activeImg: IconInboxActivePNG
     },
   ];
 
@@ -302,7 +283,7 @@ function Header(props) {
   };
 
   const onhandleLogoClick = () => {
-    props.setActivePage("/")
+    props.setActivePage("/");
     props.history.push("/" + i18n.language + "/");
   };
 
@@ -310,7 +291,10 @@ function Header(props) {
     <CustomAppBar>
       <InnerWrap>
         <TopContainerWrap>
-          <TopContainer> {i18n.t("web.header.welcomBack")}{" "} {props.info.member_username}</TopContainer>
+          <TopContainer>
+            {" "}
+            {i18n.t("web.header.welcomBack")} {props.info.member_username}
+          </TopContainer>
         </TopContainerWrap>
         <BottomContainer>
           <LogoContainer
@@ -343,7 +327,11 @@ function Header(props) {
                     activeImg={item.activeImg}
                     onClick={() => props.onhandleClickTab(item.path)}
                   >
-                    <MenuImgFrame active={props.activePage === `${item.path}`} img={item.img} activeImg={item.activeImg}></MenuImgFrame>
+                    <MenuImgFrame
+                      active={props.activePage === `${item.path}`}
+                      img={item.img}
+                      activeImg={item.activeImg}
+                    ></MenuImgFrame>
                     <RightMenuTextSpan
                       className={`${
                         shouldShow === null

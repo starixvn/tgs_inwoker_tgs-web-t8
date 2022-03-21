@@ -29,7 +29,7 @@ const Title = styled.div`
   align-items: baseline;
   display: flex;
   & h3 {
-    color: ${({ theme }) => theme.secondary};
+    color: #676767;
     font-size: 24px;
     font-weight: 400;
   }
@@ -106,11 +106,11 @@ class Affiliate extends Component {
   render() {
     return (
       <Container>
-      <Header>
-        <Title>
-          <h3>{i18n.t("affiliate.title")}</h3>
-        </Title>
-      </Header>
+        <Header>
+          <Title>
+            <h3>{i18n.t("affiliate.title")}</h3>
+          </Title>
+        </Header>
 
         <InnerWrap>
           {

@@ -33,7 +33,6 @@ const Container = styled.div`
   flex-direction: row-reverse;
   align-items: center;
   height: 38px;
-  width: 250px;
 `;
 const BtnLoginRegister = styled.button`
   background-color: ${(props) => props.theme.primary};

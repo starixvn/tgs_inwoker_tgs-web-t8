@@ -50,7 +50,7 @@ const Title = styled.div`
   align-items: baseline;
   display: flex;
   & h3 {
-    color: ${({ theme }) => theme.secondary};
+    color: #676767;
     font-size: 24px;
     font-weight: 400;
   }
@@ -112,9 +112,7 @@ class Deposit extends Component {
       loading: false,
       depositPromotion: this.props.match.params.promotionid,
       amount: "",
-      name: "",
-      account: "",
-      step: 0,
+      step: 1,
       exchangeRate: { buyprice: 0, sellprice: 0 },
       files: [],
       //to handle access via URL
@@ -126,7 +124,11 @@ class Deposit extends Component {
       paymenturl: "",
       openAnnouncement: config.features.DepositNotification,
     };
-    this.state = this.initialState;
+    this.state = {
+      ...this.initialState,
+      name: "",
+      account: "",
+    };
   }
 
   componentDidMount() {
@@ -153,14 +155,13 @@ class Deposit extends Component {
 
   componentDidUpdate(preProps, preState) {
     if (config.features.Deposit_AutofillFirstCard) {
-      if (preProps.wallet.bankCardList !== this.props.wallet.bankCardList) {
-        if (this.props.wallet.bankCardList.length > 0) {
-          this.setState({
-            account: this.props.wallet.bankCardList[0].detail.bankAccount,
-            name: this.props.wallet.bankCardList[0].detail.name,
-          });
-        }
-      }
+      this.setState({
+        account:
+          this.props.wallet.bankCardList.length > 0
+            ? this.props.wallet.bankCardList[0].detail.bankAccount
+            : "",
+        name: this.props.account.info.member_name,
+      });
     }
 
     if (
@@ -311,12 +312,13 @@ class Deposit extends Component {
     }
   };
   handleTabClick = (item, index) => {
-    if (this.state.step === 0) {
+    if (this.state.step === 1) {
       this.setState({
         ...this.state,
         selectedPaymentIndex: index,
         amount: "",
-        name: "",
+        // name: "",
+        //: "",
         depositPromotion: "",
         selectedChannelIndex: 0,
         selectedMethodIndex: 0,
@@ -482,6 +484,7 @@ class Deposit extends Component {
       name: e.target.value,
     });
   };
+
   handleAccountChange = (e) => {
     this.setState({
       ...this.state,

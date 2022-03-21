@@ -12,9 +12,9 @@ const Container = styled.div`
   width: 100%;
 
   display: ${({ hide }) => {
-    return hide ? "none" : "block";
-  }}
-  background: #262626;
+      return hide ? "none" : "block";
+    }}
+    ${({ theme }) => theme.pcFooter};
 `;
 
 const MiddleContainer = styled.div`

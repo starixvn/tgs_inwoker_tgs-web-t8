@@ -34,7 +34,7 @@ const Title = styled.div`
   align-items: baseline;
   display: flex;
   & h3 {
-    color: ${({ theme }) => theme.secondary};
+    color: #676767;
     font-size: 24px;
     font-weight: 400;
   }
@@ -48,26 +48,26 @@ const InnerWrap = styled.div`
 `;
 
 const TabContainer = styled.div`
-align-items: center;
-display: flex;
-justify-content: flex-start;
-border-bottom: 2px solid #ccc;
-box-sizing: border-box;
-overflow: visible;
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  border-bottom: 2px solid #ccc;
+  box-sizing: border-box;
+  overflow: visible;
 `;
 
 const TabButton = styled.span`
-box-sizing: border-box;
-    color: #666;
-    cursor: pointer;
-    display: block;
-    font-size: 16px;
-    font-stretch: normal;
-    font-style: normal;
-    font-weight: 300;
-    min-width: 100px;
-    padding: 16px;
-    position: relative;
+  box-sizing: border-box;
+  color: #666;
+  cursor: pointer;
+  display: block;
+  font-size: 16px;
+  font-stretch: normal;
+  font-style: normal;
+  font-weight: 300;
+  min-width: 100px;
+  padding: 16px;
+  position: relative;
 
   ${(props) =>
     props.active
@@ -332,52 +332,51 @@ class Report extends Component {
         </Header>
         <InnerWrap>
           <TabContainer>
-
-          {/* <TabButton
+            {/* <TabButton
             active={this.state.tab === 1}
             onClick={() => this.handleTabClick(1)}
           >
             {i18n.t("report.transferDetails")}
           </TabButton> */}
-          <TabButton
-            active={this.state.tab === 2}
-            onClick={() => this.handleTabClick(2)}
-          >
-            {i18n.t("report.bettingDetails")}
-          </TabButton>
-          <TabButton
-            active={this.state.tab === 3}
-            onClick={() => this.handleTabClick(3)}
-          >
-            {i18n.t("report.withdrawalDetails")}
-          </TabButton>
-          <TabButton
-            active={this.state.tab === 4}
-            onClick={() => this.handleTabClick(4)}
-          >
-            {i18n.t("report.depositDetails")}
-          </TabButton>
-          {/*  <TabButton
+            <TabButton
+              active={this.state.tab === 2}
+              onClick={() => this.handleTabClick(2)}
+            >
+              {i18n.t("report.bettingDetails")}
+            </TabButton>
+            <TabButton
+              active={this.state.tab === 3}
+              onClick={() => this.handleTabClick(3)}
+            >
+              {i18n.t("report.withdrawalDetails")}
+            </TabButton>
+            <TabButton
+              active={this.state.tab === 4}
+              onClick={() => this.handleTabClick(4)}
+            >
+              {i18n.t("report.depositDetails")}
+            </TabButton>
+            {/*  <TabButton
             active={this.state.tab === 5}
             onClick={() => this.handleTabClick(5)}
           >
             {i18n.t("report.rebateDetails")}
           </TabButton> */}
-          {this.props.transferwallet && (
-            <TabButton
-              active={this.state.tab === 6}
-              onClick={() => this.handleTabClick(6)}
-            >
-              {i18n.t("report.transfer.title")}
-            </TabButton>
-          )}
+            {this.props.transferwallet && (
+              <TabButton
+                active={this.state.tab === 6}
+                onClick={() => this.handleTabClick(6)}
+              >
+                {i18n.t("report.transfer.title")}
+              </TabButton>
+            )}
 
-          <TabButton
-            active={this.state.tab === 7}
-            onClick={() => this.handleTabClick(7)}
-          >
-            {i18n.t("report.joinedPromo.title")}
-          </TabButton>
+            <TabButton
+              active={this.state.tab === 7}
+              onClick={() => this.handleTabClick(7)}
+            >
+              {i18n.t("report.joinedPromo.title")}
+            </TabButton>
           </TabContainer>
 
           {(() => {

@@ -39,7 +39,7 @@ const Title = styled.div`
   align-items: baseline;
   display: flex;
   & h3 {
-    color: ${({ theme }) => theme.secondary};
+    color: #676767;
     font-size: 24px;
     font-weight: 400;
   }
@@ -104,7 +104,7 @@ class CardManagement extends Component {
     ) {
       if (this.props.wallet.addBankCardResult.IsSuccess) {
         this.props.resetResult();
-        this.props.getBankCardList().then(()=>{
+        this.props.getBankCardList().then(() => {
           this.setState({
             ...this.state,
             loading: false,
@@ -150,17 +150,16 @@ class CardManagement extends Component {
   getCardDetail() {
     let cardDetail = {};
     let cardId = "";
-    try{
-        if (this.props.location.state !== null) {
-          if (this.props.location.state.cardId !== undefined) {
-            cardId = this.props.location.state.cardId;
-            cardDetail = this.props.wallet.bankCardList.find(
-              (item) => item.id === cardId
-            );
-          }
+    try {
+      if (this.props.location.state !== null) {
+        if (this.props.location.state.cardId !== undefined) {
+          cardId = this.props.location.state.cardId;
+          cardDetail = this.props.wallet.bankCardList.find(
+            (item) => item.id === cardId
+          );
         }
-    }
-    catch(err){}
+      }
+    } catch (err) {}
     return cardDetail;
   }
 
