@@ -241,9 +241,9 @@ class Home extends Component {
       <HomeContainer>
         <SliderContainer moveUp={config.brand !== "GMO"}>
           <Slider list={this.props.ui.board_list}></Slider>
-          {/* <MarqueeContainer>
+          <MarqueeContainer>
             <Marquee text={this.props.ui.marqueeText}></Marquee>
-          </MarqueeContainer> */}
+          </MarqueeContainer>
         </SliderContainer>
         <SectionContainer>
           <FirstSection
