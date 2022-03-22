@@ -63,7 +63,7 @@ const LanguageChanger = ({ language, changeLanguage }) => {
               key={index}
               onClick={() => {
                 i18n.changeLanguage(data.culturecode);
-                AppHistory.replace(data.culturecode);
+                AppHistory.replace("/" + data.culturecode);
                 changeLanguage(data.culturecode);
                 setAnchorEl(null);
               }}
