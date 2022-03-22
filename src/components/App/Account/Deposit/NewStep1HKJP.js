@@ -355,7 +355,7 @@ class NewStepOne extends Component {
                               </SelectionContainer>
                               {config.features.Deposit_AddTips && (
                                 <div style={{ marginLeft: 30, marginTop: 8 }}>
-                                  <Remark> {i18n.t("mgm.depositTips")}</Remark>
+                                  <Remark> {i18n.t("mgm.accountDepositTips")}</Remark>
                                 </div>
                               )}
                             </FormRightContainer>

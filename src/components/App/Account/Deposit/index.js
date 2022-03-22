@@ -112,7 +112,7 @@ class Deposit extends Component {
       loading: false,
       depositPromotion: this.props.match.params.promotionid,
       amount: "",
-      step: 1,
+      step: 0,
       exchangeRate: { buyprice: 0, sellprice: 0 },
       files: [],
       //to handle access via URL
@@ -312,7 +312,7 @@ class Deposit extends Component {
     }
   };
   handleTabClick = (item, index) => {
-    if (this.state.step === 1) {
+    if (this.state.step === 0) {
       this.setState({
         ...this.state,
         selectedPaymentIndex: index,
