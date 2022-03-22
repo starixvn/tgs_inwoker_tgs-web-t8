@@ -22,34 +22,52 @@ const GameSelectorWithSlider = styled.div`
   margin-top: 30px;
   position: relative;
   overflow: visible;
+  cursor: pointer;
+  user-select: none;
 `;
 
 const handleFirstLastChild = (index) => {
   return `
-  .slick-slide:nth-child(${index+5}) &:before, .slick-slide:nth-child(${index+9}) &:before{ 
+  .slick-slide:nth-child(${index + 5}) &:before, .slick-slide:nth-child(${
+    index + 9
+  }) &:before{ 
     z-index: 1; 
     transform: scale(0.85); 
     transition: all .5s;     
     opacity: 1;
   }
-  .slick-slide:nth-child(${index+5}) & ${SliderImgTitle}, .slick-slide:nth-child(${index+6}) & ${SliderImgTitle} ,.slick-slide:nth-child(${index+7}) & ${SliderImgTitle},
-  .slick-slide:nth-child(${index+5}) & ${SliderImgButton}, .slick-slide:nth-child(${index+6}) & ${SliderImgButton} ,.slick-slide:nth-child(${index+7}) & ${SliderImgButton}  {
+  .slick-slide:nth-child(${
+    index + 5
+  }) & ${SliderImgTitle}, .slick-slide:nth-child(${
+    index + 6
+  }) & ${SliderImgTitle} ,.slick-slide:nth-child(${
+    index + 7
+  }) & ${SliderImgTitle},
+  .slick-slide:nth-child(${
+    index + 5
+  }) & ${SliderImgButton}, .slick-slide:nth-child(${
+    index + 6
+  }) & ${SliderImgButton} ,.slick-slide:nth-child(${
+    index + 7
+  }) & ${SliderImgButton}  {
     display: block;
   }
-  .slick-slide:nth-child(${index+6}) &:before, .slick-slide:nth-child(${index+8}) &:before{ 
+  .slick-slide:nth-child(${index + 6}) &:before, .slick-slide:nth-child(${
+    index + 8
+  }) &:before{ 
     z-index: 2; 
     transform: scale(0.85); 
     transition: all .5s;     
     opacity: 1;
   }
-  .slick-slide:nth-child(${index+7}) &:before {
+  .slick-slide:nth-child(${index + 7}) &:before {
     z-index: 3;
     transform: scale(1);
     transition: all .5s;
     opacity: 1;
   }
   `;
-}
+};
 
 const SliderImg = styled.div`
   width: 256px;
@@ -65,10 +83,10 @@ const SliderImg = styled.div`
     height: 375px;
     border-radius: 13px;
     z-index: -1;
-    opacity: ${(props=>props.isSliding?'1':'0')};
+    opacity: ${(props) => (props.isSliding ? "1" : "0")};
     background: url(${(props) => props.img}) no-repeat;
     transform: scale(0.85);
-    transition: all .5s;
+    transition: all 0.5s;
     background-position: bottom;
   }
 `;
@@ -93,7 +111,7 @@ const SliderImgButton = styled.div`
   line-height: 2em;
   &:hover {
     cursor: pointer;
-    background-color: ${(props)=> props.theme.primary};
+    background-color: ${(props) => props.theme.primary};
   }
   display: none;
   transform: translate(-27px, 195px);
@@ -154,8 +172,15 @@ const SecondSection = (props) => {
     draggable: false,
     swipe: false,
     cssEase: "linear",
-    beforeChange: (current, next) =>{ setActiveSlide(next); setActiveSlide2(next); setIsSliding(true);} ,
-    afterChange: (current) => {setActiveSlide2(current); setIsSliding(false);},
+    beforeChange: (current, next) => {
+      setActiveSlide(next);
+      setActiveSlide2(next);
+      setIsSliding(true);
+    },
+    afterChange: (current) => {
+      setActiveSlide2(current);
+      setIsSliding(false);
+    },
   };
 
   const secondSectionSlides = [
@@ -253,10 +278,4 @@ const SecondSection = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    game: state.game,
-  };
-};
-
-export default connect(mapStateToProps, null)(SecondSection);
+export default SecondSection;
