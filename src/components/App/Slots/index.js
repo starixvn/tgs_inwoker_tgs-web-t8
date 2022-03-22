@@ -669,51 +669,6 @@ const StyledPagination = withStyles({
     },
   },
 })(Pagination);
-
-const NoContentContainer = (props) => {
-  switch (props.lang) {
-    case "th-TH":
-    case "vi-VN":
-      return (
-        <Container
-          style={{
-            height: `auto`,
-            minHeight: `780px`,
-            background:
-              "url(" +
-              process.env.PUBLIC_URL +
-              `/assets/images/pcGamePage/no.jpg) no-repeat`,
-            backgroundAttachment: "fixed",
-            backgroundSize: "cover",
-          }}
-        >
-          <NoContentText lang={i18n.language}>
-            {i18n.t("promotion.emptyLine1")}
-          </NoContentText>
-          <NoContentText lang={i18n.language}>
-            {i18n.t("promotion.emptyLine2")}
-          </NoContentText>
-        </Container>
-      );
-    case "en-US":
-    case "zh-CN":
-    case "zh-TW":
-    default:
-      return (
-        <Container
-          style={{
-            background:
-              "url(" +
-              process.env.PUBLIC_URL +
-              `/assets/images/pcGamePage/no_${i18n.language}.jpg) no-repeat`,
-            backgroundAttachment: "fixed",
-            backgroundSize: "cover",
-          }}
-        ></Container>
-      );
-  }
-};
-
 class Slots extends Component {
   constructor(props) {
     super(props);
@@ -1056,7 +1011,7 @@ class Slots extends Component {
       .filter((s) => {
         return s.isactive === true; // show only active game.
       });
-    return this.state.gameList.length ? (
+    return (
       <Container
         type={
           this.state.type === GameTypeEnum.TABLEGAME
@@ -1169,8 +1124,6 @@ class Slots extends Component {
         </GameDisplayContainer>
         <Loading show={this.state.loading}></Loading>
       </Container>
-    ) : (
-      <NoContentContainer lang={i18n.language}></NoContentContainer>
     );
   }
 }

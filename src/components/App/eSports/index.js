@@ -129,45 +129,6 @@ const LeftNavItem = styled.li`
       : ``;
   }}
 `;
-
-const NoContentContainer = (props) => {
-  switch (props.lang) {
-    case "th-TH":
-    case "vi-VN":
-      return (
-        <Container
-          style={{
-            background:
-              "url(" +
-              process.env.PUBLIC_URL +
-              `/assets/images/pcGamePage/no.jpg) no-repeat center`,
-          }}
-        >
-          <NoContentText lang={i18n.language}>
-            {i18n.t("promotion.emptyLine1")}
-          </NoContentText>
-          <NoContentText lang={i18n.language}>
-            {i18n.t("promotion.emptyLine2")}
-          </NoContentText>
-        </Container>
-      );
-    case "en-US":
-    case "zh-CN":
-    case "zh-TW":
-    default:
-      return (
-        <Container
-          style={{
-            background:
-              "url(" +
-              process.env.PUBLIC_URL +
-              `/assets/images/pcGamePage/no_${i18n.language}.jpg) no-repeat center`,
-          }}
-        ></Container>
-      );
-  }
-};
-
 class ESports extends Component {
   constructor(props) {
     super(props);
@@ -217,7 +178,7 @@ class ESports extends Component {
     }
   };
   render() {
-    return this.state.list.length ? (
+    return (
       <Container>
         <SportsWrapper>
           <LeftContainer>
@@ -251,7 +212,6 @@ class ESports extends Component {
           </LeftContainer>
         </SportsWrapper>
       </Container>
-    ) : (<NoContentContainer lang={i18n.language}></NoContentContainer>
     );
   }
 }
