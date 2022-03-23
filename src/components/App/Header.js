@@ -80,6 +80,8 @@ const TopRightContainer = styled.div``;
 
 const TimerContainer = styled.div`
   font-family: arial;
+  display: flex;
+  align-items: center;
   float: left;
   @media (max-width: 950px) {
     display: none;
