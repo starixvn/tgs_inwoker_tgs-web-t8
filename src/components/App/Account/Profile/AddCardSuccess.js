@@ -63,7 +63,7 @@ function AddCardSuccess(props) {
             ></Button>
           )}
         <Button
-          name={i18n.t("card.success.goProfile")}
+          name={props.backButtonText}
           width={255}
           handleClick={props.onhandleBackClick}
         ></Button>
