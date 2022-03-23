@@ -35,8 +35,6 @@ const TitleContainer = styled.div`
   text-align: center;
 
   font-size: 30px;
-
-  color: ${({ theme }) => theme.secondary};
 `;
 const FormContainer = styled.div`
   margin: 30px 60px 40px 60px;

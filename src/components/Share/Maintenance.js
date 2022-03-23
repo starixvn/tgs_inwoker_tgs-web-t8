@@ -6,7 +6,7 @@ import MaintenancePNG from "../../assets/images/maintenance-blank.jpg";
 import { Dialog } from "@material-ui/core";
 import { connect } from "react-redux";
 import Common from "../../utils/Common";
-import {generalAction} from "../../api-services/actions/generalAction";
+import { generalAction } from "../../api-services/actions/generalAction";
 import { withSnackbar } from "notistack";
 import { AppHistory } from "../../history/History";
 import IMHandler from "./IMHandler";
@@ -131,6 +131,11 @@ const QRCodeText = styled.div`
   font-size: 20px;
 `;
 
+const QRCodeImage = styled.img`
+  height: 150px;
+  width: 150px;
+`;
+
 const Maintenance = (props) => {
   const [open, setOpen] = useState(false);
   const [imList, setIMList] = useState([]);
@@ -246,7 +251,7 @@ const Maintenance = (props) => {
                 >
                   {data.qrcodeurl ? (
                     <QRCodeTextContainer>
-                      <QRCode value={data.qrcodeurl} bgColor={"#f6f8f7"} />
+                      <QRCodeImage src={data.qrcodeurl} />
                       <QRCodeText>{data.type}</QRCodeText>
                     </QRCodeTextContainer>
                   ) : (

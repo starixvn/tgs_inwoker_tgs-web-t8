@@ -262,48 +262,6 @@ const GameItemJoinGameButton = styled(GameItemButton)`
     filter: grayscale(0.3);
   }
 `;
-
-const NoContentContainer = (props) => {
-  switch (props.lang) {
-    case "th-TH":
-    case "vi-VN":
-      return (
-        <Container
-          style={{
-            background:
-              "url(" +
-              process.env.PUBLIC_URL +
-              `/assets/images/pcGamePage/no.jpg) no-repeat`,
-            backgroundAttachment: "fixed",
-            backgroundSize: "cover",
-          }}
-        >
-          <NoContentText lang={i18n.language}>
-            {i18n.t("promotion.emptyLine1")}
-          </NoContentText>
-          <NoContentText lang={i18n.language}>
-            {i18n.t("promotion.emptyLine2")}
-          </NoContentText>
-        </Container>
-      );
-    case "en-US":
-    case "zh-CN":
-    case "zh-TW":
-    default:
-      return (
-        <Container
-          style={{
-            background:
-              "url(" +
-              process.env.PUBLIC_URL +
-              `/assets/images/pcGamePage/no_${i18n.language}.jpg) no-repeat`,
-            backgroundAttachment: "fixed",
-            backgroundSize: "cover",
-          }}
-        ></Container>
-      );
-  }
-};
 class Fishing extends Component {
   constructor(props) {
     super(props);
@@ -466,7 +424,7 @@ class Fishing extends Component {
         ));
     }
 
-    return this.state.gameList.length ? (
+    return (
       <Container>
         <GameTabContainer>
           <GameTabButton
@@ -504,8 +462,6 @@ class Fishing extends Component {
         </GameTabContainer>
         <GameContainer>{list}</GameContainer>
       </Container>
-    ) : (
-      <NoContentContainer lang={i18n.language}></NoContentContainer>
     );
   }
 }
