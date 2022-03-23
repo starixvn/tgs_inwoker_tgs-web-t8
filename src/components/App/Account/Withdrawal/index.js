@@ -420,8 +420,10 @@ class Withdrawal extends Component {
                       return (
                         <AddCardSuccess
                           onhandleBindCardClick={this.handleBindCardClick}
-                          onhandleGoWithdrawClick={this.handleGoWithdrawClick}
+                          onhandleBackClick={this.handleGoWithdrawClick}
                           onhandleCSClick={this.handleCSClick}
+                          bankCardListLength={this.props.wallet.bankCardList.length}
+                          backButtonText={i18n.t("card.success.goWithdrawal")}
                         ></AddCardSuccess>
                       );
                     } else {
