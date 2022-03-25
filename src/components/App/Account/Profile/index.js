@@ -956,7 +956,14 @@ class Profile extends Component {
                   </BankCardItem>
                 );
               })}
-              {this.props.wallet.bankCardList.length < 4 && (
+              {console.log(
+                this.props.wallet.bankCardList.length >=
+                  config.features.AddCard_MaximumCardAllowed
+              )}
+              {!(
+                this.props.wallet.bankCardList.length >=
+                config.features.AddCard_MaximumCardAllowed
+              ) && (
                 <BankCardItem>
                   <BankCardTitle>{i18n.t("withdrawal.bankCard")}</BankCardTitle>
                   <BankCardAdd

@@ -44,6 +44,10 @@ const featureList = {
     Profile_NotAllowChangePhone: false,
     Deposit_RemoveAccount: false,
     Deposit_AutofillFirstCard: false,
+    HomePage_Animated: false,
+
+    AddCard_MaximumCardAllowed: 99,
+    AddCard_DisableCreateUpdateDelete: false,
   },
 };
 export default featureList;

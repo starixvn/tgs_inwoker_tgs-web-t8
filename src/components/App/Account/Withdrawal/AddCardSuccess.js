@@ -38,7 +38,8 @@ function AddCardSuccess(props) {
       <SubTitle>{i18n.t("card.success.title")}</SubTitle>
       {!(
         config.features.ChangesNotAllowed ||
-        config.features.AddCard_NotAllowedEditDelete
+        config.features.AddCard_NotAllowedEditDelete ||
+        props.bankCardList.length >= config.features.AddCard_MaximumCardAllowed
       ) ? (
         <SubTitleDesc>
           {i18n.t("card.success.successDesc")}
@@ -52,7 +53,9 @@ function AddCardSuccess(props) {
       <ButtonContainer>
         {!(
           config.features.ChangesNotAllowed ||
-          config.features.AddCard_NotAllowedEditDelete
+          config.features.AddCard_NotAllowedEditDelete ||
+          props.bankCardList.length >=
+            config.features.AddCard_MaximumCardAllowed
         ) && (
           <Button
             name={i18n.t("card.success.bindBankCard")}
