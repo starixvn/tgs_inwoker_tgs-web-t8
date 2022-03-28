@@ -683,6 +683,15 @@ class Deposit extends Component {
     }
   };
 
+  brandSwitcher = (brand) => {
+    switch (brand) {
+      case "GMO":
+        return "GMO";
+      default:
+        return "";
+    }
+  };
+
   //newly declared function - END
 
   render() {
@@ -694,8 +703,8 @@ class Deposit extends Component {
             onClose={() => {
               this.setState({ ...this.state, openAnnouncement: false });
             }}
-            text={i18n.t("depositNotification.content")}
-            header={i18n.t("depositNotification.title")}
+            text={i18n.t("depositNotification"+this.brandSwitcher(config.brand)+".content")}
+            header={i18n.t("depositNotification"+this.brandSwitcher(config.brand)+".title")}
           ></PopupAnnouncement>
         )}
         <Header>
