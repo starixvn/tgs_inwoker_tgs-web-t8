@@ -48,6 +48,7 @@ const featureList = {
 
     AddCard_MaximumCardAllowed: 99,
     AddCard_DisableCreateUpdateDelete: false,
+    Register_HideInvitation: false,
   },
 };
 export default featureList;
