@@ -4,19 +4,23 @@ import styled from "styled-components";
 import i18n from "../../../utils/i18n";
 
 import { connect } from "react-redux";
+import OnlineUserDisplayer from "../../Share/online-user-displayer";
+import config from "../../../config/config";
 
 const AnnounceContainer = styled.div`
   width: 1280px;
   height: 38px;
   margin: 0 auto;
+  display: flex;
+  align-items: center;
 `;
 const AnnounceText = styled.div`
   float: left;
 
   color: #fde73f;
   font-size: 14px;
-  margin-top: 9px;
-  margin-left: 160px;
+
+  margin-left: 120px;
 `;
 const MarqueeContainer = styled.div`
   width: 890px;
@@ -31,6 +35,10 @@ const MarqueeContainer = styled.div`
 function Marquee(props) {
   return (
     <AnnounceContainer>
+      {config.features.OnlineUser && (
+        <OnlineUserDisplayer color="#fde73f" size="14px" />
+      )}
+
       <AnnounceText>{i18n.t("web.marquee.latestNews")}</AnnounceText>
       <MarqueeContainer>
         <marquee style={{ marginTop: "10px" }}>
