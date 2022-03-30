@@ -257,6 +257,8 @@ function Register(props) {
       ? true
       : false
   );
+  const [fromCustomDomain, setFromCustomDomain] = React.useState(false);
+
   useEffect(() => {
     if (props.general.brand.hasInvitationCode) {
       props.getInvitationCode().then((result) => {
@@ -264,6 +266,7 @@ function Register(props) {
           setPromoteType("a");
           setPromotionId(result.data.invitationCode);
           setPrefill(true);
+          setFromCustomDomain(true);
         }
       });
     }
@@ -459,7 +462,7 @@ function Register(props) {
             }}
           />
         </CustomTextWrapper>
-        {!config.features.Register_HideInvitation && (
+        {!(config.features.Register_HideInvitation && fromCustomDomain) && (
           <CustomTextWrapper>
             <CustomInvitationContainer>
               <CustomText
