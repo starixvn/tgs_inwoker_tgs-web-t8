@@ -133,7 +133,10 @@ class Home extends Component {
       banner_list: [],
       wm: displayGame.wm,
       ky: displayGame.ky,
-      openAnnouncement: true,
+      openAnnouncement: config.features.PopupAnnouncement,
+      showPromotion: config.features.PopupAnnouncement
+        ? false
+        : config.features.PopupPromotion,
     };
   }
 
@@ -389,7 +392,11 @@ class Home extends Component {
                 onClose={() => {
                   if (document.getElementById("audio") != null)
                     document.getElementById("audio").play();
-                  this.setState({ ...this.state, openAnnouncement: false });
+                  this.setState({
+                    ...this.state,
+                    openAnnouncement: false,
+                    showPromotion: true,
+                  });
                 }}
                 text={
                   row.localization !== null && row.localization.content
@@ -405,6 +412,21 @@ class Home extends Component {
             );
           }
         })()}
+
+        {config.features.PopupPromotion &&
+          this.props.general.promotionList.totalcount > 0 && (
+            <PopupAnnouncement
+              open={this.state.showPromotion}
+              type="promo"
+              onClose={() => {
+                if (document.getElementById("audio") != null)
+                  document.getElementById("audio").play();
+                this.setState({ ...this.state, showPromotion: false });
+              }}
+              content={this.props.general.promotionList.items}
+              header={i18n.t("promotion.title")}
+            ></PopupAnnouncement>
+          )}
       </HomeContainer>
     );
   }
@@ -425,6 +447,7 @@ const mapStateToProps = (state) => {
     token: state.account.token,
     ui: state.ui,
     game: state.game,
+    general: state.general,
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Home));
