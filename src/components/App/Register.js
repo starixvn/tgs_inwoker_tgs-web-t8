@@ -323,9 +323,9 @@ function Register(props) {
               props.doLogin(username, password);
               // await props.getAccountInfo(response.data);
               // await props.getAccountProfile(response.data);
-              props.history.push(
-                "/" + i18n.language + "/registersuccess/" + username
-              );
+              // props.history.push(
+              //   "/" + i18n.language + "/registersuccess/" + username
+              // );
             }
           } else {
             props.enqueueSnackbar(ErrorSwitcher.getTranslation(response.info), {
