@@ -50,6 +50,7 @@ const featureList = {
     AddCard_DisableCreateUpdateDelete: false,
     Register_HideInvitation: false,
     PopupPromotion: false,
+    MenuItem_Sorting_SKY: false,
   },
 };
 export default featureList;
