@@ -45,6 +45,8 @@ const FormContainer = styled.div`
   width: 100%;
   font-size: 30px;
   text-align: justify;
+  overflow: auto;
+  max-height: 50vh;
 `;
 
 const ContentContainer = styled.div`
