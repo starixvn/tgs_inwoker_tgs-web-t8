@@ -57,7 +57,7 @@ function AddCardSuccess(props) {
           props.bankCardList.length >=
             config.features.AddCard_MaximumCardAllowed
         ) &&
-          props.bankCardListLength < 4 && (
+          props.bankCardList.length < 4 && (
             <Button
               name={i18n.t("card.success.bindBankCard")}
               width={255}
