@@ -44,6 +44,7 @@ const featureList = {
     Profile_NotAllowChangePhone: false,
     Deposit_RemoveAccount: false,
     Deposit_AutofillFirstCard: false,
+    MenuItem_Sorting_SKY: false,
   },
 };
 export default featureList;
