@@ -128,17 +128,14 @@ class Home extends Component {
   constructor(props) {
     super(props);
     var displayGame = this.getHomePageDisplayGame();
-    var ifAnnouncementValid =
-      config.features.PopupAnnouncement && this.props.ui.marqueeText.length > 0;
+
     this.state = {
       marqueeText: [],
       banner_list: [],
       wm: displayGame.wm,
       ky: displayGame.ky,
-      openAnnouncement: ifAnnouncementValid,
-      showPromotion: ifAnnouncementValid
-        ? false
-        : config.features.PopupPromotion,
+      openAnnouncement: false,
+      showPromotion: false,
     };
   }
 
@@ -153,6 +150,31 @@ class Home extends Component {
     // localStorage.setItem("promotionChannelId", promotionChannelId);
   }
   componentDidUpdate(preProps) {
+    if (config.features.PopupAnnouncement) {
+      if (
+        this.props.ui.marqueeText !== preProps.ui.marqueeText &&
+        this.props.ui.marqueeText.length > 0
+      ) {
+        this.setState({
+          openAnnouncement: true,
+          showPromotion: false,
+        });
+      }
+    }
+
+    if (config.features.PopupPromotion) {
+      if (
+        this.props.general.promotionList.items !==
+          preProps.general.promotionList.items &&
+        this.props.general.promotionList.items.length > 0
+      ) {
+        if (!this.state.openAnnouncement) {
+          this.setState({
+            showPromotion: true,
+          });
+        }
+      }
+    }
     if (
       preProps.game.homePageGameList.length !==
         this.props.game.homePageGameList.length &&
