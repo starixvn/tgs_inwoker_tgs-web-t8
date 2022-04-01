@@ -47,6 +47,8 @@ import Maintenance from "../Share/Maintenance";
 import Banned from "./Banned";
 import AnotherFloatPanel from "./Home/AnotherFloatPanel";
 import eSports from "./eSports";
+import config from "../../config/config";
+import LiveChat from "../Share/live-chat";
 
 const baseRouteUrl = Common.baseRouteUrl;
 const Main = styled.div`
@@ -445,6 +447,14 @@ class App extends Component {
                 <AnotherFloatPanel
                   onhandleShowCSClick={this.handleShowCSClick}
                 ></AnotherFloatPanel>
+
+                {config.features.LiveChatVendor.brand &&
+                  config.features.LiveChatVendor.license && (
+                    <LiveChat
+                      license={config.features.LiveChatVendor.license}
+                      vendor={config.features.LiveChatVendor.brand}
+                    />
+                  )}
 
                 <Footer target={"_blank"}></Footer>
               </>

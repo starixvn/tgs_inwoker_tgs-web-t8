@@ -51,6 +51,9 @@ const featureList = {
     PopupPromotion: false,
 
     MenuItem_Sorting_SKY: false,
+    LiveChatVendor: "",
+
+    Home_CustomFPPosition: false,
   },
 };
 export default featureList;
