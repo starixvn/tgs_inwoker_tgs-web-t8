@@ -61,7 +61,9 @@ const Container = styled.div`
   height: auto;
   position: fixed;
   right: 2%;
-  top: 50%;
+  ${({ customPosition }) => {
+    return customPosition ? `bottom: 7%;` : `  top: 50%;`;
+  }}
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -293,8 +295,8 @@ const AnotherFloatPanel = (props) => {
   ];
   return (
     <div>
-      <Container>
-        {props.general.livechat && (
+      <Container customPosition={config.features.Home_CustomFPPosition}>
+        {props.general.livechat && !config.features.LiveChatVendor && (
           <SidePanel
             active={csModal}
             onClick={() => {
