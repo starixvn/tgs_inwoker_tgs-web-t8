@@ -783,6 +783,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.LIVELOBBY],
         sorting: 1,
         sortingHK28: 1,
+        sortingSKY: 1,
       },
       {
         path: "chess",
@@ -792,6 +793,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.QIPAILOBBY],
         sorting: 2,
         sortingHK28: 3,
+        sortingSKY: 2,
       },
       {
         path: "sports",
@@ -801,6 +803,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.SPORTS],
         sorting: 3,
         sortingHK28: 2,
+        sortingSKY: 3,
       },
       {
         path: "esports",
@@ -810,6 +813,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.ESPORTS],
         sorting: 4,
         sortingHK28: 2,
+        sortingSKY: 7,
       },
       {
         path: "lottery",
@@ -819,6 +823,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.LOTTERYLOBBY],
         sorting: 5,
         sortingHK28: 7,
+        sortingSKY: 8,
       },
       {
         path: `slots`,
@@ -828,6 +833,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.SLOT],
         sorting: 6,
         sortingHK28: 4,
+        sortingSKY: 5,
       },
       {
         path: `electron`,
@@ -837,6 +843,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.TABLEGAME],
         sorting: 7,
         sortingHK28: 6,
+        sortingSKY: 6,
       },
       {
         path: `fish`,
@@ -848,6 +855,7 @@ class Header extends Component {
         gameType: [GameTypeEnum.FISH],
         sorting: 8,
         sortingHK28: 5,
+        sortingSKY: 4,
       },
     ];
 
@@ -947,6 +955,8 @@ class Header extends Component {
                 {MenuItemList.sort((a, b) => {
                   if (config.features.MenuItem_Sorting_HK28) {
                     return a.sortingHK28 > b.sortingHK28 ? 1 : -1;
+                  } else if (config.features.MenuItem_Sorting_SKY) {
+                    return a.sortingSKY > b.sortingSKY ? 1 : -1;
                   } else {
                     return a.sorting > b.sorting ? 1 : -1;
                   }
