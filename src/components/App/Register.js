@@ -257,6 +257,8 @@ function Register(props) {
       ? true
       : false
   );
+  const [fromCustomDomain, setFromCustomDomain] = React.useState(false);
+
   useEffect(() => {
     if (props.general.brand.hasInvitationCode) {
       props.getInvitationCode().then((result) => {
@@ -264,6 +266,7 @@ function Register(props) {
           setPromoteType("a");
           setPromotionId(result.data.invitationCode);
           setPrefill(true);
+          setFromCustomDomain(true);
         }
       });
     }
@@ -459,34 +462,35 @@ function Register(props) {
             }}
           />
         </CustomTextWrapper>
-
-        <CustomTextWrapper>
-          <CustomInvitationContainer>
-            <CustomText
-              onChange={
-                promoteType === "a" ? handlePromoChange : handleUpperChange
-              }
-              value={promoteType === "a" ? promotionId : upper}
-              id="code"
-              placeholder={i18n.t("web.register.promoteCode")}
-              variant="outlined"
-              inputProps={{ disabled: prefill }}
-            />
-            {config.features.HaveAffiliateFeature && (
-              <CustomInvitationSelect
-                disabled={prefill}
-                value={promoteType}
-                selected={promoteType}
-                onChange={handleSwitchType}
-              >
-                <option value="a" selected>
-                  {i18n.t("usertype.agent")}
-                </option>
-                <option value="p">{i18n.t("usertype.player")}</option>
-              </CustomInvitationSelect>
-            )}
-          </CustomInvitationContainer>
-        </CustomTextWrapper>
+        {!(config.features.Register_HideInvitation && fromCustomDomain) && (
+          <CustomTextWrapper>
+            <CustomInvitationContainer>
+              <CustomText
+                onChange={
+                  promoteType === "a" ? handlePromoChange : handleUpperChange
+                }
+                value={promoteType === "a" ? promotionId : upper}
+                id="code"
+                placeholder={i18n.t("web.register.promoteCode")}
+                variant="outlined"
+                inputProps={{ disabled: prefill }}
+              />
+              {config.features.HaveAffiliateFeature && (
+                <CustomInvitationSelect
+                  disabled={prefill}
+                  value={promoteType}
+                  selected={promoteType}
+                  onChange={handleSwitchType}
+                >
+                  <option value="a" selected>
+                    {i18n.t("usertype.agent")}
+                  </option>
+                  <option value="p">{i18n.t("usertype.player")}</option>
+                </CustomInvitationSelect>
+              )}
+            </CustomInvitationContainer>
+          </CustomTextWrapper>
+        )}
 
         <DescriptionContainer>
           <Checkbox

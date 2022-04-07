@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
 import LoginBGPNG from "../../../assets/images/login-bg.png";
 import IconLoginClosePNG from "../../../assets/images/icon-login-close.png";
+import { AppHistory } from "../../../history/History";
+import i18n from "../../../utils/i18n";
 const StyledDialog = withStyles({
   root: {
     boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
@@ -16,7 +18,8 @@ const StyledDialog = withStyles({
 })(Dialog);
 const Container = styled.div`
   width: 506px;
-  background: #fff;//url(${LoginBGPNG});
+  background: url(${LoginBGPNG}) no-repeat;
+  background-size: cover;
   background-attachment: fixed;
   background-position: center;
   display: table;
@@ -39,8 +42,44 @@ const TitleContainer = styled.div`
 const FormContainer = styled.div`
   margin: 30px 60px 40px 60px;
   padding: 0 3px;
+  text-align: justify;
 `;
+
+const ContentContainer = styled.div`
+  margin: 20px 20px 10px 20px;
+  padding: 0 3px;
+  overflow: auto;
+`;
+
+const ImageBanner = styled.div`
+  background: url(${({ img }) => img}) no-repeat center;
+  height: 175px;
+  border-radius: 5px;
+  background-size: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0/0.1), 0 2px 4px -2px rgb(0 0 0/0.1);
+`;
+
+const TheButton = styled.div`
+  padding: 5px 20px;
+  background: ${({ theme }) => theme.primary};
+  color: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0/0.1), 0 2px 4px -2px rgb(0 0 0/0.1);
+`;
+
 class PopupAnnouncement extends Component {
+  handlePromotionClick = (id) => {
+    AppHistory.push({
+      pathname: "/" + i18n.language + "/promotion/" + id,
+    });
+  };
+
   render() {
     return (
       <StyledDialog open={this.props.open} onClose={this.props.onClose}>
@@ -51,11 +90,29 @@ class PopupAnnouncement extends Component {
           ></CloseIconContainer>
           <div className="clear"></div>
           <TitleContainer>{this.props.header}</TitleContainer>
-          <FormContainer
-            dangerouslySetInnerHTML={{
-              __html: this.props.text.replace(/\n/g, "<br />"),
-            }}
-          ></FormContainer>
+          {this.props.type === "promo" ? (
+            <ContentContainer>
+              {this.props.content.map((data, index) => {
+                return (
+                  <ImageBanner img={data.desktopBanner}>
+                    <TheButton
+                      onClick={() => {
+                        this.handlePromotionClick(data.id);
+                      }}
+                    >
+                      {i18n.t("promotion.details")}
+                    </TheButton>
+                  </ImageBanner>
+                );
+              })}
+            </ContentContainer>
+          ) : (
+            <FormContainer
+              dangerouslySetInnerHTML={{
+                __html: this.props.text.replace(/\n/g, "<br />"),
+              }}
+            ></FormContainer>
+          )}
         </Container>
       </StyledDialog>
     );

@@ -47,6 +47,8 @@ import Maintenance from "../Share/Maintenance";
 import Banned from "./Banned";
 import AnotherFloatPanel from "./Home/AnotherFloatPanel";
 import eSports from "./eSports";
+import config from "../../config/config";
+import LiveChat from "../Share/live-chat";
 
 const baseRouteUrl = Common.baseRouteUrl;
 const Main = styled.div`
@@ -74,6 +76,7 @@ class App extends Component {
       this.props.getBanner();
       this.props.getBrand();
       this.props.getLiveChatURL();
+      this.props.getPromotionList(i18n.language);
 
       // this.props.getVIP();
     }
@@ -168,6 +171,7 @@ class App extends Component {
             this.props.getMessageList(i18n.language, 0, 99);
             this.props.getBankCardList();
             this.props.getAutoTransferStatus();
+            this.props.getPlayerPromotionList(i18n.language);
 
             // if (inbox.IsSuccess) {
             //   this.setState({ inbox: inbox.data });
@@ -190,6 +194,7 @@ class App extends Component {
         this.props.getBanner();
         this.props.getBrand();
         this.props.getLiveChatURL();
+        this.props.getPromotionList(i18n.language);
 
         // this.props.getVIP();
       }
@@ -443,6 +448,14 @@ class App extends Component {
                   onhandleShowCSClick={this.handleShowCSClick}
                 ></AnotherFloatPanel>
 
+                {config.features.LiveChatVendor.brand &&
+                  config.features.LiveChatVendor.license && (
+                    <LiveChat
+                      license={config.features.LiveChatVendor.license}
+                      vendor={config.features.LiveChatVendor.brand}
+                    />
+                  )}
+
                 <Footer target={"_blank"}></Footer>
               </>
             );
@@ -490,6 +503,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(inboxAction.getMessages(language, pages, limit, true, true)),
     getLiveChatURL: () => dispatch(generalAction.getLiveChatURL()),
     getAutoTransferStatus: () => dispatch(walletAction.getAutoTransferStatus()),
+    getPromotionList: (language) =>
+      dispatch(generalAction.getPromotionList(language, 1, 99, true, "", true)),
+    getPlayerPromotionList: (language) =>
+      dispatch(
+        generalAction.getPlayerPromotionList(language, 1, 99, true, "", true)
+      ),
 
     //  getVIP: () => dispatch(generalAction.getVIP()),
   };

@@ -46,7 +46,7 @@ class ManageCard extends Component {
 
     this.state = {
       labelList: {
-        Bank:{
+        Bank: {
           name: i18n.t("card.addCard.BankAccountName"),
           bankName: i18n.t("card.addCard.BankName"),
           bankBranch: i18n.t("card.addCard.branch"),
@@ -65,7 +65,7 @@ class ManageCard extends Component {
         },
         Crypto: {
           address: i18n.t("common.withdrawalNumber"),
-        }
+        },
       },
     };
   }
@@ -118,7 +118,8 @@ class ManageCard extends Component {
           ></Button>
           {!(
             config.features.AddCard_NotAllowedEditDelete ||
-            config.features.ChangesNotAllowed
+            config.features.ChangesNotAllowed ||
+            config.features.AddCard_DisableCreateUpdateDelete
           ) && (
             <Button
               name={i18n.t("card.remove")}

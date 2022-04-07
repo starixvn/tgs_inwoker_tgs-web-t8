@@ -128,12 +128,14 @@ class Home extends Component {
   constructor(props) {
     super(props);
     var displayGame = this.getHomePageDisplayGame();
+
     this.state = {
       marqueeText: [],
       banner_list: [],
       wm: displayGame.wm,
       ky: displayGame.ky,
-      openAnnouncement: true,
+      openAnnouncement: false,
+      showPromotion: false,
     };
   }
 
@@ -148,6 +150,31 @@ class Home extends Component {
     // localStorage.setItem("promotionChannelId", promotionChannelId);
   }
   componentDidUpdate(preProps) {
+    if (config.features.PopupAnnouncement) {
+      if (
+        this.props.ui.marqueeText !== preProps.ui.marqueeText &&
+        this.props.ui.marqueeText.length > 0
+      ) {
+        this.setState({
+          openAnnouncement: true,
+          showPromotion: false,
+        });
+      }
+    }
+
+    if (config.features.PopupPromotion) {
+      if (
+        this.props.general.promotionList.items !==
+          preProps.general.promotionList.items &&
+        this.props.general.promotionList.items.length > 0
+      ) {
+        if (!this.state.openAnnouncement) {
+          this.setState({
+            showPromotion: true,
+          });
+        }
+      }
+    }
     if (
       preProps.game.homePageGameList.length !==
         this.props.game.homePageGameList.length &&
@@ -389,7 +416,11 @@ class Home extends Component {
                 onClose={() => {
                   if (document.getElementById("audio") != null)
                     document.getElementById("audio").play();
-                  this.setState({ ...this.state, openAnnouncement: false });
+                  this.setState({
+                    ...this.state,
+                    openAnnouncement: false,
+                    showPromotion: true,
+                  });
                 }}
                 text={
                   row.localization !== null && row.localization.content
@@ -405,6 +436,21 @@ class Home extends Component {
             );
           }
         })()}
+
+        {config.features.PopupPromotion &&
+          this.props.general.promotionList.totalcount > 0 && (
+            <PopupAnnouncement
+              open={this.state.showPromotion}
+              type="promo"
+              onClose={() => {
+                if (document.getElementById("audio") != null)
+                  document.getElementById("audio").play();
+                this.setState({ ...this.state, showPromotion: false });
+              }}
+              content={this.props.general.promotionList.items}
+              header={i18n.t("promotion.title")}
+            ></PopupAnnouncement>
+          )}
       </HomeContainer>
     );
   }
@@ -425,6 +471,7 @@ const mapStateToProps = (state) => {
     token: state.account.token,
     ui: state.ui,
     game: state.game,
+    general: state.general,
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Home));

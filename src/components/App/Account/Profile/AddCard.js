@@ -104,6 +104,7 @@ class AddCard extends Component {
       selectedChannelIndex: 0,
       selectedBankTypeIndex: 0,
       channelList: [],
+      disableBankNameInput: false,
 
       name: "",
       phone: "",
@@ -137,14 +138,31 @@ class AddCard extends Component {
         }
       }
     }
-    this.setState({ ...this.state, channelList: channel });
+    var disableInput = false;
+    var bankName = "";
+    if(channel.length>0)
+    {
+      if(channel[this.state.selectedChannelIndex].channelcode !== "CustomBank")
+      {
+        disableInput=true;
+        bankName = channel[this.state.selectedChannelIndex].channelcode;
+      }
+    }
+    this.setState({ ...this.state, channelList: channel, bankName: bankName, disableBankNameInput: disableInput });
     return channel;
   };
   handleBankTypeChange = (e) => {
     this.setState({ ...this.state, selectedBankTypeIndex: e.target.value, selectedChannelIndex: 0 });
   };
   handleChannelChange = (e) => {
-    this.setState({ ...this.state, selectedChannelIndex: e.target.value });
+    var disableInput = false;
+    var bankName = "";
+    if(this.state.channelList[e.target.value].channelcode !== "CustomBank")
+    {
+      disableInput=true;
+      bankName = this.state.channelList[e.target.value].channelcode;
+    }
+    this.setState({...this.state, selectedChannelIndex: e.target.value, bankName: bankName, disableBankNameInput: disableInput });
   };
   handleNumberChange = (e) => {
     this.setState({ ...this.state, number: e.target.value });
@@ -380,6 +398,9 @@ class AddCard extends Component {
                         width={395}
                         height={38}
                         float={"none"}
+                        maxLength={255}
+                        disabled={this.state.disableBankNameInput}
+                        value={this.state.bankName}
                         handleTextFieldChange={this.handleBankNameChange}
                       ></CustomTextField>
                     )}
@@ -403,6 +424,7 @@ class AddCard extends Component {
                               width={395}
                               height={38}
                               float={"none"}
+                              maxLength={255}
                               handleTextFieldChange={
                                 this.handleBankBranchChange
                               }
@@ -431,6 +453,7 @@ class AddCard extends Component {
                       width={395}
                       height={38}
                       float={"none"}
+                      maxLength={255}
                       handleTextFieldChange={this.handleBankAccountNameChange}
                     ></CustomTextField>
                   </TextFieldContainer>

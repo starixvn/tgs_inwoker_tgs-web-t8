@@ -189,8 +189,8 @@ class CardManagement extends Component {
             onhandleBindCardClick={this.handleBindCardClick}
             onhandleBackClick={this.handleBacktoProfile}
             onhandleCSClick={this.handleCSClick}
-            bankCardListLength={this.props.wallet.bankCardList.length}
             backButtonText={i18n.t("card.success.goProfile")}
+            bankCardList={this.props.wallet.bankCardList}
           ></AddCardSuccess>
         );
       default:
