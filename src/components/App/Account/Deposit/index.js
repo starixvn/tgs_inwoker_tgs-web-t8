@@ -715,7 +715,7 @@ class Deposit extends Component {
 
         <Wrap>
           {(() => {
-            if (this.props.account.info.member_name === "") {
+            if (this.props.account.info.member_name === "" || this.props.account.info.member_name === null) {
               return (
                 <NameVerificationWrap>
                   <NameVerification token={this.props.token}></NameVerification>
@@ -726,7 +726,7 @@ class Deposit extends Component {
                 <>
                   <InnerWrap>
                     {(() => {
-                      if (this.props.account.info.member_name === "") {
+                      if (this.props.account.info.member_name === "" || this.props.account.info.member_name === null) {
                         return (
                           <NameVerification
                             token={this.props.token}
