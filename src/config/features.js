@@ -45,11 +45,11 @@ const featureList = {
     Deposit_RemoveAccount: false,
     Deposit_AutofillFirstCard: false,
     HomePage_Animated: false,
-
     AddCard_MaximumCardAllowed: 99,
     AddCard_DisableCreateUpdateDelete: false,
     Register_HideInvitation: false,
     PopupPromotion: false,
+
     MenuItem_Sorting_SKY: false,
     LiveChatVendor: "",
 
