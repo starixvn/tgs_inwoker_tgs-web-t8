@@ -1,6 +1,6 @@
 import featureList from "./features";
 
-var template = 8; //2 for T2, 3 for T3 (based on .xd file)
+var wapTemplate = window?.env?.wapTemplate || 8; //3 for T3 ,4 for T4 (based on .xd file)
 const config = {
   baseUrl: window?.env ? "/api/" : "https://stg-t1.rpgp.cc/api/",
   client:
@@ -12,7 +12,7 @@ const config = {
     ? window?.env?.brandName
     : window?.env?.brand || "M9THB",
   theme: window?.env?.theme || "GMO",
-  wapVersion: template,
+  wapVersion: wapTemplate,
   sourceUrl: window?.env?.sourceUrl || "https://images.srvptt.com/",
   defaultLanguage: window?.env?.defaultLanguage
     ? window?.env?.defaultLanguage === ""
