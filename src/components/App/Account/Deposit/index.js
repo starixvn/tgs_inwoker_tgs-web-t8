@@ -170,6 +170,8 @@ class Deposit extends Component {
     ) {
       if (this.props.wallet.depositResult.IsSuccess) {
         const response = this.props.wallet.depositResult;
+        var payment =
+          this.props.wallet.depositTypeList[this.state.selectedPaymentIndex];
         if (config.features.Deposit_DualPage) {
           this.setState({
             ...this.state,
@@ -178,7 +180,31 @@ class Deposit extends Component {
             loading: false,
           });
         } else {
-          this.props.doUploadDepositProof(response.data, this.state.files[0]);
+          let url = "";
+          if (payment.paymentcode.toUpperCase() === "MANUAL") {
+            this.props.doUploadDepositProof(response.data, this.state.files[0]);
+            this.setState({
+              ...this.state,
+              loading: false,
+              depositResult: response,
+            });
+          } else {
+            this.setState({
+              ...this.state,
+              step: 3,
+              loading: false,
+              depositResult: response,
+            });
+            if (payment.paymentcode.toUpperCase() === "HELP2PAY") {
+              url =
+                config.baseUrl.replace("/api/", "") + response.data.paymenturl;
+            }
+            if (url !== "") {
+              window.open(url, "_blank");
+            } else {
+              window.open(response.data.paymenturl, "_blank");
+            }
+          }
         }
       } else {
         this.props.enqueueSnackbar(
@@ -379,16 +405,21 @@ class Deposit extends Component {
         );
       }
     } else {
-      window.open(
-        `/${i18n.language}/deposit/${payment.paymentcode}/${
-          method.methodcode
-        }/${channel.id}/${this.state.amount}/${
-          this.state.depositPromotion ? this.state.depositPromotion : " "
-        }/${this.state.name ? this.state.name : " "}/${
-          this.state.account ? this.state.account : " "
-        }`,
-        "_blank"
-      );
+      if (method.methodcode === "Crypto") {
+        this.props.doCryptoDeposit(
+          this.state.amount.replace(/,/g, ""),
+          channel.id,
+          this.state.depositPromotion,
+          payment.paymentcode
+        );
+      } else {
+        this.props.doBankDeposit2(
+          this.state.amount.replace(/,/g, ""),
+          channel.id,
+          this.state.depositPromotion,
+          payment.paymentcode
+        );
+      }
     }
   };
 
@@ -703,8 +734,16 @@ class Deposit extends Component {
             onClose={() => {
               this.setState({ ...this.state, openAnnouncement: false });
             }}
-            text={i18n.t("depositNotification"+this.brandSwitcher(config.brand)+".content")}
-            header={i18n.t("depositNotification"+this.brandSwitcher(config.brand)+".title")}
+            text={i18n.t(
+              "depositNotification" +
+                this.brandSwitcher(config.brand) +
+                ".content"
+            )}
+            header={i18n.t(
+              "depositNotification" +
+                this.brandSwitcher(config.brand) +
+                ".title"
+            )}
           ></PopupAnnouncement>
         )}
         <Header>
@@ -715,89 +754,73 @@ class Deposit extends Component {
 
         <Wrap>
           {(() => {
-            if (this.props.account.info.member_name === "" || this.props.account.info.member_name === null) {
-              return (
-                <NameVerificationWrap>
-                  <NameVerification token={this.props.token}></NameVerification>
-                </NameVerificationWrap>
-              );
-            } else {
-              return (
-                <>
-                  <InnerWrap>
-                    {(() => {
-                      if (this.props.account.info.member_name === "" || this.props.account.info.member_name === null) {
-                        return (
-                          <NameVerification
-                            token={this.props.token}
-                          ></NameVerification>
-                        );
-                      } else {
-                        if (this.props.wallet.depositTypeList.length <= 0)
-                          return null;
-                        return this.switchStep(this.state.step);
-                        //   if (this.state.step === 1) {
-                        //     return (
-                        //       <Step1
-                        //         username={this.state.username}
-                        //         selectedType={this.state.selectedType}
-                        //         selectedChannel={this.state.selectedChannel}
-                        //         depositAmount={this.state.depositAmount}
-                        //         handleDepositClick={this.handleDepositClick}
-                        //         handleDepositAmountChange={
-                        //           this.handleDepositAmountChange
-                        //         }
-                        //         handleUsernameChange={this.handleUsernameChange}
-                        //         handleTunnelClick={this.handleTunnelClick}
-                        //       ></Step1>
-                        //     );
-                        //   } else if (this.state.step === 2) {
-                        //     return (
-                        //       <Step2Form
-                        //         depositResult={this.props.wallet.depositResult}
-                        //         handleDepositConfirmClick={
-                        //           this.handleDepositConfirmClick
-                        //         }
-                        //         handleDepositCancelClick={
-                        //           this.handleDepositCancelClick
-                        //         }
-                        //       ></Step2Form>
-                        //     );
-                        //   } else if (this.state.step === 3) {
-                        //     return (
-                        //       <Step2QR
-                        //         bankInfo={this.bankInfo}
-                        //         amount={this.state.depositAmount}
-                        //         selectedType={this.state.selectedType}
-                        //         selectedChannel={this.state.selectedChannel}
-                        //         depositResult={this.props.wallet.depositResult}
-                        //         handleUploadClick={this.handleUploadClick}
-                        //         handleDepositCancelClick={
-                        //           this.handleDepositCancelClick
-                        //         }
-                        //       ></Step2QR>
-                        //     );
-                        //   } else if (this.state.step === 4) {
-                        //     return (
-                        //       <Success
-                        //         handleConfirmClick={() => {
-                        //           this.setState({
-                        //             ...this.initialState,
-                        //             selectedType: this.props.wallet
-                        //               .depositTypeList[0],
-                        //             selectedChannel: this.props.wallet
-                        //               .depositTypeList[0].channel[0],
-                        //           });
-                        //         }}
-                        //       ></Success>
-                        //     );
-                        //   }
-                      }
-                    })()}
-                  </InnerWrap>
-                </>
-              );
-            }
+            return (
+              <>
+                <InnerWrap>
+                  {(() => {
+                    if (this.props.wallet.depositTypeList.length <= 0)
+                      return null;
+                    return this.switchStep(this.state.step);
+                    //   if (this.state.step === 1) {
+                    //     return (
+                    //       <Step1
+                    //         username={this.state.username}
+                    //         selectedType={this.state.selectedType}
+                    //         selectedChannel={this.state.selectedChannel}
+                    //         depositAmount={this.state.depositAmount}
+                    //         handleDepositClick={this.handleDepositClick}
+                    //         handleDepositAmountChange={
+                    //           this.handleDepositAmountChange
+                    //         }
+                    //         handleUsernameChange={this.handleUsernameChange}
+                    //         handleTunnelClick={this.handleTunnelClick}
+                    //       ></Step1>
+                    //     );
+                    //   } else if (this.state.step === 2) {
+                    //     return (
+                    //       <Step2Form
+                    //         depositResult={this.props.wallet.depositResult}
+                    //         handleDepositConfirmClick={
+                    //           this.handleDepositConfirmClick
+                    //         }
+                    //         handleDepositCancelClick={
+                    //           this.handleDepositCancelClick
+                    //         }
+                    //       ></Step2Form>
+                    //     );
+                    //   } else if (this.state.step === 3) {
+                    //     return (
+                    //       <Step2QR
+                    //         bankInfo={this.bankInfo}
+                    //         amount={this.state.depositAmount}
+                    //         selectedType={this.state.selectedType}
+                    //         selectedChannel={this.state.selectedChannel}
+                    //         depositResult={this.props.wallet.depositResult}
+                    //         handleUploadClick={this.handleUploadClick}
+                    //         handleDepositCancelClick={
+                    //           this.handleDepositCancelClick
+                    //         }
+                    //       ></Step2QR>
+                    //     );
+                    //   } else if (this.state.step === 4) {
+                    //     return (
+                    //       <Success
+                    //         handleConfirmClick={() => {
+                    //           this.setState({
+                    //             ...this.initialState,
+                    //             selectedType: this.props.wallet
+                    //               .depositTypeList[0],
+                    //             selectedChannel: this.props.wallet
+                    //               .depositTypeList[0].channel[0],
+                    //           });
+                    //         }}
+                    //       ></Success>
+                    //     );
+                    //   }
+                  })()}
+                </InnerWrap>
+              </>
+            );
           })()}
 
           <Loading
@@ -868,6 +891,26 @@ const mapDispatchToProps = (dispatch) => {
           paymentid,
           promotionid,
           banktype
+        )
+      );
+    },
+    doBankDeposit2: (amount, payment_id, promotionid, paymentcode) => {
+      dispatch(
+        walletAction.doBankDeposit2(
+          amount,
+          payment_id,
+          promotionid,
+          paymentcode
+        )
+      );
+    },
+    doCryptoDeposit: (amount, payment_id, promotionid, paymentcode) => {
+      dispatch(
+        walletAction.doCryptoDeposit(
+          amount,
+          payment_id,
+          promotionid,
+          paymentcode
         )
       );
     },
