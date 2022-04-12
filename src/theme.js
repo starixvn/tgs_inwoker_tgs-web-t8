@@ -399,6 +399,48 @@ export const GMO = {
   pcFooter:
     "background:linear-gradient(0deg, rgb(2, 31, 96) 25%, rgba(95,113,162,0) 100%);height:200px;display:flex;align-items:center",
 };
+
+export const GMOT9 = {
+  appbar: "#1f1f1f",
+  loginBody: "#1f1f1f",
+  loginText: "#fff",
+  body: "#1f1f1f",
+  bodyBackground: "#1f1f1f",
+  variant: "wapT8",
+  primary: "#e9a60b",
+  primaryRgb: "101, 138, 248",
+  primaryText: "#fff",
+  primaryGradient: " #e9a60b",
+  primaryGradientRgb: "101, 138, 248",
+  primaryHightlight: "#fde73f",
+  secondary: "#fff",
+  secondaryText: "rgba(0,0,0,0.5)",
+  tertiary: "rgba(255, 255, 255, 1) !important",
+  tertiaryText: "rgba(255, 255, 255, 1)",
+  buttonText: "#000",
+  buttonBackground: "#fff",
+  buttonText2: "#000",
+  bottomnav: "#1f1f1f",
+  balance: "#e9a60b",
+  bottomnavrad: "35px 35px 0px 0px",
+  bottomNavAction: "#fff",
+  tabbar: "#e9a60b",
+  cardText: "#676767",
+  supportBg: `url(${
+    process.env.PUBLIC_URL + `/assets/images/wapp/resource/T3/supportbg.png`
+  })
+  no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  gameTab: "#fff",
+  gamelisterBg: "#1f1f1f",
+  gamelisterBorder: "solid 2px #1f1f1f",
+  gamelisterOriginalColor: "#8590b0",
+  gamelisterOriginalText: "#8590b0",
+  gamelisterSelectedText: "#fff",
+  gamelisterSelectedIcon: "#c69c6a",
+  gamelisterSelectedButton:
+    "linear-gradient(180deg, #f7f1d3 25%,  #d1b98f 100%)",
+};
+
 export const themeList = {
   red: themeRed,
   blue: themeBlue,
@@ -413,4 +455,5 @@ export const themeList = {
   MESS8: MESS8,
   "28BET": MESS8,
   GMO: GMO,
+  GMOT9: GMOT9,
 };
