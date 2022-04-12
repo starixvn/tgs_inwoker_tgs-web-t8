@@ -25,6 +25,11 @@ import PhoneVerification from "./PhoneVerification";
 
 import QQ from "./QQ";
 import Wechat from "./Wechat";
+import FacebookMessenger from "./FacebookMessenger";
+import Telegram from "./Telegram";
+import Line from "./Line";
+import Viber from "./Viber";
+import Whatsapp from "./Whatsapp";
 import i18n from "../../../../utils/i18n";
 import config from "../../../../config/config";
 import Common from "../../../../utils/Common";
@@ -134,6 +139,46 @@ function GetContentWrap(accountInfo, label, attr, func, label2) {
         accountInfo["member_address_surename"] +
         " | " +
         accountInfo["member_address_phone"];
+    }
+  }
+
+  if (attr === "member_fb") {
+    if (attrValue !== "") {
+      attrValue = accountInfo["member_fb"]
+        ? accountInfo["member_fb"].substring(0, 1) + "**"
+        : "";
+    }
+  }
+
+  if (attr === "member_telegram") {
+    if (attrValue !== "") {
+      attrValue = accountInfo["member_telegram"]
+        ? accountInfo["member_telegram"].substring(0, 1) + "**"
+        : "";
+    }
+  }
+
+  if (attr === "member_line") {
+    if (attrValue !== "") {
+      attrValue = accountInfo["member_line"]
+        ? accountInfo["member_line"].substring(0, 1) + "**"
+        : "";
+    }
+  }
+
+  if (attr === "member_viber") {
+    if (attrValue !== "") {
+      attrValue = accountInfo["member_viber"]
+        ? accountInfo["member_viber"].substring(0, 1) + "**"
+        : "";
+    }
+  }
+
+  if (attr === "member_whatsapp") {
+    if (attrValue !== "") {
+      attrValue = accountInfo["member_whatsapp"]
+        ? accountInfo["member_whatsapp"].substring(0, 1) + "**"
+        : "";
     }
   }
 
@@ -618,6 +663,56 @@ class Profile extends Component {
     let component = null;
 
     switch (type) {
+      case "member_fb":
+        title = i18n.t("profile.fb.fbAccount");
+        component = (
+          <FacebookMessenger
+            handleCSClick={this.props.onhandleCSClick}
+            handleCloseDialog={this.handleCloseDialog}
+            account={this.props.account}
+          ></FacebookMessenger>
+        );
+        break;
+      case "member_telegram":
+        title = i18n.t("profile.telegram.telegramAccount");
+        component = (
+          <Telegram
+            handleCSClick={this.props.onhandleCSClick}
+            handleCloseDialog={this.handleCloseDialog}
+            account={this.props.account}
+          ></Telegram>
+        );
+        break;
+      case "member_line":
+        title = i18n.t("profile.line.lineAccount");
+        component = (
+          <Line
+            handleCSClick={this.props.onhandleCSClick}
+            handleCloseDialog={this.handleCloseDialog}
+            account={this.props.account}
+          ></Line>
+        );
+        break;
+      case "member_viber":
+        title = i18n.t("profile.viber.viberAccount");
+        component = (
+          <Viber
+            handleCSClick={this.props.onhandleCSClick}
+            handleCloseDialog={this.handleCloseDialog}
+            account={this.props.account}
+          ></Viber>
+        );
+        break;
+      case "member_whatsapp":
+        title = i18n.t("profile.whatsapp.whatsappAccount");
+        component = (
+          <Whatsapp
+            handleCSClick={this.props.onhandleCSClick}
+            handleCloseDialog={this.handleCloseDialog}
+            account={this.props.account}
+          ></Whatsapp>
+        );
+        break;
       case "member_wechat":
         title = i18n.t("profile.wechat.weChatAccount");
         component = (
@@ -867,6 +962,17 @@ class Profile extends Component {
                 "member_wechat",
                 this.handleButtonClick
               )}
+                          
+            {config.features.CustomMessaging.length>0 && 
+              config.features.CustomMessaging.map((platform)=>{
+                return GetContentWrap(
+                  this.props.account.info,
+                  i18n.t("common."+platform),
+                  "member_"+platform,
+                  this.handleButtonClick
+                )
+              })
+            }
             {/* {GetContentWrap(
             this.props.account.info,
             "电子邮件",
