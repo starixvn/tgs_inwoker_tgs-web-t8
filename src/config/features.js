@@ -54,6 +54,7 @@ const featureList = {
     LiveChatVendor: "",
 
     Home_CustomFPPosition: false,
+    T9_CustomHome: false,
   },
 };
 export default featureList;
