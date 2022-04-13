@@ -38,7 +38,7 @@ const FacebookMessenger = (props) => {
   };
 
   const onhandleClick = () => {
-    const re = new RegExp("^[a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}$");
+    const re = new RegExp("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$");
     if (!fb.match(re)) {
       props.enqueueSnackbar(i18n.t("profile.fb.msgInvalidFB"), {
         variant: "error",
@@ -75,6 +75,7 @@ const FacebookMessenger = (props) => {
         defaultValue={fb}
         type={"text"}
         readOnly={ifNotEmpty && config.features.ChangesNotAllowed}
+        maxLength={15}
       ></CustomTextField>
       {ifNotEmpty && config.features.ChangesNotAllowed && (
         <Content>

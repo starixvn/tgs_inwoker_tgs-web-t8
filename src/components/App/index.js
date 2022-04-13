@@ -503,8 +503,11 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(inboxAction.getMessages(language, pages, limit, true, true)),
     getLiveChatURL: () => dispatch(generalAction.getLiveChatURL()),
     getAutoTransferStatus: () => dispatch(walletAction.getAutoTransferStatus()),
+    //TODO: Revert the 4th param to true after testing.
     getPromotionList: (language) =>
-      dispatch(generalAction.getPromotionList(language, 1, 99, true, "", true)),
+      dispatch(
+        generalAction.getPromotionList(language, 1, 99, false, "", true)
+      ),
     getPlayerPromotionList: (language) =>
       dispatch(
         generalAction.getPlayerPromotionList(language, 1, 99, true, "", true)
