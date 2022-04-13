@@ -10,8 +10,8 @@ import { AppHistory } from "../../../history/History";
 import { withSnackbar } from "notistack";
 
 import i18n from "../../../utils/i18n";
-import {generalAction} from "../../../api-services/actions/generalAction";
-import {SHOW_LOGIN} from "../../../api-services/constant/actionType";
+import { generalAction } from "../../../api-services/actions/generalAction";
+import { SHOW_LOGIN } from "../../../api-services/constant/actionType";
 import { Grid, Container as MContainer } from "@material-ui/core";
 
 import PromoEmpty from "../../../assets/images/promo-empty.png";
@@ -30,7 +30,8 @@ const Wrap = styled.div`
 `;
 
 const ThePromotion = styled(Grid)`
-margin: 70px 0;`;
+  margin: 70px 0;
+`;
 
 const ThePromotionContainer = styled(Grid)`
   background: #fff;
@@ -104,15 +105,14 @@ const ContainerForPromoList = styled(Grid)`
   padding: 14px;
 `;
 
-
 const PromotionBannerContainer = styled.div`
   cursor: pointer;
   margin: 10px 0;
-  transition: .3s ease;
+  transition: 0.3s ease;
   background: #fff;
   width: 1200px;
   height: 486px;
-  
+
   &:hover {
     transform: translateY(10px);
   }
@@ -124,7 +124,8 @@ const PromotionBannerContainer = styled.div`
 
 const NoContentText = styled.div`
   color: #000;
-  font-size: ${(props=> (props.lang === 'zh-CN') || (props.lang === 'zh-TW') ? `3.2em`: `2.3em`)};
+  font-size: ${(props) =>
+    props.lang === "zh-CN" || props.lang === "zh-TW" ? `3.2em` : `2.3em`};
   text-shadow: 0 0 18px #ffe14e;
   -webkit-text-stroke: 0.5px white;
   font-weight: bold;
@@ -132,12 +133,12 @@ const NoContentText = styled.div`
   height: auto;
   margin-left: 180px;
   overflow: visible;
-  font-family: '微軟正黑粗';
+  font-family: "微軟正黑粗";
   &:first-child {
     margin-top: 210px;
   }
   &:last-child {
-    ${(props=> props.lang === 'en-US'? `font-size: 3.2em;`:``)}
+    ${(props) => (props.lang === "en-US" ? `font-size: 3.2em;` : ``)}
   }
 `;
 
@@ -224,7 +225,6 @@ class Promotion extends Component {
     }
   }
 
-
   //TODO: Temporary hardcode the navigation
   handlejoinPromotionClick = (id, promotionType) => {
     if (this.props.account.token === null) this.props.showLogin(true);
@@ -260,7 +260,11 @@ class Promotion extends Component {
             <ThePromotion container>
               {this.props.general.promotionList.items.map((data, index) => {
                 return (
-                  <PromotionBannerContainer onClick={()=>this.handlePromotionClick(data.id, data.promotionType)}>
+                  <PromotionBannerContainer
+                    onClick={() =>
+                      this.handlePromotionClick(data.id, data.promotionType)
+                    }
+                  >
                     <img
                       src={
                         data.localization.desktopBanner &&
@@ -300,8 +304,11 @@ const mapDispatchToProps = (dispatch) => {
     joinPromotion: (id) => {
       dispatch(generalAction.joinPromotion(id));
     },
+    //TODO: Revert the 4th param to true after testing.
     getPromotionList: (language) =>
-      dispatch(generalAction.getPromotionList(language, 1, 99, true, "", true)),
+      dispatch(
+        generalAction.getPromotionList(language, 1, 99, false, "", true)
+      ),
     getPlayerPromotionList: (language) =>
       dispatch(
         generalAction.getPlayerPromotionList(language, 1, 99, true, "", true)
