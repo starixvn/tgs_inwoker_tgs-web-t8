@@ -515,7 +515,7 @@ const NewStepOne = (props) => {
                           )}
                         </FormRightContainer>
                       </FormContainer>
-                      {!(config.features.Deposit_RemoveName || isFPS) && (
+                      {!(config.features.Deposit_RemoveName) && (
                         <FormContainer>
                           <FormLeftContainer>
                             <SubHeaderContainer>
