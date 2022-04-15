@@ -56,6 +56,7 @@ const featureList = {
     Home_CustomFPPosition: false,
     T9_CustomHome: false,
     CustomMessaging: [],
+    web_theme: "wapT9",
   },
 };
 export default featureList;
