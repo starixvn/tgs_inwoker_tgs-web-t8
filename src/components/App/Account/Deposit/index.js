@@ -177,8 +177,9 @@ class Deposit extends Component {
     ) {
       if (this.props.wallet.depositResult.IsSuccess) {
         const response = this.props.wallet.depositResult;
-        var payment =
-          this.props.wallet.depositTypeList[this.state.selectedPaymentIndex];
+        var payment = this.props.wallet.depositTypeList[
+          this.state.selectedPaymentIndex
+        ];
         if (config.features.Deposit_DualPage) {
           this.setState({
             ...this.state,
@@ -387,6 +388,17 @@ class Deposit extends Component {
 
     var channel = method.channel[this.state.selectedChannelIndex];
 
+    const depositMethodSwitcher = (method) => {
+      switch (method) {
+        case "banktransfer":
+          return "bank";
+        case "crypto":
+          return "crypto";
+        default:
+          return "bank";
+      }
+    };
+
     if (payment.paymentcode.toUpperCase() === "MANUAL") {
       // handle manual deposit
       if (method.methodcode === "BankTransfer") {
@@ -413,21 +425,28 @@ class Deposit extends Component {
         );
       }
     } else {
-      if (method.methodcode === "Crypto") {
-        this.props.doCryptoDeposit(
-          this.state.amount.replace(/,/g, ""),
-          channel.id,
-          this.state.depositPromotion,
-          payment.paymentcode
-        );
-      } else {
-        this.props.doBankDeposit2(
-          this.state.amount.replace(/,/g, ""),
-          channel.id,
-          this.state.depositPromotion,
-          payment.paymentcode
-        );
-      }
+      this.props.performDeposit(
+        this.state.amount.replace(/,/g, ""),
+        channel.id,
+        this.state.depositPromotion,
+        payment.paymentcode,
+        depositMethodSwitcher(method.methodcode.toLowerCase())
+      );
+      //   if (method.methodcode === "Crypto") {
+      //     this.props.doCryptoDeposit(
+      //       this.state.amount.replace(/,/g, ""),
+      //       channel.id,
+      //       this.state.depositPromotion,
+      //       payment.paymentcode
+      //     );
+      //   } else {
+      //     this.props.doBankDeposit2(
+      //       this.state.amount.replace(/,/g, ""),
+      //       channel.id,
+      //       this.state.depositPromotion,
+      //       payment.paymentcode
+      //     );
+      //   }
     }
   };
 
@@ -920,6 +939,17 @@ const mapDispatchToProps = (dispatch) => {
           payment_id,
           promotionid,
           paymentcode
+        )
+      );
+    },
+    performDeposit: (amount, payment_id, promotionid, paymentcode, type) => {
+      dispatch(
+        walletAction.performDeposit(
+          amount,
+          payment_id,
+          promotionid,
+          paymentcode,
+          type
         )
       );
     },

@@ -17,6 +17,17 @@ class Deposit extends Component {
 
     var methodcode = this.props.match.params.methodcode;
 
+    const depositMethodSwitcher = (method) => {
+      switch (method) {
+        case "banktransfer":
+          return "bank";
+        case "crypto":
+          return "crypto";
+        default:
+          return "bank";
+      }
+    };
+
     var channelid = this.props.match.params.channelid;
     var depositPromotion = this.props.match.params.promotion.trim();
     var amount = this.props.match.params.amount.replace(/,/g, "");
@@ -40,21 +51,30 @@ class Deposit extends Component {
         this.props.doThirdPartyDeposit(amount, channelid, depositPromotion);
       }
     } else {
-      if (methodcode === "Crypto") {
-        this.props.doCryptoDeposit(
-          amount,
-          channelid,
-          depositPromotion,
-          paymentcode
-        );
-      } else {
-        this.props.doBankDeposit2(
-          amount,
-          channelid,
-          depositPromotion,
-          paymentcode
-        );
-      }
+      this.props.performDeposit(
+        amount,
+        channelid,
+        depositPromotion,
+        paymentcode,
+        depositMethodSwitcher(methodcode.toLowerCase())
+      );
+
+      // if (methodcode === "Crypto") {
+      //  this.props.doCryptoDeposit(
+      //    amount,
+      //    channelid,
+      //    depositPromotion,
+      //    paymentcode
+      //  );
+      //} else {
+      //  this.props.doBankDeposit2(
+      //    amount,
+      //    channelid,
+      //    depositPromotion,
+      //    paymentcode
+      //  );
+      //
+      // }
     }
   }
   componentDidUpdate(preProps, preState) {
@@ -131,9 +151,10 @@ const mapDispatchToProps = (dispatch) => {
         )
       );
     },
-    doFPSDeposit: (account, amount, paymentid, promotionid, banktype) => {
+    doFPSDeposit: (name, account, amount, paymentid, promotionid, banktype) => {
       dispatch(
         walletAction.doFPSDeposit(
+          name,
           account,
           amount,
           paymentid,
@@ -170,6 +191,17 @@ const mapDispatchToProps = (dispatch) => {
           paymentcode
         )
       ),
+    performDeposit: (amount, payment_id, promotionid, paymentcode, type) => {
+      dispatch(
+        walletAction.performDeposit(
+          amount,
+          payment_id,
+          promotionid,
+          paymentcode,
+          type
+        )
+      );
+    },
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Deposit);
