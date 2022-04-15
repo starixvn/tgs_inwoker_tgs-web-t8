@@ -121,7 +121,7 @@ if (i18n.language === "zh-CN") {
 document.getElementById("root").style.fontFamily = fontFamily;
 var muiThemeMode = isMobileOnly
   ? themeList[Config.brand] || themeList[Config.theme]
-  : themeList["wapT9"];
+  : themeList[Config.features.web_theme] || themeList[Config.theme];
 muiThemeMode.lang = i18n.language;
 const muiTheme = createMuiTheme({
   palette: {
