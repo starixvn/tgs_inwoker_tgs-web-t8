@@ -129,7 +129,7 @@ function IDVerification(props) {
         !fileName.endsWith(".png") &&
         !fileName.endsWith(".tiff")
       ) {
-        this.props.enqueueSnackbar(i18n.t("deposit.msgInvalidFileType"), {
+        props.enqueueSnackbar(i18n.t("deposit.msgInvalidFileType"), {
           variant: "error",
         });
         e.target.value = null;
@@ -137,7 +137,7 @@ function IDVerification(props) {
       }
       const fileSize = Math.round(files[0].size / 1024);
       if (fileSize > 5120) {
-        this.props.enqueueSnackbar(i18n.t("deposit.msgInvalidFileSize"), {
+        props.enqueueSnackbar(i18n.t("deposit.msgInvalidFileSize"), {
           variant: "error",
         });
         e.target.value = null;
