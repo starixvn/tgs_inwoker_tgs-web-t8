@@ -95,7 +95,7 @@ class NewStepTwo extends Component {
         return false;
       }
       const fileSize = Math.round(files[0].size / 1024);
-      if (fileSize > 2048) {
+      if (fileSize > 5120) {
         this.props.enqueueSnackbar(i18n.t("deposit.msgInvalidFileSize"), {
           variant: "error",
         });
