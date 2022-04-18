@@ -151,9 +151,20 @@ const mapDispatchToProps = (dispatch) => {
         )
       );
     },
-    doFPSDeposit: (name, account, amount, paymentid, promotionid, banktype) => {
+    doFPSDeposit: (account, amount, paymentid, promotionid, banktype) => {
       dispatch(
         walletAction.doFPSDeposit(
+          account,
+          amount,
+          paymentid,
+          promotionid,
+          banktype
+        )
+      );
+    },
+    doFPSDepositWithName: (name, account, amount, paymentid, promotionid, banktype) => {
+      dispatch(
+        walletAction.doFPSDepositWithName(
           name,
           account,
           amount,

@@ -57,6 +57,7 @@ const featureList = {
     T9_CustomHome: false,
     CustomMessaging: [],
     web_theme: "wapT9",
+    Deposit_FPSWithName: false,
   },
 };
 export default featureList;
