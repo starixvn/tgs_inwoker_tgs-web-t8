@@ -410,13 +410,25 @@ class Deposit extends Component {
           this.state.depositPromotion
         );
       } else if (method.methodcode === "FPS") {
-        this.props.doFPSDeposit(
-          this.state.name,
-          this.state.account,
-          this.state.amount.replace(/,/g, ""),
-          channel.id,
-          this.state.depositPromotion
-        );
+        if(config.features.Deposit_FPSWithName)
+        {
+          this.props.doFPSDepositWithName(
+            this.state.name,
+            this.state.account,
+            this.state.amount.replace(/,/g, ""),
+            channel.id,
+            this.state.depositPromotion
+          );        
+        }
+        else 
+        {
+          this.props.doFPSDeposit(
+            this.state.account,
+            this.state.amount.replace(/,/g, ""),
+            channel.id,
+            this.state.depositPromotion
+          );
+        }
       } else if (method.methodcode === "ThirdParty") {
         this.props.doThirdPartyDeposit(
           this.state.amount.replace(/,/g, ""),
@@ -900,9 +912,20 @@ const mapDispatchToProps = (dispatch) => {
         )
       );
     },
-    doFPSDeposit: (name, account, amount, paymentid, promotionid, banktype) => {
+    doFPSDeposit: (account, amount, paymentid, promotionid, banktype) => {
       dispatch(
         walletAction.doFPSDeposit(
+          account,
+          amount,
+          paymentid,
+          promotionid,
+          banktype
+        )
+      );
+    },
+    doFPSDepositWithName: (name, account, amount, paymentid, promotionid, banktype) => {
+      dispatch(
+        walletAction.doFPSDepositWithName(
           name,
           account,
           amount,
