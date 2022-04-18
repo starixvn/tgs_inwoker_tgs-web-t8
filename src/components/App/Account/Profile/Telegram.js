@@ -38,13 +38,13 @@ const Telegram = (props) => {
   };
 
   const onhandleClick = () => {
-    const re = new RegExp("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$");
-    if (!telegram.match(re)) {
-      props.enqueueSnackbar(i18n.t("profile.telegram.msgInvalidTelegram"), {
-        variant: "error",
-      });
-      return;
-    }
+    // const re = new RegExp("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$");
+    // if (!telegram.match(re)) {
+    //   props.enqueueSnackbar(i18n.t("profile.telegram.msgInvalidTelegram"), {
+    //     variant: "error",
+    //   });
+    //   return;
+    // }
 
     AccountService.UpdateTelegram(telegram).then((response) => {
       if (response.IsSuccess) {
