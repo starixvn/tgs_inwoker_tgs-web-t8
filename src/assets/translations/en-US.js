@@ -402,11 +402,11 @@ export const enUS = {
 
     nameVerify: {
       title: "Real Name",
-      msgEnterICNum: "Enter IC number",
-      icNum: "IC Number",
-      msgInvalidICNum: "Invalid IC number",
+      msgEnterICNum: "Enter ID number",
+      icNum: "ID Number",
+      msgInvalidICNum: "Invalid ID number",
       msgPlsEnterName: "Please enter your real name",
-      msgPlsEnterICNum: "Please enter your IC number",
+      msgPlsEnterICNum: "Please enter your ID number",
       toEdit: "If Required to Edit Real Name, Please Contact ",
       verifyName: "Real Name Verify",
       tips: "Tips:  Real name needs same as withdrawal card name to withdraw money",
