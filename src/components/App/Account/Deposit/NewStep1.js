@@ -397,6 +397,11 @@ const NewStepOne = (props) => {
                                   src={channelExtend.qrCodeFileUrl}
                                 />
                               )}
+                              {channelExtend.logo && (
+                                <CustomImage
+                                  src={channelExtend.logo}
+                                />
+                              )}
                               {channelExtend.name && (
                                 <TransferContainer>
                                   <TransferLabel>
