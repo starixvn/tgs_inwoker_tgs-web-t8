@@ -7,11 +7,10 @@ import Dialog from "@material-ui/core/Dialog";
 import Login from "./Login";
 import { AppHistory } from "../../history/History";
 import ForgotPasswordEmail from "./ForgotPasswordEmail";
-
+import Activation from "./Activation";
 import ResetPassword from "./ResetPassword";
 import ResetPasswordSuccess from "./ResetPasswordSuccess";
-import ErrorSwitcher from "../../utils/ErrorSwitcher";
-
+import config from "../../config/config";
 import { accountAction } from "../../api-services/actions/accountAction";
 import { walletAction } from "../../api-services/actions/walletAction";
 import { gameAction } from "../../api-services/actions/gameAction";
@@ -22,38 +21,37 @@ import { SHOWING_DIALOG } from "../../api-services/constant/actionType";
 import { SHOW_LOGIN } from "../../api-services/constant/actionType";
 
 import Register from "./Register";
-import Activation from "./Activation";
+
 import { withSnackbar } from "notistack";
+import ForgotPasswordPhone from "./ForgotPasswordPhone";
 
 import i18n from "../../utils/i18n";
-import config from "../../config/config";
-import ForgotPasswordPhone from "./ForgotPasswordPhone";
+import ErrorSwitcher from "../../utils/ErrorSwitcher";
 const Container = styled.div`
+  height: 100%;
   display: flex;
-  flex-direction: row-reverse;
+  justify-content: flex-end;
   align-items: center;
-  height: 38px;
 `;
-const BtnLoginRegister = styled.button`
-  background-color: ${(props) => props.theme.primary};
-  border-radius: 7px;
-  color: #fff;
-  font-size: 13px;
-  line-height: 30px;
-  margin: auto 5px;
-  height: 30px;
-  padding: 0 20px;
-  user-select: none;
-  appearance: none;
-  border: 0;
-  cursor: pointer;
+const BtnLoginRegister = styled.div`
+  float: right;
+  font-size: 17px;
+  text-align: center;
+  color: #f6f6f6;
+
   &:hover {
-    filter: grayscale(0.3);
+    color: #fde73f;
+    cursor: pointer;
   }
 `;
-const BtnRegister = styled(BtnLoginRegister)``;
+const BtnRegister = styled(BtnLoginRegister)`
+  margin-left: 5px;
+  margin-right: 10px;
+`;
 
-const BtnLogin = styled(BtnLoginRegister)``;
+const BtnLogin = styled(BtnLoginRegister)`
+  margin-right: 5px;
+`;
 
 const BtnSpliter = styled.div`
   float: right;
@@ -343,6 +341,17 @@ class GuestContainer extends Component {
     }
   };
 
+  onhandleActivation = (username = "", pass = "") => {
+    this.setState({
+      ...this.state,
+      openDialog: true,
+      openDialogName: "activation",
+      username: username,
+      pass: pass,
+    });
+    this.props.showLogin(false);
+  };
+
   handleLoginClick = async (username, password) => {
     if (username === "") {
       this.props.enqueueSnackbar(i18n.t("web.login.errorMsg.emptyUsername"), {
@@ -387,6 +396,51 @@ class GuestContainer extends Component {
       //   });
       // }
     }
+  };
+  handleLoginClickWithHp = async (username, password, phone) => {
+    if (username === "") {
+      this.props.enqueueSnackbar(i18n.t("web.login.errorMsg.emptyUsername"), {
+        variant: "warning",
+      });
+      return;
+    }
+    if (password === "") {
+      this.props.enqueueSnackbar(i18n.t("web.login.errorMsg.emptyPassword"), {
+        variant: "warning",
+      });
+      return;
+    }
+    AccountService.Activation(
+      username,
+      password,
+      this.state.areaCode,
+      phone
+    ).then(async (response) => {
+      if (response.IsSuccess) {
+        this.state.securityKey = response.data;
+        // setSecurityKey(response.data);
+        // props.enqueueSnackbar(i18n.t("common.msgTokenSent"), {
+        //   variant: "info",
+        // });
+        AccountService.VerifyActivation(this.state.securityKey, "123456").then(
+          async (response) => {
+            // if (response.IsSuccess) {
+            // props.enqueueSnackbar(i18n.t("common.msgTokenVerified"), {
+            //   variant: "success",
+            // });
+            this.handleLoginClick(username, password);
+            // } else {
+            // props.enqueueSnackbar(response.info, {
+            //   variant: "warning",
+            // });
+            // }
+            this.handleLoginClick(username, password);
+          }
+        );
+      } else {
+        this.handleLoginClick(username, password);
+      }
+    });
   };
   handleCloseSelfControlDialog = (token) => {
     this.setState({ ...this.state, openSelfControlDialog: false });
@@ -435,26 +489,46 @@ class GuestContainer extends Component {
     this.props.showLogin(false);
     this.props.onhandleContactUsClick();
   };
+  onhandleActivation = (username = "", pass = "") => {
+    this.setState({
+      ...this.state,
+      openDialog: true,
+      openDialogName: "activation",
+      username: username,
+      pass: pass,
+    });
+    this.props.showLogin(false);
+  };
+
   handleRegisterSuccess = (username, pass) => {
     this.onhandleActivation(username, pass);
   };
   render() {
     return (
       <Container>
+        <BtnLogin onClick={() => this.handleClickOpenDialog("login")}>
+          <BtnLoginRegisterLabel>
+            {i18n.t("common.login")}
+          </BtnLoginRegisterLabel>
+        </BtnLogin>
+        <BtnSpliter> | </BtnSpliter>
+        <BtnRegister onClick={() => this.onhandleRegister()}>
+          <BtnLoginRegisterLabel>
+            {i18n.t("common.register")}
+          </BtnLoginRegisterLabel>
+        </BtnRegister>
+
         {config.features.SMSVerification && (
           <React.Fragment>
             <BtnRegister onClick={() => this.onhandleActivation()}>
-              {i18n.t("web.register.activation")}
+              <BtnLoginRegisterLabel>
+                {i18n.t("web.register.activation")}
+              </BtnLoginRegisterLabel>
             </BtnRegister>
+            <BtnSpliter> | </BtnSpliter>
           </React.Fragment>
         )}
-        <BtnRegister onClick={() => this.onhandleRegister()}>
-          {i18n.t("common.register")}
-        </BtnRegister>
 
-        <BtnLogin onClick={() => this.handleClickOpenDialog("login")}>
-          {i18n.t("common.login")}
-        </BtnLogin>
         <StyledDialog
           open={this.state.openDialog || this.props.ui.showLogin}
           onClose={this.onhandleCloseDialog}
@@ -484,6 +558,7 @@ class GuestContainer extends Component {
                     onhandleClose={this.onhandleCloseDialog}
                     onRegisterSuccess={this.handleRegisterSuccess}
                     doLogin={this.handleLoginClick}
+                    doLoginWithHp={this.handleLoginClickWithHp}
                   ></Register>
                 );
               } else if (this.state.openDialogName === "activation") {

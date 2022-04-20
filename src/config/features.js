@@ -58,6 +58,7 @@ const featureList = {
     CustomMessaging: [],
     web_theme: "wapT9",
     Deposit_FPSWithName: false,
+    Register_ShowPhone: false,
   },
 };
 export default featureList;
