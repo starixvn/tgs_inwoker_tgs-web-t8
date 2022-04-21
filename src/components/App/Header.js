@@ -920,34 +920,36 @@ class Header extends Component {
                 {i18n.t("common.cs")}
               </BtnCS> */}
                 {(() => {
-                  if (
-                    this.props.account.token !== this.props.account.info.token
-                  ) {
-                    return (
-                      <GuestContainer
-                        onhandleShowCSClick={this.props.onhandleShowCSClick}
-                        onhandleContactUsClick={this.handleContactUsClick}
-                        onDialogChange={this.handleDialogChange}
-                      ></GuestContainer>
-                    );
-                  } else {
-                    return (
-                      <MemberContainer
-                        onhandleLogout={this.onhandleLogout}
-                        onhandleTransfer={this.onhandleTransfer}
-                        onhandleWithdrawal={this.onhandleWithdrawal}
-                        onhandleDeposit={this.onhandleDeposit}
-                        onhandleInboxClick={this.handleInboxClick}
-                        onhandleRefreshBalanceClick={
-                          this.handleRefreshBalanceClick
-                        }
-                        wallet={this.props.wallet}
-                        account={this.props.account}
-                        game={this.props.game}
-                      ></MemberContainer>
-                    );
+                  if (!this.props.general.isMaintenance) {
+                    if (
+                      this.props.account.token !== this.props.account.info.token
+                    ) {
+                      return (
+                        <GuestContainer
+                          onhandleShowCSClick={this.props.onhandleShowCSClick}
+                          onhandleContactUsClick={this.handleContactUsClick}
+                          onDialogChange={this.handleDialogChange}
+                        ></GuestContainer>
+                      );
+                    } else {
+                      return (
+                        <MemberContainer
+                          onhandleLogout={this.onhandleLogout}
+                          onhandleTransfer={this.onhandleTransfer}
+                          onhandleWithdrawal={this.onhandleWithdrawal}
+                          onhandleDeposit={this.onhandleDeposit}
+                          onhandleInboxClick={this.handleInboxClick}
+                          onhandleRefreshBalanceClick={
+                            this.handleRefreshBalanceClick
+                          }
+                          wallet={this.props.wallet}
+                          account={this.props.account}
+                          game={this.props.game}
+                        ></MemberContainer>
+                      );
+                    }
                   }
-                })()}{" "}
+                })()}
               </TopRightContainer>
             </TopContainer>
           </TopContainerWrap>
