@@ -59,6 +59,9 @@ const featureList = {
     web_theme: "wapT9",
     Deposit_FPSWithName: false,
     Register_ShowPhone: false,
+    MenuItem_Sorting_WLGHK: false,
+    MenuItem_Sorting_PB: false,
+    MenuItem_Sorting_GMO: false,
   },
 };
 export default featureList;
