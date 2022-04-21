@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { generalAction } from "../../../../api-services/actions/generalAction";
 import i18n from "../../../../utils/i18n";
 import IconVIPPNG from "../../../../assets/images/icon-vip.png";
+import config from "../../../../config/config";
+
 const Container = styled.div`
   padding: 20px 28px;
   box-sizing: border-box
@@ -138,6 +140,10 @@ const VipEmblemContainerTitle = styled(VipEmblemContainer)`
   font-weight: bold;
 `;
 
+const VIPLevelImage = styled.div`
+  height: 95px;
+`;
+
 const DataRow = styled.div`
   display: flex;
   justify-content: center;
@@ -180,6 +186,13 @@ const VIP = (props) => {
     vipBenefit.items.sort((a, b) => {
       return a.level < b.level ? -1 : a.level > b.level ? 1 : 0;
     });
+  
+  const getVIPTitle = (level) => {
+    // currently bunny only has 6 levels
+    if (config.features.VIP_CustomLevel_BUNNY && level < 7)
+      return i18n.t("vip.bunny.level" + level);
+    else return "VIP" + level;
+  };
 
   return (
     <Container>
@@ -229,15 +242,15 @@ const VIP = (props) => {
                       total={vipBenefit.items.length}
                     >
                       <VipEmblemContainer>
-                        <div>
+                        <VIPLevelImage>
                           <img
                             src={
                               process.env.PUBLIC_URL +
                               `/assets/images/vip/${data.level}.png`
                             }
                           />
-                        </div>
-                        VIP{data.level}
+                        </VIPLevelImage>
+                        {getVIPTitle(data.level)}
                       </VipEmblemContainer>
                       <VIPContent>
                         {data.levelKeepAccumulateBetAmount}
