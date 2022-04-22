@@ -245,7 +245,19 @@ class LiveGame extends Component {
               style={{ overflow: "visible" }}
             >
               <BottomNavItemContainer>
-                {this.state.list.map((data, index) => {
+                {this.state.list
+                .sort((a, b) => {
+                  if(config.features.LiveGame_Sorting_SKY)
+                  {
+                    var sortDGFirst = ["DG"];
+                    return (
+                      sortDGFirst.indexOf(b.abbreviation) -
+                      sortDGFirst.indexOf(a.abbreviation)
+                    );
+                  }
+                  else  
+                    return b-a;
+                }).map((data, index) => {
                   return (
                     <BottomNavItem selected={this.state.selected === index}
                         maintenance={data.status != 0}>
