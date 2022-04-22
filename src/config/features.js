@@ -63,6 +63,7 @@ const featureList = {
     MenuItem_Sorting_PB: false,
     MenuItem_Sorting_GMO: false,
     VIP_CustomLevel_BUNNY: false,
+    Withdrawal_Ignore_Verification: true,
   },
 };
 export default featureList;
