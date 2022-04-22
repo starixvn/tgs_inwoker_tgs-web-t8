@@ -1,33 +1,16 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { Grid } from "@material-ui/core";
 import DynamicFont from "react-dynamic-font";
 import LimitPopupBigPNG from "../../../../assets/images/limit-popup-big.png";
-
-import IconEditPNG from "../../../../assets/images/icon-edit.png";
-import IconBankDisablePNG from "../../../../assets/images/icon-bank-disable.png";
-
 import CustomButton from "../../../Share/Button";
-
 import CustomTextField from "../../../Share/TextField";
 import i18n from "../../../../utils/i18n";
-
 import Common from "../../../../utils/Common";
+import { walletAction } from "../../../../api-services/actions/walletAction";
+import { connect } from "react-redux";
 
 const SubHeaderContainer = styled.div``;
-const NumberContainer = styled.div`
-  width: 20px;
-  height: 20px;
-  border-radius: 3.2px;
-  background-color: #141933;
-  font-family: Arial;
-  font-size: 14px;
-  font-weight: bold;
-  color: #ffffff;
-  text-align: center;
-  padding-top: 2px;
-  float: left;
-`;
+
 const SubTitle = styled.div`
   font-size: 16px;
   float: left;
@@ -43,12 +26,12 @@ const BankCardContainer = styled(SelectionContainer)`
   justify-content: flex-start;
   gap: 10px;
   flex-wrap: wrap;
-`
+`;
 
 const BankCardItem = styled.div`
   width: 240px;
   background-color: #fff;
-  border: 1px solid ${(props)=> props.active? props.theme.primary :`#ccc`};
+  border: 1px solid ${(props) => (props.active ? props.theme.primary : `#ccc`)};
   border-radius: 2px;
   overflow: hidden;
   position: relative;
@@ -59,10 +42,12 @@ const BankCardItem = styled.div`
   height: 100px;
   padding-right: 20px;
   margin-bottom: 20px;
-
 `;
 const BankCardTitle = styled.div`
-  background-image: ${(props)=> props.active?`linear-gradient(180deg, ${props.theme.primary}, ${props.theme.primaryGradient})`:`linear-gradient(180deg, #787878, #3c3b3b)`};
+  background-image: ${(props) =>
+    props.active
+      ? `linear-gradient(180deg, ${props.theme.primary}, ${props.theme.primaryGradient})`
+      : `linear-gradient(180deg, #787878, #3c3b3b)`};
   border-bottom: 1px solid #ccc;
   box-sizing: border-box;
   color: #fff;
@@ -102,80 +87,6 @@ const BankCardType = styled.div`
   font-size: 14px;
 `;
 
-const BankCardButton = styled(Grid)`
-  width: auto;
-  text-align: left;
-
-  height: 41px;
-  font-size: 14px;
-  background-color: #f7f7f7;
-  color: #747474;
-  padding-right: 10px;
-  text-align: center;
-
-  float: left;
-  margin-right: 8px;
-  margin-top: 5px;
-  ${(props) =>
-    props.active
-      ? ` border: solid 1px #151a34;
-      `
-      : ` border: solid 1px #e1dfdf;
-     `};
-  &:hover {
-    cursor: pointer;
-  }
-`;
-const BankCardButtonIcon = styled(Grid)`
-  width: 40px;
-  height: 40px;
-  background: url(${IconBankDisablePNG}) no-repeat 15px center;
-`;
-const BankCardButtonLabel = styled.div`
-  width: 86px;
-  display: inline-block;
-`;
-const BankCardButtonCardNo = styled.div`
-  float: right;
-  margin-right: 2px;
-`;
-const BankCardButtonCardNoHL = styled(BankCardButtonCardNo)`
-  font-weight: bold;
-`;
-const ManageCardButton = styled(Grid)`
-  height: 41px;
-  width: auto;
-  font-size: 14px;
-  background-color: #f7f7f7;
-  color: #747474;
-  padding-right: 10px;
-  text-align: center;
-
-  float: left;
-  margin-right: 8px;
-  margin-top: 5px;
-  ${(props) =>
-    props.active
-      ? ` border: solid 1px #151a34;
-      `
-      : ` border: solid 1px #e1dfdf;
-     `};
-  &:hover {
-    cursor: pointer;
-  }
-`;
-const ManageCardButtonIcon = styled(Grid)`
-  width: 40px;
-  height: 40px;
-  background: url(${IconEditPNG}) no-repeat 15px center;
-`;
-const SplitLine = styled.div`
-  width: 100%;
-  height: 1px;
-  background-color: #e1dfdf;
-  margin: 20px 0;
-`;
-
 const LimitPopupContainer = styled.div`
   background: url(${LimitPopupBigPNG}) no-repeat,
     linear-gradient(90deg, rgba(2, 0, 36, 0) 9px, rgba(122, 145, 153, 1) 10px);
@@ -196,40 +107,38 @@ const Turnover = styled.div`
     font-weight: bold;
   }
 `;
-class Main extends Component {
-  state = {
-    selectedCardIndex: 0,
-    showDetails: false,
-    amount: "",
-    password: "",
-    disabled: false,
-  };
-  componentDidMount() {
-    // this.setState({ ...this.state, selectedCard: this.props.defaultCard });
-  }
 
-  handleSelectCardChange = (index) => {
-    this.setState({ ...this.state, selectedCardIndex: index });
+const Main = (props) => {
+  const [selectedCardIndex, setSelectedCardIndex] = useState("");
+  const [amount, setAmount] = useState("");
+
+  const [disabled, setDisabled] = useState("");
+  const [min, setMin] = useState(0);
+  const [max, setMax] = useState(0);
+  const [paymentList, setPaymentList] = useState(props.wallet.depositTypeList);
+
+  var minValue = [];
+  var maxValue = [];
+
+  const handleSelectCardChange = (index) => {
+    setSelectedCardIndex(index);
   };
-  handleAmountChange = (e) => {
-    this.setState({ ...this.state, amount: e.target.value });
+  const handleAmountChange = (e) => {
+    setAmount(e.target.value);
   };
-  handlePasswordChange = (e) => {
-    this.setState({ ...this.state, password: e.target.value });
-  };
-  handleWithdrawalClick = (e) => {
-    this.props.onhandleWithdrawalClick(
-      this.props.cardList[this.state.selectedCardIndex].id,
-      this.state.amount,
-      this.state.password
+
+  const handleWithdrawalClick = (e) => {
+    props.onhandleWithdrawalClick(
+      props.cardList[this.state.selectedCardIndex].id,
+      this.state.amount
     );
-    this.setState({ ...this.state, disabled: true });
+    setDisabled(true);
     setTimeout(() => {
-      this.setState({ ...this.state, disabled: false });
+      setDisabled(false);
     }, 1000);
   };
 
-  handleFilterBankNumber = (item) => {
+  const handleFilterBankNumber = (item) => {
     let last4Digits = "";
     if (item.banktype === "ThirdParty" || item.banktype === "FPS") {
       if (item.detail.phone) {
@@ -250,27 +159,60 @@ class Main extends Component {
     }
   };
 
-  render() {
-    return (
-      <>
-        <SubHeaderContainer>
-          <SubTitle>{i18n.t("withdrawal.msgEnterBank")}</SubTitle>
-        </SubHeaderContainer>
-        <BankCardContainer>
-          {this.props.cardList.map((item, index) => {
-            return (
-              <BankCardItem 
-              key={index} 
-              active={index === this.state.selectedCardIndex}
-                onClick={() => this.handleSelectCardChange(index)}
-              >
-              <BankCardTitle active={index === this.state.selectedCardIndex}>{i18n.t("withdrawal.bankCard")}</BankCardTitle>
+  const getTransferLimit = (channelId) => {
+    //reset everything
+    minValue = [];
+    maxValue = [];
+    setMin(0);
+    setMax(0);
+    //update new data.
+    for (var i = 0; i < paymentList.length; i++) {
+      const methodList = paymentList[i].method;
+      if (methodList) {
+        for (var inner = 0; inner < methodList.length; inner++) {
+          const channelList = methodList[inner].channel;
+          for (var channel = 0; channel < channelList.length; channel++)
+            if (channelList[channel]) {
+              if (channelList[channel].channelid === channelId) {
+                minValue.push(channelList[channel].transferlimit.from);
+                maxValue.push(channelList[channel].transferlimit.to);
+                setMin(Math.min(...minValue));
+                setMax(Math.max(...maxValue));
+              }
+            }
+        }
+      }
+    }
+  };
+
+  return (
+    <>
+      <SubHeaderContainer>
+        <SubTitle>{i18n.t("withdrawal.msgEnterBank")}</SubTitle>
+      </SubHeaderContainer>
+      <BankCardContainer>
+        {props.cardList.map((item, index) => {
+          return (
+            <BankCardItem
+              key={index}
+              active={index === selectedCardIndex}
+              onClick={() => {
+                handleSelectCardChange(index);
+                getTransferLimit(item.paymentchannelid);
+              }}
+            >
+              <BankCardTitle active={index === selectedCardIndex}>
+                {i18n.t("withdrawal.bankCard")}
+              </BankCardTitle>
               <BankCardInfo>
                 <BankCardNumber>
-                  <DynamicFont content={this.handleFilterBankNumber(item)}>
-                  </DynamicFont>
+                  <DynamicFont
+                    content={handleFilterBankNumber(item)}
+                  ></DynamicFont>
                 </BankCardNumber>
-                <BankCardAccount>{i18n.t("deposit.details.account")}</BankCardAccount>
+                <BankCardAccount>
+                  {i18n.t("deposit.details.account")}
+                </BankCardAccount>
                 <BankCardType>
                   {item.banktype === "bank"
                     ? item.detail.bankName
@@ -278,142 +220,65 @@ class Main extends Component {
                 </BankCardType>
               </BankCardInfo>
             </BankCardItem>
+          );
+        })}
+      </BankCardContainer>
 
-              // <BankCardButton
-              //   key={index}
-              //   active={index === this.state.selectedCardIndex}
-              //   onClick={() => this.handleSelectCardChange(index)}
-              //   container
-              //   direction="row"
-              //   justifyContent="flex-start"
-              //   alignItems="center"
-              // >
-              //   <BankCardButtonIcon items></BankCardButtonIcon>
-              //   <BankCardButtonLabel items>
-              //     {i18n.t("withdrawal.bankCard")}
-              //   </BankCardButtonLabel>
-              //   <BankCardButtonCardNoHL items>
-              //     {(() => {
-              //       if (
-              //         item.banktype === "ThirdParty" ||
-              //         item.banktype === "FPS"
-              //       ) {
-              //         if (item.detail.phone) {
-              //           return item.detail.phone.substring(
-              //             item.detail.phone.length - 4,
-              //             item.detail.phone.length
-              //           );
-              //         } else if (item.detail.address) {
-              //           return item.detail.address.substring(
-              //             item.detail.address.length - 4,
-              //             item.detail.address.length
-              //           );
-              //         }
-              //       } else {
-              //         if (item.detail.bankAccount) {
-              //           return item.detail.bankAccount.substring(
-              //             item.detail.bankAccount.length - 4,
-              //             item.detail.bankAccount.length
-              //           );
-              //         } else if (item.detail.address) {
-              //           return item.detail.address.substring(
-              //             item.detail.address.length - 4,
-              //             item.detail.address.length
-              //           );
-              //         }
-              //       }
-              //     })()}
-              //   </BankCardButtonCardNoHL>
-              //   <BankCardButtonCardNo items>
-              //     {i18n.t("withdrawal.tail")}
-              //   </BankCardButtonCardNo>
-              // </BankCardButton>
-            );
-          })}
-          {/* <ManageCardButton
-            onClick={this.props.onhandleManageCardClick}
-            container
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="center"
-          >
-            <ManageCardButtonIcon items></ManageCardButtonIcon>
-            <Grid items> {i18n.t("withdrawal.manageBank")}</Grid>
-          </ManageCardButton> */}
-        </BankCardContainer>
-        
-        <SubHeaderContainer>
-          <SubTitle>{i18n.t("withdrawal.enterAmount")}</SubTitle>
-        </SubHeaderContainer>
-        
-        <SelectionContainer>
-          <CustomTextField
-            width={250}
-            height={38}
-            placeholder={i18n.t("withdrawal.enterAmount")}
-            handleTextFieldChange={this.handleAmountChange}
-            variant="outlined"
-            autoComplete="off"
-            value={this.state.amount}
-            pattern="[0-9]*"
-            type={"number"}
-            maxLength={12}
-          ></CustomTextField>
-          <LimitPopupContainer>
-            {Common.formatNumberWithThousand(this.props.withdrawalMinLimit)} -{" "}
-            {Common.formatNumberWithThousand(this.props.withdrawalMaxLimit)}
-          </LimitPopupContainer>
-          <Turnover>
-            {i18n.t("withdrawal.msgCanWithdrawal")}
-            <span>
-              {Common.formatNumberWithThousand(this.props.mainBalance)}
-            </span>
-          </Turnover>
-          <Turnover>
-            {i18n.t("withdrawal.turnover")}
-            <span>
-              {Common.formatNumberWithThousand(this.props.minWithdrawLimit)}
-            </span>
-          </Turnover>
-        </SelectionContainer>
-        {/* {config.brand !== "HKJP" && config.brand !== "GPI" ? (
-          <React.Fragment>
-            <SplitLine></SplitLine>
-            <SubHeaderContainer>
-              <NumberContainer>3</NumberContainer>
+      <SubHeaderContainer>
+        <SubTitle>{i18n.t("withdrawal.enterAmount")}</SubTitle>
+      </SubHeaderContainer>
 
-              <SubTitle>{i18n.t("withdrawal.msgEnterWithdrawalPass")}</SubTitle>
-            </SubHeaderContainer>
-            <SelectionContainer>
-              <CustomTextField
-                marginTop={10}
-                type={"password"}
-                placeholder={i18n.t("withdrawal.msgEnterWithdrawalPass")}
-                width={220}
-                height={38}
-                float={"none"}
-                value={this.state.password}
-                handleTextFieldChange={this.handlePasswordChange}
-              ></CustomTextField>
-            </SelectionContainer>
-          </React.Fragment>
-        ) : null} */}
+      <SelectionContainer>
+        <CustomTextField
+          width={250}
+          height={38}
+          placeholder={i18n.t("withdrawal.enterAmount")}
+          handleTextFieldChange={handleAmountChange}
+          variant="outlined"
+          autoComplete="off"
+          value={amount}
+          pattern="[0-9]*"
+          type={"number"}
+          maxLength={12}
+        ></CustomTextField>
+        <LimitPopupContainer>
+          {Common.formatNumberWithThousand(min)} -{" "}
+          {Common.formatNumberWithThousand(max)}
+        </LimitPopupContainer>
+        <Turnover>
+          {i18n.t("withdrawal.msgCanWithdrawal")}
+          <span>{Common.formatNumberWithThousand(props.mainBalance)}</span>
+        </Turnover>
+        <Turnover>
+          {i18n.t("withdrawal.turnover")}
+          <span>{Common.formatNumberWithThousand(props.minWithdrawLimit)}</span>
+        </Turnover>
+      </SelectionContainer>
 
-        <CustomButton
-          disabled={
-            parseFloat(this.state.amount) < this.props.withdrawalMinLimit ||
-            parseFloat(this.state.amount) > this.props.withdrawalMaxLimit ||
-            this.state.disabled
-          }
-          name={i18n.t("common.nextStep")}
-          width={255}
-          marginTop={0}
-          float={"none"}
-          marginLeft={290}
-          handleClick={this.handleWithdrawalClick}
-        ></CustomButton>
-      </>
-    );
-  }
-}
-export default Main;
+      <CustomButton
+        disabled={
+          parseFloat(amount) < min || parseFloat(amount) > max || disabled
+        }
+        name={i18n.t("common.nextStep")}
+        width={255}
+        marginTop={0}
+        float={"none"}
+        marginLeft={290}
+        handleClick={handleWithdrawalClick}
+      ></CustomButton>
+    </>
+  );
+};
+
+const mapStateToProps = (state) => {
+  return {
+    wallet: state.wallet,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getWithdrawalChannel: () => dispatch(walletAction.getWithdrawalChannel()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);
