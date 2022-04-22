@@ -585,8 +585,15 @@ class Header extends Component {
     this.setState({ ...this.state, isHoverMenu: false });
   };
   handleClickMenu = (path) => {
-    this.setState({ ...this.state, selected: path });
-    this.props.history.push("/" + i18n.language + `/${path}`);
+    if(path==="vip" && !this.props.account.token)
+    {
+      this.props.showLogin(true);
+    }
+    else
+    {
+      this.setState({ ...this.state, selected: path });
+      this.props.history.push("/" + i18n.language + `/${path}`);
+    }
   };
 
   handleHideAppBar = () => {
@@ -1239,6 +1246,15 @@ class Header extends Component {
                   TopMenuPromoHoverPNG,
                   null
                 )}
+
+                {config.features.HomePage_DisplayVIP &&
+                  this.RightMenuItem(
+                    "vip",
+                    TopMenuPromoPNG,
+                    "VIP",
+                    TopMenuPromoHoverPNG,
+                    null
+                  )}
               </RightMenuUL>
             </RightMenuContainer>
           </BottomContainer>
