@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { Redirect } from "react-router";
-import IconWithdrawRedPNG from "../../../../assets/images/icon-withdraw.png";
+
 import { withRouter } from "react-router-dom";
 import Loading from "../../Loading";
 import NameVerification from "../../Share/NameVerification";
@@ -92,8 +92,6 @@ class Withdrawal extends Component {
     });
     if (this.props.wallet.bankCardList.length === 0)
       this.props.getBankCardList();
-    if (this.props.wallet.withdrawalList.length === 0)
-      this.props.getWithdrawalChannel();
 
     if (this.urlParams.has("do")) {
       const value = this.urlParams.get("do");
@@ -442,12 +440,6 @@ class Withdrawal extends Component {
                               }
                               account={this.props.account}
                               mainBalance={this.props.wallet.mainBalance}
-                              withdrawalMinLimit={
-                                this.props.wallet.withdrawalMinLimit
-                              }
-                              withdrawalMaxLimit={
-                                this.props.wallet.withdrawalMaxLimit
-                              }
                               minWithdrawLimit={this.state.minWithdrawLimit}
                             ></Main>
                           );
@@ -520,7 +512,6 @@ const mapDispatchToProps = (dispatch) => {
     deleteBankCard: (id) => dispatch(walletAction.deleteBankCard(id)),
     addBankCard: (channelid, bankType, detail) =>
       dispatch(walletAction.addBankCard(channelid, bankType, detail)),
-    getWithdrawalChannel: () => dispatch(walletAction.getWithdrawalChannel()),
     resetResult: () =>
       dispatch({
         type: RESET_WALLETRESULT,
