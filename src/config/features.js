@@ -62,7 +62,7 @@ const featureList = {
     MenuItem_Sorting_WLGHK: false,
     MenuItem_Sorting_PB: false,
     MenuItem_Sorting_GMO: false,
-    LiveGame_Sorting_SKY: true,
+    LiveGame_Sorting_SKY: false,
   },
 };
 export default featureList;
