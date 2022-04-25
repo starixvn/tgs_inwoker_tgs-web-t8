@@ -129,12 +129,12 @@ const RightContainer = styled.div`
 `;
 
 const BtnAppsAndCS = styled.div`
-  width: 77px;
   display: flex;
   align-items: center;
   word-wrap: break-word;
   height: 30px;
   margin-top: 3px;
+  margin-left: 2px;
   float: right;
   &:hover {
     cursor: pointer;
@@ -145,16 +145,20 @@ const BtnAppsAndCS = styled.div`
 `;
 
 const BtnCS = styled(BtnAppsAndCS)`
-  margin-right: 8px;
-
-  background-image: url(${BtnCSPNG});
-  color: #f6f6f6;
+  background-color: ${(props) => props.theme.primary};
+  border-radius: 7px;
+  color: #fff;
+  font-size: 13px;
+  line-height: 30px;
+  height: 30px;
+  padding: 0 20px;
+  user-select: none;
+  appearance: none;
+  border: 0;
+  cursor: pointer;
   &:hover {
-    background-image: url(${BtnCSHoverPNG});
-    color: #fde73f;
+    filter: grayscale(0.3);
   }
-  padding-left: 32px;
-  line-height: 10px;
 `;
 
 const BottomContainer = styled.div`
@@ -923,9 +927,11 @@ class Header extends Component {
                 )}
               </TopLeftContainer>
               <TopRightContainer>
-                {/* <BtnCS onClick={this.props.onhandleShowCSClick}>
-                {i18n.t("common.cs")}
-              </BtnCS> */}
+                {config.features.Header_DisplayCS && (
+                  <BtnCS onClick={this.props.onhandleShowCSClick}>
+                    {i18n.t("common.cs")}
+                  </BtnCS>
+                )}
                 {(() => {
                   if (!this.props.general.isMaintenance) {
                     if (

@@ -66,6 +66,7 @@ const featureList = {
     Withdrawal_Ignore_Verification: true,
     HomePage_DisplayVIP: false,
     LiveGame_Sorting_SKY: false,
+    Header_DisplayCS: false,
   },
 };
 export default featureList;

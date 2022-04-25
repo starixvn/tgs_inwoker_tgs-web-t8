@@ -28,30 +28,31 @@ import ForgotPasswordPhone from "./ForgotPasswordPhone";
 import i18n from "../../utils/i18n";
 import ErrorSwitcher from "../../utils/ErrorSwitcher";
 const Container = styled.div`
-  height: 100%;
   display: flex;
-  justify-content: flex-end;
+  flex-direction: row-reverse;
   align-items: center;
+  height: 38px;
 `;
-const BtnLoginRegister = styled.div`
-  float: right;
-  font-size: 17px;
-  text-align: center;
-  color: #f6f6f6;
-
+const BtnLoginRegister = styled.button`
+  background-color: ${(props) => props.theme.primary};
+  border-radius: 7px;
+  color: #fff;
+  font-size: 13px;
+  line-height: 30px;
+  margin: auto 5px;
+  height: 30px;
+  padding: 0 20px;
+  user-select: none;
+  appearance: none;
+  border: 0;
+  cursor: pointer;
   &:hover {
-    color: #fde73f;
-    cursor: pointer;
+    filter: grayscale(0.3);
   }
 `;
-const BtnRegister = styled(BtnLoginRegister)`
-  margin-left: 5px;
-  margin-right: 10px;
-`;
+const BtnRegister = styled(BtnLoginRegister)``;
 
-const BtnLogin = styled(BtnLoginRegister)`
-  margin-right: 5px;
-`;
+const BtnLogin = styled(BtnLoginRegister)``;
 
 const BtnSpliter = styled.div`
   float: right;
@@ -506,29 +507,21 @@ class GuestContainer extends Component {
   render() {
     return (
       <Container>
-        <BtnLogin onClick={() => this.handleClickOpenDialog("login")}>
-          <BtnLoginRegisterLabel>
-            {i18n.t("common.login")}
-          </BtnLoginRegisterLabel>
-        </BtnLogin>
-        <BtnSpliter> | </BtnSpliter>
-        <BtnRegister onClick={() => this.onhandleRegister()}>
-          <BtnLoginRegisterLabel>
-            {i18n.t("common.register")}
-          </BtnLoginRegisterLabel>
-        </BtnRegister>
-
         {config.features.SMSVerification && (
           <React.Fragment>
             <BtnRegister onClick={() => this.onhandleActivation()}>
-              <BtnLoginRegisterLabel>
                 {i18n.t("web.register.activation")}
-              </BtnLoginRegisterLabel>
             </BtnRegister>
             <BtnSpliter> | </BtnSpliter>
           </React.Fragment>
         )}
+        <BtnRegister onClick={() => this.onhandleRegister()}>
+          {i18n.t("common.register")}
+        </BtnRegister>
 
+        <BtnLogin onClick={() => this.handleClickOpenDialog("login")}>
+          {i18n.t("common.login")}
+        </BtnLogin>
         <StyledDialog
           open={this.state.openDialog || this.props.ui.showLogin}
           onClose={this.onhandleCloseDialog}
