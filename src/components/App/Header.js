@@ -1010,7 +1010,19 @@ class Header extends Component {
                     (game) =>
                       item.gameType.indexOf(game.type) >= 0 &&
                       game.abbreviation.toLowerCase()
-                  );
+                  )                  
+                  .sort((a, b) => {
+                    if(config.features.LiveGame_Sorting_SKY)
+                    {
+                      var sortDGFirst = ["DG"];
+                      return (
+                        sortDGFirst.indexOf(b.abbreviation) -
+                        sortDGFirst.indexOf(a.abbreviation)
+                      );
+                    }
+                    else  
+                      return b-a;
+                  });
 
                   if (list.length > 0) {
                     return (
