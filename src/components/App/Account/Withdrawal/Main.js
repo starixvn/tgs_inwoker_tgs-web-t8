@@ -115,7 +115,7 @@ const Main = (props) => {
   const [disabled, setDisabled] = useState("");
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(0);
-  const [paymentList, setPaymentList] = useState(props.wallet.depositTypeList);
+  const [paymentList, setPaymentList] = useState(props.wallet.withdrawalList);
 
   var minValue = [];
   var maxValue = [];
@@ -167,19 +167,16 @@ const Main = (props) => {
     setMax(0);
     //update new data.
     for (var i = 0; i < paymentList.length; i++) {
-      const methodList = paymentList[i].method;
+      const methodList = paymentList[i].channel;
       if (methodList) {
         for (var inner = 0; inner < methodList.length; inner++) {
-          const channelList = methodList[inner].channel;
-          for (var channel = 0; channel < channelList.length; channel++)
-            if (channelList[channel]) {
-              if (channelList[channel].channelid === channelId) {
-                minValue.push(channelList[channel].transferlimit.from);
-                maxValue.push(channelList[channel].transferlimit.to);
-                setMin(Math.min(...minValue));
-                setMax(Math.max(...maxValue));
-              }
-            }
+          const channelList = methodList[inner];
+          if (channelList.channelid === channelId) {
+            minValue.push(channelList.transferlimit.from);
+            maxValue.push(channelList.transferlimit.to);
+            setMin(Math.min(...minValue));
+            setMax(Math.max(...maxValue));
+          }
         }
       }
     }
