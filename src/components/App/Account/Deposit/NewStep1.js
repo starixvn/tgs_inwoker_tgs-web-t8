@@ -237,6 +237,8 @@ const NewStepOne = (props) => {
   var isManual = paymentType.paymentcode.toUpperCase() === "MANUAL";
   var isFPS =
     methodList[selectedMethodIndex].methodcode.toUpperCase() === "FPS";
+  var isUsdt =
+    methodList[selectedMethodIndex].methodcode.toUpperCase() === "USDT";
 
   const performCopy = (content) => {
     props.enqueueSnackbar(i18n.t("affiliate.copied"), {
@@ -398,9 +400,7 @@ const NewStepOne = (props) => {
                                 />
                               )}
                               {channelExtend.logo && (
-                                <CustomImage
-                                  src={channelExtend.logo}
-                                />
+                                <CustomImage src={channelExtend.logo} />
                               )}
                               {channelExtend.name && (
                                 <TransferContainer>
@@ -484,43 +484,50 @@ const NewStepOne = (props) => {
                 ) {
                   return (
                     <>
-                      <FormContainer>
-                        <FormLeftContainer>
-                          <SubHeaderContainer>
-                            <SubTitle>
-                              {i18n.t("common.pleaseEnterAccountName")}
-                            </SubTitle>
-                          </SubHeaderContainer>
-                        </FormLeftContainer>
+                      {!(config.features.Deposit_RemoveAccount || isUsdt) && (
+                        <FormContainer>
+                          <FormLeftContainer>
+                            <SubHeaderContainer>
+                              <SubTitle>
+                                {i18n.t("common.pleaseEnterAccountName")}
+                              </SubTitle>
+                            </SubHeaderContainer>
+                          </FormLeftContainer>
 
-                        <FormRightContainer>
-                          <SelectionContainer>
-                            <TextField
-                              style={{
-                                height: "38px",
-                                width: "258px",
-                                float: "left",
-                                marginRight: "5px",
-                                padding: 0,
-                              }}
-                              placeholder={i18n.t(
-                                "common.pleaseEnterAccountName"
-                              )}
-                              onChange={onAccountChange}
-                              outputFormat="string"
-                              variant="outlined"
-                              autoComplete="off"
-                              value={account}
-                            ></TextField>
-                          </SelectionContainer>
-                          {config.features.Deposit_AddTips && (
-                            <div style={{ marginLeft: 30, marginTop: 8 }}>
-                              <Remark> {i18n.t("mgm.accountDepositTips")}</Remark>
-                            </div>
-                          )}
-                        </FormRightContainer>
-                      </FormContainer>
-                      {(!(config.features.Deposit_RemoveName || isFPS) || config.features.Deposit_FPSWithName) && (
+                          <FormRightContainer>
+                            <SelectionContainer>
+                              <TextField
+                                style={{
+                                  height: "38px",
+                                  width: "258px",
+                                  float: "left",
+                                  marginRight: "5px",
+                                  padding: 0,
+                                }}
+                                placeholder={i18n.t(
+                                  "common.pleaseEnterAccountName"
+                                )}
+                                onChange={onAccountChange}
+                                outputFormat="string"
+                                variant="outlined"
+                                autoComplete="off"
+                                value={account}
+                              ></TextField>
+                            </SelectionContainer>
+                            {config.features.Deposit_AddTips && (
+                              <div style={{ marginLeft: 30, marginTop: 8 }}>
+                                <Remark>
+                                  {" "}
+                                  {i18n.t("mgm.accountDepositTips")}
+                                </Remark>
+                              </div>
+                            )}
+                          </FormRightContainer>
+                        </FormContainer>
+                      )}
+
+                      {(!(config.features.Deposit_RemoveName || isFPS) ||
+                        config.features.Deposit_FPSWithName) && (
                         <FormContainer>
                           <FormLeftContainer>
                             <SubHeaderContainer>
@@ -562,7 +569,10 @@ const NewStepOne = (props) => {
                             </SelectionContainer>
                             {config.features.Deposit_AddTips && (
                               <div style={{ marginLeft: 30, marginTop: 8 }}>
-                                <Remark> {i18n.t("mgm.nameDepositTips")}</Remark>
+                                <Remark>
+                                  {" "}
+                                  {i18n.t("mgm.nameDepositTips")}
+                                </Remark>
                               </div>
                             )}
                           </FormRightContainer>
