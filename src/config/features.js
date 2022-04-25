@@ -67,6 +67,7 @@ const featureList = {
     HomePage_DisplayVIP: false,
     LiveGame_Sorting_SKY: false,
     Header_DisplayCS: false,
+    Report_ShowRoundsTotal: true,
   },
 };
 export default featureList;
