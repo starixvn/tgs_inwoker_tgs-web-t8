@@ -512,7 +512,6 @@ class GuestContainer extends Component {
             <BtnRegister onClick={() => this.onhandleActivation()}>
                 {i18n.t("web.register.activation")}
             </BtnRegister>
-            <BtnSpliter> | </BtnSpliter>
           </React.Fragment>
         )}
         <BtnRegister onClick={() => this.onhandleRegister()}>
