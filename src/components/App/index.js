@@ -39,7 +39,7 @@ import Loading from "./Loading";
 // import RegisterSuccess from "./RegisterSuccess";
 import Download from "./Download/index";
 
-// import VIP from "./VIP/index";
+import VIP from "./VIP/index";
 
 import i18n from "../../utils/i18n";
 
@@ -392,19 +392,19 @@ class App extends Component {
                         path={baseRouteUrl + "/promotion/:id"}
                         render={(props) => <PromotionDetails />}
                       />
-                      {/* <Route
+                      <Route
                       exact
                       path={baseRouteUrl + "/vip"}
                       render={(props) => (
-                        <VIP vip={this.props.account.vip.curr_vip.title} />
+                        <VIP />
                       )}
                     />
                    
-                    <Route
+                    {/* <Route
                       exact
                       path={baseRouteUrl + "/registersuccess/:username"}
                       component={RegisterSuccess}
-                    />*/}
+                    /> */}
                       <Route
                         exact
                         path={baseRouteUrl + "/maintenance"}

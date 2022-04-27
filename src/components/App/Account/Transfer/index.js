@@ -832,6 +832,14 @@ class Transfer extends Component {
             checked={this.props.wallet.autotransfer === true}
             onChange={this.handleSwitchAutoTransfer}
           />
+          <GameWalletButton
+            style={{ marginTop: 0, marginLeft: 10 }}
+            onClick={() => {
+              this.props.performWithdrawFromEveryBrand();
+            }}
+          >
+            {i18n.t("transfer.oneKeyTransfer")}
+          </GameWalletButton>
         </CustomSwitchContainer>
 
         <GameWalletWrap>
@@ -908,6 +916,8 @@ const mapDispatchToProps = (dispatch) => {
     updateAutoTransferStatus: () =>
       dispatch(walletAction.updateAutoTransferStatus()),
     getAutoTransferStatus: () => dispatch(walletAction.getAutoTransferStatus()),
+    performWithdrawFromEveryBrand: () =>
+      dispatch(walletAction.performWithdrawFromEveryBrand()),
   };
 };
 export default connect(

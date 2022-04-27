@@ -1,446 +1,314 @@
-// import React, { Component } from "react";
-// import styled from "styled-components";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
+import { generalAction } from "../../../api-services/actions/generalAction";
+import i18n from "../../../utils/i18n";
+import IconVIPPNG from "../../../assets/images/icon-vip.png";
+import config from "../../../config/config";
+const Container = styled.div`
+  padding: 20px 28px;
+  box-sizing: border-box
+  background-color: #eaeaea;
+  width: 100%;
+  min-height: 611px;
+ 
+`;
+const Title = styled.div`
+  color: #676767;
+`;
+const TitleIcon = styled.div`
+  width: 34px;
+  height: 25px;
 
-// import VIPMainBg1JPG from "../../../assets/images/vip-main-bg1.jpg";
-// import VIPMainBg2JPG from "../../../assets/images/vip-main-bg2.jpg";
-// import VIPDesc from "../../../config/vip-desc";
-// import Level1PNG from "../../../assets/images/vip/level1.png";
-// import Level2PNG from "../../../assets/images/vip/level2.png";
-// import Level3PNG from "../../../assets/images/vip/level3.png";
-// import Level4PNG from "../../../assets/images/vip/level4.png";
-// import Level5PNG from "../../../assets/images/vip/level5.png";
-// import Slider from "react-slick";
-// import ArrowGoldPNG from "../../../assets/images/arrow-gold.png";
-// import Vip1DescFramePNG from "../../../assets/images/vip1-desc-frame.png";
-// import Vip2DescFramePNG from "../../../assets/images/vip2-desc-frame.png";
-// import Vip3DescFramePNG from "../../../assets/images/vip3-desc-frame.png";
-// import Vip4DescFramePNG from "../../../assets/images/vip4-desc-frame.png";
-// import Vip5DescFramePNG from "../../../assets/images/vip5-desc-frame.png";
-// import VipBenefitPNG from "../../../assets/images/vip-benefit.png";
+  background: url(${IconVIPPNG}) no-repeat left center;
+  background-size: 24px 24px;
 
-// import Config from "../../../config/config";
-// const Container = styled.div`
-//   background: url(${Config.sourceUrl + "/static/image/vip-main-bg1.jpg"})
-//       no-repeat center 0,
-//     url(${Config.sourceUrl + "/static/image/vip-main-bg2.jpg"}) no-repeat center
-//       468px;
-//   width: 100%;
-//   min-height: 1908px;
-//   position: relative;
-// `;
-// const InnerContainer = styled.div`
-//   margin: 540px auto 0 auto;
-//   width: 1280px;
-// `;
+  float: left;
+`;
+const InnerWrap = styled.div`
+  //width: 935px;
+  min-height: 610px;
+  margin-top: 18px;
+  box-sizing: border-box;
+  background-color: #f7f7f7;
+  padding: 25px;
+  border-radius: 10px;
+`;
 
-// const Row = styled.div``;
-// const ColHeader = styled.div`
-//   width: 140px;
-//   height: 221px;
-//   background-color: #1c2d38;
-//   margin-right: 30px;
-//   float: left;
+const VipLevelContainer = styled.div`
+  display: grid;
+  grid-template-columns: 200px auto;
+`;
 
-//   font-size: 14px;
-//   padding: 80px 0 0 30px;
-//   color: #fff;
-// `;
-// const ColHeader2 = styled(ColHeader)`
-//   width: 140px;
-//   height: 121px;
-//   padding: 0;
-// `;
-// const Line1 = styled.div`
-//   text-align: center;
-//   margin-top: 20px;
-// `;
-// const Line2 = styled.div`
-//   text-align: center;
-//   margin-top: 40px;
-// `;
+const VipLevelContainer2 = styled.div`
+  display: grid;
+  grid-template-columns: 125px auto;
+`;
 
-// const VipImageContainer = styled.div`
-//   width: 220px;
+const VIPOverflow = styled.div`
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+  box-shadow: 0 20px 25px -5px rgb(0 0 0/0.1), 0 8px 10px -6px rgb(0 0 0/0.1);
+`;
 
-//   float: left;
-// `;
-// const VipImageFrame = styled.div`
-//   width: 100%;
-//   height: 170px;
-//   &:hover {
-//     cursor: pointer;
-//   }
-// `;
-// const VipText = styled.div`
-//   font-family: Arial;
-//   font-size: 24px;
-//   font-weight: bold;
-//   margin-top: 15px;
-//   text-align: center;
-//   color: #feffb0;
-// `;
-// const VIP1Container = styled(VipImageFrame)`
-//   background: url(${Config.sourceUrl + "/static/image/level1.png"}) no-repeat
-//     center;
-// `;
-// const VIP2Container = styled(VipImageFrame)`
-//   background: url(${Config.sourceUrl + "/static/image/level2.png"}) no-repeat
-//     center;
-// `;
-// const VIP3Container = styled(VipImageFrame)`
-//   background: url(${Config.sourceUrl + "/static/image/level3.png"}) no-repeat
-//     center;
-// `;
-// const VIP4Container = styled(VipImageFrame)`
-//   background: url(${Config.sourceUrl + "/static/image/level4.png"}) no-repeat
-//     center;
-// `;
-// const VIP5Container = styled(VipImageFrame)`
-//   background: url(${Config.sourceUrl + "/static/image/level5.png"}) no-repeat
-//     center;
-// `;
-// const SplitLine = styled.div`
-//   width: 1280px;
-//   height: 1px;
-//   margin:18px 0
-//   background-image: linear-gradient(
-//     to top,
-//     #f39c11,
-//     #feff9a,
-//     #feff9a,
-//     #ffcb2c,
-//     #f2a016,
-//     #ffc43c,
-//     #ffff72,
-//     #feffaf,
-//     #feff6e
-//   );
-// `;
-// const Content = styled(VipImageContainer)`
-//   color: #ffffff;
-//   font-size: 20px;
-//   line-height: 20px;
-// `;
-// const VipDetailsContainer = styled.div`
-//   margin-top: 80px;
-// `;
+const VIPOverflowData = styled(VIPOverflow)`
+  ${(props) => {
+    return props.total > 6
+      ? `  width: calc(
+      100%
+       
+    );`
+      : ` 
+       width: calc(100% / ${props.total} );
+       `;
+  }}
 
-// const ArrowImg = styled.div`
-//   background: url(${ArrowGoldPNG}) no-repeat;
-//   width: 44px;
-//   height: 57px;
-// `;
-// const ArrowImgLeft = styled(ArrowImg)`
-//   transform: rotateY(180deg);
-//   position: absolute;
-//   top: 270px
-// z-index:1;
-//   &:hover {
-//     cursor: pointer;
-//   }
-// `;
-// const ArrowImgRight = styled(ArrowImg)`
-//   position: absolute;
-//   top: 270px
-//   right: 0px;
-//   z-index:1;
-//   &:hover {
-//     cursor: pointer;
-//   }
-// `;
+  box-shadow: none;
+`;
 
-// const CenterContainer = styled.div`
-//   margin: 0 auto;
-//   width: 1100px;
-// `;
-// const DescFrame = styled.div`
-//   width: 550px;
-//   height: 625px;
-//   &:focus {
-//     outline: none;
-//   }
-//   ${(props) => {
-//     if (props.level === 1) {
-//       return `  background: url(${
-//         Config.sourceUrl + "/static/image/vip1-desc-frame.png"
-//       }) no-repeat center;`;
-//     } else if (props.level === 2) {
-//       return `  background: url(${
-//         Config.sourceUrl + "/static/image/vip2-desc-frame.png"
-//       }) no-repeat center;`;
-//     } else if (props.level === 3) {
-//       return `  background: url(${
-//         Config.sourceUrl + "/static/image/vip3-desc-frame.png"
-//       }) no-repeat center;`;
-//     } else if (props.level === 4) {
-//       return `  background: url(${
-//         Config.sourceUrl + "/static/image/vip4-desc-frame.png"
-//       }) no-repeat center;`;
-//     } else if (props.level === 5) {
-//       return `  background: url(${
-//         Config.sourceUrl + "/static/image/vip5-desc-frame.png"
-//       }) no-repeat center;`;
-//     }
-//   }}
-// `;
-// const DescText = styled.div`
-//   width: 357px;
+const VIPOverflowContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  overflow-x: auto;
+`;
 
-//   text-shadow: 2.5px 4.3px 4px rgba(7, 0, 2, 0.75);
+const VIPContent = styled.div`
+  min-width: 125px;
+  text-align: center;
+  padding: 10px 20px;
+`;
 
-//   font-size: 16px;
+const TitleContent = styled(VIPContent)`
+  background: #d9d9d9;
+  color: #404040;
+  font-weight: bold;
 
-//   color: #fefdd9;
-//   margin: 130px auto 0 auto;
-//   line-height: 29px;
-// `;
-// const FooterDesc = styled.div`
-//   width: 969px;
-//   height: 178px;
-//   opacity: 0.79;
-//   border: solid 1px #6a6a6a;
-//   background-color: rgba(0, 0, 0, 0.8);
-//   margin-top: 51px;
-//   text-align: center;
-//   color: #d2d2d2;
-//   font-size: 16px;
-//   padding: 20px 0 0 0px;
-//   margin: 51px auto 0 auto;
-// `;
-// const CurrentLevel = styled.div`
-//   width: 100px;
-//   height: 30px;
-//   background: url(${VipBenefitPNG}) no-repeat;
-//   margin: 110px 0 0 320px;
-// `;
-// function PrevArrow({ onClick }) {
-//   return <ArrowImgLeft onClick={onClick} />;
-// }
-// function NextArrow({ onClick }) {
-//   return <ArrowImgRight onClick={onClick} />;
-// }
-// class VIP extends Component {
-//   state = {
-//     leftLevel: 1,
-//     rightLevel: 2,
-//   };
+  padding: 10px 20px;
 
-//   handlePreClick = () => {
-//     let left = this.state.leftLevel;
-//     let right = this.state.rightLevel;
-//     if (left >= 2) {
-//       left -= 1;
-//       right -= 1;
-//     }
-//     this.setState({ leftLevel: left, rightLevel: right });
-//   };
-//   handleNextClick = () => {
-//     let left = this.state.leftLevel;
-//     let right = this.state.rightLevel;
-//     if (right <= 4) {
-//       left += 1;
-//       right += 1;
-//     }
-//     this.setState({ leftLevel: left, rightLevel: right });
-//   };
-//   handleVipClick = (vip) => {
-//     let goTo = 0;
-//     if (vip < 5) {
-//       goTo = vip - 1;
-//     } else {
-//       goTo = 3;
-//     }
-//     this.slider.slickGoTo(goTo);
-//   };
-//   render() {
-//     var settings = {
-//       dots: false,
-//       infinite: false,
-//       speed: 500,
-//       slidesToShow: 2,
-//       slidesToScroll: 1,
-//       arrows: true,
-//       centerPadding: "0px",
-//       centerMode: false,
-//       prevArrow: <PrevArrow />,
-//       nextArrow: <NextArrow />,
-//     };
-//     return (
-//       <Container>
-//         <InnerContainer>
-//           <Row>
-//             <ColHeader>
-//               点击VIP图标
-//               <br />
-//               查看详情
-//             </ColHeader>
-//             <VipImageContainer>
-//               <VIP1Container
-//                 onClick={() => this.handleVipClick(1)}
-//               ></VIP1Container>
-//               <VipText>VIP 1</VipText>
-//             </VipImageContainer>
-//             <VipImageContainer>
-//               <VIP2Container
-//                 onClick={() => this.handleVipClick(2)}
-//               ></VIP2Container>
-//               <VipText>VIP 2</VipText>
-//             </VipImageContainer>
-//             <VipImageContainer>
-//               <VIP3Container
-//                 onClick={() => this.handleVipClick(3)}
-//               ></VIP3Container>
-//               <VipText>VIP 3</VipText>
-//             </VipImageContainer>
-//             <VipImageContainer>
-//               <VIP4Container
-//                 onClick={() => this.handleVipClick(4)}
-//               ></VIP4Container>
-//               <VipText>VIP 4</VipText>
-//             </VipImageContainer>
-//             <VipImageContainer>
-//               <VIP5Container
-//                 onClick={() => this.handleVipClick(5)}
-//               ></VIP5Container>
-//               <VipText>VIP 5</VipText>
-//             </VipImageContainer>
-//           </Row>
-//           <SplitLine></SplitLine>
-//           <Row>
-//             <ColHeader2>
-//               <Line1>月度资格积分</Line1>
-//               <Line2>年度资格积分</Line2>
-//             </ColHeader2>
-//             <Content>
-//               <Line1>3000</Line1>
-//               <Line2>30000</Line2>
-//             </Content>
-//             <Content>
-//               <Line1>8000</Line1>
-//               <Line2>80000</Line2>
-//             </Content>
-//             <Content>
-//               <Line1>25000</Line1>
-//               <Line2>250000</Line2>
-//             </Content>
-//             <Content>
-//               <Line1>75000</Line1>
-//               <Line2>750000</Line2>
-//             </Content>
-//             <Content>
-//               <Line1>350000</Line1>
-//               <Line2>2500000</Line2>
-//             </Content>
-//           </Row>
-//           <VipDetailsContainer>
-//             <CenterContainer>
-//               <Slider {...settings} ref={(slider) => (this.slider = slider)}>
-//                 <DescFrame level={1}>
-//                   <CurrentLevel
-//                     style={
-//                       this.props.vip === "VIP1"
-//                         ? { opacity: 1 }
-//                         : { opacity: 0 }
-//                     }
-//                   ></CurrentLevel>
-//                   <DescText>
-//                     <ol>
-//                       {VIPDesc["VIP1"].map((row, index) => (
-//                         <li key={index}>{row}</li>
-//                       ))}
-//                     </ol>
-//                   </DescText>
-//                 </DescFrame>
-//                 <DescFrame level={2}>
-//                   <CurrentLevel
-//                     style={
-//                       this.props.vip === "VIP2"
-//                         ? { opacity: 1 }
-//                         : { opacity: 0 }
-//                     }
-//                   ></CurrentLevel>
-//                   <DescText>
-//                     <ol>
-//                       {VIPDesc["VIP2"].map((row, index) => (
-//                         <li key={index}>{row}</li>
-//                       ))}
-//                     </ol>
-//                   </DescText>
-//                 </DescFrame>
-//                 <DescFrame level={3}>
-//                   <CurrentLevel
-//                     style={
-//                       this.props.vip === "VIP3"
-//                         ? { opacity: 1 }
-//                         : { opacity: 0 }
-//                     }
-//                   ></CurrentLevel>
-//                   <DescText>
-//                     <ol>
-//                       {VIPDesc["VIP3"].map((row, index) => (
-//                         <li key={index}>{row}</li>
-//                       ))}
-//                     </ol>
-//                   </DescText>
-//                 </DescFrame>
-//                 <DescFrame level={4}>
-//                   <CurrentLevel
-//                     style={
-//                       this.props.vip === "VIP4"
-//                         ? { opacity: 1 }
-//                         : { opacity: 0 }
-//                     }
-//                   ></CurrentLevel>
-//                   <DescText>
-//                     <ol>
-//                       {VIPDesc["VIP4"].map((row, index) => (
-//                         <li key={index}>{row}</li>
-//                       ))}
-//                     </ol>
-//                   </DescText>
-//                 </DescFrame>
-//                 <DescFrame level={5}>
-//                   <CurrentLevel
-//                     style={
-//                       this.props.vip === "VIP5"
-//                         ? { opacity: 1 }
-//                         : { opacity: 0 }
-//                     }
-//                   ></CurrentLevel>
-//                   <DescText>
-//                     <ol>
-//                       {VIPDesc["VIP5"].map((row, index) => (
-//                         <li key={index}>{row}</li>
-//                       ))}
-//                     </ol>
-//                   </DescText>
-//                 </DescFrame>
-//               </Slider>
-//             </CenterContainer>
-//             <FooterDesc>
-//               备注
-//               <br />
-//               <br />
-//               1). VIP存款优惠所需流水额的计算公式为： （存款+红利） X 1倍流水。
-//               <br />
-//               2).
-//               会员需在每个月３号早上0点前完成实名、手机与邮箱认证，方可领取本活动优惠。
-//               <br />
-//               3). VIP存款优惠红利
-//               ，每月3号中午12点依据上个月VIP等级及最高单笔额度存款进行派发。
-//               <br />
-//               4).
-//               VIP复活金于每月3号中午12点发放，依据会员在上一月的VIP等级计算发放上限。
-//               <br />
-//               5).
-//               VIP每级晋升奖金只可领取一次。例：已经领取过VIP1的888奖金的，如果再次晋升VIP1时，将不会再次发放。{" "}
-//               <br />
-//             </FooterDesc>
-//           </VipDetailsContainer>
-//         </InnerContainer>
-//       </Container>
-//     );
-//   }
-// }
+  width: 200px;
+  display: block;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+`;
 
-// export default VIP;
+const TableWrapper = styled.div`
+  border-radius: 8px;
+  cursor: default;
+  border: solid 1px #b7c7cc;
+  margin-bottom: 20px;
+
+  & ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  & ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  & ::-webkit-scrollbar-thumb {
+    background: ${({ theme }) => theme.primary};
+  }
+
+  & ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+`;
+
+const VipEmblemContainer = styled(VIPContent)`
+  min-height: 175px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const VipEmblemContainerTitle = styled(VipEmblemContainer)`
+  background: #d9d9d9;
+  color: #404040;
+  font-weight: bold;
+`;
+
+const VIPLevelImage = styled.div`
+  height: 95px;
+`;
+
+const DataRow = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
+
+const TitleRow = styled(DataRow)`
+  background: #d9d9d9;
+  color: #404040;
+  font-weight: bold;
+  align-items: center;
+  text-transform: capitalize;
+  height: 55px;
+`;
+
+const StandardDataCol = styled.div`
+  padding: 10px 20px;
+  text-align: center;
+`;
+
+const DataCol = styled(StandardDataCol)`
+  width: calc(100% / 6);
+`;
+
+const VIP = (props) => {
+  const { getVIP } = props;
+  const [vipBenefit, setVipBenefits] = useState([]);
+  useEffect(() => {
+    if (vipBenefit.length === 0) {
+      getVIP().then((result) => {
+        if (result.IsSuccess) {
+          setVipBenefits(result.data);
+        }
+      });
+    }
+  }, []);
+
+  var vipBenefitList =
+    vipBenefit.items &&
+    vipBenefit.items.sort((a, b) => {
+      return a.level < b.level ? -1 : a.level > b.level ? 1 : 0;
+    });
+
+  const getVIPTitle = (level) => {
+    // currently bunny only has 6 levels
+    if (config.features.VIP_CustomLevel_BUNNY && level < 7)
+      return i18n.t("vip.bunny.level" + level);
+    else return "VIP" + level;
+  };
+
+  return (
+    <Container>
+      <Title>
+        <TitleIcon></TitleIcon>
+        VIP
+      </Title>
+      <InnerWrap>
+        {vipBenefit.items && vipBenefit.items.length > 0 && (
+          <TableWrapper>
+            <VipLevelContainer>
+              <VIPOverflow>
+                <VipEmblemContainerTitle title={i18n.t("vip.level")}>
+                  {i18n.t("vip.level")}
+                </VipEmblemContainerTitle>
+                <TitleContent
+                  title={i18n.t("vip.levelKeepAccumulateBetAmount")}
+                >
+                  {i18n.t("vip.levelKeepAccumulateBetAmount")}
+                </TitleContent>
+                <TitleContent title={i18n.t("vip.levelKeepAccumulateDeposit")}>
+                  {i18n.t("vip.levelKeepAccumulateDeposit")}
+                </TitleContent>
+                <TitleContent title={i18n.t("vip.levelUpAccumulateBetAmount")}>
+                  {i18n.t("vip.levelUpAccumulateBetAmount")}
+                </TitleContent>
+                <TitleContent title={i18n.t("vip.levelUpAccumulateDeposit")}>
+                  {i18n.t("vip.levelUpAccumulateDeposit")}
+                </TitleContent>
+                <TitleContent title={i18n.t("vip.birthBenefit")}>
+                  {i18n.t("vip.birthBenefit")}
+                </TitleContent>
+
+                <TitleContent title={i18n.t("vip.promotionBenefit")}>
+                  {i18n.t("vip.promotionBenefit")}
+                </TitleContent>
+                <TitleContent title={i18n.t("vip.quarterlyBenefit")}>
+                  {i18n.t("vip.quarterlyBenefit")}
+                </TitleContent>
+              </VIPOverflow>
+              <VIPOverflowContainer>
+                {vipBenefitList.map((data, index) => {
+                  return (
+                    <VIPOverflowData
+                      key={index}
+                      total={vipBenefit.items.length}
+                    >
+                      <VipEmblemContainer>
+                        <VIPLevelImage>
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              `/assets/images/vip/${data.level}.png`
+                            }
+                          />
+                        </VIPLevelImage>
+                          {getVIPTitle(data.level)}
+                      </VipEmblemContainer>
+                      <VIPContent>
+                        {data.levelKeepAccumulateBetAmount}
+                      </VIPContent>
+                      <VIPContent>{data.levelKeepAccumulateDeposit}</VIPContent>
+                      <VIPContent>{data.levelUpAccumulateBetAmount}</VIPContent>
+                      <VIPContent>{data.levelUpAccumulateDeposit}</VIPContent>
+                      <VIPContent>{data.birthBenefit}</VIPContent>
+                      <VIPContent>{data.promotionBenefit}</VIPContent>
+                      <VIPContent>{data.quarterlyBenefit}</VIPContent>
+                    </VIPOverflowData>
+                  );
+                })}
+              </VIPOverflowContainer>
+            </VipLevelContainer>
+          </TableWrapper>
+        )}
+
+        {vipBenefit.items && vipBenefit.items.length > 0 && (
+          <TableWrapper>
+            <VipLevelContainer2>
+              <div>
+                <TitleRow>
+                  <StandardDataCol>{i18n.t("vip.vipBenefit")}</StandardDataCol>
+                </TitleRow>
+                {vipBenefitList.map((data, index) => {
+                  return (
+                    <StandardDataCol key={index}>{data.level}</StandardDataCol>
+                  );
+                })}
+              </div>
+              <div>
+                <TitleRow>
+                  <DataCol>{i18n.t("vip.cardGameRebate")}</DataCol>
+                  <DataCol>{i18n.t("vip.liveDealerRebate")}</DataCol>
+                  <DataCol>{i18n.t("vip.lotteryRebate")}</DataCol>
+                  <DataCol>{i18n.t("vip.slotRebate")}</DataCol>
+                  <DataCol>{i18n.t("vip.sportsRebate")}</DataCol>
+                  <DataCol>{i18n.t("vip.virtualSportsRebate")}</DataCol>
+                </TitleRow>
+                {vipBenefitList.map((data, index) => {
+                  return (
+                    <DataRow key={index}>
+                      <DataCol>{data.cardGameRebate}%</DataCol>
+                      <DataCol>{data.liveDealerRebate}%</DataCol>
+                      <DataCol>{data.lotteryRebate}%</DataCol>
+                      <DataCol>{data.slotRebate}%</DataCol>
+                      <DataCol>{data.sportsRebate}%</DataCol>
+                      <DataCol>{data.virtualSportsRebate}%</DataCol>
+                    </DataRow>
+                  );
+                })}
+              </div>
+            </VipLevelContainer2>
+          </TableWrapper>
+        )}
+      </InnerWrap>
+    </Container>
+  );
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getVIP: () => dispatch(generalAction.getVIP()),
+  };
+};
+const mapStateToProps = (state) => {
+  return "";
+};
+export default connect(mapStateToProps, mapDispatchToProps)(VIP);

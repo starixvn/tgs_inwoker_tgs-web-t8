@@ -153,8 +153,9 @@ class TransactionDetails extends Component {
             page={this.state.page}
             rows={this.props.transactionList.list}
             total={this.props.transactionList.count}
+            roundTotal={this.props.transactionList.roundTotal}
             onhandleChangePage={this.handleChangePage}
-           />
+          />
           {/* <TransactionDetailsList
             page={this.state.page}
             rows={this.props.transactionList.list}
