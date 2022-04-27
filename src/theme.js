@@ -353,10 +353,10 @@ export const wapT8 = {
 };
 
 export const GMO = {
-  appbar: "#1f1f1f",
+  appbar: "linear-gradient(180deg, rgba(0,1,41,1) 10%, rgba(95,113,162,0) 80%)",
   loginBody: "#1f1f1f",
   loginText: "#fff",
-  body: "#1f1f1f",
+  body: "radial-gradient(circle, #4e6ea4 50%, #c7dbe7 90%, #fff 100%)",
   bodyBackground: "#1f1f1f",
   variant: "wapT8",
   primary: "#e9a60b",
@@ -372,7 +372,7 @@ export const GMO = {
   buttonText: "#000",
   buttonBackground: "#fff",
   buttonText2: "#000",
-  bottomnav: "#1f1f1f",
+  bottomnav: "linear-gradient(0deg, rgba(0,1,41,1) -10%, rgba(95,113,162,0) 90%)",
   balance: "#e9a60b",
   bottomnavrad: "35px 35px 0px 0px",
   bottomNavAction: "#fff",
@@ -383,8 +383,8 @@ export const GMO = {
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
   gameTab: "#fff",
-  gamelisterBg: "#1f1f1f",
-  gamelisterBorder: "solid 2px #1f1f1f",
+  gamelisterBg: "#4e6ea4",
+  gamelisterBorder: "solid 2px #4e6ea4",
   gamelisterOriginalColor: "#8590b0",
   gamelisterOriginalText: "#8590b0",
   gamelisterSelectedText: "#fff",
