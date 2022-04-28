@@ -152,8 +152,9 @@ class Home extends Component {
   componentDidUpdate(preProps) {
     if (config.features.PopupAnnouncement) {
       if (
-        this.props.ui.marqueeText !== preProps.ui.marqueeText &&
-        this.props.ui.marqueeText.length > 0
+        this.props.ui.mains &&
+        this.props.ui.mains !== preProps.ui.mains &&
+        this.props.ui.mains.length > 0
       ) {
         this.setState({
           openAnnouncement: true,
@@ -406,9 +407,10 @@ class Home extends Component {
         {(() => {
           if (
             config.features.PopupAnnouncement &&
-            this.props.ui.marqueeText.length > 0
+            this.props.ui.mains &&
+            this.props.ui.mains.length > 0
           ) {
-            var row = this.props.ui.marqueeText[0];
+            var row = this.props.ui.mains[0];
 
             return (
               <PopupAnnouncement

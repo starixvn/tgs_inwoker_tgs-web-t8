@@ -772,24 +772,34 @@ class Deposit extends Component {
   render() {
     return (
       <Container>
-        {config.features.DepositNotification && (
-          <PopupAnnouncement
-            open={this.state.openAnnouncement}
-            onClose={() => {
-              this.setState({ ...this.state, openAnnouncement: false });
-            }}
-            text={i18n.t(
-              "depositNotification" +
-                this.brandSwitcher(config.brand) +
-                ".content"
-            )}
-            header={i18n.t(
-              "depositNotification" +
-                this.brandSwitcher(config.brand) +
-                ".title"
-            )}
-          ></PopupAnnouncement>
-        )}
+        {(() => {
+          if (
+            config.features.DepositNotification &&
+            this.props.ui.deposits &&
+            this.props.ui.deposits.length > 0
+          ) {
+            var row = this.props.ui.deposits[0];
+
+            return (
+              <PopupAnnouncement
+                open={this.state.openAnnouncement}
+                onClose={() => {
+                  this.setState({ ...this.state, openAnnouncement: false });
+                }}
+                text={
+                  row.localization !== null && row.localization.content
+                    ? row.localization.content
+                    : row.content
+                }
+                header={
+                  row.localization !== null && row.localization.subject
+                    ? row.localization.subject
+                    : row.subject
+                }
+              ></PopupAnnouncement>
+            );
+          }
+        })()}
         <Header>
           <Title>
             <h3>{i18n.t("deposit.title")}</h3>
@@ -894,6 +904,7 @@ const mapStateToProps = (state) => {
     wallet: state.wallet,
     account: state.account,
     general: state.general,
+    ui: state.ui,
   };
 };
 const mapDispatchToProps = (dispatch) => {

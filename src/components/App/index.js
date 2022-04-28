@@ -73,6 +73,7 @@ class App extends Component {
       this.props.getBrandCommunicationList();
       this.props.getBrandLanguage();
       this.props.getMarquee(i18n.language);
+      this.props.getAnnouncement(i18n.language);
       this.props.getBanner();
       this.props.getBrand();
       this.props.getLiveChatURL();
@@ -193,6 +194,7 @@ class App extends Component {
         this.props.getBrandCommunicationList();
         this.props.getBrandLanguage();
         this.props.getMarquee(i18n.language);
+        this.props.getAnnouncement(i18n.language);
         this.props.getBanner();
         this.props.getBrand();
         this.props.getLiveChatURL();
@@ -485,6 +487,7 @@ const mapDispatchToProps = (dispatch) => {
 
     checkTokenIsValid: () => dispatch(accountAction.checkTokenIsValid()),
     getMarquee: (language) => dispatch(uiAction.getMarquee(language)),
+    getAnnouncement: (language) => dispatch(uiAction.getAnnouncement(language)),
 
     getBankCardList: () => dispatch(walletAction.getBankCardList()),
 
