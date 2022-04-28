@@ -951,7 +951,8 @@ class Profile extends Component {
             this.handleButtonClick
           )} */}
             {(config.features.SMSVerification ||
-              config.features.Register_ShowPhone) &&
+              config.features.Register_ShowPhone ||
+              config.features.Register_ShowSMSVerification) &&
               GetContentWrap(
                 this.props.account.info,
                 i18n.t("common.phoneNumber"),
