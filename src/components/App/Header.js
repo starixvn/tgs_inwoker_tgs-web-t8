@@ -771,6 +771,7 @@ class Header extends Component {
   changeLanguage = (language) => {
     this.props.getBanner();
     this.props.getMarquee(language);
+    this.props.getAnnouncement(language);
     GeneralService.GetLocalization().then((response) => {
       if (response.IsSuccess) {
         ErrorSwitcher.setTranslation(response.data);
@@ -1298,6 +1299,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getBanner: () => dispatch(generalAction.getBanner()),
     getMarquee: (language) => dispatch(uiAction.getMarquee(language)),
+    getAnnouncement: (language) => dispatch(uiAction.getAnnouncement(language)),
     // updateScreenSize: (width, height) => {
     //   dispatch({ type: UPDATING_SCREEN_SIZE, width, height });
     // },
