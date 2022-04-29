@@ -86,7 +86,7 @@ const Birthdate = (props) => {
   return (
     <Container>
       <DatepickerWrapper
-        disabled={ifNotEmpty && config.features.ChangesNotAllowed}
+        disabled={ifNotEmpty && config.features.Profile_SetUpBirthdateOnce}
       >
         <Datepicker
           onhandleDateChange={handleDateChange}
@@ -94,7 +94,7 @@ const Birthdate = (props) => {
         ></Datepicker>
       </DatepickerWrapper>
 
-      {ifNotEmpty && config.features.ChangesNotAllowed && (
+      {ifNotEmpty && config.features.Profile_SetUpBirthdateOnce && (
         <Content>
           {i18n.t("profile.birthdate.toEdit")}
           {
@@ -112,7 +112,7 @@ const Birthdate = (props) => {
         </Content>
       )}
 
-      {!(ifNotEmpty && config.features.ChangesNotAllowed) && (
+      {!(ifNotEmpty && config.features.Profile_SetUpBirthdateOnce) && (
         <CustomButton
           style={{ marginTop: 10 }}
           name={i18n.t("common.submit")}
