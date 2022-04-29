@@ -69,6 +69,7 @@ const featureList = {
     Header_DisplayCS: false,
     Report_ShowRoundsTotal: true,
     Register_ShowSMSVerification: false,
+    Profile_SetUpBirthdateOnce: true,
   },
 };
 export default featureList;
