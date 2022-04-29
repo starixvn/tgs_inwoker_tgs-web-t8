@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import styled from "styled-components";
 import CustomButton from "../../../Share/Button";
@@ -41,6 +41,10 @@ const DatepickerWrapper = styled.div`
 `;
 
 const Birthdate = (props) => {
+  useEffect(() => {
+    console.log(birthDate);
+  });
+
   const [birthDate, setBirthDate] = useState(
     moment(
       props.account.info.member_birthdate
@@ -50,7 +54,11 @@ const Birthdate = (props) => {
   );
 
   const handleDateChange = (e) => {
-    setBirthDate(moment(e).format("YYYY/MM/DD"));
+    if (moment(e).isAfter(new Date())) {
+      setBirthDate(moment(new Date()).format("YYYY/MM/DD"));
+    } else {
+      setBirthDate(moment(e).format("YYYY/MM/DD"));
+    }
   };
 
   const onhandleClick = () => {
