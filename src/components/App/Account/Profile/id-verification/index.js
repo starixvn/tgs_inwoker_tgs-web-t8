@@ -80,7 +80,14 @@ function IDVerification(props) {
       if (response.IsSuccess) {
         //upload IC when membername and memberic is valid.
         if (config.features.ICVerificationUpload) {
-          AccountService.UploadIC(icUpload[0]);
+          AccountService.UploadIC(icUpload[0]).then((response)=>{
+            if(!response.IsSuccess)
+            {
+              props.enqueueSnackbar(ErrorSwitcher.getTranslation(response.info), {
+                variant: "error",
+              });
+            }
+          });
         }
         props.dispatch({
           type: UPDATE_INFO,
