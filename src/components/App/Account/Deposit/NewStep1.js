@@ -769,6 +769,10 @@ const NewStepOne = (props) => {
                   );
                 }
               })()}
+              {methodList && paymentType.paymentcode === "ZeroNineNinePay" && (
+                <FormActionContainer>{i18n.t("hint._099")}</FormActionContainer>
+              )}
+
               <FormActionContainer>
                 <CustomButton
                   name={i18n.t("common.cancel")}
