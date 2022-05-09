@@ -82,7 +82,6 @@ class Withdrawal extends Component {
 
   urlParams = new URLSearchParams(this.props.location.search);
   async componentDidMount() {
-    this.props.getWithdrawalChannel();
     WalletService.GetMinWithdrawLimit().then((e) => {
       if (e.IsSuccess) {
         this.setState({
@@ -103,9 +102,9 @@ class Withdrawal extends Component {
         });
       }
     }
-    this.countDownInterval = setInterval(() => {
+    this.countDownInterval=setInterval(()=>{   
       this.props.getWithdrawalChannel(); // call api every 30 min
-    }, 30 * 60 * 1000);
+    },30*60*1000);
   }
 
   componentDidUpdate(preProps) {
@@ -386,18 +385,20 @@ class Withdrawal extends Component {
                 return (
                   <NameVerification token={this.props.token}></NameVerification>
                 );
-              } else if (
-                (this.props.account.info.member_email === null ||
-                  this.props.account.info.member_email === "") &&
-                config.features.EmailVerification &&
-                !config.features.Withdrawal_Ignore_Verification
-              ) {
-                return (
-                  <Redirect
-                    to={`/${i18n.language}/account/profile/member_email`}
-                  ></Redirect>
-                );
-              } else {
+              } 
+              // else if (
+              //     (((this.props.account.info.member_email === null ||
+              //       this.props.account.info.member_email === "") &&
+              //     config.features.EmailVerification)) && (!config.features.Withdrawal_Ignore_Verification)
+              //   ) {
+              //     return (
+              //       <Redirect
+              //         to={`/${i18n.language}/account/profile/member_email`}
+              //       ></Redirect>
+              //     );
+                
+              // } 
+              else {
                 if (
                   config.features.AddCard_NotAllowedEditDelete &&
                   !this.state.enableAddCard &&
@@ -527,7 +528,6 @@ const mapDispatchToProps = (dispatch) => {
       }),
     doWithdraw: (amount, password, user_account_id) =>
       dispatch(walletAction.doWithdraw(amount, user_account_id, password)),
-    getWithdrawalChannel: () => dispatch(walletAction.getWithdrawalChannel()),
   };
 };
 export default withRouter(

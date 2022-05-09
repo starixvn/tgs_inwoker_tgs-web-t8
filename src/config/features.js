@@ -70,6 +70,7 @@ const featureList = {
     Report_ShowRoundsTotal: true,
     Register_ShowSMSVerification: false,
     Profile_SetUpBirthdateOnce: true,
+    Deposit_OriginAccount: false,
   },
 };
 export default featureList;
