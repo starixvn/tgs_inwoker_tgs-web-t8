@@ -462,6 +462,7 @@ class GuestContainer extends Component {
       this.props.getBankCardList();
       this.props.getBalanceList();
       this.props.getAutoTransferStatus();
+      this.props.getWithdrawalChannel();
       this.props.game.providerList
         .filter((item) => item.status === 0 && item.transferwallet === true)
         .map((a) => {
@@ -510,7 +511,7 @@ class GuestContainer extends Component {
         {config.features.SMSVerification && (
           <React.Fragment>
             <BtnRegister onClick={() => this.onhandleActivation()}>
-                {i18n.t("web.register.activation")}
+              {i18n.t("web.register.activation")}
             </BtnRegister>
           </React.Fragment>
         )}
@@ -627,7 +628,7 @@ const mapDispatchToProps = (dispatch) => {
     checkGame: () => dispatch(accountAction.checkGame()),
     getAccountProfile: (showVip) =>
       dispatch(accountAction.getAccountProfile(showVip)),
-
+    getWithdrawalChannel: () => dispatch(walletAction.getWithdrawalChannel()),
     getBankCardList: () => dispatch(walletAction.getBankCardList()),
     getBalanceList: () => dispatch(walletAction.getBalanceList()),
     getGameBalance: (gpcode) => dispatch(walletAction.getGameBalance(gpcode)),
