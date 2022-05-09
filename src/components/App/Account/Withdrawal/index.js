@@ -385,19 +385,20 @@ class Withdrawal extends Component {
                 return (
                   <NameVerification token={this.props.token}></NameVerification>
                 );
-              } else 
-                if (
-                  (((this.props.account.info.member_email === null ||
-                    this.props.account.info.member_email === "") &&
-                  config.features.EmailVerification)) && (!config.features.Withdrawal_Ignore_Verification)
-                ) {
-                  return (
-                    <Redirect
-                      to={`/${i18n.language}/account/profile/member_email`}
-                    ></Redirect>
-                  );
+              } 
+              // else if (
+              //     (((this.props.account.info.member_email === null ||
+              //       this.props.account.info.member_email === "") &&
+              //     config.features.EmailVerification)) && (!config.features.Withdrawal_Ignore_Verification)
+              //   ) {
+              //     return (
+              //       <Redirect
+              //         to={`/${i18n.language}/account/profile/member_email`}
+              //       ></Redirect>
+              //     );
                 
-              } else {
+              // } 
+              else {
                 if (
                   config.features.AddCard_NotAllowedEditDelete &&
                   !this.state.enableAddCard &&
