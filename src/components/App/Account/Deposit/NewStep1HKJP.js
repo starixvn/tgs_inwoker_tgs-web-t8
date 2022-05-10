@@ -355,7 +355,10 @@ class NewStepOne extends Component {
                               </SelectionContainer>
                               {config.features.Deposit_AddTips && (
                                 <div style={{ marginLeft: 30, marginTop: 8 }}>
-                                  <Remark> {i18n.t("mgm.accountDepositTips")}</Remark>
+                                  <Remark>
+                                    {" "}
+                                    {i18n.t("mgm.accountDepositTips")}
+                                  </Remark>
                                 </div>
                               )}
                             </FormRightContainer>
@@ -512,6 +515,14 @@ class NewStepOne extends Component {
                     </SelectionContainer>
                   </FormRightContainer>
                 </FormContainer>
+
+                {methodList &&
+                  paymentType.paymentcode === "ZeroNineNinePay" && (
+                    <FormActionContainer>
+                      {i18n.t("hint._099")}
+                    </FormActionContainer>
+                  )}
+
                 <FormActionContainer>
                   <CustomButton
                     name={i18n.t("common.cancel")}

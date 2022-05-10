@@ -151,6 +151,9 @@ class Deposit extends Component {
         }
       );
     }
+    this.countDownInterval=setInterval(()=>{   
+      this.props.getDepositMethod(); // call api every 30 mins
+    },30*60*1000);
   }
 
   componentDidUpdate(preProps, preState) {
@@ -307,6 +310,7 @@ class Deposit extends Component {
   }
 
   componentWillUnmount() {
+    clearInterval(this.countDownInterval);
     window.removeEventListener("storage", this.handStorageMsg, true); // Succeeds
     localStorage.removeItem("depositResult");
   }
@@ -412,18 +416,15 @@ class Deposit extends Component {
           this.state.depositPromotion
         );
       } else if (method.methodcode === "FPS") {
-        if(config.features.Deposit_FPSWithName)
-        {
+        if (config.features.Deposit_FPSWithName) {
           this.props.doFPSDepositWithName(
             this.state.name,
             this.state.account,
             this.state.amount.replace(/,/g, ""),
             channel.id,
             this.state.depositPromotion
-          );        
-        }
-        else 
-        {
+          );
+        } else {
           this.props.doFPSDeposit(
             this.state.account,
             this.state.amount.replace(/,/g, ""),
@@ -433,6 +434,12 @@ class Deposit extends Component {
         }
       } else if (method.methodcode === "ThirdParty") {
         this.props.doThirdPartyDeposit(
+          this.state.amount.replace(/,/g, ""),
+          channel.id,
+          this.state.depositPromotion
+        );
+      } else if (method.methodcode === "Usdt") {
+        this.props.doUsdtDeposit(
           this.state.amount.replace(/,/g, ""),
           channel.id,
           this.state.depositPromotion
@@ -769,24 +776,34 @@ class Deposit extends Component {
   render() {
     return (
       <Container>
-        {config.features.DepositNotification && (
-          <PopupAnnouncement
-            open={this.state.openAnnouncement}
-            onClose={() => {
-              this.setState({ ...this.state, openAnnouncement: false });
-            }}
-            text={i18n.t(
-              "depositNotification" +
-                this.brandSwitcher(config.brand) +
-                ".content"
-            )}
-            header={i18n.t(
-              "depositNotification" +
-                this.brandSwitcher(config.brand) +
-                ".title"
-            )}
-          ></PopupAnnouncement>
-        )}
+        {(() => {
+          if (
+            config.features.DepositNotification &&
+            this.props.ui.deposits &&
+            this.props.ui.deposits.length > 0
+          ) {
+            var row = this.props.ui.deposits[0];
+
+            return (
+              <PopupAnnouncement
+                open={this.state.openAnnouncement}
+                onClose={() => {
+                  this.setState({ ...this.state, openAnnouncement: false });
+                }}
+                text={
+                  row.localization !== null && row.localization.content
+                    ? row.localization.content
+                    : row.content
+                }
+                header={
+                  row.localization !== null && row.localization.subject
+                    ? row.localization.subject
+                    : row.subject
+                }
+              ></PopupAnnouncement>
+            );
+          }
+        })()}
         <Header>
           <Title>
             <h3>{i18n.t("deposit.title")}</h3>
@@ -891,6 +908,7 @@ const mapStateToProps = (state) => {
     wallet: state.wallet,
     account: state.account,
     general: state.general,
+    ui: state.ui,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -925,7 +943,14 @@ const mapDispatchToProps = (dispatch) => {
         )
       );
     },
-    doFPSDepositWithName: (name, account, amount, paymentid, promotionid, banktype) => {
+    doFPSDepositWithName: (
+      name,
+      account,
+      amount,
+      paymentid,
+      promotionid,
+      banktype
+    ) => {
       dispatch(
         walletAction.doFPSDepositWithName(
           name,
@@ -965,6 +990,11 @@ const mapDispatchToProps = (dispatch) => {
           promotionid,
           paymentcode
         )
+      );
+    },
+    doUsdtDeposit: (amount, paymentid, promotionid, banktype) => {
+      dispatch(
+        walletAction.doUsdtDeposit(amount, paymentid, promotionid, banktype)
       );
     },
     performDeposit: (amount, payment_id, promotionid, paymentcode, type) => {

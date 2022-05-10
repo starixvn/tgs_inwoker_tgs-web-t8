@@ -129,12 +129,12 @@ const RightContainer = styled.div`
 `;
 
 const BtnAppsAndCS = styled.div`
-  width: 77px;
   display: flex;
   align-items: center;
   word-wrap: break-word;
   height: 30px;
   margin-top: 3px;
+  margin-left: 2px;
   float: right;
   &:hover {
     cursor: pointer;
@@ -145,16 +145,20 @@ const BtnAppsAndCS = styled.div`
 `;
 
 const BtnCS = styled(BtnAppsAndCS)`
-  margin-right: 8px;
-
-  background-image: url(${BtnCSPNG});
-  color: #f6f6f6;
+  background-color: ${(props) => props.theme.primary};
+  border-radius: 7px;
+  color: #fff;
+  font-size: 13px;
+  line-height: 30px;
+  height: 30px;
+  padding: 0 20px;
+  user-select: none;
+  appearance: none;
+  border: 0;
+  cursor: pointer;
   &:hover {
-    background-image: url(${BtnCSHoverPNG});
-    color: #fde73f;
+    filter: grayscale(0.3);
   }
-  padding-left: 32px;
-  line-height: 10px;
 `;
 
 const BottomContainer = styled.div`
@@ -585,8 +589,15 @@ class Header extends Component {
     this.setState({ ...this.state, isHoverMenu: false });
   };
   handleClickMenu = (path) => {
-    this.setState({ ...this.state, selected: path });
-    this.props.history.push("/" + i18n.language + `/${path}`);
+    if(path==="vip" && !this.props.account.token)
+    {
+      this.props.showLogin(true);
+    }
+    else
+    {
+      this.setState({ ...this.state, selected: path });
+      this.props.history.push("/" + i18n.language + `/${path}`);
+    }
   };
 
   handleHideAppBar = () => {
@@ -760,6 +771,7 @@ class Header extends Component {
   changeLanguage = (language) => {
     this.props.getBanner();
     this.props.getMarquee(language);
+    this.props.getAnnouncement(language);
     GeneralService.GetLocalization().then((response) => {
       if (response.IsSuccess) {
         ErrorSwitcher.setTranslation(response.data);
@@ -916,38 +928,42 @@ class Header extends Component {
                 )}
               </TopLeftContainer>
               <TopRightContainer>
-                {/* <BtnCS onClick={this.props.onhandleShowCSClick}>
-                {i18n.t("common.cs")}
-              </BtnCS> */}
+                {config.features.Header_DisplayCS && (
+                  <BtnCS onClick={this.props.onhandleShowCSClick}>
+                    {i18n.t("common.cs")}
+                  </BtnCS>
+                )}
                 {(() => {
-                  if (
-                    this.props.account.token !== this.props.account.info.token
-                  ) {
-                    return (
-                      <GuestContainer
-                        onhandleShowCSClick={this.props.onhandleShowCSClick}
-                        onhandleContactUsClick={this.handleContactUsClick}
-                        onDialogChange={this.handleDialogChange}
-                      ></GuestContainer>
-                    );
-                  } else {
-                    return (
-                      <MemberContainer
-                        onhandleLogout={this.onhandleLogout}
-                        onhandleTransfer={this.onhandleTransfer}
-                        onhandleWithdrawal={this.onhandleWithdrawal}
-                        onhandleDeposit={this.onhandleDeposit}
-                        onhandleInboxClick={this.handleInboxClick}
-                        onhandleRefreshBalanceClick={
-                          this.handleRefreshBalanceClick
-                        }
-                        wallet={this.props.wallet}
-                        account={this.props.account}
-                        game={this.props.game}
-                      ></MemberContainer>
-                    );
+                  if (!this.props.general.isMaintenance) {
+                    if (
+                      this.props.account.token !== this.props.account.info.token
+                    ) {
+                      return (
+                        <GuestContainer
+                          onhandleShowCSClick={this.props.onhandleShowCSClick}
+                          onhandleContactUsClick={this.handleContactUsClick}
+                          onDialogChange={this.handleDialogChange}
+                        ></GuestContainer>
+                      );
+                    } else {
+                      return (
+                        <MemberContainer
+                          onhandleLogout={this.onhandleLogout}
+                          onhandleTransfer={this.onhandleTransfer}
+                          onhandleWithdrawal={this.onhandleWithdrawal}
+                          onhandleDeposit={this.onhandleDeposit}
+                          onhandleInboxClick={this.handleInboxClick}
+                          onhandleRefreshBalanceClick={
+                            this.handleRefreshBalanceClick
+                          }
+                          wallet={this.props.wallet}
+                          account={this.props.account}
+                          game={this.props.game}
+                        ></MemberContainer>
+                      );
+                    }
                   }
-                })()}{" "}
+                })()}
               </TopRightContainer>
             </TopContainer>
           </TopContainerWrap>
@@ -1249,6 +1265,15 @@ class Header extends Component {
                   TopMenuPromoHoverPNG,
                   null
                 )}
+
+                {config.features.HomePage_DisplayVIP &&
+                  this.RightMenuItem(
+                    "vip",
+                    TopMenuPromoPNG,
+                    "VIP",
+                    TopMenuPromoHoverPNG,
+                    null
+                  )}
               </RightMenuUL>
             </RightMenuContainer>
           </BottomContainer>
@@ -1274,6 +1299,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getBanner: () => dispatch(generalAction.getBanner()),
     getMarquee: (language) => dispatch(uiAction.getMarquee(language)),
+    getAnnouncement: (language) => dispatch(uiAction.getAnnouncement(language)),
     // updateScreenSize: (width, height) => {
     //   dispatch({ type: UPDATING_SCREEN_SIZE, width, height });
     // },

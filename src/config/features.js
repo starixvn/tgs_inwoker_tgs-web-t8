@@ -62,7 +62,14 @@ const featureList = {
     MenuItem_Sorting_WLGHK: false,
     MenuItem_Sorting_PB: false,
     MenuItem_Sorting_GMO: false,
+    VIP_CustomLevel_BUNNY: false,
+    Withdrawal_Ignore_Verification: true,
+    HomePage_DisplayVIP: false,
     LiveGame_Sorting_SKY: false,
+    Header_DisplayCS: false,
+    Report_ShowRoundsTotal: true,
+    Register_ShowSMSVerification: false,
+    Profile_SetUpBirthdateOnce: true,
   },
 };
 export default featureList;

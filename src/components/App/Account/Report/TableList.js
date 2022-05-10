@@ -11,6 +11,7 @@ import i18n from "../../../../utils/i18n";
 import copy from "copy-to-clipboard";
 
 import { AppHistory } from "../../../../history/History";
+import config from "../../../../config/config";
 const moment = require("moment");
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -213,33 +214,63 @@ function TableList(props) {
   const getTableList = () => {
     switch (props.type) {
       case "transactionDetails":
-        return props.rows.map((row, index) => {
-          const date = moment(row.createdOn).format("YYYY-MM-DD hh:mm a");
-          return (
-            <StyledTableRow
-              hover
-              role="checkbox"
-              tabIndex={-1}
-              key={index}
-              onClick={(e) => {
-                handleDoubleClick(e, row.id);
-              }}
-            >
-              <StyledTableCell>{date}</StyledTableCell>
-              <StyledTableCell>{row.id}</StyledTableCell>
-              <StyledTableCell>
-                {row.gameProviderName}-{row.gameName}
-              </StyledTableCell>
-              <StyledTableCell align="right">{row.betAmount}</StyledTableCell>
-              <StyledTableCell align="right">
-                {row.validBetAmount}
-              </StyledTableCell>
-              <CustomWinLose value={row.winLoss} align="right">
-                {row.winLoss}
-              </CustomWinLose>
-            </StyledTableRow>
-          );
-        });
+        return (
+          <>
+            {config.features.Report_ShowRoundsTotal && (
+              <StyledTableRow style={{ pointerEvents: "none" }}>
+                <StyledTableCell
+                  style={{ fontWeight: "bold", textAlign: "center" }}
+                >
+                  {i18n.t("report.total")}
+                </StyledTableCell>
+                <StyledTableCell></StyledTableCell>
+                <StyledTableCell></StyledTableCell>
+                <StyledTableCell align="right">
+                  {props.roundTotal && props.roundTotal.betAmount}
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  {props.roundTotal && props.roundTotal.validBetAmount}
+                </StyledTableCell>
+                <CustomWinLose
+                  value={props.roundTotal && props.roundTotal.winLoss}
+                  align="right"
+                >
+                  {props.roundTotal && props.roundTotal.winLoss}
+                </CustomWinLose>
+              </StyledTableRow>
+            )}
+            {props.rows &&
+              props.rows.map((row, index) => {
+                const date = moment(row.createdOn).format("YYYY-MM-DD hh:mm a");
+                return (
+                  <StyledTableRow
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={index}
+                    onClick={(e) => {
+                      handleDoubleClick(e, row.id);
+                    }}
+                  >
+                    <StyledTableCell>{date}</StyledTableCell>
+                    <StyledTableCell>{row.id}</StyledTableCell>
+                    <StyledTableCell>
+                      {row.gameProviderName}-{row.gameName}
+                    </StyledTableCell>
+                    <StyledTableCell align="right">
+                      {row.betAmount}
+                    </StyledTableCell>
+                    <StyledTableCell align="right">
+                      {row.validBetAmount}
+                    </StyledTableCell>
+                    <CustomWinLose value={row.winLoss} align="right">
+                      {row.winLoss}
+                    </CustomWinLose>
+                  </StyledTableRow>
+                );
+              })}
+          </>
+        );
       case "depositReport":
         return props.rows.map((row, index) => {
           return (

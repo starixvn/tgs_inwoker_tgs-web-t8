@@ -41,26 +41,28 @@ function Marquee(props) {
 
       <AnnounceText>{i18n.t("web.marquee.latestNews")}</AnnounceText>
       <MarqueeContainer>
-        <marquee style={{ marginTop: "10px" }}>
-          {props.ui.marqueeText.map((row, index) => {
-            return (
-              <div
-                key={index}
-                style={{
-                  display: "inline",
-                  whiteSpace: "nowrap",
-                  wordBreak: "keep-all",
-                  overflow: "visible",
-                }}
-              >
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"* "}
-                {row.localization !== null && row.localization.content
-                  ? row.localization.content
-                  : row.content}
-              </div>
-            );
-          })}
-        </marquee>
+        {props.ui.marquees && props.ui.marquees.length > 0 && (
+          <marquee style={{ marginTop: "10px" }}>
+            {props.ui.marquees.map((row, index) => {
+              return (
+                <div
+                  key={index}
+                  style={{
+                    display: "inline",
+                    whiteSpace: "nowrap",
+                    wordBreak: "keep-all",
+                    overflow: "visible",
+                  }}
+                >
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"* "}
+                  {row.localization !== null && row.localization.content
+                    ? row.localization.content
+                    : row.content}
+                </div>
+              );
+            })}
+          </marquee>
+        )}
       </MarqueeContainer>
     </AnnounceContainer>
   );

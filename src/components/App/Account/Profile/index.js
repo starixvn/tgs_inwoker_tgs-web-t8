@@ -33,6 +33,7 @@ import Whatsapp from "./Whatsapp";
 import i18n from "../../../../utils/i18n";
 import config from "../../../../config/config";
 import Common from "../../../../utils/Common";
+import Birthdate from "./Birthdate";
 
 const Container = styled.div`
   padding: 20px 28px;
@@ -762,6 +763,16 @@ class Profile extends Component {
           ></Email>
         );
         break;
+      case "member_birthdate":
+        title = i18n.t("profile.birthdate.title");
+        component = (
+          <Birthdate
+            handleCSClick={this.props.onhandleCSClick}
+            handleCloseDialog={this.handleCloseDialog}
+            account={this.props.account}
+          ></Birthdate>
+        );
+        break;
       case "member_safe_password":
         if (!this.props.account.info.check_pass_email) {
           title = i18n.t("profile.email.bindEmail");
@@ -926,6 +937,12 @@ class Profile extends Component {
                 "member_name",
                 this.handleButtonClick
               )}
+            {GetContentWrap(
+              this.props.account.info,
+              i18n.t("profile.birthdate.title"),
+              "member_birthdate",
+              this.handleButtonClick
+            )}
 
             {/* {GetContentWrap(
             this.props.account.info,
@@ -934,7 +951,8 @@ class Profile extends Component {
             this.handleButtonClick
           )} */}
             {(config.features.SMSVerification ||
-              config.features.Register_ShowPhone) &&
+              config.features.Register_ShowPhone ||
+              config.features.Register_ShowSMSVerification) &&
               GetContentWrap(
                 this.props.account.info,
                 i18n.t("common.phoneNumber"),

@@ -15,6 +15,7 @@ import Password1IconPNG from "../../assets/images/password1-icon.png";
 import Password2IconPNG from "../../assets/images/password2-icon.png";
 import IconInboxSelectedPNG from "../../assets/images/icon-inbox-selected.png";
 import IconMobilePNG from "../../assets/images/icon-mobile.png";
+import IconInputVerifyCodePNG from "../../assets/images/icon-input-verifycode.png";
 
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
@@ -49,15 +50,11 @@ const TitleContainer = styled.div`
   text-align: center;
 
   font-size: 42px;
-
-  color: ${({ theme }) => theme.secondary};
 `;
 const SubTitleContainer = styled.div`
   text-align: center;
 
   font-size: 18px;
-
-  color: ${({ theme }) => theme.secondary};
 `;
 const FormContainer = styled.div`
   margin: 10px 78px 0 78px;
@@ -183,6 +180,48 @@ const CustomSelect = withStyles((theme) => ({
     color: "#818181",
   },
 }))(Select);
+
+const StyleButton = styled.div`
+  width: 140px;
+  height: 51px;
+  border: solid 1px #b6b6b6;
+  margin: 0;
+
+  margin-left: 5px;
+  float: right;
+
+  ${(props) =>
+    props.disable === true
+      ? `  background-image: linear-gradient(90deg, rgba(89,89,89,1) 0%, rgba(126,126,126,1) 100%);`
+      : `  background-image: linear-gradient(to top, ` +
+        props.theme.primaryGradient +
+        `, ` +
+        props.theme.primary +
+        `);
+`}
+
+  border-radius: 5px;
+  font-size: 16px;
+  color: #fff;
+
+  &:hover {
+    cursor: pointer;
+
+    ${(props) =>
+      props.disable === true
+        ? `  background-image: linear-gradient(90deg, rgba(89,89,89,1) 0%, rgba(126,126,126,1) 100%);`
+        : `      background-blend-mode: screen, normal;
+        box-shadow: inset 1px 1px 9px 0  rgba(255, 255, 255, 0.75);
+        }
+  `}
+  }
+`;
+
+const ButtonLabel = styled.span`
+  text-align: center;
+  display: block;
+  margin-top: 12px;
+`;
 
 const ButtonLogin = styled.div`
   margin-top: 24px;
@@ -328,7 +367,9 @@ function Register(props) {
   const [password2, setPassword2] = React.useState("");
   const [areacode, setAreacode] = React.useState(config.features.PhonePrefix);
   const [phone, setPhone] = React.useState("");
-
+  const [code, setCode] = React.useState("");
+  const [countdown, setCountdown] = React.useState(0);
+  const [securityKey, setSecurityKey] = React.useState("");
   const [promotionId, setPromotionId] = React.useState(
     config.affiliateId !== ""
       ? config.affiliateId
@@ -386,9 +427,20 @@ function Register(props) {
       return;
     }
     expr = /^[0-9]{8,10}$/;
-    if (config.features.Register_ShowPhone) {
+    if (config.features.Register_ShowPhone || config.features.Register_ShowSMSVerification) {
       if (!expr.test(phone)) {
         props.enqueueSnackbar(i18n.t("common.noReachMin"), {
+          variant: "warning",
+        });
+        return;
+      }
+    }
+    
+    expr = /^[a-zA-Z0-9]{6}$/;
+    if(config.features.Register_ShowSMSVerification)
+    {
+      if (!expr.test(code)) {
+        props.enqueueSnackbar(i18n.t("common.msgEnterCode"), {
           variant: "warning",
         });
         return;
@@ -421,7 +473,16 @@ function Register(props) {
             //   }
             // }
             if (config.features.SMSVerification) {
-              props.onRegisterSuccess(username, password);
+              if(!config.features.Register_ShowSMSVerification)
+              {
+                props.onRegisterSuccess(username, password);
+              }
+              else {
+                props.doLogin(username, password);
+                props.history.push(
+                  "/" + i18n.language + "/registersuccess/" + username
+                );
+              }
             } else if (config.features.Register_ShowPhone) {
               props.doLoginWithHp(username, password, phone);
               props.history.push(
@@ -457,6 +518,49 @@ function Register(props) {
       return;
     }
   };
+
+  const handleGetCodeClick = async () => {
+    if (countdown <= 0) {
+      var expr = /^[a-zA-Z0-9]{6,16}$/;
+      if (!expr.test(username)) {
+        props.enqueueSnackbar(i18n.t("common.msgRegisterUserNameInvalid"), {
+          variant: "warning",
+        });
+        return;
+      }
+      expr = /^.{6,20}$/;
+      if (!expr.test(password)) {
+        props.enqueueSnackbar(i18n.t("common.msgRegisterPassInvalid"), {
+          variant: "warning",
+        });
+        return;
+      }
+      expr = /^[0-9]{8,10}$/;
+      if (!expr.test(phone)) {
+        props.enqueueSnackbar(i18n.t("common.noReachMin"), {
+          variant: "warning",
+        });
+        return;
+      }
+
+      AccountService.Activation(username, password, areacode, phone).then(
+        async (response) => {
+          if (response.IsSuccess) {
+            setSecurityKey(response.data);
+            props.enqueueSnackbar(i18n.t("common.msgTokenSent"), {
+              variant: "info",
+            });
+            setCountdown(60);
+          } else {
+            props.enqueueSnackbar(response.info, {
+              variant: "warning",
+            });
+          }
+        }
+      );
+    }
+  };
+
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
   };
@@ -568,7 +672,7 @@ function Register(props) {
           />
         </CustomTextWrapper>
 
-        {config.features.Register_ShowPhone && (
+        {(config.features.Register_ShowPhone || config.features.Register_ShowSMSVerification) && (
           <React.Fragment>
             <CustomFormControl>
               <CustomSelect
@@ -609,6 +713,35 @@ function Register(props) {
                 ),
               }}
             />
+          </React.Fragment>
+        )}
+        <div class="clear"></div>
+        {config.features.Register_ShowSMSVerification && (
+          <React.Fragment>
+          <CustomText
+            placeholder={i18n.t("common.msgEnterCode")}
+            adornment={IconInputVerifyCodePNG}
+            onChange={(e) => {
+              setCode(e.target.value);
+            }}
+            variant="outlined"
+            autoComplete="off"
+            value={code}
+            type={"text"}
+            style={{
+              width: "200px",
+              height: "51px",
+              marginTop: "0",
+              boxShadow: "0px 3px 8px -2px rgba(0,0,0,0.75)",
+            }}
+          ></CustomText>
+          <StyleButton onClick={handleGetCodeClick} disable={countdown > 0}>
+            <ButtonLabel>
+              {countdown <= 0
+                ? i18n.t("common.msgSendToken")
+                : i18n.t("common.btnTokenResendLabel") + "(" + countdown + "s)"}
+            </ButtonLabel>
+          </StyleButton>
           </React.Fragment>
         )}
 

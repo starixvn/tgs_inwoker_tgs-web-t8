@@ -39,7 +39,7 @@ import Loading from "./Loading";
 // import RegisterSuccess from "./RegisterSuccess";
 import Download from "./Download/index";
 
-// import VIP from "./VIP/index";
+import VIP from "./VIP/index";
 
 import i18n from "../../utils/i18n";
 
@@ -73,6 +73,7 @@ class App extends Component {
       this.props.getBrandCommunicationList();
       this.props.getBrandLanguage();
       this.props.getMarquee(i18n.language);
+      this.props.getAnnouncement(i18n.language);
       this.props.getBanner();
       this.props.getBrand();
       this.props.getLiveChatURL();
@@ -191,6 +192,7 @@ class App extends Component {
         this.props.getBrandCommunicationList();
         this.props.getBrandLanguage();
         this.props.getMarquee(i18n.language);
+        this.props.getAnnouncement(i18n.language);
         this.props.getBanner();
         this.props.getBrand();
         this.props.getLiveChatURL();
@@ -390,19 +392,19 @@ class App extends Component {
                         path={baseRouteUrl + "/promotion/:id"}
                         render={(props) => <PromotionDetails />}
                       />
-                      {/* <Route
+                      <Route
                       exact
                       path={baseRouteUrl + "/vip"}
                       render={(props) => (
-                        <VIP vip={this.props.account.vip.curr_vip.title} />
+                        <VIP />
                       )}
                     />
                    
-                    <Route
+                    {/* <Route
                       exact
                       path={baseRouteUrl + "/registersuccess/:username"}
                       component={RegisterSuccess}
-                    />*/}
+                    /> */}
                       <Route
                         exact
                         path={baseRouteUrl + "/maintenance"}
@@ -483,6 +485,7 @@ const mapDispatchToProps = (dispatch) => {
 
     checkTokenIsValid: () => dispatch(accountAction.checkTokenIsValid()),
     getMarquee: (language) => dispatch(uiAction.getMarquee(language)),
+    getAnnouncement: (language) => dispatch(uiAction.getAnnouncement(language)),
 
     getBankCardList: () => dispatch(walletAction.getBankCardList()),
 
