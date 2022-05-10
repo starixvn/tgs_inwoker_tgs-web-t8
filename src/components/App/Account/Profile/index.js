@@ -260,6 +260,15 @@ function GetContentWrap(accountInfo, label, attr, func, label2) {
     }
     isDisable = true;
   }
+  else {
+    if(config.features.Profile_ExistingDetails_ViewOnly)
+    {
+      if(attr!=="member_password")
+      {
+        buttonValue = i18n.t("profile.details");
+      }
+    }
+  }
   if (attr === "member_password") {
     attrValue = i18n.t("profile.setted");
     buttonValue = i18n.t("profile.edit");

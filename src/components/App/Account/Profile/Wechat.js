@@ -74,9 +74,9 @@ const Wechat = (props) => {
         handleTextFieldChange={onhandleTextChange}
         defaultValue={wechat}
         type={"text"}
-        readOnly={ifNotEmpty && config.features.ChangesNotAllowed}
+        readOnly={ifNotEmpty && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)}
       ></CustomTextField>
-      {ifNotEmpty && config.features.ChangesNotAllowed && (
+      {ifNotEmpty && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly) && (
         <Content>
           {i18n.t("profile.wechat.toEdit")}
           {
@@ -94,7 +94,7 @@ const Wechat = (props) => {
         </Content>
       )}
 
-      {!(ifNotEmpty && config.features.ChangesNotAllowed) && (
+      {!(ifNotEmpty && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)) && (
         <CustomButton
           name={i18n.t("common.submit")}
           handleClick={onhandleClick}

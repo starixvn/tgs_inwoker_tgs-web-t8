@@ -71,6 +71,7 @@ const featureList = {
     Register_ShowSMSVerification: false,
     Profile_SetUpBirthdateOnce: true,
     Deposit_OriginAccount: false,
+    Profile_ExistingDetails_ViewOnly: false, // except change password
   },
 };
 export default featureList;

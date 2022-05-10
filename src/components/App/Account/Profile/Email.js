@@ -255,7 +255,7 @@ class Address extends Component {
           autoComplete="off"
           disabled={this.state.isNew === false && this.state.step === 1}
         ></CustomText>
-        {!(ifNotEmpty && config.features.ChangesNotAllowed) && (
+        {!(ifNotEmpty && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)) && (
           <>
             <CustomText
               placeholder={i18n.t("common.msgEnterCode")}
@@ -287,7 +287,7 @@ class Address extends Component {
           </>
         )}
 
-        {ifNotEmpty && config.features.ChangesNotAllowed && (
+        {ifNotEmpty && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly) && (
           <Content>
             {i18n.t("profile.email.toEdit")}
             {
@@ -305,7 +305,7 @@ class Address extends Component {
           </Content>
         )}
 
-        {!(ifNotEmpty && config.features.ChangesNotAllowed) && (
+        {!(ifNotEmpty && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)) && (
           <CustomButton
             name={
               this.props.isForWithdrawalPassword
