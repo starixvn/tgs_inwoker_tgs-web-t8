@@ -471,7 +471,10 @@ class GuestContainer extends Component {
       // this.props.getInviteLink();
       // this.props.getDepositChannel();
 
-      if (this.state.openDialogName === "activation") {
+      if (
+        this.state.openDialogName === "activation" ||
+        this.state.openDialogName === "register"
+      ) {
         if (config.features.NavigateToAddCard) {
           this.props.history.push(
             "/" + i18n.language + "/account/withdrawal?do=addCard"
@@ -510,7 +513,7 @@ class GuestContainer extends Component {
         {config.features.SMSVerification && (
           <React.Fragment>
             <BtnRegister onClick={() => this.onhandleActivation()}>
-                {i18n.t("web.register.activation")}
+              {i18n.t("web.register.activation")}
             </BtnRegister>
           </React.Fragment>
         )}
