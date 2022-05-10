@@ -386,7 +386,7 @@ class PhoneVerification extends Component {
           autoComplete="off"
           disabled={this.state.isNew === false && this.state.step === 1}
         ></CustomText>
-        {!(ifNotEmpty && config.features.ChangesNotAllowed) && (
+        {!(ifNotEmpty && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)) && (
           <>
             <CustomText
               placeholder={i18n.t("common.msgEnterCode")}
@@ -418,7 +418,7 @@ class PhoneVerification extends Component {
           </>
         )}
 
-        {ifNotEmpty && config.features.ChangesNotAllowed && (
+        {ifNotEmpty && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly) && (
           <Content>
             {i18n.t("profile.phone.toEdit")}
             {
@@ -436,7 +436,7 @@ class PhoneVerification extends Component {
           </Content>
         )}
 
-        {!(ifNotEmpty && config.features.ChangesNotAllowed) && (
+        {!(ifNotEmpty && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)) && (
           <CustomButton
             name={
               this.props.isForWithdrawalPassword

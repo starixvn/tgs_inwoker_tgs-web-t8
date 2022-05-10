@@ -74,10 +74,10 @@ const Line = (props) => {
         handleTextFieldChange={onhandleTextChange}
         defaultValue={line}
         type={"text"}
-        readOnly={ifNotEmpty && config.features.ChangesNotAllowed}
+        readOnly={ifNotEmpty && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)}
         maxLength={15}
       ></CustomTextField>
-      {ifNotEmpty && config.features.ChangesNotAllowed && (
+      {ifNotEmpty && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly) && (
         <Content>
           {i18n.t("profile.line.toEdit")}
           {
@@ -95,7 +95,7 @@ const Line = (props) => {
         </Content>
       )}
 
-      {!(ifNotEmpty && config.features.ChangesNotAllowed) && (
+      {!(ifNotEmpty && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)) && (
         <CustomButton
           name={i18n.t("common.submit")}
           handleClick={onhandleClick}
