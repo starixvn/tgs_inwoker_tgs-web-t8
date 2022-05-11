@@ -29,7 +29,7 @@ const featureList = {
     Deposit_EnglishName: false,
     HomePageDisplayBalance: false,
     BackgroundMusic: false,
-    OnlineUser: false,
+    OnlineUser: true,
     CustomDepositInput: false,
     AddCard_InputAddFPS: false,
     Deposit_RemoveName: true,
