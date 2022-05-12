@@ -173,8 +173,6 @@ class App extends Component {
             this.props.getBankCardList();
             this.props.getAutoTransferStatus();
             this.props.getPlayerPromotionList(i18n.language);
-            this.props.getDepositMethod();
-            this.props.getWithdrawalChannel();
 
             // if (inbox.IsSuccess) {
             //   this.setState({ inbox: inbox.data });
@@ -518,8 +516,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(
         generalAction.getPlayerPromotionList(language, 1, 99, true, "", true)
       ),
-    getDepositMethod: () => dispatch(walletAction.getDepositMethod()),
-    getWithdrawalChannel: () => dispatch(walletAction.getWithdrawalChannel()),
+
     //  getVIP: () => dispatch(generalAction.getVIP()),
   };
 };
