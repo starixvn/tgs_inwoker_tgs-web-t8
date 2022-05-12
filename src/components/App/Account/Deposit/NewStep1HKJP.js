@@ -554,9 +554,8 @@ class NewStepOne extends Component {
                         methodList[selectedMethodIndex].channel[
                           selectedChannelIndex
                         ].transferlimit.to ||
-                      ((paymentType.paymentcode.toUpperCase() === "MANUAL" ||
-                        paymentType.paymentcode.toUpperCase() === "APPLEPAY") &&
-                        name.length <= 0)
+                      paymentType.paymentcode.toUpperCase() === "MANUAL" ||
+                      paymentType.paymentcode.toUpperCase() === "APPLEPAY"
                     }
                   ></CustomButton>
                 </FormActionContainer>
