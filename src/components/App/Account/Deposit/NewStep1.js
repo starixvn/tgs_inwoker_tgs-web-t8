@@ -766,6 +766,7 @@ const NewStepOne = (props) => {
                               accept="image/jpg, image/jpeg, image/png, image/tiff"
                               onChange={props.onFileChange}
                             ></CustomInput>
+                            <Remark>{i18n.t("deposit.msgPlsUploadProof")}</Remark>
                           </SelectionContainer>
                         </FormRightContainer>
                       </FormContainer>
