@@ -5,7 +5,6 @@ import { generalAction } from "../../../../api-services/actions/generalAction";
 import i18n from "../../../../utils/i18n";
 import IconVIPPNG from "../../../../assets/images/icon-vip.png";
 import config from "../../../../config/config";
-
 const Container = styled.div`
   padding: 20px 28px;
   box-sizing: border-box
@@ -22,7 +21,6 @@ const Header = styled.div`
   margin-bottom: 10px;
   padding: 0 10px 10px;
 `;
-
 const Title = styled.div`
   align-items: baseline;
   display: flex;
@@ -32,7 +30,6 @@ const Title = styled.div`
     font-weight: 400;
   }
 `;
-
 const InnerWrap = styled.div`
   min-height: 610px;
   margin-top: 18px;
@@ -44,7 +41,7 @@ const InnerWrap = styled.div`
 
 const VipLevelContainer = styled.div`
   display: grid;
-  grid-template-columns: 200px auto;
+  grid-template-columns: 275px auto;
 `;
 
 const VipLevelContainer2 = styled.div`
@@ -85,6 +82,7 @@ const VIPContent = styled.div`
   min-width: 125px;
   text-align: center;
   padding: 10px 20px;
+  width: 275px;
 `;
 
 const TitleContent = styled(VIPContent)`
@@ -93,8 +91,6 @@ const TitleContent = styled(VIPContent)`
   font-weight: bold;
 
   padding: 10px 20px;
-
-  width: 200px;
   display: block;
   text-decoration: none;
   text-overflow: ellipsis;
@@ -186,7 +182,7 @@ const VIP = (props) => {
     vipBenefit.items.sort((a, b) => {
       return a.level < b.level ? -1 : a.level > b.level ? 1 : 0;
     });
-  
+
   const getVIPTitle = (level) => {
     // currently bunny only has 6 levels
     if (config.features.VIP_CustomLevel_BUNNY && level < 7)
