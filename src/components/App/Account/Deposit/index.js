@@ -151,27 +151,31 @@ class Deposit extends Component {
         }
       );
     }
-    this.countDownInterval=setInterval(()=>{   
+    this.countDownInterval = setInterval(() => {
       this.props.getDepositMethod(); // call api every 30 mins
-    },30*60*1000);
+    }, 30 * 60 * 1000);
   }
 
   componentDidUpdate(preProps, preState) {
     if (config.features.Deposit_AutofillFirstCard) {
-      this.setState({
-        account:
-          preState.account === ""
-            ? this.props.wallet.bankCardList.length > 0
-              ? this.props.wallet.bankCardList[0].detail.bankAccount
-              : ""
-            : preState.account,
-        name:
-          preState.account === ""
-            ? this.props.account.info.member_name !== ""
-              ? this.props.account.info.member_name
-              : ""
-            : preState.name,
-      });
+      if (preProps.wallet !== this.props.wallet) {
+        this.setState({
+          account:
+            preState.account === ""
+              ? this.props.wallet.bankCardList.length > 0
+                ? this.props.wallet.bankCardList[0].detail.bankAccount ||
+                  this.props.wallet.bankCardList[0].detail.address ||
+                  this.props.wallet.bankCardList[0].detail.phone
+                : ""
+              : preState.account,
+          name:
+            preState.account === ""
+              ? this.props.account.info.member_name !== ""
+                ? this.props.account.info.member_name
+                : ""
+              : preState.name,
+        });
+      }
     }
 
     if (
@@ -618,6 +622,7 @@ class Deposit extends Component {
               amount={this.state.amount}
               onAmountChange={this.handleAmountChange}
               name={this.state.name}
+              accountList={this.props.wallet.bankCardList}
               account={this.state.account}
               onNameChange={this.handleNameChange}
               exchangeRate={this.state.exchangeRate}
@@ -653,6 +658,7 @@ class Deposit extends Component {
             <NewStepOne
               amount={this.state.amount}
               onAmountChange={this.handleAmountChange}
+              accountList={this.props.wallet.bankCardList}
               name={this.state.name}
               onNameChange={this.handleNameChange}
               account={this.state.account}
