@@ -514,25 +514,64 @@ const NewStepOne = (props) => {
 
                           <FormRightContainer>
                             <SelectionContainer>
-                              <TextField
-                                style={{
-                                  height: "38px",
-                                  width: "258px",
-                                  float: "left",
-                                  marginRight: "5px",
-                                  padding: 0,
-                                }}
-                                placeholder={
-                                  config.features.Deposit_OriginAccount
-                                    ? i18n.t("idr1.pleaseEnterAccountName")
-                                    : i18n.t("common.pleaseEnterAccountName")
-                                }
-                                onChange={onAccountChange}
-                                outputFormat="string"
-                                variant="outlined"
-                                autoComplete="off"
-                                value={account}
-                              ></TextField>
+                              {props.accountList.length > 1 ? (
+                                <CustomFormControl>
+                                  <CustomSelect
+                                    variant="outlined"
+                                    value={account}
+                                    displayEmpty
+                                    onChange={onAccountChange}
+                                    native
+                                  >
+                                    <option value="">
+                                      {config.features.Deposit_OriginAccount
+                                        ? i18n.t("idr1.pleaseEnterAccountName")
+                                        : i18n.t(
+                                            "common.pleaseEnterAccountName"
+                                          )}
+                                    </option>
+                                    {props.accountList.map((data, key) => {
+                                      var detail = data.detail;
+
+                                      return (
+                                        <option
+                                          value={
+                                            detail.bankAccount ||
+                                            detail.address ||
+                                            detail.phone
+                                          }
+                                          key={key}
+                                        >
+                                          {detail.bankAccount ||
+                                            detail.address ||
+                                            detail.phone}{" "}
+                                          ({data.banktype})
+                                        </option>
+                                      );
+                                    })}
+                                  </CustomSelect>
+                                </CustomFormControl>
+                              ) : (
+                                <TextField
+                                  style={{
+                                    height: "38px",
+                                    width: "258px",
+                                    float: "left",
+                                    marginRight: "5px",
+                                    padding: 0,
+                                  }}
+                                  placeholder={
+                                    config.features.Deposit_OriginAccount
+                                      ? i18n.t("idr1.pleaseEnterAccountName")
+                                      : i18n.t("common.pleaseEnterAccountName")
+                                  }
+                                  onChange={onAccountChange}
+                                  outputFormat="string"
+                                  variant="outlined"
+                                  autoComplete="off"
+                                  value={account}
+                                ></TextField>
+                              )}
                             </SelectionContainer>
                             {config.features.Deposit_AddTips && (
                               <div style={{ marginLeft: 30, marginTop: 8 }}>
@@ -766,7 +805,9 @@ const NewStepOne = (props) => {
                               accept="image/jpg, image/jpeg, image/png, image/tiff"
                               onChange={props.onFileChange}
                             ></CustomInput>
-                            <Remark>{i18n.t("deposit.msgPlsUploadProof")}</Remark>
+                            <Remark>
+                              {i18n.t("deposit.msgPlsUploadProof")}
+                            </Remark>
                           </SelectionContainer>
                         </FormRightContainer>
                       </FormContainer>
