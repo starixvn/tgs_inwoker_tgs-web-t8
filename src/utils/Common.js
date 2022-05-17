@@ -1,4 +1,4 @@
-import {GameTypeEnum,SlotGameParentId} from "../api-services/utils/Enum";
+import { GameTypeEnum, SlotGameParentId } from "../api-services/utils/Enum";
 import ABCPNG from "../assets/images/wap/bank/abc.png";
 import BCMPNG from "../assets/images/wap/bank/bcm.png";
 import BOBPNG from "../assets/images/wap/bank/bob.png";
@@ -408,6 +408,10 @@ function GetPromoImg(index) {
 
 const baseRouteUrl = `/:locale(en-US|zh-CN|zh-TW|th-TH|id-ID|vi-VN)`;
 
+function addComma(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 const Common = {
   baseRouteUrl,
   ConvertSlotGameParentIdToString,
@@ -426,5 +430,6 @@ const Common = {
   GetPromoImg,
   getLanguagePrefixFolder,
   getCDNLanguagePrefix,
+  addComma,
 };
 export default Common;
