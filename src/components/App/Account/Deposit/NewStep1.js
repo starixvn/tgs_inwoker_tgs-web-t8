@@ -650,6 +650,40 @@ const NewStepOne = (props) => {
                     </LimitPopupContainer>
                     {(() => {
                       if (
+                        methodList[selectedMethodIndex].methodcode === "Usdt" &&
+                        methodList[selectedMethodIndex].channel[
+                          selectedChannelIndex
+                        ].extended.rate !== undefined
+                      ) {
+                        var usdtRate =
+                          methodList[selectedMethodIndex].channel[
+                            selectedChannelIndex
+                          ].extended.rate;
+                        if (
+                          paymentType.paymentcode.toUpperCase() === "MANUAL"
+                        ) {
+                          return (
+                            <ExchangeRateContainer style={{ marginTop: "4px" }}>
+                              <LimitLabel>
+                                {i18n.t("deposit.exchangeRate")} 1 USDT ={" "}
+                              </LimitLabel>
+                              <LimitAmount>{` ${usdtRate}`}</LimitAmount>
+                              <div class="clear"></div>
+                              <LimitLabel>
+                                {i18n.t("report.total")}
+                              </LimitLabel>{" "}
+                              <LimitAmount>{` ${
+                                isNaN(amount) === false
+                                  ? (amount * usdtRate).toFixed(2)
+                                  : 0
+                              }`}</LimitAmount>
+                            </ExchangeRateContainer>
+                          );
+                        }
+                      }
+                    })()}
+                    {(() => {
+                      if (
                         methodList[selectedMethodIndex].methodcode === "Crypto"
                       ) {
                         if (
@@ -766,7 +800,9 @@ const NewStepOne = (props) => {
                               accept="image/jpg, image/jpeg, image/png, image/tiff"
                               onChange={props.onFileChange}
                             ></CustomInput>
-                            <Remark>{i18n.t("deposit.msgPlsUploadProof")}</Remark>
+                            <Remark>
+                              {i18n.t("deposit.msgPlsUploadProof")}
+                            </Remark>
                           </SelectionContainer>
                         </FormRightContainer>
                       </FormContainer>
