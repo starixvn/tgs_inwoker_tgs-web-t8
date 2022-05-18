@@ -73,6 +73,7 @@ const featureList = {
     Deposit_OriginAccount: false,
     Profile_ExistingDetails_ViewOnly: false, // except change password
     AddCard_HideCertainField: true, //impacted: Type、Bank name、Branch
+    Profile_DisableEditPhone: false,
   },
 };
 export default featureList;

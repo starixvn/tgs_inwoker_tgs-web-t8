@@ -128,7 +128,7 @@ const VerifiedSpan = styled.span`
   user-select: none;
 `;
 
-function GetContentWrap(accountInfo, label, attr, func, label2) {
+function GetContentWrap(accountInfo, label, attr, func, disabled) {
   let attrValue = accountInfo[attr];
   let isMemberName = false;
   let verified = accountInfo["check_pass_account"];
@@ -259,12 +259,9 @@ function GetContentWrap(accountInfo, label, attr, func, label2) {
       buttonValue = i18n.t("profile.setNow");
     }
     isDisable = true;
-  }
-  else {
-    if(config.features.Profile_ExistingDetails_ViewOnly)
-    {
-      if(attr!=="member_password")
-      {
+  } else {
+    if (config.features.Profile_ExistingDetails_ViewOnly) {
+      if (attr !== "member_password") {
         buttonValue = i18n.t("profile.details");
       }
     }
@@ -333,7 +330,7 @@ function GetContentWrap(accountInfo, label, attr, func, label2) {
         }
       </ContentValue>
       {(() => {
-        if (buttonValue !== "" && hide !== true) {
+        if (buttonValue !== "" && !disabled && hide !== true) {
           return (
             <ContentButton onClick={() => func(attr)}>
               <ContentButtonLabel>{buttonValue}</ContentButtonLabel>
@@ -966,7 +963,8 @@ class Profile extends Component {
                 this.props.account.info,
                 i18n.t("common.phoneNumber"),
                 "member_phone",
-                this.handleButtonClick
+                this.handleButtonClick,
+                config.features.Profile_DisableEditPhone
               )}
 
             {config.features.EmailVerification &&
