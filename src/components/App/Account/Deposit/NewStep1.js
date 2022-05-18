@@ -569,6 +569,10 @@ const NewStepOne = (props) => {
                                   outputFormat="string"
                                   variant="outlined"
                                   autoComplete="off"
+                                  disabled={
+                                    config.features.Deposit_AutofillFirstCard &&
+                                    account !== ""
+                                  }
                                   value={account}
                                 ></TextField>
                               )}
