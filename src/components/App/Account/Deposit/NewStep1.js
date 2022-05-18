@@ -622,7 +622,7 @@ const NewStepOne = (props) => {
                         marginRight: "5px",
                         padding: 0,
                       }}
-                      placeholder={i18n.t("deposit.plsEnterDepositAmount")}
+                      placeholder={isUsdt?i18n.t("deposit.plsEnterUSDTAmount"):i18n.t("deposit.plsEnterDepositAmount")}
                       onChange={onAmountChange}
                       outputFormat="string"
                       variant="outlined"
@@ -665,13 +665,13 @@ const NewStepOne = (props) => {
                           return (
                             <ExchangeRateContainer style={{ marginTop: "4px" }}>
                               <LimitLabel>
-                                {i18n.t("deposit.exchangeRate")} 1 USDT ={" "}
+                                {i18n.t("deposit.exchangeRate")} 1 USDT : {" "} 
                               </LimitLabel>
                               <LimitAmount>{` ${usdtRate}`}</LimitAmount>
                               <div class="clear"></div>
                               <LimitLabel>
-                                {i18n.t("report.total")}
-                              </LimitLabel>{" "}
+                                {i18n.t("deposit.totalAmount")}
+                              </LimitLabel>{" : "}
                               <LimitAmount>{` ${
                                 isNaN(amount) === false
                                   ? (amount * usdtRate).toFixed(2)

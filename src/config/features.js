@@ -72,6 +72,7 @@ const featureList = {
     Profile_SetUpBirthdateOnce: true,
     Deposit_OriginAccount: false,
     Profile_ExistingDetails_ViewOnly: false, // except change password
+    Withdrawal_USDT_ExchangeRate: 0.151,
   },
 };
 export default featureList;
