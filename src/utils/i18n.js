@@ -1,7 +1,7 @@
 import i18n from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import Config from "../config/config";
-import {language} from "../api-services/translation/index";
+import { language } from "../api-services/translation/index";
 i18n.on("languageChanged", function (lng) {
   // if the language we switched to is the default language we need to remove the /en from URL
   //   if (lng === i18n.options.fallbackLng[0]) {
@@ -34,6 +34,9 @@ i18n.use(LanguageDetector).init({
     },
     "vi-VN": {
       translation: language.vivN,
+    },
+    "id-ID": {
+      translation: language.idID,
     },
   },
   whitelist: ["en-US", "zh-CN", "zh-TW", "th-TH", "id-ID", "vi-VN"],
