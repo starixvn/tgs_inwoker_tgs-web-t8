@@ -72,121 +72,121 @@ const TheDepositButton = styled.div`
 const headerLists = {
   transactionDetails: [
     {
-      title: `${i18n.t("report.betDateTime")}`,
+      title: `report.betDateTime`,
     },
     {
-      title: `${i18n.t("report.betid")}`,
+      title: `report.betid`,
       width: "20rem",
     },
     {
-      title: `${i18n.t("report.platform")}/${i18n.t("report.gamename")}`,
+      title: `report.platformgamename`,
     },
     {
       align: "right",
-      title: `${i18n.t("report.totalBet")}`,
+      title: `report.totalBet`,
       width: "4rem",
     },
     {
       align: "right",
-      title: `${i18n.t("report.validBet")}`,
+      title: `report.validBet`,
       width: "4rem",
     },
     {
       align: "right",
-      title: `${i18n.t("report.winloss")}`,
+      title: `report.winloss`,
       width: "4rem",
     },
   ],
   depositReport: [
     {
-      title: `${i18n.t("report.submitDate")}`,
+      title: `report.submitDate`,
     },
     {
-      title: `${i18n.t("report.NewOrderNumber")}`,
+      title: `report.NewOrderNumber`,
     },
     {
-      title: `${i18n.t("report.status")}`,
+      title: `report.status`,
     },
     {
       align: "right",
-      title: `${i18n.t("common.amount")}`,
+      title: `common.amount`,
     },
   ],
   joinedPromo: [
     {
-      title: `${i18n.t("report.dateTime")}`,
+      title: `report.dateTime`,
     },
     {
-      title: `${i18n.t("report.joinedPromo.promoName")}`,
+      title: `report.joinedPromo.promoName`,
     },
   ],
   transfer: [
     {
-      title: `${i18n.t("report.dateTime")}`,
+      title: `report.dateTime`,
     },
     {
-      title: `${i18n.t("report.transfer.table.from")}`,
+      title: `report.transfer.table.from`,
     },
     {
-      title: `${i18n.t("report.transfer.table.to")}`,
+      title: `report.transfer.table.to`,
     },
     {
-      title: `${i18n.t("report.amount")}`,
+      title: `report.amount`,
     },
   ],
   withdrawal: [
     {
       align: "",
-      title: `${i18n.t("report.RequestDate")}`,
+      title: `report.RequestDate`,
     },
     {
       align: "",
-      title: `${i18n.t("report.NewOrderNumber")}`,
+      title: `report.NewOrderNumber`,
     },
     {
       align: "",
-      title: `${i18n.t("report.status")}`,
+      title: `report.status`,
     },
     {
       align: "right",
-      title: `${i18n.t("common.amount")}`,
+      title: `common.amount`,
     },
   ],
   account: [
     {
-      title: `${i18n.t("report.submitDate")}`,
+      title: `report.submitDate`,
     },
     {
-      title: `${i18n.t("report.status")}`,
+      title: `report.status`,
     },
     {
-      title: `${i18n.t("report.transferOut")}`,
+      title: `report.transferOut`,
     },
     {
-      title: `${i18n.t("report.transferIn")}`,
+      title: `report.transferIn`,
     },
     {
       align: "right",
-      title: `${i18n.t("report.amount")}`,
+      title: `report.amount`,
     },
   ],
   rebate: [
     {
-      title: `${i18n.t("report.rebate.sn")}`,
+      title: `report.rebate.sn`,
     },
     {
-      title: `${i18n.t("report.rebate.cycleDate")}`,
+      title: `report.rebate.cycleDate`,
     },
     {
-      title: `${i18n.t("report.status")}`,
-    },
-    {
-      align: "right",
-      title: `${i18n.t("report.rebate.validBet")}`,
+      title: `report.status`,
     },
     {
       align: "right",
-      title: `${i18n.t("report.rebate.amount")}`,
+      title: `report.rebate.validBet`,
+    },
+    {
+      align: "right",
+      title: `report.rebate.amount`,
     },
   ],
 };
@@ -383,7 +383,7 @@ function TableList(props) {
                   align={header.align}
                   style={{ width: header.width }}
                 >
-                  {header.title}
+                  {i18n.t(header.title)}
                 </StyledTableCell>
               );
             })}
