@@ -9,7 +9,6 @@ import config from "../../../../../config/config";
 import Default from "./default";
 import Approved from "./approved";
 import WaitingVerification from "./waiting-verification";
-import { RFC_2822 } from "moment";
 
 function IDVerification(props) {
   const [memberName, setMemberName] = useState(props.account.info.member_name);
@@ -32,26 +31,30 @@ function IDVerification(props) {
   var hasSubmitted = props.account.info.identityformid ? true : false;
 
   useEffect(() => {
-    if (currentFormStatus === 0 && hasSubmitted === false) {
-      //api沒給表單id ，表示可以上傳
+    if (props.edit) {
       setView("waiting-submit");
-    }
-    if (
-      (currentFormStatus === 1 && hasSubmitted === true) ||
-      currentFormStatus === 1
-    ) {
-      setView("approved");
-    }
-    if (
-      (currentFormStatus === 2 && hasSubmitted === true) ||
-      currentFormStatus === 2
-    ) {
-      //有給表單id但是狀態是拒絕，也可以上傳
-      setView("rejected");
-    }
-    if (currentFormStatus === 0 && hasSubmitted === true) {
-      //有給表單id但狀態沒驗證，不能上傳
-      setView("waiting-verification");
+    } else {
+      if (currentFormStatus === 0 && hasSubmitted === false) {
+        //api沒給表單id ，表示可以上傳
+        setView("waiting-submit");
+      }
+      if (
+        (currentFormStatus === 1 && hasSubmitted === true) ||
+        currentFormStatus === 1
+      ) {
+        setView("approved");
+      }
+      if (
+        (currentFormStatus === 2 && hasSubmitted === true) ||
+        currentFormStatus === 2
+      ) {
+        //有給表單id但是狀態是拒絕，也可以上傳
+        setView("rejected");
+      }
+      if (currentFormStatus === 0 && hasSubmitted === true) {
+        //有給表單id但狀態沒驗證，不能上傳
+        setView("waiting-verification");
+      }
     }
   }, []);
 
@@ -80,12 +83,14 @@ function IDVerification(props) {
       if (response.IsSuccess) {
         //upload IC when membername and memberic is valid.
         if (config.features.ICVerificationUpload) {
-          AccountService.UploadIC(icUpload[0]).then((response)=>{
-            if(!response.IsSuccess)
-            {
-              props.enqueueSnackbar(ErrorSwitcher.getTranslation(response.info), {
-                variant: "error",
-              });
+          AccountService.UploadIC(icUpload[0]).then((response) => {
+            if (!response.IsSuccess) {
+              props.enqueueSnackbar(
+                ErrorSwitcher.getTranslation(response.info),
+                {
+                  variant: "error",
+                }
+              );
             }
           });
         }
@@ -162,6 +167,8 @@ function IDVerification(props) {
     account: props.account,
     check_pass_account: check_pass_account,
     handleCSClick: props.handleCSClick,
+    icUpload: icUpload,
+    edit: props.edit,
   };
 
   const sceneSwitcher = (scene) => {

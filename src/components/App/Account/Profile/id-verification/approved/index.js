@@ -37,19 +37,21 @@ function Approved(props) {
         maxLength={256}
       ></CustomTextField>
 
-      <Content>
-        {i18n.t("profile.nameVerify.toEdit")}
-        <LabelLink
-          onClick={() =>
-            props.handleCSClick(
-              props.account.info.member_username,
-              props.account.info.member_username
-            )
-          }
-        >
-          {i18n.t("common.customerService")}
-        </LabelLink>
-      </Content>
+      {
+        //  <Content>
+        //  {i18n.t("profile.nameVerify.toEdit")}
+        //  <LabelLink
+        //    onClick={() =>
+        //      props.handleCSClick(
+        //        props.account.info.member_username,
+        //        props.account.info.member_username
+        //      )
+        //    }
+        //  >
+        //    {i18n.t("common.customerService")}
+        //  </LabelLink>
+        //</Content>
+      }
     </Container>
   );
 }
