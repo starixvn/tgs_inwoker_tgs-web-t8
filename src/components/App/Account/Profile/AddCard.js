@@ -202,11 +202,8 @@ class AddCard extends Component {
     var detail = {};
 
     if (selected.banktype === "Bank") {
-      var bankName =
-        this.state.channelList[this.state.selectedChannelIndex].channelcode ===
-        "CustomBank"
-          ? this.state.bankName.trim()
-          : this.state.channelList[this.state.selectedChannelIndex].channelcode;
+      var bankName = this.state.channelList[this.state.selectedChannelIndex]
+        .channelcode;
       var bankAccountName = this.state.bankAccountName.trim();
       var bankBranch = this.state.bankBranch.trim();
       var number = this.state.number.trim();
