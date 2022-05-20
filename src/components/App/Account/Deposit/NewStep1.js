@@ -665,7 +665,7 @@ const NewStepOne = (props) => {
                         marginRight: "5px",
                         padding: 0,
                       }}
-                      placeholder={i18n.t("deposit.plsEnterDepositAmount")}
+                      placeholder={isUsdt?i18n.t("deposit.plsEnterUSDTAmount"):i18n.t("deposit.plsEnterDepositAmount")}
                       onChange={onAmountChange}
                       outputFormat="string"
                       variant="outlined"
@@ -691,6 +691,40 @@ const NewStepOne = (props) => {
                         )}
                       </LimitAmount>
                     </LimitPopupContainer>
+                    {(() => {
+                      if (
+                        methodList[selectedMethodIndex].methodcode === "Usdt" &&
+                        methodList[selectedMethodIndex].channel[
+                          selectedChannelIndex
+                        ].extended.rate !== undefined
+                      ) {
+                        var usdtRate =
+                          methodList[selectedMethodIndex].channel[
+                            selectedChannelIndex
+                          ].extended.rate;
+                        if (
+                          paymentType.paymentcode.toUpperCase() === "MANUAL"
+                        ) {
+                          return (
+                            <ExchangeRateContainer style={{ marginTop: "4px" }}>
+                              <LimitLabel>
+                                {i18n.t("deposit.exchangeRate")} 1 USDT : {" "} 
+                              </LimitLabel>
+                              <LimitAmount>{` ${usdtRate}`}</LimitAmount>
+                              <div class="clear"></div>
+                              <LimitLabel>
+                                {i18n.t("deposit.totalAmount")}
+                              </LimitLabel>{" : "}
+                              <LimitAmount>{` ${
+                                isNaN(amount) === false
+                                  ? (amount * usdtRate).toFixed(2)
+                                  : 0
+                              }`}</LimitAmount>
+                            </ExchangeRateContainer>
+                          );
+                        }
+                      }
+                    })()}
                     {(() => {
                       if (
                         methodList[selectedMethodIndex].methodcode === "Crypto"

@@ -8,7 +8,7 @@ import i18n from "../../../../utils/i18n";
 import Common from "../../../../utils/Common";
 import { walletAction } from "../../../../api-services/actions/walletAction";
 import { connect } from "react-redux";
-
+import config from "../../../../config/config";
 const SubHeaderContainer = styled.div``;
 
 const SubTitle = styled.div`
@@ -100,12 +100,24 @@ const LimitPopupContainer = styled.div`
 `;
 
 const Turnover = styled.div`
+  margin: 0 0 0 28px;
   span {
     color: ${({ theme }) => {
       return theme.primary;
     }};
     font-weight: bold;
   }
+`;
+
+const LimitLabel = styled.span`
+  color: #747474;
+`;
+
+const LimitAmount = styled.span`
+  color: #c0252d;
+`;
+const ExchangeRateContainer = styled.div`
+  font-size: 14px;
 `;
 
 const Main = (props) => {
@@ -116,10 +128,11 @@ const Main = (props) => {
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(0);
   const [paymentList, setPaymentList] = useState(props.wallet.withdrawalList);
-
+  const [exchangeRate, setExchangeRate] = useState(
+    config.features.Withdrawal_USDT_ExchangeRate
+  );
   var minValue = [];
   var maxValue = [];
-
   const handleSelectCardChange = (index) => {
     setSelectedCardIndex(index);
   };
@@ -223,6 +236,22 @@ const Main = (props) => {
 
       <SubHeaderContainer>
         <SubTitle>{i18n.t("withdrawal.enterAmount")}</SubTitle>
+        {(() => {
+          if (
+            props.cardList[selectedCardIndex] &&
+            props.cardList[selectedCardIndex].banktype === "Usdt"
+          ) {
+            return (
+              <ExchangeRateContainer
+                style={{ paddingTop: "5px", paddingLeft: "20px" }}
+              >
+                <LimitLabel>{i18n.t("deposit.exchangeRate")}</LimitLabel>
+                <LimitLabel> 1 USDT : </LimitLabel>
+                <LimitAmount>{` ${exchangeRate}`}</LimitAmount>
+              </ExchangeRateContainer>
+            );
+          }
+        })()}
       </SubHeaderContainer>
 
       <SelectionContainer>
@@ -242,16 +271,46 @@ const Main = (props) => {
           {Common.formatNumberWithThousand(min)} -{" "}
           {Common.formatNumberWithThousand(max)}
         </LimitPopupContainer>
-        <Turnover>
-          {i18n.t("withdrawal.msgCanWithdrawal")}
-          <span>{Common.formatNumberWithThousand(props.mainBalance)}</span>
-        </Turnover>
-        <Turnover>
-          {i18n.t("withdrawal.turnover")}
-          <span>{Common.formatNumberWithThousand(props.minWithdrawLimit)}</span>
-        </Turnover>
       </SelectionContainer>
 
+      {(() => {
+        if (
+          props.cardList[selectedCardIndex] &&
+          props.cardList[selectedCardIndex].banktype === "Usdt"
+        ) {
+          return (
+            <React.Fragment>
+              <SubHeaderContainer>
+                <SubTitle>{i18n.t("withdrawal.usdtAmount")}</SubTitle>
+              </SubHeaderContainer>
+              <SelectionContainer style={{ marginBottom: "10px"}}>
+                <CustomTextField
+                  width={250}
+                  height={38}
+                  variant="outlined"
+                  autoComplete="off"
+                  value={
+                    isNaN(amount) === false
+                      ? (amount * exchangeRate).toFixed(2)
+                      : 0
+                  }
+                  pattern="[0-9]*"
+                  type={"number"}
+                  disabled={true}
+                ></CustomTextField>
+              </SelectionContainer>
+            </React.Fragment>
+          );
+        }
+      })()}
+      <Turnover>
+        {i18n.t("withdrawal.msgCanWithdrawal")}
+        <span>{Common.formatNumberWithThousand(props.mainBalance)}</span>
+      </Turnover>
+      <Turnover>
+        {i18n.t("withdrawal.turnover")}
+        <span>{Common.formatNumberWithThousand(props.minWithdrawLimit)}</span>
+      </Turnover>
       <CustomButton
         disabled={
           parseFloat(amount) < min || parseFloat(amount) > max || disabled
