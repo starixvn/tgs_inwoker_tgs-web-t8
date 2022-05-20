@@ -81,6 +81,7 @@ const ContentWrap = styled.div`
   font-size: 14px;
   width: 100%;
   display: flex;
+  justify-content: space-between;
 `;
 const ContentLabel = styled.div`
   color: #747474;
@@ -90,7 +91,6 @@ const ContentLabel = styled.div`
 `;
 const ContentValue = styled.div`
   color: #16242a;
-  width: 500px;
   margin-top: 10px;
   margin-left: 10px;
   white-space: nowrap;
@@ -128,7 +128,13 @@ const VerifiedSpan = styled.span`
   user-select: none;
 `;
 
-function GetContentWrap(accountInfo, label, attr, func, disabled) {
+const ButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
+function GetContentWrap(accountInfo, label, attr, func, edit, disable) {
   let attrValue = accountInfo[attr];
   let isMemberName = false;
   let verified = accountInfo["check_pass_account"];
@@ -318,26 +324,35 @@ function GetContentWrap(accountInfo, label, attr, func, disabled) {
 
   return (
     <ContentWrap>
-      <ContentLabel>{label}:</ContentLabel>
-      <ContentValue style={isDisable ? { color: "#acacac" } : {}}>
-        {attrValue}{" "}
-        {
-          <VerifiedSpan>
-            {isMemberName &&
-              containMemberName &&
-              "(" + i18n.t("verified." + status) + ")"}
-          </VerifiedSpan>
-        }
-      </ContentValue>
-      {(() => {
-        if (buttonValue !== "" && !disabled && hide !== true) {
-          return (
-            <ContentButton onClick={() => func(attr)}>
-              <ContentButtonLabel>{buttonValue}</ContentButtonLabel>
-            </ContentButton>
-          );
-        }
-      })()}
+      <div style={{ display: "flex" }}>
+        <ContentLabel>{label}:</ContentLabel>
+        <ContentValue style={isDisable ? { color: "#acacac" } : {}}>
+          {attrValue}{" "}
+          {
+            <VerifiedSpan>
+              {isMemberName &&
+                containMemberName &&
+                "(" + i18n.t("verified." + status) + ")"}
+            </VerifiedSpan>
+          }
+        </ContentValue>
+      </div>
+      <ButtonWrapper>
+        {(() => {
+          if (buttonValue !== "" && hide !== true && !disable) {
+            return (
+              <ContentButton onClick={() => func(attr)}>
+                <ContentButtonLabel>{buttonValue}</ContentButtonLabel>
+              </ContentButton>
+            );
+          }
+        })()}
+        {edit && (
+          <ContentButton onClick={() => func(attr, edit)}>
+            <ContentButtonLabel>{i18n.t("profile.edit")}</ContentButtonLabel>
+          </ContentButton>
+        )}
+      </ButtonWrapper>
     </ContentWrap>
   );
 }
@@ -665,7 +680,7 @@ class Profile extends Component {
       });
     }
   };
-  handleButtonClick = (type) => {
+  handleButtonClick = (type, edit) => {
     let title = "";
     let component = null;
 
@@ -824,6 +839,7 @@ class Profile extends Component {
             handleCSClick={this.props.onhandleCSClick}
             handleCloseDialog={this.handleCloseDialog}
             account={this.props.account}
+            edit={edit}
           ></IDVerification>
         );
         break;
@@ -941,7 +957,8 @@ class Profile extends Component {
                 this.props.account.info,
                 i18n.t("profile.nameVerify.title"),
                 "member_name",
-                this.handleButtonClick
+                this.handleButtonClick,
+                true
               )}
             {GetContentWrap(
               this.props.account.info,
@@ -949,7 +966,6 @@ class Profile extends Component {
               "member_birthdate",
               this.handleButtonClick
             )}
-
             {/* {GetContentWrap(
             this.props.account.info,
             i18n.t("profile.phone.title"),
@@ -964,6 +980,7 @@ class Profile extends Component {
                 i18n.t("common.phoneNumber"),
                 "member_phone",
                 this.handleButtonClick,
+                false,
                 config.features.Profile_DisableEditPhone
               )}
 
@@ -981,6 +998,7 @@ class Profile extends Component {
                 "member_qq",
                 this.handleButtonClick
               )}
+
             {config.features.QQWeChat &&
               GetContentWrap(
                 this.props.account.info,

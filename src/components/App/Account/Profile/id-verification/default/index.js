@@ -11,26 +11,6 @@ import i18n from "../../../../../../utils/i18n";
 import config from "../../../../../../config/config";
 const Container = styled.div``;
 
-const CustomInput = styled.input`
-  color: #000;
-  font-size: 14px;
-  text-align: right;
-
-  font-weight: 500;
-  border: 0;
-  padding: 10px 20px;
-  margin-right: 20px;
-  ::placeholder,
-  ::-webkit-input-placeholder {
-    color: #c3c3c3;
-  }
-  &:disabled {
-    background: #fff;
-    -webkit-text-fill-color: #000;
-    opacity: 1;
-  }
-`;
-
 const InputWrapper = styled.div`
   background: #fff;
   border: solid 1px #b6b6b6;
@@ -42,6 +22,7 @@ const InputWrapper = styled.div`
 `;
 
 function Default(props) {
+  const allowEdit = props.edit ? false : props.account.info.check_pass_account;
   return (
     <Container>
       <CustomTextField
@@ -55,7 +36,7 @@ function Default(props) {
         defaultValue={
           props.check_pass_account ? props.account.info.member_name : ""
         }
-        readOnly={props.check_pass_account}
+        readOnly={allowEdit}
         maxLength={256}
       ></CustomTextField>
 
@@ -72,16 +53,29 @@ function Default(props) {
                 adornment={IconInputIDPNG}
                 handleTextFieldChange={props.onhandleIDChange}
                 defaultValue={props.account.info.member_card_no}
-                readOnly={props.account.info.check_pass_account}
+                readOnly={allowEdit}
                 maxLength={256}
               ></CustomTextField>
               {config.features.ICVerificationUpload && (
-                <InputWrapper style={{}}>
-                  <CustomInput
-                    type="file"
-                    accept="image/jpg, image/jpeg, image/png, image/tiff"
-                    onChange={props.handleFileChange}
-                  ></CustomInput>
+                <InputWrapper style={{ padding: 5 }}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <button
+                      onClick={() => {
+                        document.getElementById("getFile").click();
+                      }}
+                      style={{ marginRight: 10, height: 30 }}
+                    >
+                      {i18n.t("common.upload")}
+                    </button>
+                    <input
+                      type="file"
+                      id="getFile"
+                      onChange={props.handleFileChange}
+                      accept="image/jpg, image/jpeg, image/png, image/tiff"
+                      style={{ display: "none" }}
+                    />
+                    {props.icUpload[0] ? props.icUpload[0].name : ""}
+                  </div>
                 </InputWrapper>
               )}
             </>
@@ -89,7 +83,7 @@ function Default(props) {
         }
       })()}
       {(() => {
-        if (props.check_pass_account === false) {
+        if (!props.check_pass_account || !allowEdit) {
           return (
             <CustomButton
               name={i18n.t("common.submit")}
