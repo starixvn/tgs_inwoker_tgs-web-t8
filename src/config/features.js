@@ -74,6 +74,7 @@ const featureList = {
     Profile_ExistingDetails_ViewOnly: false, // except change password
     AddCard_HideCertainField: true, //impacted: Type、Bank name、Branch
     Profile_DisableEditPhone: false,
+    Withdrawal_USDT_ExchangeRate: 0.151,
   },
 };
 export default featureList;
