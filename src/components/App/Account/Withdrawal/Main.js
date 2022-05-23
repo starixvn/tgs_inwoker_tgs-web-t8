@@ -243,10 +243,15 @@ const Main = (props) => {
           ) {
             return (
               <ExchangeRateContainer
-                style={{ paddingTop: "5px", paddingLeft: "20px" }}
+                style={{
+                  paddingTop: "1px",
+                  paddingLeft: "20px",
+                  whiteSpace: "break-spaces",
+                }}
               >
-                <LimitLabel>{i18n.t("deposit.exchangeRate")}</LimitLabel>
-                <LimitLabel> 1 USDT : </LimitLabel>
+                <LimitLabel>{i18n.t("deposit.exchangeRate")} : </LimitLabel>
+                <LimitAmount>1</LimitAmount>
+                <LimitLabel> {"\t"} USDT : </LimitLabel>
                 <LimitAmount>{` ${exchangeRate}`}</LimitAmount>
               </ExchangeRateContainer>
             );
