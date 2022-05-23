@@ -261,8 +261,7 @@ const Description = styled.div`
   font-size: 14px;
 
   line-height: 1.43;
-
-  color: ${({ theme }) => theme.secondary};
+  opacity: 0.75;
 `;
 
 const useStyles = makeStyles((theme) => ({
