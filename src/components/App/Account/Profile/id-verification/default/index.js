@@ -33,9 +33,7 @@ function Default(props) {
         }
         adornment={IconInputReceivePNG}
         handleTextFieldChange={props.onhandleNameChange}
-        defaultValue={
-          props.check_pass_account ? props.account.info.member_name : ""
-        }
+        defaultValue=""
         readOnly={allowEdit}
         maxLength={256}
       ></CustomTextField>
