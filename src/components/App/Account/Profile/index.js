@@ -347,7 +347,7 @@ function GetContentWrap(accountInfo, label, attr, func, edit, disable) {
             );
           }
         })()}
-        {edit && (
+        {status === "verifying" && attr === "member_name" && (
           <ContentButton onClick={() => func(attr, edit)}>
             <ContentButtonLabel>{i18n.t("profile.edit")}</ContentButtonLabel>
           </ContentButton>
