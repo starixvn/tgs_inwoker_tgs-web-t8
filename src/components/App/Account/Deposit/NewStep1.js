@@ -706,15 +706,23 @@ const NewStepOne = (props) => {
                           paymentType.paymentcode.toUpperCase() === "MANUAL"
                         ) {
                           return (
-                            <ExchangeRateContainer style={{ marginTop: "4px" }}>
+                            <ExchangeRateContainer
+                              style={{
+                                marginTop: "4px",
+                                whiteSpace: "break-spaces",
+                              }}
+                            >
                               <LimitLabel>
-                                {i18n.t("deposit.exchangeRate")} 1 USDT : {" "} 
+                                {i18n.t("deposit.exchangeRate")} :{" "}
                               </LimitLabel>
-                              <LimitAmount>{` ${usdtRate}`}</LimitAmount>
+                              <LimitAmount>1</LimitAmount>
+                              <LimitLabel> {"\t"} USDT : </LimitLabel>
+                              <LimitAmount>{`${usdtRate}`}</LimitAmount>
                               <div class="clear"></div>
                               <LimitLabel>
                                 {i18n.t("deposit.totalAmount")}
-                              </LimitLabel>{" : "}
+                              </LimitLabel>
+                              {" : "}
                               <LimitAmount>{` ${
                                 isNaN(amount) === false
                                   ? (amount * usdtRate).toFixed(2)
