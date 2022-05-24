@@ -571,7 +571,7 @@ const NewStepOne = (props) => {
                                   autoComplete="off"
                                   disabled={
                                     config.features.Deposit_AutofillFirstCard &&
-                                    account !== ""
+                                    props.accountList.length !== 0
                                   }
                                   value={account}
                                 ></TextField>
@@ -665,7 +665,11 @@ const NewStepOne = (props) => {
                         marginRight: "5px",
                         padding: 0,
                       }}
-                      placeholder={isUsdt?i18n.t("deposit.plsEnterUSDTAmount"):i18n.t("deposit.plsEnterDepositAmount")}
+                      placeholder={
+                        isUsdt
+                          ? i18n.t("deposit.plsEnterUSDTAmount")
+                          : i18n.t("deposit.plsEnterDepositAmount")
+                      }
                       onChange={onAmountChange}
                       outputFormat="string"
                       variant="outlined"
