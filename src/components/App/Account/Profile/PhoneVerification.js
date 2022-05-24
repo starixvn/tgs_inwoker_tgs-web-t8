@@ -160,7 +160,9 @@ class PhoneVerification extends Component {
     this.setState({ ...this.state, code: e.target.value });
   };
   onhandleGetCodeClick = () => {
-    var expr = /^[0-9]{8,10}$/;
+    var expr = new RegExp(
+      "/^[0-9]{8," + config.features.MAX_PHONE_LENGTH + "}$/"
+    );
     if (!expr.test(this.state.phone)) {
       this.props.enqueueSnackbar(i18n.t("common.noReachMin"), {
         variant: "warning",
@@ -208,7 +210,9 @@ class PhoneVerification extends Component {
       });
       return;
     }
-    var expr = /^[0-9]{8,10}$/;
+    var expr = new RegExp(
+      "/^[0-9]{8," + config.features.MAX_PHONE_LENGTH + "}$/"
+    );
     if (!expr.test(this.state.phone)) {
       this.props.enqueueSnackbar(i18n.t("common.noReachMin"), {
         variant: "warning",
@@ -375,7 +379,7 @@ class PhoneVerification extends Component {
           onChange={this.onhandlePhoneChange}
           value={this.state.phone}
           inputProps={{
-            maxLength: 10,
+            maxLength: config.features.MAX_PHONE_LENGTH || 10,
           }}
           style={{
             width: "268px",
@@ -386,7 +390,11 @@ class PhoneVerification extends Component {
           autoComplete="off"
           disabled={this.state.isNew === false && this.state.step === 1}
         ></CustomText>
-        {!(ifNotEmpty && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)) && (
+        {!(
+          ifNotEmpty &&
+          (config.features.ChangesNotAllowed ||
+            config.features.Profile_ExistingDetails_ViewOnly)
+        ) && (
           <>
             <CustomText
               placeholder={i18n.t("common.msgEnterCode")}
@@ -418,25 +426,31 @@ class PhoneVerification extends Component {
           </>
         )}
 
-        {ifNotEmpty && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly) && (
-          <Content>
-            {i18n.t("profile.phone.toEdit")}
-            {
-              <LabelLink
-                onClick={() =>
-                  this.props.handleCSClick(
-                    this.props.account.info.member_username,
-                    this.props.account.info.member_username
-                  )
-                }
-              >
-                {i18n.t("common.customerService")}
-              </LabelLink>
-            }
-          </Content>
-        )}
+        {ifNotEmpty &&
+          (config.features.ChangesNotAllowed ||
+            config.features.Profile_ExistingDetails_ViewOnly) && (
+            <Content>
+              {i18n.t("profile.phone.toEdit")}
+              {
+                <LabelLink
+                  onClick={() =>
+                    this.props.handleCSClick(
+                      this.props.account.info.member_username,
+                      this.props.account.info.member_username
+                    )
+                  }
+                >
+                  {i18n.t("common.customerService")}
+                </LabelLink>
+              }
+            </Content>
+          )}
 
-        {!(ifNotEmpty && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)) && (
+        {!(
+          ifNotEmpty &&
+          (config.features.ChangesNotAllowed ||
+            config.features.Profile_ExistingDetails_ViewOnly)
+        ) && (
           <CustomButton
             name={
               this.props.isForWithdrawalPassword

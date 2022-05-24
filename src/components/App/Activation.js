@@ -336,7 +336,7 @@ function Activation(props) {
       });
       return;
     }
-    expr = /^[0-9]{8,10}$/;
+    expr = new RegExp("/^[0-9]{8," + config.features.MAX_PHONE_LENGTH + "}$/");
     if (!expr.test(phone)) {
       props.enqueueSnackbar(i18n.t("common.noReachMin"), {
         variant: "warning",
@@ -382,7 +382,9 @@ function Activation(props) {
         });
         return;
       }
-      expr = /^[0-9]{8,10}$/;
+      expr = new RegExp(
+        "/^[0-9]{8," + config.features.MAX_PHONE_LENGTH + "}$/"
+      );
       if (!expr.test(phone)) {
         props.enqueueSnackbar(i18n.t("common.noReachMin"), {
           variant: "warning",
@@ -502,7 +504,7 @@ function Activation(props) {
           type="text"
           autoComplete="off"
           inputProps={{
-            maxLength: 10,
+            maxLength: config.features.MAX_PHONE_LENGTH || 10,
           }}
           InputProps={{
             startAdornment: (
