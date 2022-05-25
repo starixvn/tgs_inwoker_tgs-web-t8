@@ -75,6 +75,9 @@ const featureList = {
     AddCard_HideCertainField: true, //impacted: Type、Bank name、Branch
     Profile_DisableEditPhone: false,
     Withdrawal_USDT_ExchangeRate: 0.151,
+
+    Deposit_UploadRequired: true,
+    Deposit_HideDepositChannel: false,
   },
 };
 export default featureList;
