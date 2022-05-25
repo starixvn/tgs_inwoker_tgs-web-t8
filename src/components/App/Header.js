@@ -589,12 +589,9 @@ class Header extends Component {
     this.setState({ ...this.state, isHoverMenu: false });
   };
   handleClickMenu = (path) => {
-    if(path==="vip" && !this.props.account.token)
-    {
+    if (path === "vip" && !this.props.account.token) {
       this.props.showLogin(true);
-    }
-    else
-    {
+    } else {
       this.setState({ ...this.state, selected: path });
       this.props.history.push("/" + i18n.language + `/${path}`);
     }
@@ -663,7 +660,7 @@ class Header extends Component {
         document.getElementById("audio").volume = 0.0;
       var win = window.open(
         "/" + i18n.language + "/joinlottery/" + name,
-        "_blank",
+        "gamewindow",
         "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=1280,height=720"
       );
       var timer = setInterval(function () {
@@ -697,7 +694,7 @@ class Header extends Component {
               document.getElementById("audio").volume = 0;
             var win = window.open(
               `/${i18n.language}/joinlobbygame/${gameType}/${gameCode}`,
-              "_blank"
+              "gamewindow"
             );
             var timer = setInterval(function () {
               if (win.closed) {
@@ -1007,23 +1004,21 @@ class Header extends Component {
                     return a.sorting > b.sorting ? 1 : -1;
                   }
                 }).map((item, index) => {
-                  var list = this.props.game.homePageGameList.filter(
-                    (game) =>
-                      item.gameType.indexOf(game.type) >= 0 &&
-                      game.abbreviation.toLowerCase()
-                  )                  
-                  .sort((a, b) => {
-                    if(config.features.LiveGame_Sorting_SKY)
-                    {
-                      var sortDGFirst = ["DG"];
-                      return (
-                        sortDGFirst.indexOf(b.abbreviation) -
-                        sortDGFirst.indexOf(a.abbreviation)
-                      );
-                    }
-                    else  
-                      return b-a;
-                  });
+                  var list = this.props.game.homePageGameList
+                    .filter(
+                      (game) =>
+                        item.gameType.indexOf(game.type) >= 0 &&
+                        game.abbreviation.toLowerCase()
+                    )
+                    .sort((a, b) => {
+                      if (config.features.LiveGame_Sorting_SKY) {
+                        var sortDGFirst = ["DG"];
+                        return (
+                          sortDGFirst.indexOf(b.abbreviation) -
+                          sortDGFirst.indexOf(a.abbreviation)
+                        );
+                      } else return b - a;
+                    });
 
                   if (list.length > 0) {
                     return (

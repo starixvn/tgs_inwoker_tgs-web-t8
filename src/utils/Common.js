@@ -313,7 +313,7 @@ function PopupCenter(url, title, w, h) {
   left = left < 0 ? 0 : left;
   var newWindow = window.open(
     url,
-    title,
+    "gamewindow",
     "scrollbars=yes, width=" +
       w / systemZoom +
       ", height=" +
