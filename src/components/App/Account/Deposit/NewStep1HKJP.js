@@ -261,51 +261,56 @@ class NewStepOne extends Component {
           if (methodList.length > 0 && selectedMethodIndex !== -1) {
             return (
               <>
-                <FormContainer>
-                  <FormLeftContainer>
-                    <SubHeaderContainer>
-                      <SubTitle>
-                        {i18n.t("deposit.msgPlsSelectMethod")}
-                      </SubTitle>
-                    </SubHeaderContainer>
-                  </FormLeftContainer>
-                  <FormRightContainer>
-                    <SelectionContainer>
-                      <CustomFormControl>
-                        <CustomSelect
-                          variant="outlined"
-                          value={this.props.selectedChannelIndex}
-                          displayEmpty
-                          onChange={onChannelChange}
-                          native
-                        >
-                          {methodList[selectedMethodIndex].channel.map(
-                            (data, key) => {
-                              return (
-                                <option value={key} key={key}>
-                                  {data.channelname}
-                                </option>
-                              );
-                            }
-                          )}
-                        </CustomSelect>
-                      </CustomFormControl>
-                      {/* {methodList[selectedMethodIndex].channel.map(
-                        (item, index) => {
-                          return (
-                            <TunnelButton
-                              key={index}
-                              onClick={() => onChannelChange(index)}
-                              active={selectedChannelIndex === index}
+                {!config.features.Deposit_HideDepositChannel && (
+                  <>
+                    <FormContainer>
+                      <FormLeftContainer>
+                        <SubHeaderContainer>
+                          <SubTitle>
+                            {i18n.t("deposit.msgPlsSelectMethod")}
+                          </SubTitle>
+                        </SubHeaderContainer>
+                      </FormLeftContainer>
+
+                      <FormRightContainer>
+                        <SelectionContainer>
+                          <CustomFormControl>
+                            <CustomSelect
+                              variant="outlined"
+                              value={selectedChannelIndex}
+                              displayEmpty
+                              onChange={onChannelChange}
+                              native
                             >
-                              {item.channelname}
-                            </TunnelButton>
-                          );
-                        }
-                      )} */}
-                    </SelectionContainer>
-                  </FormRightContainer>
-                </FormContainer>
+                              {methodList[selectedMethodIndex].channel.map(
+                                (data, key) => {
+                                  return (
+                                    <option value={key} key={key}>
+                                      {data.channelname}
+                                    </option>
+                                  );
+                                }
+                              )}
+                            </CustomSelect>
+                          </CustomFormControl>
+                          {/* {methodList[selectedMethodIndex].channel.map(
+                    (item, index) => {
+                      return (
+                        <TunnelButton
+                          key={index}
+                          onClick={() => onChannelChange(index)}
+                          active={selectedChannelIndex === index}
+                        >
+                          {item.channelname}
+                        </TunnelButton>
+                      );
+                    }
+                  )} */}
+                        </SelectionContainer>
+                      </FormRightContainer>
+                    </FormContainer>
+                  </>
+                )}
 
                 {(() => {
                   if (

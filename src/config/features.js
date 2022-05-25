@@ -77,6 +77,7 @@ const featureList = {
     Withdrawal_USDT_ExchangeRate: 0.151,
 
     Deposit_UploadRequired: true,
+    Deposit_HideDepositChannel: false,
   },
 };
 export default featureList;
