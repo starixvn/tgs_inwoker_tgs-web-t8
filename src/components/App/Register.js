@@ -261,8 +261,7 @@ const Description = styled.div`
   font-size: 14px;
 
   line-height: 1.43;
-
-  color: ${({ theme }) => theme.secondary};
+  opacity: 0.75;
 `;
 
 const useStyles = makeStyles((theme) => ({
@@ -426,7 +425,7 @@ function Register(props) {
       });
       return;
     }
-    expr = /^[0-9]{8,10}$/;
+    expr = new RegExp("/^[0-9]{8," + config.features.MAX_PHONE_LENGTH + "}$/");
     if (
       config.features.Register_ShowPhone ||
       config.features.Register_ShowSMSVerification
@@ -526,7 +525,9 @@ function Register(props) {
         });
         return;
       }
-      expr = /^[0-9]{8,10}$/;
+      expr = new RegExp(
+        "/^[0-9]{8," + config.features.MAX_PHONE_LENGTH + "}$/"
+      );
       if (!expr.test(phone)) {
         props.enqueueSnackbar(i18n.t("common.noReachMin"), {
           variant: "warning",
@@ -692,7 +693,7 @@ function Register(props) {
               type="text"
               autoComplete="off"
               inputProps={{
-                maxLength: 10,
+                maxLength: config.features.MAX_PHONE_LENGTH || 10,
               }}
               InputProps={{
                 startAdornment: (
