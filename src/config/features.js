@@ -64,7 +64,6 @@ const featureList = {
     MenuItem_Sorting_GMO: false,
     VIP_CustomLevel_BUNNY: false,
     Withdrawal_Ignore_Verification: true,
-    HomePage_DisplayVIP: false,
     LiveGame_Sorting_SKY: false,
     Header_DisplayCS: false,
     Report_ShowRoundsTotal: true,

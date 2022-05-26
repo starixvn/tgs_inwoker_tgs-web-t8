@@ -589,12 +589,8 @@ class Header extends Component {
     this.setState({ ...this.state, isHoverMenu: false });
   };
   handleClickMenu = (path) => {
-    if (path === "vip" && !this.props.account.token) {
-      this.props.showLogin(true);
-    } else {
-      this.setState({ ...this.state, selected: path });
-      this.props.history.push("/" + i18n.language + `/${path}`);
-    }
+    this.setState({ ...this.state, selected: path });
+    this.props.history.push("/" + i18n.language + `/${path}`);
   };
 
   handleHideAppBar = () => {
@@ -660,7 +656,7 @@ class Header extends Component {
         document.getElementById("audio").volume = 0.0;
       var win = window.open(
         "/" + i18n.language + "/joinlottery/" + name,
-        "gamewindow",
+        "_blank",
         "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=1280,height=720"
       );
       var timer = setInterval(function () {
@@ -694,7 +690,7 @@ class Header extends Component {
               document.getElementById("audio").volume = 0;
             var win = window.open(
               `/${i18n.language}/joinlobbygame/${gameType}/${gameCode}`,
-              "gamewindow"
+              "_blank"
             );
             var timer = setInterval(function () {
               if (win.closed) {
@@ -1261,14 +1257,13 @@ class Header extends Component {
                   null
                 )}
 
-                {config.features.HomePage_DisplayVIP &&
-                  this.RightMenuItem(
-                    "vip",
-                    TopMenuPromoPNG,
-                    "VIP",
-                    TopMenuPromoHoverPNG,
-                    null
-                  )}
+                {this.RightMenuItem(
+                  "vip",
+                  TopMenuPromoPNG,
+                  "VIP",
+                  TopMenuPromoHoverPNG,
+                  null
+                )}
               </RightMenuUL>
             </RightMenuContainer>
           </BottomContainer>
