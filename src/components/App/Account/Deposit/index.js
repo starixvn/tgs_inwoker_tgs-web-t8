@@ -197,12 +197,24 @@ class Deposit extends Component {
         } else {
           let url = "";
           if (payment.paymentcode.toUpperCase() === "MANUAL") {
-            this.props.doUploadDepositProof(response.data, this.state.files[0]);
-            this.setState({
-              ...this.state,
-              loading: false,
-              depositResult: response,
-            });
+            if (config.features.Deposit_UploadRequired) {
+              this.props.doUploadDepositProof(
+                response.data,
+                this.state.files[0]
+              );
+              this.setState({
+                ...this.state,
+                loading: false,
+                depositResult: response,
+              });
+            } else {
+              this.setState({
+                ...this.state,
+                step: 3,
+                loading: false,
+                depositResult: response,
+              });
+            }
           } else {
             this.setState({
               ...this.state,
