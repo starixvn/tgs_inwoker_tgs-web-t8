@@ -42,12 +42,13 @@ const PromoDetailContainer = styled(Grid)`
 `;
 
 const PromoDetailHeaderContainer = styled.div`
-justify-content: flex-end;
-box-sizing: border-box;
-width: 100%;
-background-color: ${({theme})=>theme.primary};
-height: 50px;
-    padding: 0 20px;`;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: ${({ theme }) => theme.primary};
+  height: 50px;
+  padding: 0 20px;
+`;
 
 const PromoDetailBodyContainer = styled.div`
   padding: 18px 0;
@@ -132,11 +133,10 @@ const PromoDetailRightContainer = styled.div`
       padding: 15px;  
       width: 65%;
     `}
-
 `;
 
 const PromoDetailJoinButton = styled.button`
-  background-color: ${({theme})=>theme.primary};
+  background-color: ${({ theme }) => theme.primary};
   border: 0;
   border-radius: 22.5px;
   color: #fff;
@@ -188,7 +188,7 @@ const PromoDetailImage = styled.div`
 `;
 
 const EventTitle = styled.div`
-  color: ${({theme})=>theme.primary};;
+  color: ${({ theme }) => theme.primary};
   margin-bottom: 10px;
   font-size: 16px;
   font-family: Arial;
@@ -262,8 +262,6 @@ const TitleContainer = styled.div`
   text-align: center;
 
   font-size: 42px;
-
-  color: ${({ theme }) => theme.secondary};
 `;
 const DialogContent = styled.div`
   margin: 0 auto;
