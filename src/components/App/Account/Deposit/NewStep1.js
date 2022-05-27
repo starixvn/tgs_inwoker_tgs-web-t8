@@ -892,8 +892,6 @@ const NewStepOne = (props) => {
                     onNextClick();
                   }}
                   disabled={
-                    selectedMethodIndex < 0 ||
-                    selectedChannelIndex < 0 ||
                     amount <
                       methodList[selectedMethodIndex].channel[
                         selectedChannelIndex
@@ -902,12 +900,8 @@ const NewStepOne = (props) => {
                       methodList[selectedMethodIndex].channel[
                         selectedChannelIndex
                       ].transferlimit.to ||
-                    ((paymentType.paymentcode.toUpperCase() === "MANUAL" ||
-                      paymentType.paymentcode.toUpperCase() === "APPLEPAY") &&
-                      amount.length <= 0) ||
-                    (paymentType.paymentcode.toUpperCase() === "MANUAL" &&
-                      files.length <= 0) ||
                     (config.features.Deposit_UploadRequired &&
+                      isManual &&
                       files.length <= 0)
                   }
                 ></CustomButton>
