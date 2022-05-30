@@ -261,9 +261,14 @@ class AddCard extends Component {
       }
 
       if (this.state.phone.length < (config.features.MAX_PHONE_LENGTH || 10)) {
-        this.props.enqueueSnackbar(i18n.t("common.noReachMin"), {
-          variant: "error",
-        });
+        this.props.enqueueSnackbar(
+          i18n
+            .t("common.noReachMin")
+            .replace(/{maxlength}/g, config.features.MAX_PHONE_LENGTH),
+          {
+            variant: "error",
+          }
+        );
         return;
       }
       detail = {
