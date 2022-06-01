@@ -342,13 +342,14 @@ function GetContentWrap(accountInfo, label, attr, func, edit, disable) {
         {(() => {
           if (buttonValue !== "" && hide !== true && !disable) {
             return (
-              <ContentButton onClick={() => func(attr)}>
+              <ContentButton onClick={() => func(attr, !isVerify)}>
                 <ContentButtonLabel>{buttonValue}</ContentButtonLabel>
               </ContentButton>
             );
           }
         })()}
-        {edit && (
+        {((status === "verifying" && attr === "member_name") ||
+          (attr === "member_phone" && isVerify && edit)) && (
           <ContentButton onClick={() => func(attr, edit)}>
             <ContentButtonLabel>{i18n.t("profile.edit")}</ContentButtonLabel>
           </ContentButton>
