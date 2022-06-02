@@ -282,12 +282,11 @@ function GetContentWrap(accountInfo, label, attr, func, edit, disable) {
       buttonValue = i18n.t("common.reset");
       isDisable = false;
     }
-  } else if (
-    attr === "member_name" ||
-    attr === "member_birthday" ||
-    attr === "member_phone"
-  ) {
-    if (attr === "member_name" || attr === "member_phone") {
+  } else if (attr === "member_name" || attr === "member_birthday") {
+    if (isVerify || attr === "member_birthday") {
+      buttonValue = "";
+    }
+    if (attr === "member_name") {
       if (isVerify === false) {
         buttonValue = i18n.t("profile.nowVerify");
       } else {
@@ -342,14 +341,13 @@ function GetContentWrap(accountInfo, label, attr, func, edit, disable) {
         {(() => {
           if (buttonValue !== "" && hide !== true && !disable) {
             return (
-              <ContentButton onClick={() => func(attr, !isVerify)}>
+              <ContentButton onClick={() => func(attr)}>
                 <ContentButtonLabel>{buttonValue}</ContentButtonLabel>
               </ContentButton>
             );
           }
         })()}
-        {((status === "verifying" && attr === "member_name") ||
-          (attr === "member_phone" && isVerify && edit)) && (
+        {status === "verifying" && attr === "member_name" && (
           <ContentButton onClick={() => func(attr, edit)}>
             <ContentButtonLabel>{i18n.t("profile.edit")}</ContentButtonLabel>
           </ContentButton>
@@ -855,7 +853,6 @@ class Profile extends Component {
             token={this.props.account.token}
             isForSecurityQuestion={false}
             account={this.props.account}
-            edit={edit}
           ></PhoneVerification>
         );
         break;
@@ -983,8 +980,8 @@ class Profile extends Component {
                 i18n.t("common.phoneNumber"),
                 "member_phone",
                 this.handleButtonClick,
-
-                !config.features.Profile_DisableEditPhone
+                false,
+                config.features.Profile_DisableEditPhone
               )}
 
             {config.features.EmailVerification &&
