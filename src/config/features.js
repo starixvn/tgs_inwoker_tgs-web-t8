@@ -64,6 +64,7 @@ const featureList = {
     MenuItem_Sorting_GMO: false,
     VIP_CustomLevel_BUNNY: false,
     Withdrawal_Ignore_Verification: true,
+    HomePage_DisplayVIP: false,
     LiveGame_Sorting_SKY: false,
     Header_DisplayCS: false,
     Report_ShowRoundsTotal: true,
@@ -71,15 +72,9 @@ const featureList = {
     Profile_SetUpBirthdateOnce: true,
     Deposit_OriginAccount: false,
     Profile_ExistingDetails_ViewOnly: false, // except change password
-    AddCard_HideCertainField: false, //impacted: Type、Bank name、Branch
+    AddCard_HideCertainField: true, //impacted: Type、Bank name、Branch
     Profile_DisableEditPhone: false,
     Withdrawal_USDT_ExchangeRate: 0.151,
-
-    Deposit_UploadRequired: true,
-    Deposit_HideDepositChannel: false,
-    AddCard_EWalletCustoms: false,
-
-    HomePage_DisplayVIP: false,
   },
 };
 export default featureList;

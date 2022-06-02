@@ -95,8 +95,7 @@ const GameTitle = styled.div`
   font-weight: bold;
   position: absolute;
   bottom: 0;
-  background: url(${process.env.PUBLIC_URL}"/assets/images/pcGamePage/sports/btn-sports.png")
-    no-repeat;
+  background: url(${process.env.PUBLIC_URL}"/assets/images/pcGamePage/sports/btn-sports.png") no-repeat;  
   text-align: center;
   line-height: 1.8em;
 `;
@@ -173,7 +172,7 @@ class Sports extends Component {
           document.getElementById("audio").volume = 0.0;
         var win = window.open(
           `/${i18n.language}/joinlobbygame/${type}/${params}`,
-          "gamewindow"
+          "_blank"
         );
         var timer = setInterval(function () {
           if (win.closed) {
@@ -206,24 +205,15 @@ class Sports extends Component {
                     <LeftNavItem
                       selected={this.state.selected === index}
                       onClick={() => {
-                        if (data.status === 0) {
-                          this.handleJoinGameClick(
-                            data.abbreviation,
-                            data.type
-                          );
+                        if(data.status === 0)
+                        {
+                          this.handleJoinGameClick(data.abbreviation, data.type);
                         }
                       }}
                       maintenance={data.status !== 0}
                     >
-                      <Maintenance>
-                        {i18n.t("transfer.maintenance")}
-                      </Maintenance>
-                      <GameImage
-                        src={
-                          process.env.PUBLIC_URL +
-                          `/assets/images/pcGamePage/sports/${data.abbreviation.toLowerCase()}.png`
-                        }
-                      ></GameImage>
+                      <Maintenance>{i18n.t("transfer.maintenance")}</Maintenance>
+                      <GameImage src={process.env.PUBLIC_URL + `/assets/images/pcGamePage/sports/${data.abbreviation.toLowerCase()}.png`}></GameImage>
                       <GameTitle>
                         {i18n.t(`${data.abbreviation}.sports`)}
                       </GameTitle>

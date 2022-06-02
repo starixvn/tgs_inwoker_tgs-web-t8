@@ -55,8 +55,7 @@ const Container = styled.div`
 
 const NoContentText = styled.div`
   color: #000;
-  font-size: ${(props) =>
-    props.lang === "zh-CN" || props.lang === "zh-TW" ? `3.2em` : `2.3em`};
+  font-size: ${(props=> (props.lang === 'zh-CN') || (props.lang === 'zh-TW') ? `3.2em`: `2.3em`)};
   text-shadow: 0 0 18px #ffe14e;
   -webkit-text-stroke: 0.5px white;
   font-weight: bold;
@@ -64,12 +63,12 @@ const NoContentText = styled.div`
   height: auto;
   margin-left: 180px;
   overflow: visible;
-  font-family: "微軟正黑粗";
+  font-family: '微軟正黑粗';
   &:first-child {
     margin-top: 210px;
   }
   &:last-child {
-    ${(props) => (props.lang === "en-US" ? `font-size: 3.2em;` : ``)}
+    ${(props=> props.lang === 'en-US'? `font-size: 3.2em;`:``)}
   }
 `;
 
@@ -96,7 +95,7 @@ const Maintenance = styled.div`
   user-select: none;
   cursor: not-allowed;
   text-align: center;
-`;
+  `;
 
 const BottomContainer = styled.div`
   bottom: 0;
@@ -125,14 +124,9 @@ const GameButton = styled.div`
     width: 150px;
     height: 80px;
     content: "";
-    background-image: url(${(props) => {
-      return (
-        process.env.PUBLIC_URL +
-        "/assets/images/pcGamePage/live/" +
-        props.name.toLowerCase() +
-        ".png"
-      );
-    }});
+    background-image: url(${(props=>{ 
+      return process.env.PUBLIC_URL+"/assets/images/pcGamePage/live/"+props.name.toLowerCase()+".png";
+    })});
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
@@ -180,7 +174,7 @@ class LiveGame extends Component {
   constructor(props) {
     super(props);
     var liveList = props.game.homePageGameList.filter((e) => {
-      return e.type === GameTypeEnum.LIVELOBBY;
+      return e.type === GameTypeEnum.LIVELOBBY
     });
 
     this.state = {
@@ -197,7 +191,7 @@ class LiveGame extends Component {
       this.props.game.homePageGameList.length
     ) {
       var liveList = this.props.game.homePageGameList.filter((e) => {
-        return e.type === GameTypeEnum.LIVELOBBY;
+        return e.type === GameTypeEnum.LIVELOBBY
       });
       this.setState({
         ...this.state,
@@ -223,7 +217,7 @@ class LiveGame extends Component {
           GameTypeEnum.LIVELOBBY +
           "/" +
           params.toUpperCase(),
-        "gamewindow",
+        "_blank",
         "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=1280,height=720"
       );
 
@@ -252,36 +246,34 @@ class LiveGame extends Component {
             >
               <BottomNavItemContainer>
                 {this.state.list
-                  .sort((a, b) => {
-                    if (config.features.LiveGame_Sorting_SKY) {
-                      var sortDGFirst = ["DG"];
-                      return (
-                        sortDGFirst.indexOf(b.abbreviation) -
-                        sortDGFirst.indexOf(a.abbreviation)
-                      );
-                    } else return b - a;
-                  })
-                  .map((data, index) => {
+                .sort((a, b) => {
+                  if(config.features.LiveGame_Sorting_SKY)
+                  {
+                    var sortDGFirst = ["DG"];
                     return (
-                      <BottomNavItem
+                      sortDGFirst.indexOf(b.abbreviation) -
+                      sortDGFirst.indexOf(a.abbreviation)
+                    );
+                  }
+                  else  
+                    return b-a;
+                }).map((data, index) => {
+                  return (
+                    <BottomNavItem selected={this.state.selected === index}
+                        maintenance={data.status != 0}>
+                      <Maintenance>{i18n.t("transfer.maintenance")}</Maintenance>
+                      <GameButton
                         selected={this.state.selected === index}
-                        maintenance={data.status != 0}
+                        onClick={() => {
+                          this.handleSliderClick(index, data.abbreviation);
+                          this.handleJoinGameClick(
+                            data.abbreviation,
+                            data.type
+                          );
+                        }}
+                        name={data.abbreviation}
                       >
-                        <Maintenance>
-                          {i18n.t("transfer.maintenance")}
-                        </Maintenance>
-                        <GameButton
-                          selected={this.state.selected === index}
-                          onClick={() => {
-                            this.handleSliderClick(index, data.abbreviation);
-                            this.handleJoinGameClick(
-                              data.abbreviation,
-                              data.type
-                            );
-                          }}
-                          name={data.abbreviation}
-                        >
-                          {/* <img
+                        {/* <img
                           alt={data.abbreviation}
                           src={
                             process.env.PUBLIC_URL +
@@ -292,10 +284,10 @@ class LiveGame extends Component {
                             }`
                           }
                         /> */}
-                        </GameButton>
-                      </BottomNavItem>
-                    );
-                  })}
+                      </GameButton>
+                    </BottomNavItem>
+                  );
+                })}
               </BottomNavItemContainer>
             </ScrollAnimation>
           </BottomContainer>
