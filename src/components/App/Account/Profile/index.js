@@ -340,7 +340,7 @@ function GetContentWrap(accountInfo, label, attr, func, edit, disable) {
       </div>
       <ButtonWrapper>
         {(() => {
-          if (buttonValue !== "" && hide !== true && !disable) {
+          if (buttonValue !== "" && hide !== true) {
             return (
               <ContentButton onClick={() => func(attr, !isVerify)}>
                 <ContentButtonLabel>{buttonValue}</ContentButtonLabel>
@@ -349,7 +349,7 @@ function GetContentWrap(accountInfo, label, attr, func, edit, disable) {
           }
         })()}
         {((status === "verifying" && attr === "member_name") ||
-          (attr === "member_phone" && isVerify && edit)) && (
+          (attr === "member_phone" && isVerify && edit && !disable)) && (
           <ContentButton onClick={() => func(attr, edit)}>
             <ContentButtonLabel>{i18n.t("profile.edit")}</ContentButtonLabel>
           </ContentButton>
@@ -983,8 +983,8 @@ class Profile extends Component {
                 i18n.t("common.phoneNumber"),
                 "member_phone",
                 this.handleButtonClick,
-
-                !config.features.Profile_DisableEditPhone
+                !config.features.Profile_DisableEditPhone,
+                config.features.Profile_DisableVerifyPhone
               )}
 
             {config.features.EmailVerification &&

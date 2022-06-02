@@ -265,79 +265,43 @@ class PhoneVerification extends Component {
   render() {
     var ifNotEmpty = this.props.phone !== "" && this.props.phone !== null;
 
-    return this.props.edit ? (
-      <Container>
-        <FormControl>
-          <CustomSelect
-            native
-            variant="outlined"
-            value={this.state.areacode}
-            displayEmpty
-            onChange={(e) => {
-              this.setState({ ...this.state, areacode: e.target.value });
-            }}
-          >
-            <option value={config.features.PhonePrefix}>
-              {config.features.PhonePrefix}
-            </option>
-          </CustomSelect>
-        </FormControl>
-
-        <CustomText
-          placeholder={i18n.t("common.msgEnterPhone")}
-          onChange={this.onhandlePhoneChange}
-          value={this.state.phone}
-          inputProps={{
-            maxLength: config.features.MAX_PHONE_LENGTH || 10,
-          }}
-          style={{
-            width: "268px",
-            height: "46px",
-            float: "right",
-          }}
-          variant="outlined"
-          autoComplete="off"
-          disabled={this.state.isNew === false && this.state.step === 1}
-        ></CustomText>
-        {!(
-          ifNotEmpty &&
-          (config.features.ChangesNotAllowed ||
-            config.features.Profile_ExistingDetails_ViewOnly)
-        ) && (
-          <>
-            <CustomText
-              placeholder={i18n.t("common.msgEnterCode")}
-              adornment={IconInputVerifyCodePNG}
-              onChange={this.onhandleCodeChange}
+    const Disabled = () => {
+      return (
+        <Container>
+          <FormControl>
+            <CustomSelect
+              native
               variant="outlined"
-              autoComplete="off"
-              value={this.state.code}
-              type={"text"}
-              style={{
-                width: "208px",
-                height: "46px",
+              value={this.state.areacode}
+              displayEmpty
+              onChange={(e) => {
+                this.setState({ ...this.state, areacode: e.target.value });
               }}
-            ></CustomText>
-            <StyleButton
-              onClick={this.onhandleGetCodeClick}
-              disable={this.state.countdown > 0}
             >
-              <ButtonLabel>
-                {this.state.countdown <= 0
-                  ? i18n.t("common.msgSendToken")
-                  : i18n.t("common.btnTokenResendLabel") +
-                    "(" +
-                    this.state.countdown +
-                    "s)"}
-              </ButtonLabel>
-            </StyleButton>
-            <Message>{this.state.message}</Message>
-          </>
-        )}
+              <option value={config.features.PhonePrefix}>
+                {config.features.PhonePrefix}
+              </option>
+            </CustomSelect>
+          </FormControl>
 
-        {ifNotEmpty &&
-          (config.features.ChangesNotAllowed ||
-            config.features.Profile_ExistingDetails_ViewOnly) && (
+          <CustomText
+            placeholder={i18n.t("common.msgEnterPhone")}
+            onChange={this.onhandlePhoneChange}
+            value={this.state.phone}
+            inputProps={{
+              maxLength: config.features.MAX_PHONE_LENGTH || 10,
+            }}
+            style={{
+              width: "268px",
+              height: "46px",
+              float: "right",
+            }}
+            variant="outlined"
+            autoComplete="off"
+            disabled
+          ></CustomText>
+          {(config.features.Profile_DisableEditPhone ||
+            config.features.Profile_DisableVerifyPhone) && (
             <Content>
               {i18n.t("profile.phone.toEdit")}
               {
@@ -354,76 +318,124 @@ class PhoneVerification extends Component {
               }
             </Content>
           )}
+        </Container>
+      );
+    };
 
-        {!(
-          ifNotEmpty &&
-          (config.features.ChangesNotAllowed ||
-            config.features.Profile_ExistingDetails_ViewOnly)
-        ) && (
-          <CustomButton
-            name={
-              this.props.isForWithdrawalPassword
-                ? i18n.t("common.nextStep")
-                : i18n.t("common.submit")
-            }
-            handleClick={this.onhandleClick}
-            marginTop={10}
-          ></CustomButton>
-        )}
-      </Container>
-    ) : (
-      <Container>
-        <FormControl>
-          <CustomSelect
-            native
-            variant="outlined"
-            value={this.state.areacode}
-            displayEmpty
-            onChange={(e) => {
-              this.setState({ ...this.state, areacode: e.target.value });
+    if (config.features.Profile_DisableVerifyPhone) {
+      return <Disabled />;
+    }
+    if (this.props.edit) {
+      return (
+        <Container>
+          <FormControl>
+            <CustomSelect
+              native
+              variant="outlined"
+              value={this.state.areacode}
+              displayEmpty
+              onChange={(e) => {
+                this.setState({ ...this.state, areacode: e.target.value });
+              }}
+            >
+              <option value={config.features.PhonePrefix}>
+                {config.features.PhonePrefix}
+              </option>
+            </CustomSelect>
+          </FormControl>
+
+          <CustomText
+            placeholder={i18n.t("common.msgEnterPhone")}
+            onChange={this.onhandlePhoneChange}
+            value={this.state.phone}
+            inputProps={{
+              maxLength: config.features.MAX_PHONE_LENGTH || 10,
             }}
-          >
-            <option value={config.features.PhonePrefix}>
-              {config.features.PhonePrefix}
-            </option>
-          </CustomSelect>
-        </FormControl>
-
-        <CustomText
-          placeholder={i18n.t("common.msgEnterPhone")}
-          onChange={this.onhandlePhoneChange}
-          value={this.state.phone}
-          inputProps={{
-            maxLength: config.features.MAX_PHONE_LENGTH || 10,
-          }}
-          style={{
-            width: "268px",
-            height: "46px",
-            float: "right",
-          }}
-          variant="outlined"
-          autoComplete="off"
-          disabled={this.state.isNew === false && this.state.step === 1}
-        ></CustomText>
-        {config.features.Profile_DisableEditPhone && (
-          <Content>
-            {i18n.t("profile.phone.toEdit")}
-            {
-              <LabelLink
-                onClick={() =>
-                  this.props.handleCSClick(
-                    this.props.account.info.member_username,
-                    this.props.account.info.member_username
-                  )
-                }
+            style={{
+              width: "268px",
+              height: "46px",
+              float: "right",
+            }}
+            variant="outlined"
+            autoComplete="off"
+            disabled={this.state.isNew === false && this.state.step === 1}
+          ></CustomText>
+          {!(
+            ifNotEmpty &&
+            (config.features.ChangesNotAllowed ||
+              config.features.Profile_ExistingDetails_ViewOnly)
+          ) && (
+            <>
+              <CustomText
+                placeholder={i18n.t("common.msgEnterCode")}
+                adornment={IconInputVerifyCodePNG}
+                onChange={this.onhandleCodeChange}
+                variant="outlined"
+                autoComplete="off"
+                value={this.state.code}
+                type={"text"}
+                style={{
+                  width: "208px",
+                  height: "46px",
+                }}
+              ></CustomText>
+              <StyleButton
+                onClick={this.onhandleGetCodeClick}
+                disable={this.state.countdown > 0}
               >
-                {i18n.t("common.customerService")}
-              </LabelLink>
-            }
-          </Content>
-        )}
-      </Container>
-    );
+                <ButtonLabel>
+                  {this.state.countdown <= 0
+                    ? i18n.t("common.msgSendToken")
+                    : i18n.t("common.btnTokenResendLabel") +
+                      "(" +
+                      this.state.countdown +
+                      "s)"}
+                </ButtonLabel>
+              </StyleButton>
+              <Message>{this.state.message}</Message>
+            </>
+          )}
+
+          {ifNotEmpty &&
+            (config.features.ChangesNotAllowed ||
+              config.features.Profile_ExistingDetails_ViewOnly) && (
+              <Content>
+                {i18n.t("profile.phone.toEdit")}
+                {
+                  <LabelLink
+                    onClick={() =>
+                      this.props.handleCSClick(
+                        this.props.account.info.member_username,
+                        this.props.account.info.member_username
+                      )
+                    }
+                  >
+                    {i18n.t("common.customerService")}
+                  </LabelLink>
+                }
+              </Content>
+            )}
+
+          {!(
+            ifNotEmpty &&
+            (config.features.ChangesNotAllowed ||
+              config.features.Profile_ExistingDetails_ViewOnly)
+          ) && (
+            <CustomButton
+              name={
+                this.props.isForWithdrawalPassword
+                  ? i18n.t("common.nextStep")
+                  : i18n.t("common.submit")
+              }
+              handleClick={this.onhandleClick}
+              marginTop={10}
+            ></CustomButton>
+          )}
+        </Container>
+      );
+    } else {
+      return <Disabled />;
+    }
   }
 }
 
