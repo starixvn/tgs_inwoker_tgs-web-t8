@@ -107,8 +107,7 @@ const GameTitle = styled.div`
   font-weight: bold;
   position: absolute;
   bottom: 0;
-  background: url(${process.env.PUBLIC_URL}"/assets/images/pcGamePage/lottery/btn-lottery.png")
-    no-repeat;
+  background: url(${process.env.PUBLIC_URL}"/assets/images/pcGamePage/lottery/btn-lottery.png") no-repeat;
   text-align: center;
   line-height: 1.8em;
 `;
@@ -198,7 +197,7 @@ class Lottery extends Component {
         document.getElementById("audio").volume = 0.0;
       var win = window.open(
         "/" + i18n.language + "/joinlottery/" + name,
-        "gamewindow",
+        "_blank",
         "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=1280,height=720"
       );
       var timer = setInterval(function () {
@@ -236,27 +235,16 @@ class Lottery extends Component {
                     <RightNavItem
                       selected={this.state.selected === index}
                       onClick={() => {
-                        if (data.status === 0) {
-                          this.handleJoinGameClick(
-                            data.abbreviation,
-                            data.type
-                          );
+                        if(data.status === 0)
+                        {
+                          this.handleJoinGameClick(data.abbreviation, data.type);
                         }
                       }}
                       maintenance={data.status !== 0}
                     >
-                      <Maintenance>
-                        {i18n.t("transfer.maintenance")}
-                      </Maintenance>
-                      <GameImage
-                        src={
-                          process.env.PUBLIC_URL +
-                          `/assets/images/pcGamePage/lottery/${data.abbreviation.toLowerCase()}.png`
-                        }
-                      ></GameImage>
-                      <GameTitle>
-                        {i18n.t(`${data.abbreviation}.lottery`)}
-                      </GameTitle>
+                      <Maintenance>{i18n.t("transfer.maintenance")}</Maintenance>
+                      <GameImage src={process.env.PUBLIC_URL + `/assets/images/pcGamePage/lottery/${data.abbreviation.toLowerCase()}.png`}></GameImage>
+                      <GameTitle>{i18n.t(`${data.abbreviation}.lottery`)}</GameTitle>
                     </RightNavItem>
                   );
                 })}

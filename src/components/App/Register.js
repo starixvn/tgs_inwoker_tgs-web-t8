@@ -261,7 +261,8 @@ const Description = styled.div`
   font-size: 14px;
 
   line-height: 1.43;
-  opacity: 0.75;
+
+  color: ${({ theme }) => theme.secondary};
 `;
 
 const useStyles = makeStyles((theme) => ({
@@ -425,20 +426,15 @@ function Register(props) {
       });
       return;
     }
-    expr = new RegExp(`^[0-9]{8,${config.features.MAX_PHONE_LENGTH || 10}}`);
+    expr = /^[0-9]{8,10}$/;
     if (
       config.features.Register_ShowPhone ||
       config.features.Register_ShowSMSVerification
     ) {
       if (!expr.test(phone)) {
-        props.enqueueSnackbar(
-          i18n
-            .t("common.noReachMin")
-            .replace(/{maxlength}/g, config.features.MAX_PHONE_LENGTH),
-          {
-            variant: "warning",
-          }
-        );
+        props.enqueueSnackbar(i18n.t("common.noReachMin"), {
+          variant: "warning",
+        });
         return;
       }
     }
@@ -530,16 +526,11 @@ function Register(props) {
         });
         return;
       }
-      expr = new RegExp(`^[0-9]{8,${config.features.MAX_PHONE_LENGTH || 10}}`);
+      expr = /^[0-9]{8,10}$/;
       if (!expr.test(phone)) {
-        props.enqueueSnackbar(
-          i18n
-            .t("common.noReachMin")
-            .replace(/{maxlength}/g, config.features.MAX_PHONE_LENGTH),
-          {
-            variant: "warning",
-          }
-        );
+        props.enqueueSnackbar(i18n.t("common.noReachMin"), {
+          variant: "warning",
+        });
         return;
       }
 
@@ -701,7 +692,7 @@ function Register(props) {
               type="text"
               autoComplete="off"
               inputProps={{
-                maxLength: config.features.MAX_PHONE_LENGTH || 10,
+                maxLength: 10,
               }}
               InputProps={{
                 startAdornment: (

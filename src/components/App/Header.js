@@ -589,8 +589,15 @@ class Header extends Component {
     this.setState({ ...this.state, isHoverMenu: false });
   };
   handleClickMenu = (path) => {
-    this.setState({ ...this.state, selected: path });
-    this.props.history.push("/" + i18n.language + `/${path}`);
+    if(path==="vip" && !this.props.account.token)
+    {
+      this.props.showLogin(true);
+    }
+    else
+    {
+      this.setState({ ...this.state, selected: path });
+      this.props.history.push("/" + i18n.language + `/${path}`);
+    }
   };
 
   handleHideAppBar = () => {
@@ -1000,21 +1007,23 @@ class Header extends Component {
                     return a.sorting > b.sorting ? 1 : -1;
                   }
                 }).map((item, index) => {
-                  var list = this.props.game.homePageGameList
-                    .filter(
-                      (game) =>
-                        item.gameType.indexOf(game.type) >= 0 &&
-                        game.abbreviation.toLowerCase()
-                    )
-                    .sort((a, b) => {
-                      if (config.features.LiveGame_Sorting_SKY) {
-                        var sortDGFirst = ["DG"];
-                        return (
-                          sortDGFirst.indexOf(b.abbreviation) -
-                          sortDGFirst.indexOf(a.abbreviation)
-                        );
-                      } else return b - a;
-                    });
+                  var list = this.props.game.homePageGameList.filter(
+                    (game) =>
+                      item.gameType.indexOf(game.type) >= 0 &&
+                      game.abbreviation.toLowerCase()
+                  )                  
+                  .sort((a, b) => {
+                    if(config.features.LiveGame_Sorting_SKY)
+                    {
+                      var sortDGFirst = ["DG"];
+                      return (
+                        sortDGFirst.indexOf(b.abbreviation) -
+                        sortDGFirst.indexOf(a.abbreviation)
+                      );
+                    }
+                    else  
+                      return b-a;
+                  });
 
                   if (list.length > 0) {
                     return (
@@ -1257,13 +1266,14 @@ class Header extends Component {
                   null
                 )}
 
-                {this.RightMenuItem(
-                  "vip",
-                  TopMenuPromoPNG,
-                  "VIP",
-                  TopMenuPromoHoverPNG,
-                  null
-                )}
+                {config.features.HomePage_DisplayVIP &&
+                  this.RightMenuItem(
+                    "vip",
+                    TopMenuPromoPNG,
+                    "VIP",
+                    TopMenuPromoHoverPNG,
+                    null
+                  )}
               </RightMenuUL>
             </RightMenuContainer>
           </BottomContainer>

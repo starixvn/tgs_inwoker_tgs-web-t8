@@ -36,7 +36,7 @@ const CloseIconContainer = styled.div`
 `;
 const TitleContainer = styled.div`
   text-align: center;
-  color: #000;
+
   font-size: 30px;
 `;
 const FormContainer = styled.div`

@@ -67,7 +67,7 @@ const GameTab = styled.div`
   z-index: 1;
   filter: ${(props) =>
     props.active === true
-      ? `brightness(100%) grayscale(100%);`
+      ? `brightness(500%) grayscale(100%);`
       : `brightness(50%) grayscale(100%);`};
   margin: 0 auto;
   background: url(${(props) =>
@@ -176,7 +176,7 @@ const GameTabButton = styled.div`
       no-repeat;
       background-position: center;
       background-size: contain;
-    filter: brightness(100%) grayscale(100%);
+    filter: brightness(500%) grayscale(100%);
     transition: filter 3s;
   }
   &:hover ${GameTabAll} {
@@ -184,7 +184,7 @@ const GameTabButton = styled.div`
       no-repeat;
       background-position: center;
       background-size: contain;
-    filter: brightness(100%) grayscale(100%);
+    filter: brightness(500%) grayscale(100%);
     transition: filter 1s;
   }
 `;
