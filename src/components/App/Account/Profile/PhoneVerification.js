@@ -21,7 +21,6 @@ const Content = styled.div`
   text-align: center;
   margin-top: 90px;
   padding: 0 30px;
-  color: ${({ theme }) => theme.secondary};
 `;
 
 const LabelLink = styled(Link)`
@@ -406,6 +405,23 @@ class PhoneVerification extends Component {
           autoComplete="off"
           disabled={this.state.isNew === false && this.state.step === 1}
         ></CustomText>
+        {config.features.Profile_DisableEditPhone && (
+          <Content>
+            {i18n.t("profile.phone.toEdit")}
+            {
+              <LabelLink
+                onClick={() =>
+                  this.props.handleCSClick(
+                    this.props.account.info.member_username,
+                    this.props.account.info.member_username
+                  )
+                }
+              >
+                {i18n.t("common.customerService")}
+              </LabelLink>
+            }
+          </Content>
+        )}
       </Container>
     );
   }

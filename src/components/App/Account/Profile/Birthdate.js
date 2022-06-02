@@ -19,7 +19,6 @@ const Content = styled.div`
   text-align: center;
   margin-top: 30px;
   padding: 0 30px;
-  color: ${({ theme }) => theme.secondaryText};
 `;
 
 const LabelLink = styled(Link)`
