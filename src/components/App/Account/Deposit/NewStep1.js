@@ -305,35 +305,39 @@ const NewStepOne = (props) => {
         if (methodList.length > 0 && selectedMethodIndex !== -1) {
           return (
             <>
-              <FormContainer>
-                <FormLeftContainer>
-                  <SubHeaderContainer>
-                    <SubTitle>{i18n.t("deposit.msgPlsSelectMethod")}</SubTitle>
-                  </SubHeaderContainer>
-                </FormLeftContainer>
+              {!config.features.Deposit_HideDepositChannel && (
+                <>
+                  <FormContainer>
+                    <FormLeftContainer>
+                      <SubHeaderContainer>
+                        <SubTitle>
+                          {i18n.t("deposit.msgPlsSelectMethod")}
+                        </SubTitle>
+                      </SubHeaderContainer>
+                    </FormLeftContainer>
 
-                <FormRightContainer>
-                  <SelectionContainer>
-                    <CustomFormControl>
-                      <CustomSelect
-                        variant="outlined"
-                        value={selectedChannelIndex}
-                        displayEmpty
-                        onChange={onChannelChange}
-                        native
-                      >
-                        {methodList[selectedMethodIndex].channel.map(
-                          (data, key) => {
-                            return (
-                              <option value={key} key={key}>
-                                {data.channelname}
-                              </option>
-                            );
-                          }
-                        )}
-                      </CustomSelect>
-                    </CustomFormControl>
-                    {/* {methodList[selectedMethodIndex].channel.map(
+                    <FormRightContainer>
+                      <SelectionContainer>
+                        <CustomFormControl>
+                          <CustomSelect
+                            variant="outlined"
+                            value={selectedChannelIndex}
+                            displayEmpty
+                            onChange={onChannelChange}
+                            native
+                          >
+                            {methodList[selectedMethodIndex].channel.map(
+                              (data, key) => {
+                                return (
+                                  <option value={key} key={key}>
+                                    {data.channelname}
+                                  </option>
+                                );
+                              }
+                            )}
+                          </CustomSelect>
+                        </CustomFormControl>
+                        {/* {methodList[selectedMethodIndex].channel.map(
                     (item, index) => {
                       return (
                         <TunnelButton
@@ -346,9 +350,11 @@ const NewStepOne = (props) => {
                       );
                     }
                   )} */}
-                  </SelectionContainer>
-                </FormRightContainer>
-              </FormContainer>
+                      </SelectionContainer>
+                    </FormRightContainer>
+                  </FormContainer>
+                </>
+              )}
 
               {(() => {
                 if (isManual) {
@@ -571,7 +577,7 @@ const NewStepOne = (props) => {
                                   autoComplete="off"
                                   disabled={
                                     config.features.Deposit_AutofillFirstCard &&
-                                    props.accountList.length !== 0
+                                    props.accountList.length > 1
                                   }
                                   value={account}
                                 ></TextField>
@@ -710,18 +716,11 @@ const NewStepOne = (props) => {
                           paymentType.paymentcode.toUpperCase() === "MANUAL"
                         ) {
                           return (
-                            <ExchangeRateContainer
-                              style={{
-                                marginTop: "4px",
-                                whiteSpace: "break-spaces",
-                              }}
-                            >
+                            <ExchangeRateContainer style={{ marginTop: "4px" }}>
                               <LimitLabel>
-                                {i18n.t("deposit.exchangeRate")} :{" "}
+                                {i18n.t("deposit.exchangeRate")} 1 USDT :{" "}
                               </LimitLabel>
-                              <LimitAmount>1</LimitAmount>
-                              <LimitLabel> {"\t"} USDT : </LimitLabel>
-                              <LimitAmount>{`${usdtRate}`}</LimitAmount>
+                              <LimitAmount>{` ${usdtRate}`}</LimitAmount>
                               <div class="clear"></div>
                               <LimitLabel>
                                 {i18n.t("deposit.totalAmount")}
@@ -856,7 +855,11 @@ const NewStepOne = (props) => {
                               onChange={props.onFileChange}
                             ></CustomInput>
                             <Remark>
-                              {i18n.t("deposit.msgPlsUploadProof")}
+                              {i18n.t(
+                                config.features.Deposit_UploadRequired
+                                  ? "deposit.msgPlsUploadProof"
+                                  : "deposit.msgNotMustUploadProof"
+                              )}
                             </Remark>
                           </SelectionContainer>
                         </FormRightContainer>
@@ -889,8 +892,6 @@ const NewStepOne = (props) => {
                     onNextClick();
                   }}
                   disabled={
-                    selectedMethodIndex < 0 ||
-                    selectedChannelIndex < 0 ||
                     amount <
                       methodList[selectedMethodIndex].channel[
                         selectedChannelIndex
@@ -899,10 +900,8 @@ const NewStepOne = (props) => {
                       methodList[selectedMethodIndex].channel[
                         selectedChannelIndex
                       ].transferlimit.to ||
-                    ((paymentType.paymentcode.toUpperCase() === "MANUAL" ||
-                      paymentType.paymentcode.toUpperCase() === "APPLEPAY") &&
-                      amount.length <= 0) ||
-                    (paymentType.paymentcode.toUpperCase() === "MANUAL" &&
+                    (config.features.Deposit_UploadRequired &&
+                      isManual &&
                       files.length <= 0)
                   }
                 ></CustomButton>

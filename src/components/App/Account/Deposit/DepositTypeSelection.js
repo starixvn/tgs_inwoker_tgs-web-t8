@@ -64,18 +64,22 @@ class DepositTypeSelection extends Component {
 
     return (
       <TabButtonContainer>
-        {depositTypeList.map((item, index) => {
-          return (
-            <TabButton
-              key={index}
-              onClick={() => onhandleTabClick(item, index)}
-              active={selectedPaymentIndex === index}
-            >
-              <TabLabel> {i18n.t(item.paymentcode)}</TabLabel>
-              <SmallTabLabel> {i18n.t(item.paymentcode)}</SmallTabLabel>
-            </TabButton>
-          );
-        })}
+        {depositTypeList
+          .sort(function (a, b) {
+            return a.displayorder - b.displayorder;
+          })
+          .map((item, index) => {
+            return (
+              <TabButton
+                key={index}
+                onClick={() => onhandleTabClick(item, index)}
+                active={selectedPaymentIndex === index}
+              >
+                <TabLabel> {i18n.t(item.paymentcode)}</TabLabel>
+                <SmallTabLabel> {i18n.t(item.paymentcode)}</SmallTabLabel>
+              </TabButton>
+            );
+          })}
       </TabButtonContainer>
     );
   }
