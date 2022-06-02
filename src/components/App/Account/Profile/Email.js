@@ -6,8 +6,8 @@ import CustomButton from "../../../Share/Button";
 import IconInputEmailPNG from "../../../../assets/images/icon-input-email.png";
 import IconInputVerifyCodePNG from "../../../../assets/images/icon-input-verifycode.png";
 import { withSnackbar } from "notistack";
-import {AccountService} from "../../../../api-services/services/AccountService";
-import {accountAction} from "../../../../api-services/actions/accountAction";
+import { AccountService } from "../../../../api-services/services/AccountService";
+import { accountAction } from "../../../../api-services/actions/accountAction";
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles";
 import i18n from "../../../../utils/i18n";
@@ -21,7 +21,6 @@ const Content = styled.div`
   text-align: center;
   margin-top: 90px;
   padding: 0 30px;
-  color: ${({ theme }) => theme.secondary};
 `;
 
 const LabelLink = styled(Link)`
@@ -255,7 +254,11 @@ class Address extends Component {
           autoComplete="off"
           disabled={this.state.isNew === false && this.state.step === 1}
         ></CustomText>
-        {!(ifNotEmpty && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)) && (
+        {!(
+          ifNotEmpty &&
+          (config.features.ChangesNotAllowed ||
+            config.features.Profile_ExistingDetails_ViewOnly)
+        ) && (
           <>
             <CustomText
               placeholder={i18n.t("common.msgEnterCode")}
@@ -287,25 +290,31 @@ class Address extends Component {
           </>
         )}
 
-        {ifNotEmpty && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly) && (
-          <Content>
-            {i18n.t("profile.email.toEdit")}
-            {
-              <LabelLink
-                onClick={() =>
-                  this.props.handleCSClick(
-                    this.props.account.info.member_username,
-                    this.props.account.info.member_username
-                  )
-                }
-              >
-                {i18n.t("common.customerService")}
-              </LabelLink>
-            }
-          </Content>
-        )}
+        {ifNotEmpty &&
+          (config.features.ChangesNotAllowed ||
+            config.features.Profile_ExistingDetails_ViewOnly) && (
+            <Content>
+              {i18n.t("profile.email.toEdit")}
+              {
+                <LabelLink
+                  onClick={() =>
+                    this.props.handleCSClick(
+                      this.props.account.info.member_username,
+                      this.props.account.info.member_username
+                    )
+                  }
+                >
+                  {i18n.t("common.customerService")}
+                </LabelLink>
+              }
+            </Content>
+          )}
 
-        {!(ifNotEmpty && (config.features.ChangesNotAllowed || config.features.Profile_ExistingDetails_ViewOnly)) && (
+        {!(
+          ifNotEmpty &&
+          (config.features.ChangesNotAllowed ||
+            config.features.Profile_ExistingDetails_ViewOnly)
+        ) && (
           <CustomButton
             name={
               this.props.isForWithdrawalPassword
