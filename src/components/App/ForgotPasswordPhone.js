@@ -37,7 +37,7 @@ const TitleContainer = styled.div`
 
   font-size: 42px;
 
-  color: #000;
+  color: ${({ theme }) => theme.secondary};
 `;
 
 const FormContainer = styled.div`
