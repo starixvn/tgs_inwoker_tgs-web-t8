@@ -18,16 +18,16 @@ import config from "../../../config/config";
 import Common from "../../../utils/Common";
 
 const Container = styled.div`
-width: 100%;
-height: auto;
-min-height: 780px;
-position: relative;
-background: url(${(props) =>
-    process.env.PUBLIC_URL +
-    "/assets/images/pcGamePage/qipai/background" +
-    (props.GamePage_SpecificBackground ? "-hk28" : "") +
-    ".jpg"})
-  no-repeat center;
+  width: 100%;
+  height: auto;
+  min-height: 780px;
+  position: relative;
+  background: url(${(props) =>
+      process.env.PUBLIC_URL +
+      "/assets/images/pcGamePage/qipai/background" +
+      (props.GamePage_SpecificBackground ? "-hk28" : "") +
+      ".jpg"})
+    no-repeat center;
 `;
 
 const NoContentText = styled.div`
@@ -70,15 +70,15 @@ const RightNavItemContainer = styled.ul`
   &::-webkit-scrollbar {
     display: none;
   }
-  `;
+`;
 
-  const GameImage = styled.img`
-    height: 100%;
-    width: 100%;
-    transition: transform 0.3s;
-  `;
-  
-  const GameTitle = styled.div`
+const GameImage = styled.img`
+  height: 100%;
+  width: 100%;
+  transition: transform 0.3s;
+`;
+
+const GameTitle = styled.div`
   height: 45px;
   width: 100%;
   border-radius: 10px;
@@ -87,7 +87,8 @@ const RightNavItemContainer = styled.ul`
   font-weight: bold;
   position: absolute;
   bottom: 0;
-  background: url(${process.env.PUBLIC_URL}"/assets/images/pcGamePage/qipai/btn-qipai.png") no-repeat;
+  background: url(${process.env.PUBLIC_URL}"/assets/images/pcGamePage/qipai/btn-qipai.png")
+    no-repeat;
   text-align: center;
   line-height: 1.8em;
 `;
@@ -109,22 +110,22 @@ const Maintenance = styled.div`
 `;
 
 const RightNavItem = styled.li`
-box-shadow: 0 3px 8px rgb(0 0 0 / 80%);
-cursor: pointer;
-overflow: hidden;
-position: relative;
-width: 354px;
-height: 180px;
-border-radius: 10px;
-margin: 20px 0;
-&:hover ${GameImage} {
-  transform: scale(1.05);
-  transition: transform 0.3s;
-}
+  box-shadow: 0 3px 8px rgb(0 0 0 / 80%);
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  width: 354px;
+  height: 180px;
+  border-radius: 10px;
+  margin: 20px 0;
+  &:hover ${GameImage} {
+    transform: scale(1.05);
+    transition: transform 0.3s;
+  }
 
-${({ maintenance }) => {
-  return maintenance
-    ? `
+  ${({ maintenance }) => {
+    return maintenance
+      ? `
 
   ${Maintenance}{
     display: flex;
@@ -133,9 +134,8 @@ ${({ maintenance }) => {
     filter: brightness(40%) grayscale(200%);
   }
   `
-    : ``;
-}}
-
+      : ``;
+  }}
 `;
 
 class Qipai extends Component {
@@ -171,7 +171,7 @@ class Qipai extends Component {
     ) {
       var qipaiList = this.props.game.homePageGameList.filter((item) => {
         return item.type == GameTypeEnum.QIPAI;
-      });;
+      });
 
       this.setState({
         ...this.state,
@@ -186,15 +186,17 @@ class Qipai extends Component {
     if (this.props.account.token != null) {
       if (document.getElementById("audio") != null)
         document.getElementById("audio").volume = 0.0;
-      var win = window.open(
+      Common.closePreviousPopup();
+      var win = Common.PopupCenter(
         "/" +
           i18n.language +
           "/joingame/" +
           GameTypeEnum.QIPAILOBBY +
           "/" +
           kind.toUpperCase(),
-        "_blank",
-        "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=1280,height=720"
+        kind.toUpperCase(),
+        1280,
+        720
       );
       var timer = setInterval(function () {
         if (win.closed) {
@@ -225,15 +227,24 @@ class Qipai extends Component {
                     <RightNavItem
                       selected={this.state.selected === index}
                       onClick={() => {
-                        if(data.status === 0)
-                        {
-                          this.handleJoinGameClick(data.abbreviation, data.type);
+                        if (data.status === 0) {
+                          this.handleJoinGameClick(
+                            data.abbreviation,
+                            data.type
+                          );
                         }
                       }}
                       maintenance={data.status !== 0}
                     >
-                      <Maintenance>{i18n.t("transfer.maintenance")}</Maintenance>
-                      <GameImage src={process.env.PUBLIC_URL + `/assets/images/pcGamePage/qipai/${data.abbreviation.toLowerCase()}.png`}></GameImage>
+                      <Maintenance>
+                        {i18n.t("transfer.maintenance")}
+                      </Maintenance>
+                      <GameImage
+                        src={
+                          process.env.PUBLIC_URL +
+                          `/assets/images/pcGamePage/qipai/${data.abbreviation.toLowerCase()}.png`
+                        }
+                      ></GameImage>
                       <GameTitle>{data.abbreviation}</GameTitle>
                     </RightNavItem>
                   );

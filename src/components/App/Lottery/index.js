@@ -6,6 +6,7 @@ import { GameTypeEnum } from "../../../api-services/utils/Enum";
 import ScrollAnimation from "react-animate-on-scroll";
 
 import i18n from "../../../utils/i18n";
+import Common from "../../../utils/Common";
 
 const Container = styled.div`
   width: 100%;
@@ -107,7 +108,8 @@ const GameTitle = styled.div`
   font-weight: bold;
   position: absolute;
   bottom: 0;
-  background: url(${process.env.PUBLIC_URL}"/assets/images/pcGamePage/lottery/btn-lottery.png") no-repeat;
+  background: url(${process.env.PUBLIC_URL}"/assets/images/pcGamePage/lottery/btn-lottery.png")
+    no-repeat;
   text-align: center;
   line-height: 1.8em;
 `;
@@ -195,10 +197,12 @@ class Lottery extends Component {
     if (this.props.account.token != null) {
       if (document.getElementById("audio") != null)
         document.getElementById("audio").volume = 0.0;
-      var win = window.open(
+      Common.closePreviousPopup();
+      var win = Common.PopupCenter(
         "/" + i18n.language + "/joinlottery/" + name,
-        "_blank",
-        "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=1280,height=720"
+        name,
+        1280,
+        720
       );
       var timer = setInterval(function () {
         if (win.closed) {
@@ -235,16 +239,27 @@ class Lottery extends Component {
                     <RightNavItem
                       selected={this.state.selected === index}
                       onClick={() => {
-                        if(data.status === 0)
-                        {
-                          this.handleJoinGameClick(data.abbreviation, data.type);
+                        if (data.status === 0) {
+                          this.handleJoinGameClick(
+                            data.abbreviation,
+                            data.type
+                          );
                         }
                       }}
                       maintenance={data.status !== 0}
                     >
-                      <Maintenance>{i18n.t("transfer.maintenance")}</Maintenance>
-                      <GameImage src={process.env.PUBLIC_URL + `/assets/images/pcGamePage/lottery/${data.abbreviation.toLowerCase()}.png`}></GameImage>
-                      <GameTitle>{i18n.t(`${data.abbreviation}.lottery`)}</GameTitle>
+                      <Maintenance>
+                        {i18n.t("transfer.maintenance")}
+                      </Maintenance>
+                      <GameImage
+                        src={
+                          process.env.PUBLIC_URL +
+                          `/assets/images/pcGamePage/lottery/${data.abbreviation.toLowerCase()}.png`
+                        }
+                      ></GameImage>
+                      <GameTitle>
+                        {i18n.t(`${data.abbreviation}.lottery`)}
+                      </GameTitle>
                     </RightNavItem>
                   );
                 })}

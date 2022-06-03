@@ -227,6 +227,7 @@ class Home extends Component {
         GameTypeEnum.ESPORTS,
         GameTypeEnum.TABLEGAME,
       ];
+      Common.closePreviousPopup();
       if (slotPageGameType.indexOf(gameType) >= 0) {
         if (
           gameType == GameTypeEnum.SPORTS ||

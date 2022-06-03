@@ -886,6 +886,7 @@ class Slots extends Component {
         ? "slots"
         : "electron";
     if (this.props.token) {
+      Common.closePreviousPopup();
       this.props.history.push(
         `/${i18n.language}/${type}/play/${gpcode}/${gpid}`
       );

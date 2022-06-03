@@ -8,6 +8,7 @@ import { SHOW_LOGIN } from "../../../api-services/constant/actionType";
 import i18n from "../../../utils/i18n";
 
 import ScrollAnimation from "react-animate-on-scroll";
+import Common from "../../../utils/Common";
 
 const Container = styled.div`
   width: 100%;
@@ -95,7 +96,8 @@ const GameTitle = styled.div`
   font-weight: bold;
   position: absolute;
   bottom: 0;
-  background: url(${process.env.PUBLIC_URL}"/assets/images/pcGamePage/sports/btn-sports.png") no-repeat;  
+  background: url(${process.env.PUBLIC_URL}"/assets/images/pcGamePage/sports/btn-sports.png")
+    no-repeat;
   text-align: center;
   line-height: 1.8em;
 `;
@@ -170,9 +172,12 @@ class Sports extends Component {
       if (params === "WGFM" || params === "WGVIA") {
         if (document.getElementById("audio") != null)
           document.getElementById("audio").volume = 0.0;
-        var win = window.open(
+        Common.closePreviousPopup();
+        var win = Common.PopupCenter(
           `/${i18n.language}/joinlobbygame/${type}/${params}`,
-          "_blank"
+          params,
+          1280,
+          720
         );
         var timer = setInterval(function () {
           if (win.closed) {
@@ -205,15 +210,24 @@ class Sports extends Component {
                     <LeftNavItem
                       selected={this.state.selected === index}
                       onClick={() => {
-                        if(data.status === 0)
-                        {
-                          this.handleJoinGameClick(data.abbreviation, data.type);
+                        if (data.status === 0) {
+                          this.handleJoinGameClick(
+                            data.abbreviation,
+                            data.type
+                          );
                         }
                       }}
                       maintenance={data.status !== 0}
                     >
-                      <Maintenance>{i18n.t("transfer.maintenance")}</Maintenance>
-                      <GameImage src={process.env.PUBLIC_URL + `/assets/images/pcGamePage/sports/${data.abbreviation.toLowerCase()}.png`}></GameImage>
+                      <Maintenance>
+                        {i18n.t("transfer.maintenance")}
+                      </Maintenance>
+                      <GameImage
+                        src={
+                          process.env.PUBLIC_URL +
+                          `/assets/images/pcGamePage/sports/${data.abbreviation.toLowerCase()}.png`
+                        }
+                      ></GameImage>
                       <GameTitle>
                         {i18n.t(`${data.abbreviation}.sports`)}
                       </GameTitle>
