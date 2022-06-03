@@ -80,6 +80,7 @@ const featureList = {
     Deposit_HideDepositChannel: false,
 
     Profile_DisableVerifyPhone: false,
+    Deposit_Withdrawal_PlayerNote: true,
   },
 };
 export default featureList;
