@@ -8,6 +8,7 @@ import { SHOW_LOGIN } from "../../../api-services/constant/actionType";
 import i18n from "../../../utils/i18n";
 
 import ScrollAnimation from "react-animate-on-scroll";
+import Common from "../../../utils/Common";
 
 const Container = styled.div`
   width: 100%;
@@ -96,7 +97,8 @@ const GameTitle = styled.div`
   font-weight: bold;
   position: absolute;
   bottom: 0;
-  background: url(${process.env.PUBLIC_URL}"/assets/images/pcGamePage/esports/btn-esports.png") no-repeat;
+  background: url(${process.env.PUBLIC_URL}"/assets/images/pcGamePage/esports/btn-esports.png")
+    no-repeat;
   text-align: center;
   line-height: 1.8em;
 `;
@@ -165,6 +167,7 @@ class ESports extends Component {
     if (!this.props.account.token) {
       this.props.showLogin(true);
     } else {
+      Common.closePreviousPopup();
       if (params === "WGFM" || params === "WGVIA") {
         window.open(
           `/${i18n.language}/joinlobbygame/${type}/${params}`,
@@ -194,15 +197,24 @@ class ESports extends Component {
                     <LeftNavItem
                       selected={this.state.selected === index}
                       onClick={() => {
-                        if(data.status === 0)
-                        {
-                          this.handleJoinGameClick(data.abbreviation, data.type);
+                        if (data.status === 0) {
+                          this.handleJoinGameClick(
+                            data.abbreviation,
+                            data.type
+                          );
                         }
                       }}
                       maintenance={data.status !== 0}
                     >
-                      <Maintenance>{i18n.t("transfer.maintenance")}</Maintenance>
-                      <GameImage src={process.env.PUBLIC_URL + `/assets/images/pcGamePage/esports/${data.abbreviation.toLowerCase()}.png`}></GameImage>
+                      <Maintenance>
+                        {i18n.t("transfer.maintenance")}
+                      </Maintenance>
+                      <GameImage
+                        src={
+                          process.env.PUBLIC_URL +
+                          `/assets/images/pcGamePage/esports/${data.abbreviation.toLowerCase()}.png`
+                        }
+                      ></GameImage>
                       <GameTitle>{data.abbreviation}</GameTitle>
                     </LeftNavItem>
                   );

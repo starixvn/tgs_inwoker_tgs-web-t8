@@ -53,6 +53,7 @@ import { generalAction } from "../../api-services/actions/generalAction";
 import { uiAction } from "../../api-services/actions/uiAction";
 import { GeneralService } from "../../api-services/services/GeneralService";
 import ErrorSwitcher from "../../utils/ErrorSwitcher";
+import { AppHistory } from "../../history/History";
 
 const moment = require("moment");
 
@@ -589,12 +590,9 @@ class Header extends Component {
     this.setState({ ...this.state, isHoverMenu: false });
   };
   handleClickMenu = (path) => {
-    if(path==="vip" && !this.props.account.token)
-    {
+    if (path === "vip" && !this.props.account.token) {
       this.props.showLogin(true);
-    }
-    else
-    {
+    } else {
       this.setState({ ...this.state, selected: path });
       this.props.history.push("/" + i18n.language + `/${path}`);
     }
@@ -659,25 +657,19 @@ class Header extends Component {
 
   handleJoinLotteryGame = (name) => {
     if (this.props.account.token != null) {
-      if (document.getElementById("audio") != null)
-        document.getElementById("audio").volume = 0.0;
-      var win = window.open(
+      if (this.props.history.location.pathname.indexOf("play") >= 0) {
+        AppHistory.goBack();
+      }
+      Common.PopupCenter(
         "/" + i18n.language + "/joinlottery/" + name,
-        "_blank",
-        "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=1280,height=720"
+        name,
+        1280,
+        720
       );
-      var timer = setInterval(function () {
-        if (win.closed) {
-          clearInterval(timer);
-          if (document.getElementById("audio") != null)
-            document.getElementById("audio").volume = 1.0;
-        }
-      }, 1000);
     } else {
       this.props.showLogin(true);
     }
   };
-
   handleJoinGameClick = (gameType, path, gameCode, url) => {
     var slotPageGameType = [
       GameTypeEnum.SLOT,
@@ -687,25 +679,22 @@ class Header extends Component {
       GameTypeEnum.TABLEGAME,
       GameTypeEnum.FISH,
     ];
+    Common.closePreviousPopup();
     if (slotPageGameType.indexOf(gameType) >= 0) {
       if (gameType == GameTypeEnum.SPORTS || gameType == GameTypeEnum.ESPORTS) {
         if (!this.props.account.token) {
           this.props.showLogin(true);
         } else {
           if (gameCode === "WGFM" || gameCode === "WGVIA") {
-            if (document.getElementById("audio") != null)
-              document.getElementById("audio").volume = 0;
-            var win = window.open(
+            if (this.props.history.location.pathname.indexOf("play") >= 0) {
+              AppHistory.goBack();
+            }
+            Common.PopupCenter(
               `/${i18n.language}/joinlobbygame/${gameType}/${gameCode}`,
-              "_blank"
+              gameCode,
+              1280,
+              720
             );
-            var timer = setInterval(function () {
-              if (win.closed) {
-                clearInterval(timer);
-                if (document.getElementById("audio") != null)
-                  document.getElementById("audio").volume = 1.0;
-              }
-            }, 1000);
           } else {
             this.props.history.push(
               "/" + i18n.language + "/sports/play/" + gameCode + "/" + gameType
@@ -720,16 +709,10 @@ class Header extends Component {
         this.props.showLogin(true);
         return;
       }
-      if (document.getElementById("audio") != null)
-        document.getElementById("audio").volume = 0;
-      var win = Common.PopupCenter(url, gameCode, 1280, 720);
-      var timer = setInterval(function () {
-        if (win.closed) {
-          clearInterval(timer);
-          if (document.getElementById("audio") != null)
-            document.getElementById("audio").volume = 1.0;
-        }
-      }, 1000);
+      if (this.props.history.location.pathname.indexOf("play") >= 0) {
+        AppHistory.goBack();
+      }
+      Common.PopupCenter(url, gameCode, 1280, 720);
     }
   };
   handleBookmarkClick = () => {
@@ -1007,23 +990,21 @@ class Header extends Component {
                     return a.sorting > b.sorting ? 1 : -1;
                   }
                 }).map((item, index) => {
-                  var list = this.props.game.homePageGameList.filter(
-                    (game) =>
-                      item.gameType.indexOf(game.type) >= 0 &&
-                      game.abbreviation.toLowerCase()
-                  )                  
-                  .sort((a, b) => {
-                    if(config.features.LiveGame_Sorting_SKY)
-                    {
-                      var sortDGFirst = ["DG"];
-                      return (
-                        sortDGFirst.indexOf(b.abbreviation) -
-                        sortDGFirst.indexOf(a.abbreviation)
-                      );
-                    }
-                    else  
-                      return b-a;
-                  });
+                  var list = this.props.game.homePageGameList
+                    .filter(
+                      (game) =>
+                        item.gameType.indexOf(game.type) >= 0 &&
+                        game.abbreviation.toLowerCase()
+                    )
+                    .sort((a, b) => {
+                      if (config.features.LiveGame_Sorting_SKY) {
+                        var sortDGFirst = ["DG"];
+                        return (
+                          sortDGFirst.indexOf(b.abbreviation) -
+                          sortDGFirst.indexOf(a.abbreviation)
+                        );
+                      } else return b - a;
+                    });
 
                   if (list.length > 0) {
                     return (
