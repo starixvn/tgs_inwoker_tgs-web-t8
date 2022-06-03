@@ -128,9 +128,8 @@ const Main = (props) => {
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(0);
   const [paymentList, setPaymentList] = useState(props.wallet.withdrawalList);
-  const [exchangeRate, setExchangeRate] = useState(
-    config.features.Withdrawal_USDT_ExchangeRate
-  );
+  const [exchangeRate, setExchangeRate] = useState(config.features.Withdrawal_USDT_ExchangeRate);
+  const [playerNote, setPlayerNote] = useState("");
   var minValue = [];
   var maxValue = [];
   const handleSelectCardChange = (index) => {
@@ -139,11 +138,15 @@ const Main = (props) => {
   const handleAmountChange = (e) => {
     setAmount(e.target.value);
   };
+  const handlePlayerNote = (e) => {
+    setPlayerNote(e.target.value);
+  };
 
   const handleWithdrawalClick = (e) => {
     props.onhandleWithdrawalClick(
       props.cardList[this.state.selectedCardIndex].id,
-      this.state.amount
+      this.state.amount,
+      playerNote
     );
     setDisabled(true);
     setTimeout(() => {
@@ -316,6 +319,25 @@ const Main = (props) => {
         {i18n.t("withdrawal.turnover")}
         <span>{Common.formatNumberWithThousand(props.minWithdrawLimit)}</span>
       </Turnover>
+      {config.features.Deposit_Withdrawal_PlayerNote && (
+        <React.Fragment>
+          <SubHeaderContainer>
+            <SubTitle>{i18n.t("withdrawal.playerNote")}</SubTitle>
+          </SubHeaderContainer>
+
+          <SelectionContainer>
+            <CustomTextField
+              width={250}
+              height={38}
+              placeholder={i18n.t("withdrawal.plsEnterPlayerNote")}
+              handleTextFieldChange={handlePlayerNote}
+              variant="outlined"
+              autoComplete="off"
+              value={playerNote}
+            ></CustomTextField>
+          </SelectionContainer>
+        </React.Fragment>
+      )}
       <CustomButton
         disabled={
           parseFloat(amount) < min || parseFloat(amount) > max || disabled

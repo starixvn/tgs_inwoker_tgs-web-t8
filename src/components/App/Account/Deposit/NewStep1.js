@@ -227,6 +227,8 @@ const NewStepOne = (props) => {
     onNextClick,
     exchangeRate,
     files,
+    playerNote,
+    onPlayerNoteChange,
   } = props;
 
   if (paymentType === null) return <></>;
@@ -870,6 +872,36 @@ const NewStepOne = (props) => {
               })()}
               {methodList && paymentType.paymentcode === "ZeroNineNinePay" && (
                 <FormActionContainer>{i18n.t("hint._099")}</FormActionContainer>
+              )}
+
+              {config.features.Deposit_Withdrawal_PlayerNote && (
+                <FormContainer>
+                  <FormLeftContainer>
+                    <SubHeaderContainer>
+                      <SubTitle>{i18n.t("deposit.playerNote")}</SubTitle>
+                    </SubHeaderContainer>
+                  </FormLeftContainer>
+
+                  <FormRightContainer>
+                    <SelectionContainer>
+                      <TextField
+                        style={{
+                          height: "38px",
+                          width: "258px",
+                          float: "left",
+                          marginRight: "5px",
+                          padding: 0,
+                        }}
+                        placeholder={i18n.t("deposit.plsEnterPlayerNote")}
+                        onChange={onPlayerNoteChange}
+                        outputFormat="string"
+                        variant="outlined"
+                        autoComplete="off"
+                        value={playerNote}
+                      ></TextField>
+                    </SelectionContainer>
+                  </FormRightContainer>
+                </FormContainer>
               )}
 
               <FormActionContainer>
