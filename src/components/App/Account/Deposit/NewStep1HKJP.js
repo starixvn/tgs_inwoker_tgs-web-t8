@@ -218,6 +218,10 @@ class NewStepOne extends Component {
     if (paymentType === null) return <></>;
 
     const methodList = paymentType.method;
+    var isEwallet =
+      methodList[selectedMethodIndex].methodcode.toUpperCase() === "EWALLET";
+    var isPulsa =
+      methodList[selectedMethodIndex].methodcode.toUpperCase() === "PULSA";
     return (
       <>
         <FormContainer>
@@ -530,7 +534,7 @@ class NewStepOne extends Component {
                     </FormActionContainer>
                   )}
 
-                {config.features.Deposit_Withdrawal_PlayerNote && (
+                {config.features.Deposit_Withdrawal_PlayerNote && (isEwallet||isPulsa) && (
                   <FormContainer>
                     <FormLeftContainer>
                       <SubHeaderContainer>

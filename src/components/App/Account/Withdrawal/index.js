@@ -299,7 +299,7 @@ class Withdrawal extends Component {
   handleSuccessConfirmClick = () => {
     this.setState({ ...this.state, displayView: 1 });
   };
-  handleWithdrawalClick = (bankid, amount, password, playerNote) => {
+  handleWithdrawalClick = (bankid, amount, password, note) => {
     const formatedamount = amount.toString().replace(/,/g, "");
     if (config.features.Withdrawal_HundredDigit) {
       if (!/^[1-9][0-9]{0,17}00$/.test(formatedamount)) {
@@ -336,7 +336,12 @@ class Withdrawal extends Component {
     //   });
     //   return;
     // }
-    this.props.doWithdraw(formatedamount, password, bankid, playerNote);
+    this.props.doWithdraw(
+      formatedamount,
+      password,
+      bankid,
+      config.features.Deposit_Withdrawal_PlayerNote ? note : null
+    );
     // this.setState({ ...this.state, loading: true });
     // const result = WalletService.Withdrawal(
     //   this.props.token,
@@ -526,8 +531,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: RESET_WALLETRESULT,
       }),
-    doWithdraw: (amount, password, user_account_id, playerNote) =>
-      dispatch(walletAction.doWithdraw(amount, user_account_id, password, playerNote)),
+    doWithdraw: (amount, password, user_account_id, note) =>
+      dispatch(walletAction.doWithdraw(amount, user_account_id, password, note)),
   };
 };
 export default withRouter(
