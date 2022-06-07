@@ -291,7 +291,7 @@ const Main = (props) => {
               <SubHeaderContainer>
                 <SubTitle>{i18n.t("withdrawal.usdtAmount")}</SubTitle>
               </SubHeaderContainer>
-              <SelectionContainer style={{ marginBottom: "10px"}}>
+              <SelectionContainer style={{ marginBottom: "10px" }}>
                 <CustomTextField
                   width={250}
                   height={38}
@@ -319,25 +319,31 @@ const Main = (props) => {
         {i18n.t("withdrawal.turnover")}
         <span>{Common.formatNumberWithThousand(props.minWithdrawLimit)}</span>
       </Turnover>
-      {config.features.Deposit_Withdrawal_PlayerNote && (
-        <React.Fragment>
-          <SubHeaderContainer>
-            <SubTitle>{i18n.t("withdrawal.playerNote")}</SubTitle>
-          </SubHeaderContainer>
+      {config.features.Deposit_Withdrawal_PlayerNote &&
+        props.cardList[selectedCardIndex] &&
+        (props.cardList[selectedCardIndex].banktype.toUpperCase() ===
+          "EWALLET" ||
+          props.cardList[selectedCardIndex].banktype.toUpperCase() ===
+            "PULSA") && (
+          <React.Fragment>
+            <SubHeaderContainer>
+              <SubTitle>{i18n.t("withdrawal.playerNote")}</SubTitle>
+            </SubHeaderContainer>
 
-          <SelectionContainer>
-            <CustomTextField
-              width={250}
-              height={38}
-              placeholder={i18n.t("withdrawal.plsEnterPlayerNote")}
-              handleTextFieldChange={handlePlayerNote}
-              variant="outlined"
-              autoComplete="off"
-              value={playerNote}
-            ></CustomTextField>
-          </SelectionContainer>
-        </React.Fragment>
-      )}
+            <SelectionContainer>
+              <CustomTextField
+                width={250}
+                height={38}
+                placeholder={i18n.t("withdrawal.plsEnterPlayerNote")}
+                handleTextFieldChange={handlePlayerNote}
+                variant="outlined"
+                autoComplete="off"
+                value={playerNote}
+                maxLength={50}
+              ></CustomTextField>
+            </SelectionContainer>
+          </React.Fragment>
+        )}
       <CustomButton
         disabled={
           parseFloat(amount) < min || parseFloat(amount) > max || disabled

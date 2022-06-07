@@ -241,7 +241,10 @@ const NewStepOne = (props) => {
     methodList[selectedMethodIndex].methodcode.toUpperCase() === "FPS";
   var isUsdt =
     methodList[selectedMethodIndex].methodcode.toUpperCase() === "USDT";
-
+  var isEwallet =
+    methodList[selectedMethodIndex].methodcode.toUpperCase() === "EWALLET";
+  var isPulsa =
+    methodList[selectedMethodIndex].methodcode.toUpperCase() === "PULSA";
   const performCopy = (content) => {
     props.enqueueSnackbar(i18n.t("affiliate.copied"), {
       variant: "success",
@@ -874,7 +877,7 @@ const NewStepOne = (props) => {
                 <FormActionContainer>{i18n.t("hint._099")}</FormActionContainer>
               )}
 
-              {config.features.Deposit_Withdrawal_PlayerNote && (
+              {config.features.Deposit_Withdrawal_PlayerNote && (isEwallet||isPulsa) && (
                 <FormContainer>
                   <FormLeftContainer>
                     <SubHeaderContainer>
