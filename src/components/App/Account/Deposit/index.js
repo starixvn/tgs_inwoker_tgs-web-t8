@@ -209,6 +209,10 @@ class Deposit extends Component {
                 depositResult: response,
               });
             } else {
+              if(this.state.files.length>0)
+              {
+                this.props.doUploadDepositProof(response.data, this.state.files[0]);
+              }
               this.setState({
                 ...this.state,
                 step: 3,
