@@ -169,28 +169,10 @@ class Sports extends Component {
     if (!this.props.account.token) {
       this.props.showLogin(true);
     } else {
-      if (params === "WGFM" || params === "WGVIA") {
-        if (document.getElementById("audio") != null)
-          document.getElementById("audio").volume = 0.0;
-        Common.closePreviousPopup();
-        var win = Common.PopupCenter(
-          `/${i18n.language}/joinlobbygame/${type}/${params}`,
-          params,
-          1280,
-          720
-        );
-        var timer = setInterval(function () {
-          if (win.closed) {
-            clearInterval(timer);
-            if (document.getElementById("audio") != null)
-              document.getElementById("audio").volume = 1.0;
-          }
-        }, 1000);
-      } else {
-        this.props.history.push(
-          "/" + i18n.language + "/sports/play/" + params + "/" + type
-        );
-      }
+      Common.closePreviousPopup();
+      this.props.history.push(
+        "/" + i18n.language + "/sports/play/" + params + "/" + type
+      );
     }
   };
   render() {
