@@ -278,6 +278,66 @@ class AddCard extends Component {
         username: this.state.name,
         phone: this.state.phone,
       };
+    } else if (selected.banktype === "EWallet") {
+      bankAccountName = this.state.bankAccountName.trim();
+      if (bankAccountName === "") {
+        this.props.enqueueSnackbar(
+          i18n.t("card.addCard.msgEnterEwalletAccount"),
+          {
+            variant: "error",
+          }
+        );
+        return;
+      }
+      number = this.state.number.trim();
+      if (number.length < 8 || number.length > (config.features.MAX_PHONE_LENGTH || 10)) {
+        this.props.enqueueSnackbar(
+          i18n
+            .t("common.noReachMin")
+            .replace(/{maxlength}/g, config.features.MAX_PHONE_LENGTH || 10),
+          {
+            variant: "error",
+          }
+        );
+        return;
+      }
+      if(config.features.AddCard_CustomParam_IDR)
+      {
+        detail = {
+          //qrCode: "",
+          phone: number,
+          eMoneyName: bankAccountName,
+        }
+      }
+      else
+      {
+        detail = {
+          name: bankAccountName,
+          address: number,
+        };
+      }
+    } else if (selected.banktype === "Pulsa")
+    {
+      number = this.state.number.trim();
+      if (number === "") {
+        this.props.enqueueSnackbar(i18n.t("common.msgEnterWithdrawalNumber"), {
+          variant: "error",
+        });
+        return;
+      }
+      if(config.features.AddCard_CustomParam_IDR)
+      {
+        detail = {
+          phone: number,
+        }
+      }
+      else
+      {
+        detail = {
+          address: number,
+        };
+      }
+
     } else {
       number = this.state.number.trim();
       if (number === "") {
@@ -299,6 +359,19 @@ class AddCard extends Component {
   };
   render() {
     const { withdrawalList } = this.props;
+
+    const isEwallet =
+      this.state.channelList.length &&
+      (this.state.channelList[this.state.selectedChannelIndex].channelcode ===
+        "E-wallet" ||
+        this.state.channelList[this.state.selectedChannelIndex].channelcode ===
+          "EWallet");
+    const isPulsa =
+      this.state.channelList.length &&
+      this.state.channelList[this.state.selectedChannelIndex].channelcode ===
+        "Pulsa";
+
+    const eWalletCustom = isEwallet && config.features.AddCard_EWalletCustoms;
 
     const bankList = [
       "กสิกรไทย (Kasikorn Bank- KKR)",
@@ -346,7 +419,7 @@ class AddCard extends Component {
           </TextFieldItem>
         )}
 
-        {!config.features.AddCard_HideChannel && (
+        {!(config.features.AddCard_HideChannel || eWalletCustom || isPulsa) && (
           <>
             <TextFieldItem>
               <TextFieldLabel>
@@ -384,91 +457,106 @@ class AddCard extends Component {
               <>
                 {!config.features.AddCard_HideCertainField && (
                   <>
-                    {" "}
-                    <TextFieldItem>
-                      <TextFieldLabel>
-                        {config.features.AddCard_DisplayFPS
-                          ? i18n.t("hk28.card.addCard.BankName")
-                          : i18n.t("card.addCard.BankName")}
-                      </TextFieldLabel>
-                      <TextFieldContainer>
-                        {config.features.AddCard_BankDropdown ? (
-                          <CustomFormControl>
-                            <CustomSelect
-                              native
-                              variant="outlined"
-                              displayEmpty
-                              value={this.state.bankName}
-                              onChange={this.handleBankNameChange}
-                            >
-                              <option value="" selected disabled>
-                                {config.features.AddCard_DisplayFPS
-                                  ? i18n.t("hk28.card.addCard.msgEnterBankName")
-                                  : i18n.t("card.addCard.msgEnterBankName")}
-                              </option>
-                              {bankList.length > 0 &&
-                                bankList.map((item, index) => {
-                                  return (
-                                    <option value={item} key={index}>
-                                      {item}
-                                    </option>
-                                  );
-                                })}
-                            </CustomSelect>
-                          </CustomFormControl>
-                        ) : (
-                          <CustomTextField
-                            marginTop={10}
-                            placeholder={
-                              config.features.AddCard_DisplayFPS
-                                ? i18n.t("hk28.card.addCard.msgEnterBankName")
-                                : i18n.t("card.addCard.msgEnterBankName")
-                            }
-                            width={395}
-                            height={38}
-                            float={"none"}
-                            maxLength={255}
-                            disabled={this.state.disableBankNameInput}
-                            value={this.state.bankName}
-                            handleTextFieldChange={this.handleBankNameChange}
-                          ></CustomTextField>
-                        )}
-                      </TextFieldContainer>
-                    </TextFieldItem>
-                    {(() => {
-                      if (config.features.AddCard_BankBranch) {
-                        return (
-                          <React.Fragment>
-                            <TextFieldItem>
-                              <TextFieldLabel>
-                                {i18n.t("card.addCard.branch")}
-                              </TextFieldLabel>
-                              <TextFieldContainer>
-                                <CustomTextField
-                                  marginTop={10}
-                                  placeholder={i18n.t(
-                                    "card.addCard.branchPlaceHolder"
-                                  )}
-                                  width={395}
-                                  height={38}
-                                  float={"none"}
-                                  maxLength={255}
-                                  handleTextFieldChange={
-                                    this.handleBankBranchChange
-                                  }
-                                ></CustomTextField>
-                              </TextFieldContainer>
-                            </TextFieldItem>
-                          </React.Fragment>
-                        );
-                      }
-                    })()}
+                    {!eWalletCustom && (
+                      <>
+                        {" "}
+                        <TextFieldItem>
+                          <TextFieldLabel>
+                            {config.features.AddCard_DisplayFPS
+                              ? i18n.t("hk28.card.addCard.BankName")
+                              : i18n.t("card.addCard.BankName")}
+                          </TextFieldLabel>
+                          <TextFieldContainer>
+                            {config.features.AddCard_BankDropdown ? (
+                              <CustomFormControl>
+                                <CustomSelect
+                                  native
+                                  variant="outlined"
+                                  displayEmpty
+                                  value={this.state.bankName}
+                                  onChange={this.handleBankNameChange}
+                                >
+                                  <option value="" selected disabled>
+                                    {config.features.AddCard_DisplayFPS
+                                      ? i18n.t(
+                                          "hk28.card.addCard.msgEnterBankName"
+                                        )
+                                      : i18n.t("card.addCard.msgEnterBankName")}
+                                  </option>
+                                  {bankList.length > 0 &&
+                                    bankList.map((item, index) => {
+                                      return (
+                                        <option value={item} key={index}>
+                                          {item}
+                                        </option>
+                                      );
+                                    })}
+                                </CustomSelect>
+                              </CustomFormControl>
+                            ) : (
+                              <CustomTextField
+                                marginTop={10}
+                                placeholder={
+                                  config.features.AddCard_DisplayFPS
+                                    ? i18n.t(
+                                        "hk28.card.addCard.msgEnterBankName"
+                                      )
+                                    : i18n.t("card.addCard.msgEnterBankName")
+                                }
+                                width={395}
+                                height={38}
+                                float={"none"}
+                                maxLength={255}
+                                disabled={this.state.disableBankNameInput}
+                                value={this.state.bankName}
+                                handleTextFieldChange={
+                                  this.handleBankNameChange
+                                }
+                              ></CustomTextField>
+                            )}
+                          </TextFieldContainer>
+                        </TextFieldItem>
+                        {(() => {
+                          if (
+                            config.features.AddCard_BankBranch &&
+                            !eWalletCustom
+                          ) {
+                            return (
+                              <React.Fragment>
+                                <TextFieldItem>
+                                  <TextFieldLabel>
+                                    {i18n.t("card.addCard.branch")}
+                                  </TextFieldLabel>
+                                  <TextFieldContainer>
+                                    <CustomTextField
+                                      marginTop={10}
+                                      placeholder={i18n.t(
+                                        "card.addCard.branchPlaceHolder"
+                                      )}
+                                      width={395}
+                                      height={38}
+                                      float={"none"}
+                                      maxLength={255}
+                                      handleTextFieldChange={
+                                        this.handleBankBranchChange
+                                      }
+                                    ></CustomTextField>
+                                  </TextFieldContainer>
+                                </TextFieldItem>
+                              </React.Fragment>
+                            );
+                          }
+                        })()}
+                      </>
+                    )}
                   </>
                 )}
 
                 <TextFieldItem>
                   <TextFieldLabel>
-                    {config.features.AddCard_DisplayFPS
+                    {eWalletCustom
+                      ? i18n.t("card.addCard.eWalletAccount")
+                      : config.features.AddCard_DisplayFPS
                       ? i18n.t("hk28.card.addCard.BankAccountName")
                       : i18n.t("card.addCard.BankAccountName")}
                   </TextFieldLabel>
@@ -476,7 +564,9 @@ class AddCard extends Component {
                     <CustomTextField
                       marginTop={10}
                       placeholder={
-                        config.features.AddCard_DisplayFPS
+                        eWalletCustom
+                          ? i18n.t("card.addCard.msgEnterEwalletAccount")
+                          : config.features.AddCard_DisplayFPS
                           ? i18n.t("hk28.card.addCard.msgEnterBankAccountName")
                           : i18n.t("card.addCard.msgEnterBankAccountName")
                       }
@@ -494,6 +584,38 @@ class AddCard extends Component {
             return null;
           }
         })()}
+        {withdrawalList.length > 0 &&
+          withdrawalList[this.state.selectedBankTypeIndex].banktype ===
+            "EWallet" && (
+            <React.Fragment>
+              <TextFieldItem>
+                <TextFieldLabel>
+                  {eWalletCustom
+                    ? i18n.t("card.addCard.eWalletAccount")
+                    : config.features.AddCard_DisplayFPS
+                    ? i18n.t("hk28.card.addCard.BankAccountName")
+                    : i18n.t("card.addCard.BankAccountName")}
+                </TextFieldLabel>
+                <TextFieldContainer>
+                  <CustomTextField
+                    marginTop={10}
+                    placeholder={
+                      eWalletCustom
+                        ? i18n.t("card.addCard.msgEnterEwalletAccount")
+                        : config.features.AddCard_DisplayFPS
+                        ? i18n.t("hk28.card.addCard.msgEnterBankAccountName")
+                        : i18n.t("card.addCard.msgEnterBankAccountName")
+                    }
+                    width={395}
+                    height={38}
+                    float={"none"}
+                    maxLength={255}
+                    handleTextFieldChange={this.handleBankAccountNameChange}
+                  ></CustomTextField>
+                </TextFieldContainer>
+              </TextFieldItem>
+            </React.Fragment>
+          )}
         {withdrawalList.length > 0 &&
         (withdrawalList[this.state.selectedBankTypeIndex].banktype ===
           "ThirdParty" ||
@@ -553,7 +675,9 @@ class AddCard extends Component {
         ) : (
           <TextFieldItem>
             <TextFieldLabel>
-              {config.features.AddCard_DisplayGCash
+              {eWalletCustom || isPulsa
+                ? i18n.t("card.addCard.phone")
+                : config.features.AddCard_DisplayGCash
                 ? i18n.t("piso.withdrawalNumber")
                 : config.features.AddCard_DisplayFPS
                 ? i18n.t("hk28.withdrawalNumber")
@@ -563,7 +687,9 @@ class AddCard extends Component {
               <CustomTextField
                 marginTop={10}
                 placeholder={
-                  config.features.AddCard_DisplayGCash
+                  eWalletCustom || isPulsa
+                    ? i18n.t("card.addCard.msgEnterPhone")
+                    : config.features.AddCard_DisplayGCash
                     ? i18n.t("piso.msgEnterWithdrawalNumber")
                     : config.features.AddCard_DisplayFPS
                     ? i18n.t("hk28.msgEnterWithdrawalNumber")

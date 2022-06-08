@@ -78,9 +78,10 @@ const featureList = {
 
     Deposit_UploadRequired: true,
     Deposit_HideDepositChannel: false,
-
+    AddCard_EWalletCustoms: false,
     Profile_DisableVerifyPhone: false,
     Deposit_Withdrawal_PlayerNote: false,
+    AddCard_CustomParam_IDR: false,
   },
 };
 export default featureList;
