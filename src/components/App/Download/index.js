@@ -107,8 +107,6 @@ const CustomModal = styled(Dialog)`
   }
 
   .MuiDialog-paper {
-    min-width: 900px;
-
     border-radius: 16px;
     background: #f6f8f7;
     min-height: 200px;
@@ -167,9 +165,10 @@ const DeviceText = styled.div`
 const QRCodeHolder = styled.div`
   height: 200px;
   width: 200px;
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 10px;
-
   border-radius: 10px;
   border: solid 1px rgba(0, 0, 0, 0.5);
 `;
@@ -185,9 +184,17 @@ const DownloadButton = styled.div`
   text-align: center;
 `;
 
+const PointlessShit = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 10px;
+`;
+
 const Download = () => {
   const [open, setOpen] = useState(false);
   const [download, setDownload] = useState([]);
+
+  const [pointlessDialog, setPointlessDialog] = useState(false);
 
   function getJsonData() {
     return fetch(
@@ -263,6 +270,64 @@ const Download = () => {
               </QRCodeContainer>
             );
           })}
+
+          {config.features.Download_PointlessDialog && (
+            <>
+              <QRCodeContainer>
+                <QRCodeHolder>
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/assets/images/download/brand/PB_logo.png"
+                    }
+                    alt="pointless download section"
+                  />
+                </QRCodeHolder>
+                <DeviceText>{i18n.t("pointless.download")}</DeviceText>
+                <DownloadButton
+                  onClick={() => {
+                    setPointlessDialog(true);
+                  }}
+                >
+                  {i18n.t("download.title")}
+                </DownloadButton>
+              </QRCodeContainer>
+              <CustomModal
+                maxWidth="sm"
+                open={pointlessDialog}
+                onClose={() => {
+                  setPointlessDialog(false);
+                }}
+              >
+                <DialogTitle2>
+                  <div>{i18n.t("pointless.download")}</div>
+                  <CloseButton
+                    onClick={() => {
+                      setOpen(false);
+                    }}
+                  >
+                    ✖
+                  </CloseButton>
+                </DialogTitle2>
+                <DialogContent>
+                  {download.map((data, index) => {
+                    return (
+                      <PointlessShit>
+                        <div>{data.platform}</div>
+                        <DownloadButton
+                          onClick={() => {
+                            window.open(data.link, "_blank");
+                          }}
+                        >
+                          {i18n.t("download.title")}
+                        </DownloadButton>
+                      </PointlessShit>
+                    );
+                  })}
+                </DialogContent>
+              </CustomModal>
+            </>
+          )}
         </DownloadSection>
       </ContentPlacedHere>
       <CustomModal
@@ -270,6 +335,7 @@ const Download = () => {
         onClose={() => {
           setOpen(false);
         }}
+        maxWidth="md"
       >
         <DialogTitle2>
           <div>{i18n.t("download.openGuide")}</div>
