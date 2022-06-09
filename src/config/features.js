@@ -81,6 +81,8 @@ const featureList = {
 
     Profile_DisableVerifyPhone: false,
     Deposit_Withdrawal_PlayerNote: false,
+
+    Download_PointlessDialog: false,
   },
 };
 export default featureList;
