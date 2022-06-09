@@ -685,21 +685,9 @@ class Header extends Component {
         if (!this.props.account.token) {
           this.props.showLogin(true);
         } else {
-          if (gameCode === "WGFM" || gameCode === "WGVIA") {
-            if (this.props.history.location.pathname.indexOf("play") >= 0) {
-              AppHistory.goBack();
-            }
-            Common.PopupCenter(
-              `/${i18n.language}/joinlobbygame/${gameType}/${gameCode}`,
-              gameCode,
-              1280,
-              720
-            );
-          } else {
-            this.props.history.push(
-              "/" + i18n.language + "/sports/play/" + gameCode + "/" + gameType
-            );
-          }
+          this.props.history.push(
+            "/" + i18n.language + "/sports/play/" + gameCode + "/" + gameType
+          );
         }
       } else {
         this.props.history.push(`/${i18n.language}/${path}/${gameCode}`);
