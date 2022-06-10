@@ -187,6 +187,10 @@ class Play extends Component {
             ifrm.document.open();
             ifrm.document.write(response.data);
             ifrm.document.close();
+            this.setState({
+              ...this.state,
+              loading: false,
+            });
           } else {
             document.getElementsByTagName("body")[0].style.overflow = "";
             window.removeEventListener("resize", this.updateWindowDimensions);
