@@ -345,8 +345,9 @@ const Download = () => {
             </>
           )}
         </HiddenDialogContainer>
-        <div>
+        <div style={{ display: "flex", justifyContent: "center" }}>
           <img
+            style={{ height: 650 }}
             src={process.env.PUBLIC_URL + `/assets/images/download/girl.png`}
             alt="girl"
           />
