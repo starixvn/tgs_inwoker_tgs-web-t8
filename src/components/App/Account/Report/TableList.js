@@ -9,6 +9,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TablePagination from "@material-ui/core/TablePagination";
 import i18n from "../../../../utils/i18n";
 import copy from "copy-to-clipboard";
+import { useSnackbar } from "notistack";
 
 import { AppHistory } from "../../../../history/History";
 import config from "../../../../config/config";
@@ -196,13 +197,13 @@ function TableList(props) {
     props.onhandleChangePage(newPage + 1);
   };
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const handleDoubleClick = (e, id) => {
-    if (e.detail === 2) {
-      props.enqueueSnackbar(i18n.t("affiliate.copied"), {
-        variant: "success",
-      });
-      copy(id);
-    }
+    enqueueSnackbar(i18n.t("affiliate.copied"), {
+      variant: "success",
+    });
+    copy(id);
   };
 
   const handleManualDeposit = (id) => {
