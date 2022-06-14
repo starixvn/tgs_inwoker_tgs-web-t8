@@ -235,7 +235,7 @@ const Download = () => {
   }
 
   function copyStupidLink(link) {
-    enqueueSnackbar(i18n.t("affiliate.copied"), {
+    enqueueSnackbar(i18n.t("pointless.copy"), {
       variant: "success",
     });
     copy(link);
@@ -283,7 +283,7 @@ const Download = () => {
           {config.features.Download_PointlessDialog && (
             <>
               <QRCodeContainer>
-                <QRCodeHolder>
+                <QRCodeHolder style={{ marginBottom: 20 }}>
                   <img
                     src={
                       process.env.PUBLIC_URL +
@@ -292,13 +292,13 @@ const Download = () => {
                     alt="pointless download section"
                   />
                 </QRCodeHolder>
-                <DeviceText>{i18n.t("pointless.download")}</DeviceText>
+
                 <DownloadButton
                   onClick={() => {
                     setPointlessDialog(true);
                   }}
                 >
-                  {i18n.t("download.title")}
+                  {i18n.t("pointless.link")}
                 </DownloadButton>
               </QRCodeContainer>
               <CustomModal
@@ -330,13 +330,6 @@ const Download = () => {
                         >
                           {data.link}
                         </Links>
-                        <DownloadButton
-                          onClick={() => {
-                            window.open(data.link, "_blank");
-                          }}
-                        >
-                          {i18n.t("download.title")}
-                        </DownloadButton>
                       </PointlessShit>
                     );
                   })}
