@@ -376,6 +376,7 @@ class Account extends Component {
                       token={this.props.account.token}
                       onhandleClickTab={this.handleClickTab}
                       onhandleCSClick={this.props.onhandleCSClick}
+                      onhandleRefreshClick={this.handleRefreshClick}
                       account={this.props.account}
                     />
                   )}
@@ -396,18 +397,19 @@ class Account extends Component {
                     />
                   )}
                 />
-                {this.props.game.containTransferWallet && (
-                  <Route
-                    exact
-                    path={baseRouteUrl + "/account/transfer"}
-                    render={(props) => (
-                      <Transfer
-                        token={this.props.account.token}
-                        getAllGameBalance={this.getAllGameBalance}
-                      />
-                    )}
-                  />
-                )}
+                {this.props.game.containTransferWallet &&
+                  !config.features.NewTransferUI && (
+                    <Route
+                      exact
+                      path={baseRouteUrl + "/account/transfer"}
+                      render={(props) => (
+                        <Transfer
+                          token={this.props.account.token}
+                          getAllGameBalance={this.getAllGameBalance}
+                        />
+                      )}
+                    />
+                  )}
                 <Route
                   exact
                   path={baseRouteUrl + "/account/profile/:popup?"}
