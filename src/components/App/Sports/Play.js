@@ -293,7 +293,7 @@ class Play extends Component {
             </GameFrameHeader>
             <GameFrame
               ref={this.myRef}
-              style={{ width: "1280px" }}
+              style={{ width: "1250px", height: "750px" }}
               scrolling="yes"
               frameBorder="0"
             ></GameFrame>
