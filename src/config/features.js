@@ -86,6 +86,7 @@ const featureList = {
     Register_ShowEmail: false,
 
     NewTransferUI: false,
+    ForceRedirectAddCard: false,
   },
 };
 export default featureList;
