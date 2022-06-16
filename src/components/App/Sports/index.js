@@ -135,7 +135,10 @@ class Sports extends Component {
     super(props);
 
     var sportsList = props.game.homePageGameList.filter((item) => {
-      return item.type === GameTypeEnum.SPORTS;
+      return (
+        item.type === GameTypeEnum.SPORTS ||
+        item.type === GameTypeEnum.RNGSPORTS
+      );
     });
 
     this.state = {
@@ -152,7 +155,10 @@ class Sports extends Component {
       this.props.game.homePageGameList.length
     ) {
       var sportsList = this.props.game.homePageGameList.filter((item) => {
-        return item.type === GameTypeEnum.SPORTS;
+        return (
+          item.type === GameTypeEnum.SPORTS ||
+          item.type === GameTypeEnum.RNGSPORTS
+        );
       });
 
       this.setState({
@@ -170,9 +176,13 @@ class Sports extends Component {
       this.props.showLogin(true);
     } else {
       Common.closePreviousPopup();
-      this.props.history.push(
-        "/" + i18n.language + "/sports/play/" + params + "/" + type
-      );
+      if (type === GameTypeEnum.RNGSPORTS) {
+        this.props.history.push("/" + i18n.language + "/sports/" + params);
+      } else {
+        this.props.history.push(
+          "/" + i18n.language + "/sports/play/" + params + "/" + type
+        );
+      }
     }
   };
   render() {

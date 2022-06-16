@@ -679,16 +679,27 @@ class Header extends Component {
       GameTypeEnum.ESPORTS,
       GameTypeEnum.TABLEGAME,
       GameTypeEnum.FISH,
+      GameTypeEnum.RNGSPORTS,
     ];
     Common.closePreviousPopup();
     if (slotPageGameType.indexOf(gameType) >= 0) {
-      if (gameType == GameTypeEnum.SPORTS || gameType == GameTypeEnum.ESPORTS) {
+      if (
+        gameType === GameTypeEnum.SPORTS ||
+        gameType === GameTypeEnum.ESPORTS ||
+        gameType === GameTypeEnum.RNGSPORTS
+      ) {
         if (!this.props.account.token) {
           this.props.showLogin(true);
         } else {
-          this.props.history.push(
-            "/" + i18n.language + "/sports/play/" + gameCode + "/" + gameType
-          );
+          if (gameType === GameTypeEnum.RNGSPORTS) {
+            this.props.history.push(
+              "/" + i18n.language + "/sports/" + gameCode
+            );
+          } else {
+            this.props.history.push(
+              "/" + i18n.language + "/sports/play/" + gameCode + "/" + gameType
+            );
+          }
         }
       } else {
         this.props.history.push(`/${i18n.language}/${path}/${gameCode}`);
@@ -698,10 +709,19 @@ class Header extends Component {
         this.props.showLogin(true);
         return;
       }
+      if (document.getElementById("audio") != null)
+        document.getElementById("audio").volume = 0;
       if (this.props.history.location.pathname.indexOf("play") >= 0) {
         AppHistory.goBack();
       }
-      Common.PopupCenter(url, gameCode, 1280, 720);
+      var win = Common.PopupCenter(url, gameCode, 1280, 720);
+      var timer = setInterval(function () {
+        if (win.closed) {
+          clearInterval(timer);
+          if (document.getElementById("audio") != null)
+            document.getElementById("audio").volume = 1.0;
+        }
+      }, 1000);
     }
   };
   handleBookmarkClick = () => {
@@ -749,6 +769,21 @@ class Header extends Component {
         ErrorSwitcher.setTranslation(response.data);
       }
     });
+  };
+  consolidateJoinGame = (game, item) => {
+    if (
+      game.type === GameTypeEnum.LOTTERYLOBBY ||
+      game.type === GameTypeEnum.LOBBY
+    ) {
+      this.handleJoinLotteryGame(game.abbreviation);
+    } else {
+      this.handleJoinGameClick(
+        game.type,
+        item.path,
+        game.abbreviation,
+        "/" + i18n.language + "/joingame/" + game.type + "/" + game.abbreviation
+      );
+    }
   };
 
   render() {
@@ -969,27 +1004,10 @@ class Header extends Component {
                                             }.png`}
                                             alt=""
                                             onClick={() => {
-                                              if (
-                                                game.type ===
-                                                  GameTypeEnum.LOTTERYLOBBY ||
-                                                game.type === GameTypeEnum.LOBBY
-                                              ) {
-                                                this.handleJoinLotteryGame(
-                                                  game.abbreviation
-                                                );
-                                              } else {
-                                                this.handleJoinGameClick(
-                                                  game.type,
-                                                  item.path,
-                                                  game.abbreviation,
-                                                  "/" +
-                                                    i18n.language +
-                                                    "/joingame/" +
-                                                    game.type +
-                                                    "/" +
-                                                    game.abbreviation
-                                                );
-                                              }
+                                              this.consolidateJoinGame(
+                                                game,
+                                                item
+                                              );
                                             }}
                                           ></GameImg>
                                           <GameTitle index={index}>
@@ -1063,28 +1081,10 @@ class Header extends Component {
                                               }.png`}
                                               alt=""
                                               onClick={() => {
-                                                if (
-                                                  game.type ===
-                                                    GameTypeEnum.LOTTERYLOBBY ||
-                                                  game.type ===
-                                                    GameTypeEnum.LOBBY
-                                                ) {
-                                                  this.handleJoinLotteryGame(
-                                                    game.abbreviation
-                                                  );
-                                                } else {
-                                                  this.handleJoinGameClick(
-                                                    game.type,
-                                                    item.path,
-                                                    game.abbreviation,
-                                                    "/" +
-                                                      i18n.language +
-                                                      "/joingame/" +
-                                                      game.type +
-                                                      "/" +
-                                                      game.abbreviation
-                                                  );
-                                                }
+                                                this.consolidateJoinGame(
+                                                  game,
+                                                  item
+                                                );
                                               }}
                                             ></GameImg>
                                             <GameTitle index={index}>
