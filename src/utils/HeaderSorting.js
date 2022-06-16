@@ -1,0 +1,113 @@
+import { GameTypeEnum } from "../api-services/utils/Enum";
+import config from "../config/config";
+import i18n from "./i18n";
+
+const MenuItemList = [
+  {
+    path: "esports",
+    title: i18n.t("common.esports"),
+    gameType: [GameTypeEnum.ESPORTS],
+    sorting: 1,
+    sortingGMO: 7,
+    sortingHK28: 2,
+    sortingPB: 4,
+    sortingSKY: 7,
+    sortingWLGHK: 4,
+  },
+  {
+    path: "sports",
+    title: i18n.t("common.sport"),
+    gameType: [GameTypeEnum.SPORTS],
+    sorting: 2,
+    sortingGMO: 5,
+    sortingHK28: 2,
+    sortingPB: 3,
+    sortingSKY: 3,
+    sortingWLGHK: 3,
+  },
+  {
+    path: "live",
+    title: i18n.t("common.live"),
+    gameType: [GameTypeEnum.LIVELOBBY],
+    sorting: 3,
+    sortingGMO: 1,
+    sortingHK28: 1,
+    sortingPB: 2,
+    sortingSKY: 1,
+    sortingWLGHK: 1,
+  },
+  {
+    path: "chess",
+    title: i18n.t("common.chess"),
+    gameType: [GameTypeEnum.QIPAILOBBY],
+    sorting: 4,
+    sortingGMO: 2,
+    sortingHK28: 3,
+    sortingPB: 8,
+    sortingSKY: 2,
+    sortingWLGHK: 2,
+  },
+
+  {
+    path: "lottery",
+    title: i18n.t("common.lottery"),
+    gameType: [GameTypeEnum.LOTTERYLOBBY],
+    sorting: 5,
+    sortingGMO: 6,
+    sortingHK28: 7,
+    sortingPB: 7,
+    sortingSKY: 8,
+    sortingWLGHK: 6,
+  },
+  {
+    path: `slots`,
+    title: i18n.t("common.slot"),
+    gameType: [GameTypeEnum.SLOT],
+    sorting: 6,
+    sortingGMO: 8,
+    sortingHK28: 4,
+    sortingPB: 1,
+    sortingSKY: 5,
+    sortingWLGHK: 7,
+  },
+  {
+    path: `electron`,
+    title: i18n.t("common.electron"),
+    gameType: [GameTypeEnum.TABLEGAME],
+    sorting: 7,
+    sortingGMO: 3,
+    sortingHK28: 6,
+    sortingPB: 5,
+    sortingSKY: 6,
+    sortingWLGHK: 8,
+  },
+  {
+    path: `fish`,
+    title: i18n.t("common.fish"),
+    gameType: [GameTypeEnum.FISH],
+    sorting: 8,
+    sortingGMO: 4,
+    sortingHK28: 5,
+    sortingPB: 6,
+    sortingSKY: 4,
+    sortingWLGHK: 5,
+  },
+];
+
+export const SortedMenuList = MenuItemList.sort((a, b) => {
+  if (config.features.MenuItem_Sorting_HK28) {
+    return a.sortingHK28 > b.sortingHK28 ? 1 : -1;
+  } else if (config.features.MenuItem_Sorting_WLGHK) {
+    return a.sortingWLGHK > b.sortingWLGHK ? 1 : -1;
+  } else if (config.features.MenuItem_Sorting_SKY) {
+    return a.sortingSKY > b.sortingSKY ? 1 : -1;
+  } else if (config.features.MenuItem_Sorting_PB) {
+    return a.sortingPB > b.sortingPB ? 1 : -1;
+  } else if (config.features.MenuItem_Sorting_GMO) {
+    return a.sortingGMO > b.sortingGMO ? 1 : -1;
+  } else if (config.features.MenuItem_Sorting_PISO) {
+    return a.sortingPISO > b.sortingPISO ? 1 : -1;
+  } else {
+    return a.sorting > b.sorting ? 1 : -1;
+  }
+});

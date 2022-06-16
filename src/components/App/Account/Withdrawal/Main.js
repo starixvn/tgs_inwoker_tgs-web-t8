@@ -120,6 +120,38 @@ const ExchangeRateContainer = styled.div`
   font-size: 14px;
 `;
 
+const ButtonWrapper = styled.div`
+  margin: 15px 0 15px 30px;
+  display: flex;
+`;
+
+const GameWalletButton = styled.div`
+  font-size: 12px;
+  background: ${({ theme }) => {
+    return theme.primary;
+  }};
+
+  text-align: center;
+  padding: 5px;
+
+  margin: 8px 5px 0 0;
+  color: #fff;
+
+  min-width: 79px;
+  height: 28px;
+  border-radius: 5px;
+  border: solid 1px #ffffff;
+
+  &:hover {
+    cursor: pointer;
+    background-blend-mode: screen, normal;
+    ${(props) =>
+      props.disabled
+        ? "   background-image: linear-gradient(to top, #797979, #c3c3c3);"
+        : " box-shadow: inset 1px 1px 9px 0  rgba(255, 255, 255, 0.75);"}
+  }
+`;
+
 const Main = (props) => {
   const [selectedCardIndex, setSelectedCardIndex] = useState("");
   const [amount, setAmount] = useState("");
@@ -128,7 +160,9 @@ const Main = (props) => {
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(0);
   const [paymentList, setPaymentList] = useState(props.wallet.withdrawalList);
-  const [exchangeRate, setExchangeRate] = useState(config.features.Withdrawal_USDT_ExchangeRate);
+  const [exchangeRate, setExchangeRate] = useState(
+    config.features.Withdrawal_USDT_ExchangeRate
+  );
   const [playerNote, setPlayerNote] = useState("");
   var minValue = [];
   var maxValue = [];
@@ -164,10 +198,7 @@ const Main = (props) => {
         last4Digits = item.detail.address.slice(-4);
         return last4Digits.padStart(item.detail.address.length, "*");
       }
-    } else if (
-      item.banktype === "Pulsa" ||
-      item.banktype === "EWallet"
-    ) {
+    } else if (item.banktype === "Pulsa" || item.banktype === "EWallet") {
       if (item.detail.phone) {
         last4Digits = item.detail.phone.slice(-4);
         return last4Digits.padStart(item.detail.phone.length, "*");
@@ -247,6 +278,28 @@ const Main = (props) => {
           );
         })}
       </BankCardContainer>
+
+      {config.features.NewTransferUI && (
+        <>
+          <SubHeaderContainer>
+            <SubTitle>{i18n.t("transfer.msgTransferOutFromGP")}</SubTitle>
+          </SubHeaderContainer>
+          <ButtonWrapper>
+            <GameWalletButton
+              style={{ marginTop: 0, marginLeft: 10 }}
+              onClick={() => {
+                props.performWithdrawFromEveryBrand().then((e) => {
+                  if (e.IsSuccess) {
+                    props.onhandleRefreshClick();
+                  }
+                });
+              }}
+            >
+              {i18n.t("transfer.oneKeyTransferOut")}
+            </GameWalletButton>
+          </ButtonWrapper>
+        </>
+      )}
 
       <SubHeaderContainer>
         <SubTitle>{i18n.t("withdrawal.enterAmount")}</SubTitle>
@@ -378,6 +431,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getWithdrawalChannel: () => dispatch(walletAction.getWithdrawalChannel()),
+    performWithdrawFromEveryBrand: () =>
+      dispatch(walletAction.performWithdrawFromEveryBrand()),
   };
 };
 

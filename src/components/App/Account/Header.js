@@ -236,7 +236,8 @@ function Header(props) {
     {
       path: "transfer",
       title: i18n.t("web.account.transfer"),
-      canDisplay: props.game.containTransferWallet,
+      canDisplay:
+        props.game.containTransferWallet && !config.features.NewTransferUI,
       img: IconTransferPNG,
     },
     {
