@@ -178,6 +178,26 @@ class Sports extends Component {
       Common.closePreviousPopup();
       if (type === GameTypeEnum.RNGSPORTS) {
         this.props.history.push("/" + i18n.language + "/sports/" + params);
+      } else if (params === "WGFM" || params === "WGVIA") {
+        if (document.getElementById("audio") != null)
+          document.getElementById("audio").volume = 0.0;
+        var win = Common.PopupCenter(
+          `/${i18n.language}/joinlobbygame/${type}/${params}`,
+          params,
+          1280,
+          720
+        );
+        // var win = window.open(
+        //   `/${i18n.language}/joinlobbygame/${type}/${params}`,
+        //   "gamewindow"
+        // );
+        var timer = setInterval(function () {
+          if (win.closed) {
+            clearInterval(timer);
+            if (document.getElementById("audio") != null)
+              document.getElementById("audio").volume = 1.0;
+          }
+        }, 1000);
       } else {
         this.props.history.push(
           "/" + i18n.language + "/sports/play/" + params + "/" + type

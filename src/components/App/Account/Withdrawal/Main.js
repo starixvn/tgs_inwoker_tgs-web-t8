@@ -198,7 +198,11 @@ const Main = (props) => {
         last4Digits = item.detail.address.slice(-4);
         return last4Digits.padStart(item.detail.address.length, "*");
       }
-    } else if (item.banktype === "Pulsa" || item.banktype === "EWallet") {
+    // } else if (item.banktype === "Pulsa" || item.banktype === "EWallet") {
+    } else if (
+      item.banktype === "Pulsa" ||
+      item.banktype === "EWallet"
+    ) {
       if (item.detail.phone) {
         last4Digits = item.detail.phone.slice(-4);
         return last4Digits.padStart(item.detail.phone.length, "*");
