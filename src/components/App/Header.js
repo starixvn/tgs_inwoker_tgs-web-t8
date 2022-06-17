@@ -685,9 +685,30 @@ class Header extends Component {
         if (!this.props.account.token) {
           this.props.showLogin(true);
         } else {
-          this.props.history.push(
-            "/" + i18n.language + "/sports/play/" + gameCode + "/" + gameType
-          );
+          if (gameCode === "WGFM" || gameCode === "WGVIA") {
+            if (document.getElementById("audio") != null)
+              document.getElementById("audio").volume = 0;
+            if (this.props.history.location.pathname.indexOf("play") >= 0) {
+              AppHistory.goBack();
+            }
+            var win = Common.PopupCenter(
+              `/${i18n.language}/joinlobbygame/${gameType}/${gameCode}`,
+              gameCode,
+              1280,
+              720
+            );
+            var timer = setInterval(function () {
+              if (win.closed) {
+                clearInterval(timer);
+                if (document.getElementById("audio") != null)
+                  document.getElementById("audio").volume = 1.0;
+              }
+            }, 1000);
+          } else {
+            this.props.history.push(
+              "/" + i18n.language + "/sports/play/" + gameCode + "/" + gameType
+            );
+          }
         }
       } else {
         this.props.history.push(`/${i18n.language}/${path}/${gameCode}`);
