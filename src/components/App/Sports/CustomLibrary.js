@@ -682,7 +682,7 @@ class CustomLibrary extends Component {
       page: 1,
       limit: 48,
       total: 0,
-      type: 2,
+      type: GameTypeEnum.RNGSPORTS,
       platformList: [],
       loading: true,
       platform: this.props.match.params.platform
