@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 import i18n from "../../utils/i18n";
 import Common from "../../utils/Common";
 import config from "../../config/config";
+import { SortedMenuList } from "../../utils/HeaderSorting";
+import { Popover } from "@material-ui/core";
 export const rotateKeyFrame = keyframes`
   0% {
     transform:rotate(0deg)
@@ -156,8 +158,62 @@ const CustomLink = styled(Link)`
     cursor: pointer;
   }
 `;
-class MemberContainer extends Component {
-  vipSwitcher = (rank) => {
+
+const CustomPopoverContent = styled.div`
+  min-width: 225px;
+  padding: 10px;
+  display: grid;
+  max-height: 400px;
+  overflow: auto;
+  user-select: none;
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+`;
+
+const GameType = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+`;
+
+const GameTypeName = styled.div`
+  font-weight: bold;
+  padding-bottom: 2.5px;
+`;
+
+const BrandAndBalance = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 2.5px 0;
+`;
+
+const Brand = styled.div`
+  padding-left: 5px;
+  font-size: 12px;
+  opacity: 0.75;
+`;
+
+const Balance = styled.div`
+  text-align: right;
+  font-weight: bold;
+  color: ${({ theme }) => theme.primary};
+`;
+
+const MemberContainer = (props) => {
+  const vipSwitcher = (rank) => {
     switch (rank) {
       case 1:
         return "VIP 1";
@@ -173,79 +229,144 @@ class MemberContainer extends Component {
         return;
     }
   };
-  render() {
-    return (
-      <Container>
-        <BalanceContainer>
-          <span>{i18n.t("web.header.mainAccount")}</span>
-          <BalanceAmountLabel onClick={this.props.onhandleTransfer}>
-            {Common.formatNumberWithThousand(
-              this.props.wallet.mainBalance +
-                this.props.game.providerList
-                  .filter(
-                    (item) => item.status === 0 && item.transferwallet === true
-                  )
-                  .reduce((a, v) => (a = a + v.balance), 0)
-            )}
-          </BalanceAmountLabel>
 
-          <RefreshBalance onClick={this.props.onhandleRefreshBalanceClick}>
-            <RefreshBalanceIcon></RefreshBalanceIcon>
-          </RefreshBalance>
-        </BalanceContainer>
+  const handleTransfer = (e) => {
+    if (config.features.NewTransferUI) {
+      handleClick(e);
+    } else {
+      props.onhandleTransfer();
+    }
+  };
 
-        <BtnLogout onClick={this.props.onhandleLogout}>
-          {i18n.t("web.header.logout")}
-        </BtnLogout>
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
-        <WelcomeContainer>
-          <CustomLink to={"/" + i18n.language + "/account/profile"}>
-            {/* {i18n.t("web.header.welcomBack")}{" "} */}
-            <MemberUserName>
-              {this.props.account.info.member_username}(
-              {config.features.CustomVIP
-                ? this.vipSwitcher(this.props.account.info.member_level_id)
-                : "VIP" + this.props.account.info.member_level_id}
-              )
-            </MemberUserName>
-          </CustomLink>
-        </WelcomeContainer>
+  const handleClick = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
 
-        <TabButton onClick={this.props.onhandleInboxClick}>
-          {i18n.t("web.account.inbox")} ({this.props.account.info.message_num})
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
+  return (
+    <Container>
+      <BalanceContainer>
+        <span>{i18n.t("web.header.mainAccount")}</span>
+        <BalanceAmountLabel
+          onClick={(e) => {
+            handleTransfer(e);
+          }}
+        >
+          {Common.formatNumberWithThousand(
+            props.wallet.mainBalance +
+              props.game.providerList
+                .filter(
+                  (item) => item.status === 0 && item.transferwallet === true
+                )
+                .reduce((a, v) => (a = a + v.balance), 0)
+          )}
+        </BalanceAmountLabel>
+
+        <RefreshBalance onClick={props.onhandleRefreshBalanceClick}>
+          <RefreshBalanceIcon></RefreshBalanceIcon>
+        </RefreshBalance>
+        <Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "center",
+          }}
+        >
+          <CustomPopoverContent>
+            {SortedMenuList.map((item, key) => {
+              return (
+                <GameType>
+                  <GameTypeName>{i18n.t(item.title)}</GameTypeName>
+                  {props.game.homePageGameList
+                    .filter((game) => {
+                      return item.gameType.indexOf(game.type) >= 0;
+                    })
+                    .map((brand, index) => {
+                      return props.game.providerList
+                        .filter((item) => {
+                          return item.abbreviation === brand.abbreviation;
+                        })
+                        .map((data, index) => {
+                          return (
+                            <BrandAndBalance>
+                              <Brand>
+                                {i18n.t(`${data.abbreviation}.${item.path}`)}
+                              </Brand>
+                              <Balance>
+                                {data.maintenance === 1
+                                  ? i18n.t("transfer.maintenance")
+                                  : "$" +
+                                    Common.formatNumberWithCommas(data.balance)}
+                              </Balance>
+                            </BrandAndBalance>
+                          );
+                        });
+                    })}
+                </GameType>
+              );
+            })}
+          </CustomPopoverContent>
+        </Popover>
+      </BalanceContainer>
+
+      <BtnLogout onClick={props.onhandleLogout}>
+        {i18n.t("web.header.logout")}
+      </BtnLogout>
+
+      <WelcomeContainer>
+        <CustomLink to={"/" + i18n.language + "/account/profile"}>
+          {/* {i18n.t("web.header.welcomBack")}{" "} */}
+          <MemberUserName>
+            {props.account.info.member_username}(
+            {config.features.CustomVIP
+              ? vipSwitcher(props.account.info.member_level_id)
+              : "VIP" + props.account.info.member_level_id}
+            )
+          </MemberUserName>
+        </CustomLink>
+      </WelcomeContainer>
+
+      <TabButton onClick={props.onhandleInboxClick}>
+        {i18n.t("web.account.inbox")} ({props.account.info.message_num})
+      </TabButton>
+
+      {props.game.containTransferWallet && !config.features.NewTransferUI && (
+        <TabButton onClick={props.onhandleTransfer}>
+          {i18n.t("web.header.transfer")}
         </TabButton>
+      )}
 
-        {this.props.game.containTransferWallet && (
-          <TabButton onClick={this.props.onhandleTransfer}>
-            {i18n.t("web.header.transfer")}
-          </TabButton>
-        )}
+      <TabButton onClick={props.onhandleWithdrawal}>
+        {i18n.t("web.account.withdrawal")}
+      </TabButton>
 
-        <TabButton onClick={this.props.onhandleWithdrawal}>
-          {i18n.t("web.account.withdrawal")}
-        </TabButton>
+      <TabButton onClick={props.onhandleDeposit}>
+        {i18n.t("web.header.deposit")}
+      </TabButton>
 
-        <TabButton onClick={this.props.onhandleDeposit}>
-          {i18n.t("web.header.deposit")}
-        </TabButton>
-
-        {/* <InboxContainer onClick={this.props.onhandleInboxClick}>
+      {/* <InboxContainer onClick={props.onhandleInboxClick}>
           <InboxCountLabel>
-            {this.props.account.info.message_num}
+            {props.account.info.message_num}
           </InboxCountLabel>
           <InboxIconImg src={InboxIconPNG}></InboxIconImg>
         </InboxContainer> */}
-      </Container>
-    );
-  }
-}
-const mapStateToProps = (state) => {
-  return {
-    // screenWidth: state.ui.screenWidth,
-    // screenHeight: state.ui.screenHeight,
-    mainBalance: state.wallet.mainBalance,
-    account: state.account,
-    game: state.game,
-  };
+    </Container>
+  );
 };
+
 export default MemberContainer;

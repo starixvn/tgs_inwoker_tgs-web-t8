@@ -135,7 +135,10 @@ class Sports extends Component {
     super(props);
 
     var sportsList = props.game.homePageGameList.filter((item) => {
-      return item.type === GameTypeEnum.SPORTS;
+      return (
+        item.type === GameTypeEnum.SPORTS ||
+        item.type === GameTypeEnum.RNGSPORTS
+      );
     });
 
     this.state = {
@@ -152,7 +155,10 @@ class Sports extends Component {
       this.props.game.homePageGameList.length
     ) {
       var sportsList = this.props.game.homePageGameList.filter((item) => {
-        return item.type === GameTypeEnum.SPORTS;
+        return (
+          item.type === GameTypeEnum.SPORTS ||
+          item.type === GameTypeEnum.RNGSPORTS
+        );
       });
 
       this.setState({
@@ -170,9 +176,33 @@ class Sports extends Component {
       this.props.showLogin(true);
     } else {
       Common.closePreviousPopup();
-      this.props.history.push(
-        "/" + i18n.language + "/sports/play/" + params + "/" + type
-      );
+      if (type === GameTypeEnum.RNGSPORTS) {
+        this.props.history.push("/" + i18n.language + "/sports/" + params);
+      } else if (params === "WGFM" || params === "WGVIA") {
+        if (document.getElementById("audio") != null)
+          document.getElementById("audio").volume = 0.0;
+        var win = Common.PopupCenter(
+          `/${i18n.language}/joinlobbygame/${type}/${params}`,
+          params,
+          1280,
+          720
+        );
+        // var win = window.open(
+        //   `/${i18n.language}/joinlobbygame/${type}/${params}`,
+        //   "gamewindow"
+        // );
+        var timer = setInterval(function () {
+          if (win.closed) {
+            clearInterval(timer);
+            if (document.getElementById("audio") != null)
+              document.getElementById("audio").volume = 1.0;
+          }
+        }, 1000);
+      } else {
+        this.props.history.push(
+          "/" + i18n.language + "/sports/play/" + params + "/" + type
+        );
+      }
     }
   };
   render() {

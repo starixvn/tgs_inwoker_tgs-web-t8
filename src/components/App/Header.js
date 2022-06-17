@@ -54,6 +54,7 @@ import { uiAction } from "../../api-services/actions/uiAction";
 import { GeneralService } from "../../api-services/services/GeneralService";
 import ErrorSwitcher from "../../utils/ErrorSwitcher";
 import { AppHistory } from "../../history/History";
+import { SortedMenuList } from "../../utils/HeaderSorting";
 
 const moment = require("moment");
 
@@ -678,16 +679,46 @@ class Header extends Component {
       GameTypeEnum.ESPORTS,
       GameTypeEnum.TABLEGAME,
       GameTypeEnum.FISH,
+      GameTypeEnum.RNGSPORTS,
     ];
     Common.closePreviousPopup();
     if (slotPageGameType.indexOf(gameType) >= 0) {
-      if (gameType == GameTypeEnum.SPORTS || gameType == GameTypeEnum.ESPORTS) {
+      if (
+        gameType === GameTypeEnum.SPORTS ||
+        gameType === GameTypeEnum.ESPORTS ||
+        gameType === GameTypeEnum.RNGSPORTS
+      ) {
         if (!this.props.account.token) {
           this.props.showLogin(true);
         } else {
-          this.props.history.push(
-            "/" + i18n.language + "/sports/play/" + gameCode + "/" + gameType
-          );
+          if (gameType === GameTypeEnum.RNGSPORTS) {
+            this.props.history.push(
+              "/" + i18n.language + "/sports/" + gameCode
+            );
+          } else if (gameCode === "WGFM" || gameCode === "WGVIA") {
+            if (document.getElementById("audio") != null)
+              document.getElementById("audio").volume = 0;
+            if (this.props.history.location.pathname.indexOf("play") >= 0) {
+              AppHistory.goBack();
+            }
+            var win = Common.PopupCenter(
+              `/${i18n.language}/joinlobbygame/${gameType}/${gameCode}`,
+              gameCode,
+              1280,
+              720
+            );
+            var timer = setInterval(function () {
+              if (win.closed) {
+                clearInterval(timer);
+                if (document.getElementById("audio") != null)
+                  document.getElementById("audio").volume = 1.0;
+              }
+            }, 1000);
+          } else {
+            this.props.history.push(
+              "/" + i18n.language + "/sports/play/" + gameCode + "/" + gameType
+            );
+          }
         }
       } else {
         this.props.history.push(`/${i18n.language}/${path}/${gameCode}`);
@@ -697,10 +728,19 @@ class Header extends Component {
         this.props.showLogin(true);
         return;
       }
+      if (document.getElementById("audio") != null)
+        document.getElementById("audio").volume = 0;
       if (this.props.history.location.pathname.indexOf("play") >= 0) {
         AppHistory.goBack();
       }
-      Common.PopupCenter(url, gameCode, 1280, 720);
+      var win = Common.PopupCenter(url, gameCode, 1280, 720);
+      var timer = setInterval(function () {
+        if (win.closed) {
+          clearInterval(timer);
+          if (document.getElementById("audio") != null)
+            document.getElementById("audio").volume = 1.0;
+        }
+      }, 1000);
     }
   };
   handleBookmarkClick = () => {
@@ -749,122 +789,24 @@ class Header extends Component {
       }
     });
   };
+  consolidateJoinGame = (game, item) => {
+    if (
+      game.type === GameTypeEnum.LOTTERYLOBBY ||
+      game.type === GameTypeEnum.LOBBY
+    ) {
+      this.handleJoinLotteryGame(game.abbreviation);
+    } else {
+      this.handleJoinGameClick(
+        game.type,
+        item.path,
+        game.abbreviation,
+        "/" + i18n.language + "/joingame/" + game.type + "/" + game.abbreviation
+      );
+    }
+  };
 
   render() {
     const { classes } = this.props;
-
-    var containEsports = this.props.game.homePageGameList.filter((game) => {
-      return game.type === GameTypeEnum.ESPORTS;
-    });
-
-    const MenuItemList = [
-      {
-        path: "live",
-        title: i18n.t("common.live"),
-        img: TopMenuLivePNG,
-        hoverImg: TopMenuLiveHoverPNG,
-        gameType: [GameTypeEnum.LIVELOBBY],
-        sorting: 1,
-        sortingGMO: 1,
-        sortingHK28: 1,
-        sortingPB: 2,
-        sortingSKY: 1,
-        sortingWLGHK: 1,
-      },
-      {
-        path: "chess",
-        title: i18n.t("common.chess"),
-        img: TopMenuQipaiPNG,
-        hoverImg: TopMenuQipaiHoverPNG,
-        gameType: [GameTypeEnum.QIPAILOBBY],
-        sorting: 2,
-        sortingGMO: 2,
-        sortingHK28: 3,
-        sortingPB: 8,
-        sortingSKY: 2,
-        sortingWLGHK: 2,
-      },
-      {
-        path: "sports",
-        title: i18n.t("common.sport"),
-        img: TopMenuSportsPNG,
-        hoverImg: TopMenuSportsHoverPNG,
-        gameType: [GameTypeEnum.SPORTS],
-        sorting: 3,
-        sortingGMO: 5,
-        sortingHK28: 2,
-        sortingPB: 3,
-        sortingSKY: 3,
-        sortingWLGHK: 3,
-      },
-      {
-        path: "esports",
-        title: i18n.t("common.esports"),
-        img: TopMenueSportsPNG,
-        hoverImg: TopMenueSportsHoverPNG,
-        gameType: [GameTypeEnum.ESPORTS],
-        sorting: 4,
-        sortingGMO: 7,
-        sortingHK28: 2,
-        sortingPB: 4,
-        sortingSKY: 7,
-        sortingWLGHK: 4,
-      },
-      {
-        path: "lottery",
-        title: i18n.t("common.lottery"),
-        img: TopMenuLotteryPNG,
-        hoverImg: TopMenuLotteryHoverPNG,
-        gameType: [GameTypeEnum.LOTTERYLOBBY],
-        sorting: 5,
-        sortingGMO: 6,
-        sortingHK28: 7,
-        sortingPB: 7,
-        sortingSKY: 8,
-        sortingWLGHK: 6,
-      },
-      {
-        path: `slots`,
-        title: i18n.t("common.slot"),
-        img: TopMenuTigerPNG,
-        hoverImg: TopMenuTigerHoverPNG,
-        gameType: [GameTypeEnum.SLOT],
-        sorting: 6,
-        sortingGMO: 8,
-        sortingHK28: 4,
-        sortingPB: 1,
-        sortingSKY: 5,
-        sortingWLGHK: 7,
-      },
-      {
-        path: `electron`,
-        title: i18n.t("common.electron"),
-        img: TopMenuSlotPNG,
-        hoverImg: TopMenuSlotHoverPNG,
-        gameType: [GameTypeEnum.TABLEGAME],
-        sorting: 7,
-        sortingGMO: 3,
-        sortingHK28: 6,
-        sortingPB: 5,
-        sortingSKY: 6,
-        sortingWLGHK: 8,
-      },
-      {
-        path: `fish`,
-        title: config.features.MenuItem_ShootFish
-          ? i18n.t("common.shootFish")
-          : i18n.t("common.fish"),
-        img: TopMenuFishPNG,
-        hoverImg: TopMenuFishHoverPNG,
-        gameType: [GameTypeEnum.FISH],
-        sorting: 8,
-        sortingGMO: 4,
-        sortingHK28: 5,
-        sortingPB: 6,
-        sortingSKY: 4,
-        sortingWLGHK: 5,
-      },
-    ];
 
     const settings = {
       className: "headerSubmenu",
@@ -963,7 +905,7 @@ class Header extends Component {
                     : classes.minMenu
                 }`}
               >
-                {MenuItemList.sort((a, b) => {
+                {SortedMenuList.sort((a, b) => {
                   if (config.features.MenuItem_Sorting_HK28) {
                     return a.sortingHK28 > b.sortingHK28 ? 1 : -1;
                   } else if (config.features.MenuItem_Sorting_WLGHK) {
@@ -1081,27 +1023,10 @@ class Header extends Component {
                                             }.png`}
                                             alt=""
                                             onClick={() => {
-                                              if (
-                                                game.type ===
-                                                  GameTypeEnum.LOTTERYLOBBY ||
-                                                game.type === GameTypeEnum.LOBBY
-                                              ) {
-                                                this.handleJoinLotteryGame(
-                                                  game.abbreviation
-                                                );
-                                              } else {
-                                                this.handleJoinGameClick(
-                                                  game.type,
-                                                  item.path,
-                                                  game.abbreviation,
-                                                  "/" +
-                                                    i18n.language +
-                                                    "/joingame/" +
-                                                    game.type +
-                                                    "/" +
-                                                    game.abbreviation
-                                                );
-                                              }
+                                              this.consolidateJoinGame(
+                                                game,
+                                                item
+                                              );
                                             }}
                                           ></GameImg>
                                           <GameTitle index={index}>
@@ -1175,28 +1100,10 @@ class Header extends Component {
                                               }.png`}
                                               alt=""
                                               onClick={() => {
-                                                if (
-                                                  game.type ===
-                                                    GameTypeEnum.LOTTERYLOBBY ||
-                                                  game.type ===
-                                                    GameTypeEnum.LOBBY
-                                                ) {
-                                                  this.handleJoinLotteryGame(
-                                                    game.abbreviation
-                                                  );
-                                                } else {
-                                                  this.handleJoinGameClick(
-                                                    game.type,
-                                                    item.path,
-                                                    game.abbreviation,
-                                                    "/" +
-                                                      i18n.language +
-                                                      "/joingame/" +
-                                                      game.type +
-                                                      "/" +
-                                                      game.abbreviation
-                                                  );
-                                                }
+                                                this.consolidateJoinGame(
+                                                  game,
+                                                  item
+                                                );
                                               }}
                                             ></GameImg>
                                             <GameTitle index={index}>

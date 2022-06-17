@@ -102,9 +102,9 @@ class Withdrawal extends Component {
         });
       }
     }
-    this.countDownInterval=setInterval(()=>{   
+    this.countDownInterval = setInterval(() => {
       this.props.getWithdrawalChannel(); // call api every 30 min
-    },30*60*1000);
+    }, 30 * 60 * 1000);
   }
 
   componentDidUpdate(preProps) {
@@ -390,7 +390,7 @@ class Withdrawal extends Component {
                 return (
                   <NameVerification token={this.props.token}></NameVerification>
                 );
-              } 
+              }
               // else if (
               //     (((this.props.account.info.member_email === null ||
               //       this.props.account.info.member_email === "") &&
@@ -401,8 +401,8 @@ class Withdrawal extends Component {
               //         to={`/${i18n.language}/account/profile/member_email`}
               //       ></Redirect>
               //     );
-                
-              // } 
+
+              // }
               else {
                 if (
                   config.features.AddCard_NotAllowedEditDelete &&
@@ -456,6 +456,9 @@ class Withdrawal extends Component {
                               account={this.props.account}
                               mainBalance={this.props.wallet.mainBalance}
                               minWithdrawLimit={this.state.minWithdrawLimit}
+                              onhandleRefreshClick={
+                                this.props.onhandleRefreshClick
+                              }
                             ></Main>
                           );
                         case 2:
@@ -532,7 +535,9 @@ const mapDispatchToProps = (dispatch) => {
         type: RESET_WALLETRESULT,
       }),
     doWithdraw: (amount, password, user_account_id, note) =>
-      dispatch(walletAction.doWithdraw(amount, user_account_id, password, note)),
+      dispatch(
+        walletAction.doWithdraw(amount, user_account_id, password, note)
+      ),
   };
 };
 export default withRouter(

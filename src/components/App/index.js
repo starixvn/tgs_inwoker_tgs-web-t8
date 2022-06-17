@@ -49,6 +49,7 @@ import AnotherFloatPanel from "./Home/AnotherFloatPanel";
 import eSports from "./eSports";
 import config from "../../config/config";
 import LiveChat from "../Share/live-chat";
+import CustomLibrary from "./Sports/CustomLibrary.js";
 
 const baseRouteUrl = Common.baseRouteUrl;
 const Main = styled.div`
@@ -201,6 +202,19 @@ class App extends Component {
         // this.props.getVIP();
       }
     }
+    if (config.features.ForceRedirectAddCard) {
+      if (
+        this.props.account.token !== null &&
+        this.props.wallet.bankCardList <= 0 &&
+        (preProps.location.pathname !== this.props.location.pathname ||
+            preProps.account.token === null)
+      ) {
+        if(this.props.location.pathname !== `/${i18n.language}/account/withdrawal`)
+        {
+          AppHistory.push("/" + i18n.language + "/account/withdrawal?do=addCard");
+        }
+      }
+    }
     if (
       preProps.game.providerList.length !==
         this.props.game.providerList.length &&
@@ -342,6 +356,16 @@ class App extends Component {
                       />
                       <Route
                         exact
+                        path={baseRouteUrl + "/sports/:platform"}
+                        component={CustomLibrary}
+                      />
+                      <Route
+                        exact
+                        path={baseRouteUrl + "/sports/c/:type/:params"}
+                        component={SlotPlay}
+                      />
+                      <Route
+                        exact
                         path={baseRouteUrl + "/lottery"}
                         component={Lottery}
                       />
@@ -393,14 +417,12 @@ class App extends Component {
                         render={(props) => <PromotionDetails />}
                       />
                       <Route
-                      exact
-                      path={baseRouteUrl + "/vip"}
-                      render={(props) => (
-                        <VIP />
-                      )}
-                    />
-                   
-                    {/* <Route
+                        exact
+                        path={baseRouteUrl + "/vip"}
+                        render={(props) => <VIP />}
+                      />
+
+                      {/* <Route
                       exact
                       path={baseRouteUrl + "/registersuccess/:username"}
                       component={RegisterSuccess}
