@@ -594,7 +594,11 @@ class AddCard extends Component {
           })()}
 
           <Button
-            name={i18n.t("common.nextStep")}
+            name={
+              config.features.Register_CustomFlow_IDR
+                ? i18n.t("web.register.btn")
+                : i18n.t("common.nextStep")
+            }
             width={255}
             handleClick={this.handleNextClick}
           ></Button>

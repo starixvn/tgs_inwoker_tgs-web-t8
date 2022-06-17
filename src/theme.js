@@ -26,6 +26,14 @@ export const themeRed = {
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
   balance: "#fde73f",
+  pcHeaderText: "#fff",
+  pcHeaderTextHover: "#fde73f",
+  pcHeaderRightMenu: "#f6f6f6",
+  pcHeaderRightMenuHover: "#fde73f",
+
+  popoverBackground: "rgba(255,255,255,0.95)",
+  popoverGameTypeText: "#c40511",
+  popoverSubWalletText: "#000",
 };
 
 export const themeBlue = {
@@ -56,6 +64,13 @@ export const themeBlue = {
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
   balance: "#fde73f",
+  pcHeaderText: "#fff",
+  pcHeaderTextHover: "#fde73f",
+  pcHeaderRightMenu: "#f6f6f6",
+  pcHeaderRightMenuHover: "#fde73f",
+  popoverBackground: "rgba(255,255,255,0.95)",
+  popoverGameTypeText: "#1b86c7",
+  popoverSubWalletText: "#000",
 };
 
 export const themeBlack = {
@@ -86,6 +101,13 @@ export const themeBlack = {
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
   balance: "#fde73f",
+  pcHeaderText: "#fff",
+  pcHeaderTextHover: "#fde73f",
+  pcHeaderRightMenu: "#f6f6f6",
+  pcHeaderRightMenuHover: "#fde73f",
+  popoverBackground: "rgba(255,255,255,0.95)",
+  popoverGameTypeText: "#000",
+  popoverSubWalletText: "#000",
 };
 export const MESS8 = {
   variant: "red",
@@ -111,6 +133,14 @@ export const MESS8 = {
   body: "#F0EFF5",
   bodyBackground: "#F0EFF5",
   balance: "#fde73f",
+  pcHeaderText: "#fff",
+  pcHeaderTextHover: "#fde73f",
+  pcHeaderRightMenu: "#f6f6f6",
+  pcHeaderRightMenuHover: "#fde73f",
+
+  popoverBackground: "rgba(255,255,255,0.95)",
+  popoverGameTypeText: "#c40511",
+  popoverSubWalletText: "#000",
 };
 export const wapT2 = {
   appbar: "#C69C6A",
@@ -143,6 +173,14 @@ export const wapT2 = {
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
   balance: "#fde73f",
+  pcHeaderText: "#fff",
+  pcHeaderTextHover: "#fde73f",
+  pcHeaderRightMenu: "#f6f6f6",
+  pcHeaderRightMenuHover: "#fde73f",
+
+  popoverBackground: "rgba(0,0,0,0.95)",
+  popoverGameTypeText: "#fff",
+  popoverSubWalletText: "#fff",
 };
 
 export const wapT3 = {
@@ -176,6 +214,14 @@ export const wapT3 = {
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
   balance: "#fde73f",
+  pcHeaderText: "#fff",
+  pcHeaderTextHover: "#fde73f",
+  pcHeaderRightMenu: "#f6f6f6",
+  pcHeaderRightMenuHover: "#fde73f",
+
+  popoverBackground: "rgba(0,0,0,0.95)",
+  popoverGameTypeText: "#fff",
+  popoverSubWalletText: "#fff",
 };
 
 export const wapT4 = {
@@ -219,6 +265,14 @@ export const wapT4 = {
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
   balance: "#fde73f",
+  pcHeaderText: "#fff",
+  pcHeaderTextHover: "#fde73f",
+  pcHeaderRightMenu: "#f6f6f6",
+  pcHeaderRightMenuHover: "#fde73f",
+
+  popoverBackground: "rgba(0,0,0,0.95)",
+  popoverGameTypeText: "#fff",
+  popoverSubWalletText: "#fff",
 };
 
 export const wapT5 = {
@@ -250,6 +304,14 @@ export const wapT5 = {
   })
   no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
   balance: "#fde73f",
+  pcHeaderText: "#fff",
+  pcHeaderTextHover: "#fde73f",
+  pcHeaderRightMenu: "#f6f6f6",
+  pcHeaderRightMenuHover: "#fde73f",
+
+  popoverBackground: "rgba(255,255,255,0.95)",
+  popoverGameTypeText: "#C69C6A",
+  popoverSubWalletText: "#000",
 };
 
 export const wapT6 = {
@@ -259,7 +321,7 @@ export const wapT6 = {
   body: "#121315",
   bodyBackground: "#121315",
   variant: "wapT6",
-  primary: "#0080FF",
+  primary: "#0F79B7",
   primaryRgb: "13, 98, 164",
   primaryText: "#fff",
   primaryGradient: "#C69C6A",
@@ -270,15 +332,19 @@ export const wapT6 = {
   tertiary: "rgba(255, 255, 255, 1)",
   tertiaryText: "rgba(255, 255, 255, 0.5)",
   buttonText: "#ffffff",
-  buttonBackground: "#0080FF",
+  buttonBackground: "#0F79B7",
   buttonText2: "#fff",
   bottomnav: "#464E69",
   bottomNavAction: "#fff",
   tabbar: "#121315",
   cardText: "#000",
   balance: "#fde73f",
-  supportBg: "#121315",
+  supportBg: "#0F79B7",
   gameTab: "#fff",
+
+  popoverBackground: "rgba(255,255,255,0.95)",
+  popoverGameTypeText: "#C69C6A",
+  popoverSubWalletText: "#000",
 };
 
 export const wapT7 = {
@@ -288,7 +354,7 @@ export const wapT7 = {
   body: "#121315",
   bodyBackground: "#121315",
   variant: "wapT6",
-  primary: "#0080FF",
+  primary: "#0F79B7",
   primaryRgb: "13, 98, 164",
   primaryText: "#fff",
   primaryGradient: "#C69C6A",
@@ -299,7 +365,7 @@ export const wapT7 = {
   tertiary: "rgba(255, 255, 255, 1)",
   tertiaryText: "rgba(255, 255, 255, 0.5)",
   buttonText: "#ffffff",
-  buttonBackground: "#0080FF",
+  buttonBackground: "#0F79B7",
   buttonText2: "#fff",
   bottomnav: "#2B2A2A",
   bottomNavAction: "#fff",
@@ -308,10 +374,13 @@ export const wapT7 = {
   balance: "#fde73f",
   supportBg: "#121315",
   gameTab: "#fff",
+
+  popoverBackground: "rgba(255,255,255,0.95)",
+  popoverGameTypeText: "#C69C6A",
+  popoverSubWalletText: "#000",
 };
 
 export const wapT8 = {
-  pcAppBar: "#000",
   appbar: "#fff",
   loginBody: "#F0EFF5",
   loginText: "#676767",
@@ -321,7 +390,7 @@ export const wapT8 = {
   primary: "#658AF8",
   primaryRgb: "101, 138, 248",
   primaryText: "#000",
-  primaryGradient: "#889ddf",
+  primaryGradient: "#658AF8",
   primaryGradientRgb: "101, 138, 248",
   primaryHightlight: "#fde73f",
   secondary: "#676767",
@@ -349,7 +418,10 @@ export const wapT8 = {
   gamelisterSelectedText: "#fff",
   gamelisterSelectedIcon: "#fff",
   gamelisterSelectedButton: " rgb(140,166,241)",
-  pcFooter: "background: #262626;",
+
+  popoverBackground: "rgba(0,0,0,0.95)",
+  popoverGameTypeText: "#fff",
+  popoverSubWalletText: "#fff",
 };
 
 export const GMO = {
@@ -391,6 +463,88 @@ export const GMO = {
   gamelisterSelectedIcon: "#c69c6a",
   gamelisterSelectedButton:
     "linear-gradient(180deg, #f7f1d3 25%,  #d1b98f 100%)",
+
+  popoverBackground: "rgba(0,0,0,0.95)",
+  popoverGameTypeText: "#fff",
+  popoverSubWalletText: "#fff",
+};
+
+export const PB = {
+  pcAppBar: "#FBFBFF",
+  appbar: "#FBFBFF",
+  body: "#FBFBFF",
+  variant: "PB",
+  loginBody: "#fff",
+  loginText: "#404040",
+  primary: "#0F79B7",
+  primaryRgb: "196, 5, 17",
+  primaryText: "#0F79B7",
+  primaryGradient: "#0F79B7",
+  primaryGradientRgb: "145, 3, 12",
+  primaryHightlight: "#0F79B7",
+  secondary: "#404040",
+  secondaryText: "rgba(0,0,0,0.5)",
+  tertiary: "rgba(255, 255, 255, 1)",
+  tertiaryText: "rgba(255, 255, 255, 0.5)",
+  //new addition to compensate wap-t2
+  buttonBackground: "#0F79B7",
+  buttonText: "#0F79B7",
+  buttonText2: "#FBFBFF",
+  bottomnav: "#f5f5f5",
+  bottomNavAction: "#404040",
+  bodyBackground: "#F0EFF5",
+  supportBg: `url(${
+    process.env.PUBLIC_URL + `/assets/images/wapp/resource/T2/supportbg.png`
+  })
+  no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  balance: "#0F79B7",
+  pcHeaderText: "#000",
+  pcHeaderTextHover: "#0F79B7",
+  pcHeaderRightMenu: "#0F79B7",
+  pcHeaderRightMenuHover: "#0F79B7",
+
+  popoverBackground: "rgba(0,0,0,0.95)",
+  popoverGameTypeText: "#fff",
+  popoverSubWalletText: "#fff",
+};
+
+export const wapT10 = {
+  pcAppBar: "#FBFBFF",
+  appbar: "#FBFBFF",
+  body: "#FBFBFF",
+  variant: "PB",
+  loginBody: "#fff",
+  loginText: "#404040",
+  primary: "#4bc5cb",
+  primaryRgb: "196, 5, 17",
+  primaryText: "#4bc5cb",
+  primaryGradient: "#4bc5cb",
+  primaryGradientRgb: "145, 3, 12",
+  primaryHightlight: "#4bc5cb",
+  secondary: "#404040",
+  secondaryText: "rgba(0,0,0,0.5)",
+  tertiary: "rgba(255, 255, 255, 1)",
+  tertiaryText: "rgba(255, 255, 255, 0.5)",
+  //new addition to compensate wap-t2
+  buttonBackground: "#4bc5cb",
+  buttonText: "#4bc5cb",
+  buttonText2: "#FBFBFF",
+  bottomnav: "#f5f5f5",
+  bottomNavAction: "#404040",
+  bodyBackground: "#F0EFF5",
+  supportBg: `url(${
+    process.env.PUBLIC_URL + `/assets/images/wapp/resource/T2/supportbg.png`
+  })
+  no-repeat center,  linear-gradient(180deg, rgb(5 30 74) 40%, rgba(12,21,37,1) 100%)`,
+  balance: "#4bc5cb",
+  pcHeaderText: "#000",
+  pcHeaderTextHover: "#4bc5cb",
+  pcHeaderRightMenu: "#4bc5cb",
+  pcHeaderRightMenuHover: "#4bc5cb",
+
+  popoverBackground: "rgba(255,255,255,0.95)",
+  popoverGameTypeText: "#4bc5cb",
+  popoverSubWalletText: "#000",
 };
 
 export const wapT9 = {
@@ -439,6 +593,9 @@ export const wapT9 = {
     "linear-gradient(80deg, rgb(7, 24, 66) 25%, rgb(21, 44, 98) 100%)",
   pcFooter:
     "background:linear-gradient(0deg, rgb(2, 31, 96) 25%, rgba(95,113,162,0) 100%);height:200px;display:flex;align-items:center",
+  popoverBackground: "rgba(255,255,255,0.95)",
+  popoverGameTypeText: "#4bc5cb",
+  popoverSubWalletText: "#000",
 };
 
 export const themeList = {
@@ -455,5 +612,7 @@ export const themeList = {
   MESS8: MESS8,
   "28BET": MESS8,
   GMO: GMO,
+  PB: PB,
   wapT9: wapT9,
+  wapT10: wapT10,
 };

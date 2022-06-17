@@ -87,6 +87,7 @@ const featureList = {
 
     NewTransferUI: false,
     ForceRedirectAddCard: false,
+    Register_CustomFlow_IDR: false,
   },
 };
 export default featureList;

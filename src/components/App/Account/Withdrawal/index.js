@@ -82,16 +82,33 @@ class Withdrawal extends Component {
 
   urlParams = new URLSearchParams(this.props.location.search);
   async componentDidMount() {
-    WalletService.GetMinWithdrawLimit().then((e) => {
-      if (e.IsSuccess) {
-        this.setState({
-          ...this.state,
-          minWithdrawLimit: e.data,
-        });
-      }
-    });
-    if (this.props.wallet.bankCardList.length === 0)
-      this.props.getBankCardList();
+    this.props.getWithdrawalChannel();
+    if(!config.features.Register_CustomFlow_IDR)
+    {
+      WalletService.GetMinWithdrawLimit().then((e) => {
+        if (e.IsSuccess) {
+          this.setState({
+            ...this.state,
+            minWithdrawLimit: e.data,
+          });
+        }
+      });
+      if (this.props.wallet.bankCardList.length === 0)
+        this.props.getBankCardList();
+    }
+    else if((config.features.Register_CustomFlow_IDR && this.props.account.info.bankInfoAuthentication))
+    {
+      WalletService.GetMinWithdrawLimit().then((e) => {
+        if (e.IsSuccess) {
+          this.setState({
+            ...this.state,
+            minWithdrawLimit: e.data,
+          });
+        }
+      });
+      if (this.props.wallet.bankCardList.length === 0)
+        this.props.getBankCardList();
+    }
 
     if (this.urlParams.has("do")) {
       const value = this.urlParams.get("do");
@@ -194,7 +211,13 @@ class Withdrawal extends Component {
   handleAddCardNextClick = (channelid, bankType, detail) => {
     //clear url params
     window.history.pushState({}, null, "withdrawal");
-    this.props.addBankCard(channelid, bankType, detail);
+    if(config.features.Register_CustomFlow_IDR){
+      this.props.initBankCard(channelid, bankType, detail);
+    }
+    else
+    {
+      this.props.addBankCard(channelid, bankType, detail);
+    }
   };
 
   // handleBindCardClick = (number, password) => {
@@ -530,6 +553,9 @@ const mapDispatchToProps = (dispatch) => {
     deleteBankCard: (id) => dispatch(walletAction.deleteBankCard(id)),
     addBankCard: (channelid, bankType, detail) =>
       dispatch(walletAction.addBankCard(channelid, bankType, detail)),
+    initBankCard: (channelid, bankType, detail) =>
+      dispatch(walletAction.initBankCard(channelid, bankType, detail)),
+    getWithdrawalChannel: () => dispatch(walletAction.getWithdrawalChannel()),
     resetResult: () =>
       dispatch({
         type: RESET_WALLETRESULT,

@@ -9,7 +9,7 @@ import i18n from "../../utils/i18n";
 import Common from "../../utils/Common";
 import config from "../../config/config";
 import { SortedMenuList } from "../../utils/HeaderSorting";
-import { Popover } from "@material-ui/core";
+import CustomPopover from "../Share/custompopover";
 export const rotateKeyFrame = keyframes`
   0% {
     transform:rotate(0deg)
@@ -190,26 +190,36 @@ const GameType = styled.div`
 `;
 
 const GameTypeName = styled.div`
-  font-weight: bold;
-  padding-bottom: 2.5px;
+  padding-bottom: 10px;
+  color: ${({ theme }) => theme.popoverText};
+  opacity: 0.65;
 `;
 
 const BrandAndBalance = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 2.5px 0;
+  color: ${({ theme }) => theme.popoverText};
 `;
 
 const Brand = styled.div`
   padding-left: 5px;
   font-size: 12px;
-  opacity: 0.75;
+  font-weight: bold;
 `;
 
 const Balance = styled.div`
   text-align: right;
+  opacity: 0.75;
+`;
+
+const BrandAndBalanceButBigger = styled(BrandAndBalance)`
+  border-bottom: solid 1px #000;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
   font-weight: bold;
   color: ${({ theme }) => theme.primary};
+  font-size: 20px;
 `;
 
 const MemberContainer = (props) => {
@@ -249,7 +259,11 @@ const MemberContainer = (props) => {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
+  const totalBalance =
+    props.wallet.mainBalance +
+    props.game.providerList
+      .filter((item) => item.status === 0 && item.transferwallet === true)
+      .reduce((a, v) => (a = a + v.balance), 0);
 
   return (
     <Container>
@@ -273,55 +287,49 @@ const MemberContainer = (props) => {
         <RefreshBalance onClick={props.onhandleRefreshBalanceClick}>
           <RefreshBalanceIcon></RefreshBalanceIcon>
         </RefreshBalance>
-        <Popover
-          id={id}
+        <CustomPopover
           open={open}
           anchorEl={anchorEl}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "center",
-          }}
+          handleClose={handleClose}
         >
-          <CustomPopoverContent>
-            {SortedMenuList.map((item, key) => {
-              return (
-                <GameType>
-                  <GameTypeName>{i18n.t(item.title)}</GameTypeName>
-                  {props.game.homePageGameList
-                    .filter((game) => {
-                      return item.gameType.indexOf(game.type) >= 0;
-                    })
-                    .map((brand, index) => {
-                      return props.game.providerList
-                        .filter((item) => {
-                          return item.abbreviation === brand.abbreviation;
-                        })
-                        .map((data, index) => {
-                          return (
-                            <BrandAndBalance>
-                              <Brand>
-                                {i18n.t(`${data.abbreviation}.${item.path}`)}
-                              </Brand>
-                              <Balance>
-                                {data.maintenance === 1
-                                  ? i18n.t("transfer.maintenance")
-                                  : "$" +
-                                    Common.formatNumberWithCommas(data.balance)}
-                              </Balance>
-                            </BrandAndBalance>
-                          );
-                        });
-                    })}
-                </GameType>
-              );
-            })}
-          </CustomPopoverContent>
-        </Popover>
+          <div>
+            <BrandAndBalanceButBigger>
+              <div>{i18n.t("web.header.mainAccount")}</div>
+              <div>{Common.formatNumberWithThousand(totalBalance)}</div>
+            </BrandAndBalanceButBigger>
+          </div>
+          {SortedMenuList.map((item, key) => {
+            return (
+              <GameType>
+                <GameTypeName>{i18n.t(item.title)}</GameTypeName>
+                {props.game.homePageGameList
+                  .filter((game) => {
+                    return item.gameType.indexOf(game.type) >= 0;
+                  })
+                  .map((brand, index) => {
+                    return props.game.providerList
+                      .filter((item) => {
+                        return item.abbreviation === brand.abbreviation;
+                      })
+                      .map((data, index) => {
+                        return (
+                          <BrandAndBalance>
+                            <Brand>
+                              {i18n.t(`${data.abbreviation}.${item.path}`)}
+                            </Brand>
+                            <Balance>
+                              {data.maintenance === 1
+                                ? i18n.t("transfer.maintenance")
+                                : Common.formatNumberWithCommas(data.balance)}
+                            </Balance>
+                          </BrandAndBalance>
+                        );
+                      });
+                  })}
+              </GameType>
+            );
+          })}
+        </CustomPopover>
       </BalanceContainer>
 
       <BtnLogout onClick={props.onhandleLogout}>
