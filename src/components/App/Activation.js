@@ -390,7 +390,7 @@ function Activation(props) {
         return;
       }
 
-      AccountService.Activation(username, password, areacode, phone).then(
+      AccountService.Activation(areacode, phone).then(
         async (response) => {
           if (response.IsSuccess) {
             setSecurityKey(response.data);
