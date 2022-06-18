@@ -404,26 +404,27 @@ function Activation(props) {
         );
         return;
       }
-      var result = null; 
-      if(!isLoggedIn)
-      {
+      var result = null;
+      if (!isLoggedIn) {
         result = await AccountService.Login(username, password);
       }
-      if ((result!==null && result.IsSuccess) || isLoggedIn) {
+      if ((result !== null && result.IsSuccess) || isLoggedIn) {
         setIsLoggedIn(true);
-        AccountService.Activation(areacode, phone).then(async (response) => {
-          if (response.IsSuccess) {
-            setSecurityKey(response.data);
-            props.enqueueSnackbar(i18n.t("common.msgTokenSent"), {
-              variant: "info",
-            });
-            setCountdown(60);
-          } else {
-            props.enqueueSnackbar(response.info, {
-              variant: "warning",
-            });
+        AccountService.Activation("", "", areacode, phone).then(
+          async (response) => {
+            if (response.IsSuccess) {
+              setSecurityKey(response.data);
+              props.enqueueSnackbar(i18n.t("common.msgTokenSent"), {
+                variant: "info",
+              });
+              setCountdown(60);
+            } else {
+              props.enqueueSnackbar(response.info, {
+                variant: "warning",
+              });
+            }
           }
-        });
+        );
       }
     }
   };
