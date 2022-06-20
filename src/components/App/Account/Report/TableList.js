@@ -199,7 +199,7 @@ function TableList(props) {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const handleDoubleClick = (e, id) => {
+  const handleDoubleClick = (id) => {
     enqueueSnackbar(i18n.t("affiliate.copied"), {
       variant: "success",
     });
