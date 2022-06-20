@@ -594,7 +594,7 @@ export const wapT9 = {
   pcFooter:
     "background:linear-gradient(0deg, rgb(2, 31, 96) 25%, rgba(95,113,162,0) 100%);height:200px;display:flex;align-items:center",
   popoverBackground: "rgba(255,255,255,0.95)",
-  popoverGameTypeText: "#4bc5cb",
+  popoverGameTypeText: "#cea866",
   popoverSubWalletText: "#000",
 };
 

@@ -191,7 +191,7 @@ const GameType = styled.div`
 
 const GameTypeName = styled.div`
   padding-bottom: 10px;
-  color: ${({ theme }) => theme.popoverText};
+  color: ${({ theme }) => theme.popoverGameTypeText};
   opacity: 0.65;
 `;
 
@@ -205,7 +205,6 @@ const BrandAndBalance = styled.div`
 const Brand = styled.div`
   padding-left: 5px;
   font-size: 12px;
-  font-weight: bold;
 `;
 
 const Balance = styled.div`
