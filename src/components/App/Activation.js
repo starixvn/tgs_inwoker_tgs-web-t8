@@ -411,7 +411,7 @@ function Activation(props) {
       }
       if ((result!==null && result.IsSuccess) || isLoggedIn) {
         setIsLoggedIn(true);
-        AccountService.Activation(areacode, phone).then(async (response) => {
+        AccountService.Activation("","",areacode, phone).then(async (response) => {
           if (response.IsSuccess) {
             setSecurityKey(response.data);
             props.enqueueSnackbar(i18n.t("common.msgTokenSent"), {
