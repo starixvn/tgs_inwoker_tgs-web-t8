@@ -268,7 +268,7 @@ const MemberContainer = (props) => {
   return (
     <Container>
       <BalanceContainer>
-        <span>{i18n.t("web.header.mainAccount")}</span>
+        <span>{i18n.t("web.header.mainAccount")}:</span>
         <BalanceAmountLabel
           onClick={(e) => {
             handleTransfer(e);
