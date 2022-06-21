@@ -453,24 +453,29 @@ class GuestContainer extends Component {
             AccountService.VerifyActivation(
               this.state.securityKey,
               "123456"
-            ).then(async (response) => {
-              AccountService.ActivationEmail(email).then(async (response) => {
-                if (response.IsSuccess) {
-                  this.state.securityKey = response.data;
-                  AccountService.VerifyActivationEmail(
-                    this.state.securityKey,
-                    "123456"
-                  ).then(async (response) => {
-                    this.handleLoginSuccess(result.data);
-                  });
-                }
-              });
-            });
-          } else {
-            this.handleLoginSuccess(result.data);
-          }
+            )
+            // .then(async (response) => {
+              
+            // });
+          } 
+          // else {
+          //   this.handleLoginSuccess(result.data);
+          // }
         }
       );
+      AccountService.ActivationEmail(email).then(async (response) => {
+        if (response.IsSuccess) {
+          this.state.securityKey = response.data;
+          AccountService.VerifyActivationEmail(
+            this.state.securityKey,
+            "123456"
+          )
+          // .then(async (response) => {
+          //   this.handleLoginSuccess(result.data);
+          // });
+        }
+      });
+      this.handleLoginSuccess(result.data);
     }
   };
   handleCloseSelfControlDialog = (token) => {
