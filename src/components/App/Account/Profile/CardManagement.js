@@ -66,17 +66,46 @@ class CardManagement extends Component {
   }
 
   async componentDidMount() {
-    if (this.props.wallet.bankCardList.length === 0)
-      this.props.getBankCardList();
-    if (this.props.wallet.withdrawalList.length === 0)
-      this.props.getWithdrawalChannel();
-    if (this.props.match.params.type === "edit") {
-      this.setState({ ...this.state, displayView: 1 });
-    } else if (this.props.match.params.type === "add") {
-      this.setState({ ...this.state, displayView: 2 });
+    if (this.props.token) {
+      if(!config.features.Register_CustomFlow_IDR)
+      {
+        if (this.props.wallet.bankCardList.length === 0)
+          this.props.getBankCardList();
+      }
+      else if((config.features.Register_CustomFlow_IDR && this.props.account.info.bankInfoAuthentication))
+      {
+        if (this.props.wallet.bankCardList.length === 0)
+          this.props.getBankCardList();
+      }
+      if (this.props.wallet.withdrawalList.length === 0)
+        this.props.getWithdrawalChannel();
+      if (this.props.match.params.type === "edit") {
+        this.setState({ ...this.state, displayView: 1 });
+      } else if (this.props.match.params.type === "add") {
+        this.setState({ ...this.state, displayView: 2 });
+      }
     }
   }
   componentDidUpdate(preProps) {
+    if (this.props.token !== null && preProps.token !== this.props.token) {
+      if(!config.features.Register_CustomFlow_IDR)
+      {
+        if (this.props.wallet.bankCardList.length === 0)
+          this.props.getBankCardList();
+      }
+      else if((config.features.Register_CustomFlow_IDR && this.props.account.info.bankInfoAuthentication))
+      {
+        if (this.props.wallet.bankCardList.length === 0)
+          this.props.getBankCardList();
+      }
+      if (this.props.wallet.withdrawalList.length === 0)
+        this.props.getWithdrawalChannel();
+      if (this.props.match.params.type === "edit") {
+        this.setState({ ...this.state, displayView: 1 });
+      } else if (this.props.match.params.type === "add") {
+        this.setState({ ...this.state, displayView: 2 });
+      }
+    }
     if (
       preProps.wallet.deleteBankCardResult !==
         this.props.wallet.deleteBankCardResult &&
@@ -134,7 +163,17 @@ class CardManagement extends Component {
   };
 
   handleAddCardNextClick = (channelid, bankType, detail) => {
-    this.props.addBankCard(channelid, bankType, detail);
+    //clear url params
+    window.history.pushState({}, null, "withdrawal");
+    if(config.features.Register_CustomFlow_IDR){
+      this.props.initBankCard(channelid, bankType, detail).then((response)=>{
+        this.props.getAccountInfo();
+      });
+    }
+    else
+    {
+      this.props.addBankCard(channelid, bankType, detail);
+    }
   };
 
   handleDeleteCardClick = (id) => {
@@ -181,6 +220,7 @@ class CardManagement extends Component {
             withdrawalList={this.props.wallet.withdrawalList}
             onhandleBackClick={this.handleBacktoProfile}
             showBack={true}
+            isDeposit={false}
           ></AddCard>
         );
       case 3:
@@ -191,6 +231,7 @@ class CardManagement extends Component {
             onhandleCSClick={this.handleCSClick}
             backButtonText={i18n.t("card.success.goProfile")}
             bankCardList={this.props.wallet.bankCardList}
+            isDeposit={false}
           ></AddCardSuccess>
         );
       default:
@@ -214,6 +255,7 @@ class CardManagement extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    token: state.account.token,
     account: state.account,
     wallet: state.wallet,
   };
@@ -226,6 +268,8 @@ const mapDispatchToProps = (dispatch) => {
     deleteBankCard: (id) => dispatch(walletAction.deleteBankCard(id)),
     addBankCard: (channelid, bankType, detail) =>
       dispatch(walletAction.addBankCard(channelid, bankType, detail)),
+    initBankCard: (channelid, bankType, detail) =>
+      dispatch(walletAction.initBankCard(channelid, bankType, detail)),
     getWithdrawalChannel: () => dispatch(walletAction.getWithdrawalChannel()),
     resetResult: () =>
       dispatch({
@@ -235,6 +279,7 @@ const mapDispatchToProps = (dispatch) => {
     showDialog: (payload) => {
       dispatch({ type: SHOWING_DIALOG, payload });
     },
+    getAccountInfo: () => dispatch(accountAction.getAccountInfo()),
   };
 };
 export default withRouter(

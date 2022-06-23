@@ -170,13 +170,13 @@ class App extends Component {
               bankInfoAuthentication = response.data.bankinfoauthentication; 
             });
             if (config.features.ForceRedirectAddCard && !bankInfoAuthentication) {
-              AppHistory.push("/" + i18n.language + "/account/withdrawal?do=addCard");
+              AppHistory.push("/" + i18n.language + "/account/bankcard/add");
               return;
             }
             // this.props.checkGame();
             // this.props.getBankList();
             this.props.getBalanceList();
-
+            
             this.props.getMessageList(i18n.language, 0, 99);
             this.props.getBankCardList();
             this.props.getAutoTransferStatus();
@@ -207,6 +207,25 @@ class App extends Component {
         this.props.getPromotionList(i18n.language);
 
         // this.props.getVIP();
+      }
+    }
+    if (config.features.ForceRedirectAddCard) {
+      if (
+        this.props.general.token !== null &&
+        this.props.account.token !== null &&
+        (this.props.account.info.bankInfoAuthentication !== undefined) &&
+        !this.props.account.info.bankInfoAuthentication &&
+        this.props.location.pathname !== `/${i18n.language}/account/bankcard/add`
+      ) {
+        if (
+          this.props.location.pathname !==
+          `/${i18n.language}/account/bankcard/add`
+        ) {
+          AppHistory.push(
+            "/" + i18n.language + "/account/bankcard/add"
+          );
+          return;
+        }
       }
     }
     if (

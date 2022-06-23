@@ -498,7 +498,7 @@ class GuestContainer extends Component {
           bankInfoAuthentication = response.data.bankinfoauthentication;
         }
       });
-      if(!config.features.Register_CustomFlow_IDR)
+      if(!config.features.Register_CustomFlow_IDR || (config.features.Register_CustomFlow_IDR && bankInfoAuthentication))
       {    
         this.props.getBankCardList();
         this.props.getMessageList(i18n.language, 0, 99);
@@ -522,7 +522,7 @@ class GuestContainer extends Component {
       ) {
         if (config.features.NavigateToAddCard) {
           this.props.history.push(
-            "/" + i18n.language + "/account/withdrawal?do=addCard"
+            "/" + i18n.language + "/account/bankcard/add"
           );
         }
       }

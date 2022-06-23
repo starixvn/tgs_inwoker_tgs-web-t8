@@ -67,7 +67,11 @@ function AddCardSuccess(props) {
         <Button
           name={props.backButtonText}
           width={255}
-          handleClick={props.onhandleBackClick}
+          handleClick={
+            props.isDeposit
+              ? props.onhandleGoDepositClick
+              : props.onhandleBackClick
+          }
         ></Button>
       </ButtonContainer>
     </Container>

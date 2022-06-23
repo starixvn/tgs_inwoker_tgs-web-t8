@@ -563,18 +563,60 @@ class Header extends Component {
     this.props.history.push("/" + i18n.language + "/");
   };
   onhandleTransfer = () => {
+    if (
+      config.features.ForceRedirectAddCard &&
+      !this.props.account.info.bankInfoAuthentication
+    ) {
+      return;
+    }
     this.props.history.push("/" + i18n.language + "/account/transfer");
   };
   onhandleWithdrawal = () => {
     this.props.history.push("/" + i18n.language + "/account/withdrawal");
   };
   onhandleDeposit = () => {
+    if (
+      config.features.ForceRedirectAddCard &&
+      !this.props.account.info.bankInfoAuthentication
+    ) {
+      return;
+    }
     this.props.history.push("/" + i18n.language + "/account/deposit");
   };
   handleInboxClick = () => {
+    if (
+      config.features.ForceRedirectAddCard &&
+      !this.props.account.info.bankInfoAuthentication
+    ) {
+      return;
+    }
     this.props.history.push("/" + i18n.language + "/account/inbox");
   };
+  handleProfileClick = () => {
+    if (
+      config.features.ForceRedirectAddCard &&
+      !this.props.account.info.bankInfoAuthentication
+    ) {
+      return;
+    }
+    this.props.history.push("/" + i18n.language + "/account/profile");
+  };
+  handleWithdrawClick = () => {
+    if (
+      config.features.ForceRedirectAddCard &&
+      !this.props.account.info.bankInfoAuthentication
+    ) {
+      return;
+    }
+    this.props.history.push("/" + i18n.language + "/account/withdrawal");
+  };
   handleRefreshBalanceClick = () => {
+    if (
+      config.features.ForceRedirectAddCard &&
+      !this.props.account.info.bankInfoAuthentication
+    ) {
+      return;
+    }
     this.tickCount = 0;
     this.props.updateBalanceList();
     this.props.game.providerList
@@ -597,6 +639,12 @@ class Header extends Component {
     this.setState({ ...this.state, isHoverMenu: false });
   };
   handleClickMenu = (path) => {
+    if (
+      config.features.ForceRedirectAddCard &&
+      !this.props.account.info.bankInfoAuthentication
+    ) {
+      return;
+    }
     if (path === "vip" && !this.props.account.token) {
       this.props.showLogin(true);
     } else {
@@ -663,6 +711,13 @@ class Header extends Component {
   };
 
   handleJoinLotteryGame = (name) => {
+    if (
+      config.features.ForceRedirectAddCard &&
+      !this.props.account.info.bankInfoAuthentication
+    ) {
+      return;
+    }
+    Common.closePreviousPopup();
     if (this.props.account.token != null) {
       if (this.props.history.location.pathname.indexOf("play") >= 0) {
         AppHistory.goBack();
@@ -678,6 +733,12 @@ class Header extends Component {
     }
   };
   handleJoinGameClick = (gameType, path, gameCode, url) => {
+    if (
+      config.features.ForceRedirectAddCard &&
+      !this.props.account.info.bankInfoAuthentication
+    ) {
+      return;
+    }
     var slotPageGameType = [
       GameTypeEnum.SLOT,
       GameTypeEnum.TIGERSLOT,
