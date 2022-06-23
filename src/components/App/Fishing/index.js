@@ -314,6 +314,7 @@ class Fishing extends Component {
   handleJoinGameClick = (gpcode, gpid) => {
     if (this.props.token) {
       Common.closePreviousPopup();
+      this.props.performBalanceRefresh();
       this.props.history.push(`/${i18n.language}/fish/play/${gpcode}/${gpid}`);
     } else {
       this.props.showLogin(true);
