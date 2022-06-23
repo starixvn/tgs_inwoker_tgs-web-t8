@@ -187,6 +187,7 @@ class Qipai extends Component {
       if (document.getElementById("audio") != null)
         document.getElementById("audio").volume = 0.0;
       Common.closePreviousPopup();
+      this.props.performBalanceRefresh();
       var win = Common.PopupCenter(
         "/" +
           i18n.language +
