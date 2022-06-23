@@ -144,7 +144,7 @@ function GetDisplayGameType() {
     GameTypeEnum.LOTTERYLOBBY,
     GameTypeEnum.SLOT,
     GameTypeEnum.TABLEGAME,
-    GameTypeEnum.RNGSPORTS,
+    // GameTypeEnum.RNGSPORTS,
   ];
 }
 const gameImageMapping = [
