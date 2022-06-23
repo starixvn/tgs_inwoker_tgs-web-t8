@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
-import {GameService} from "../../../api-services/services/GameService";
-import {gameAction} from "../../../api-services/actions/gameAction";
-import {GameTypeEnum} from "../../../api-services/utils/Enum";
+import { GameService } from "../../../api-services/services/GameService";
+import { gameAction } from "../../../api-services/actions/gameAction";
+import { GameTypeEnum } from "../../../api-services/utils/Enum";
 import LoadingGIF from "../../../assets/images/loading.gif";
 
 import BGJPG from "../../../assets/images/bg.jpg";
@@ -175,10 +175,10 @@ class Play extends Component {
     }
     // hide fav if fish
     this.setState({
-      ...this.state,            
-      hideFav: (this.getType()===GameTypeEnum.FISH) ? true : false
+      ...this.state,
+      hideFav: this.getType() === GameTypeEnum.FISH ? true : false,
     });
-    
+
     GameService.GetFavoriteGame(this.getType()).then((e) => {
       if (e.IsSuccess) {
         if (e.data.indexOf(this.params) > -1) {
@@ -339,16 +339,18 @@ class Play extends Component {
                 </StyleButton>
               </div>
               <div>
-                { !this.state.hideFav &&
-                <FavButton onClick={this.handleToggleFavorite}>
-                  <FavButtonButton active={!this.state.isFav}></FavButtonButton>
-                </FavButton>
-                }
+                {!this.state.hideFav && (
+                  <FavButton onClick={this.handleToggleFavorite}>
+                    <FavButtonButton
+                      active={!this.state.isFav}
+                    ></FavButtonButton>
+                  </FavButton>
+                )}
               </div>
             </GameFrameHeader>
             <GameFrame
               ref={this.myRef}
-              scrolling="no"
+              scrolling="yes"
               frameBorder="0"
             ></GameFrame>
           </InnerContainer>
