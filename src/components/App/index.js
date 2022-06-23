@@ -46,7 +46,7 @@ import i18n from "../../utils/i18n";
 import Maintenance from "../Share/Maintenance";
 import Banned from "./Banned";
 import AnotherFloatPanel from "./Home/AnotherFloatPanel";
-import eSports from "./eSports";
+import ESports from "./eSports";
 import config from "../../config/config";
 import LiveChat from "../Share/live-chat";
 import CustomLibrary from "./Sports/CustomLibrary.js";
@@ -166,11 +166,16 @@ class App extends Component {
           const responseToken = await this.props.checkTokenIsValid();
           if (responseToken.IsSuccess) {
             var bankInfoAuthentication = null;
-            await this.props.getAccountInfo().then((response)=>{
-              bankInfoAuthentication = response.data.bankinfoauthentication; 
+            await this.props.getAccountInfo().then((response) => {
+              bankInfoAuthentication = response.data.bankinfoauthentication;
             });
-            if (config.features.ForceRedirectAddCard && !bankInfoAuthentication) {
-              AppHistory.push("/" + i18n.language + "/account/withdrawal?do=addCard");
+            if (
+              config.features.ForceRedirectAddCard &&
+              !bankInfoAuthentication
+            ) {
+              AppHistory.push(
+                "/" + i18n.language + "/account/withdrawal?do=addCard"
+              );
               return;
             }
             // this.props.checkGame();
@@ -279,6 +284,12 @@ class App extends Component {
   onloadHideAppBar = () => {
     this.setState({ ...this.state, hideAppBar: true });
   };
+  performBalanceRefresh = () => {
+    this.props.updateBalanceList();
+    this.props.game.providerList
+      .filter((item) => item.status === 0 && item.transferwallet === true)
+      .map((a) => this.props.getGameBalance(a.abbreviation));
+  };
 
   render() {
     return (
@@ -324,25 +335,39 @@ class App extends Component {
                       <Route
                         exact
                         path={baseRouteUrl + "/live"}
-                        component={LiveGame}
+                        render={(props) => (
+                          <LiveGame
+                            performBalanceRefresh={this.performBalanceRefresh}
+                          />
+                        )}
                       />
                       <Route
                         exact
                         path={baseRouteUrl + "/chess"}
-                        component={Qipai}
+                        render={(props) => (
+                          <Qipai
+                            performBalanceRefresh={this.performBalanceRefresh}
+                          />
+                        )}
                       />
                       <Route
                         exact
                         path={baseRouteUrl + "/sports"}
-                        component={Sports}
+                        render={(props) => (
+                          <Sports
+                            performBalanceRefresh={this.performBalanceRefresh}
+                          />
+                        )}
                       />
-                      {
-                        <Route
-                          exact
-                          path={baseRouteUrl + "/esports"}
-                          component={eSports}
-                        />
-                      }
+                      <Route
+                        exact
+                        path={baseRouteUrl + "/esports"}
+                        render={(props) => (
+                          <ESports
+                            performBalanceRefresh={this.performBalanceRefresh}
+                          />
+                        )}
+                      />
                       <Route
                         exact
                         path={baseRouteUrl + "/sports/play/:params/:type"}
@@ -351,7 +376,12 @@ class App extends Component {
                       <Route
                         exact
                         path={baseRouteUrl + "/sports/:platform"}
-                        component={CustomLibrary}
+                        render={(props) => (
+                          <CustomLibrary
+                            {...props}
+                            performBalanceRefresh={this.performBalanceRefresh}
+                          />
+                        )}
                       />
                       <Route
                         exact
@@ -361,7 +391,11 @@ class App extends Component {
                       <Route
                         exact
                         path={baseRouteUrl + "/lottery"}
-                        component={Lottery}
+                        render={(props) => (
+                          <Lottery
+                            performBalanceRefresh={this.performBalanceRefresh}
+                          />
+                        )}
                       />
                       <Route
                         exact
@@ -370,32 +404,36 @@ class App extends Component {
                       />
                       <Route
                         exact
-                        path={baseRouteUrl + "/slots/:platform?"}
-                        component={Slots}
+                        path={[
+                          baseRouteUrl + "/slots/:platform?",
+                          baseRouteUrl + "/electron/:platform?",
+                        ]}
+                        render={(props) => (
+                          <Slots
+                            {...props}
+                            performBalanceRefresh={this.performBalanceRefresh}
+                          />
+                        )}
                       />
-                      <Route
-                        exact
-                        path={baseRouteUrl + "/electron/:platform?"}
-                        component={Slots}
-                      />
+
                       <Route
                         exact
                         path={baseRouteUrl + "/fish/:platform?"}
-                        component={Fishing}
+                        render={(props) => (
+                          <Fishing
+                            {...props}
+                            performBalanceRefresh={this.performBalanceRefresh}
+                          />
+                        )}
                       />
+
                       <Route
                         exact
-                        path={baseRouteUrl + "/slots/play/:type/:params"}
-                        component={SlotPlay}
-                      />
-                      <Route
-                        exact
-                        path={baseRouteUrl + "/electron/play/:type/:params"}
-                        component={SlotPlay}
-                      />
-                      <Route
-                        exact
-                        path={baseRouteUrl + "/fish/play/:type/:params"}
+                        path={[
+                          baseRouteUrl + "/slots/play/:type/:params",
+                          baseRouteUrl + "/electron/play/:type/:params",
+                          baseRouteUrl + "/fish/play/:type/:params",
+                        ]}
                         component={SlotPlay}
                       />
                       <Route
@@ -532,6 +570,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(
         generalAction.getPlayerPromotionList(language, 1, 99, true, "", true)
       ),
+    updateBalanceList: (loading) => dispatch(walletAction.updateBalanceList()),
 
     //  getVIP: () => dispatch(generalAction.getVIP()),
   };
