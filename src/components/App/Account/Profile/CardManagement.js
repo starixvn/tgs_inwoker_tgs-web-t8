@@ -78,6 +78,22 @@ class CardManagement extends Component {
   }
   componentDidUpdate(preProps) {
     if (
+      !preProps.account.info.bankInfoAuthentication &&
+      this.props.account.info.bankInfoAuthentication &&
+      this.props.token &&
+      this.props.wallet.addBankCardResult === null
+    ) {
+      this.props.resetResult();
+      this.props.getBankCardList().then(() => {
+        this.setState({
+          ...this.state,
+          loading: false,
+          isAddCardSuccess: true,
+          displayView: 3,
+        });
+      });
+    }
+    if (
       preProps.wallet.deleteBankCardResult !==
         this.props.wallet.deleteBankCardResult &&
       this.props.wallet.deleteBankCardResult !== null
