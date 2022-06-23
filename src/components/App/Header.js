@@ -707,6 +707,7 @@ class Header extends Component {
             if (this.props.history.location.pathname.indexOf("play") >= 0) {
               AppHistory.goBack();
             }
+            this.handleRefreshBalanceClick();
             var win = Common.PopupCenter(
               `/${i18n.language}/joinlobbygame/${gameType}/${gameCode}`,
               gameCode,
@@ -721,6 +722,7 @@ class Header extends Component {
               }
             }, 1000);
           } else {
+            this.handleRefreshBalanceClick();
             this.props.history.push(
               "/" + i18n.language + "/sports/play/" + gameCode + "/" + gameType
             );
@@ -739,6 +741,7 @@ class Header extends Component {
       if (this.props.history.location.pathname.indexOf("play") >= 0) {
         AppHistory.goBack();
       }
+      this.handleRefreshBalanceClick();
       var win = Common.PopupCenter(url, gameCode, 1280, 720);
       var timer = setInterval(function () {
         if (win.closed) {
