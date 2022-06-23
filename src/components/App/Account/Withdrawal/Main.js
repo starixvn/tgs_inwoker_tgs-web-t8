@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import DynamicFont from "react-dynamic-font";
 import LimitPopupBigPNG from "../../../../assets/images/limit-popup-big.png";
@@ -153,7 +153,7 @@ const GameWalletButton = styled.div`
 `;
 
 const Main = (props) => {
-  const [selectedCardIndex, setSelectedCardIndex] = useState("");
+  const [selectedCardIndex, setSelectedCardIndex] = useState(props.defaultCard);
   const [amount, setAmount] = useState("");
 
   const [disabled, setDisabled] = useState("");
@@ -166,6 +166,12 @@ const Main = (props) => {
   const [playerNote, setPlayerNote] = useState("");
   var minValue = [];
   var maxValue = [];
+  useEffect(() => {
+    if (config.features.Deposit_AddCard && props.cardList.length > 0) {
+      getTransferLimit(props.cardList[props.defaultCard].paymentchannelid);
+    }
+  }, [props.defaultCard]);
+
   const handleSelectCardChange = (index) => {
     setSelectedCardIndex(index);
   };

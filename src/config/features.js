@@ -87,6 +87,8 @@ const featureList = {
 
     NewTransferUI: false,
     ForceRedirectAddCard: false,
+    AddCard_Bank_Custom_IDR: false,
+    Deposit_AddCard: false,
     Register_CustomFlow_IDR: false,
   },
 };

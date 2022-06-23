@@ -17,6 +17,7 @@ import config from "../../../../config/config";
 import ErrorSwitcher from "../../../../utils/ErrorSwitcher";
 
 import { walletAction } from "../../../../api-services/actions/walletAction";
+import { accountAction } from "../../../../api-services/actions/accountAction";
 import { WalletService } from "../../../../api-services/services/WalletService";
 import { RESET_WALLETRESULT } from "../../../../api-services/constant/actionType";
 import { withSnackbar } from "notistack";
@@ -82,49 +83,96 @@ class Withdrawal extends Component {
 
   urlParams = new URLSearchParams(this.props.location.search);
   async componentDidMount() {
-    this.props.getWithdrawalChannel();
-    if(!config.features.Register_CustomFlow_IDR)
+    if(this.props.token)
     {
-      WalletService.GetMinWithdrawLimit().then((e) => {
-        if (e.IsSuccess) {
-          this.setState({
-            ...this.state,
-            minWithdrawLimit: e.data,
-          });
-        }
-      });
-      if (this.props.wallet.bankCardList.length === 0)
-        this.props.getBankCardList();
-    }
-    else if((config.features.Register_CustomFlow_IDR && this.props.account.info.bankInfoAuthentication))
-    {
-      WalletService.GetMinWithdrawLimit().then((e) => {
-        if (e.IsSuccess) {
-          this.setState({
-            ...this.state,
-            minWithdrawLimit: e.data,
-          });
-        }
-      });
-      if (this.props.wallet.bankCardList.length === 0)
-        this.props.getBankCardList();
-    }
-
-    if (this.urlParams.has("do")) {
-      const value = this.urlParams.get("do");
-      if (value === "addCard") {
-        this.setState({
-          ...this.state,
-          enableAddCard: true,
+      this.props.getWithdrawalChannel();
+      if(!config.features.Register_CustomFlow_IDR)
+      {
+        WalletService.GetMinWithdrawLimit().then((e) => {
+          if (e.IsSuccess) {
+            this.setState({
+              ...this.state,
+              minWithdrawLimit: e.data,
+            });
+          }
         });
+        if (this.props.wallet.bankCardList.length === 0)
+          this.props.getBankCardList();
       }
+      else if((config.features.Register_CustomFlow_IDR && this.props.account.info.bankInfoAuthentication))
+      {
+        WalletService.GetMinWithdrawLimit().then((e) => {
+          if (e.IsSuccess) {
+            this.setState({
+              ...this.state,
+              minWithdrawLimit: e.data,
+            });
+          }
+        });
+        if (this.props.wallet.bankCardList.length === 0)
+          this.props.getBankCardList();
+      }
+  
+      if (this.urlParams.has("do")) {
+        const value = this.urlParams.get("do");
+        if (value === "addCard") {
+          this.setState({
+            ...this.state,
+            enableAddCard: true,
+          });
+        }
+      }
+      this.countDownInterval = setInterval(() => {
+        this.props.getWithdrawalChannel(); // call api every 30 min
+      }, 30 * 60 * 1000);
     }
-    this.countDownInterval = setInterval(() => {
-      this.props.getWithdrawalChannel(); // call api every 30 min
-    }, 30 * 60 * 1000);
   }
 
   componentDidUpdate(preProps) {
+    if(this.props.token!==null && preProps.token !== this.props.token)
+    {
+      this.props.getWithdrawalChannel();
+      if(!config.features.Register_CustomFlow_IDR)
+      {
+        WalletService.GetMinWithdrawLimit().then((e) => {
+          if (e.IsSuccess) {
+            this.setState({
+              ...this.state,
+              minWithdrawLimit: e.data,
+            });
+          }
+        });
+        if (this.props.wallet.bankCardList.length === 0)
+          this.props.getBankCardList();
+      }
+      else if((config.features.Register_CustomFlow_IDR && this.props.account.info.bankInfoAuthentication))
+      {
+        WalletService.GetMinWithdrawLimit().then((e) => {
+          if (e.IsSuccess) {
+            this.setState({
+              ...this.state,
+              minWithdrawLimit: e.data,
+            });
+          }
+        });
+        if (this.props.wallet.bankCardList.length === 0)
+          this.props.getBankCardList();
+      }
+  
+      if (this.urlParams.has("do")) {
+        const value = this.urlParams.get("do");
+        if (value === "addCard") {
+          this.setState({
+            ...this.state,
+            enableAddCard: true,
+          });
+        }
+      }
+      this.countDownInterval = setInterval(() => {
+        this.props.getWithdrawalChannel(); // call api every 30 min
+      }, 30 * 60 * 1000);
+    }
+
     if (
       preProps.wallet.deleteBankCardResult !==
         this.props.wallet.deleteBankCardResult &&
@@ -212,7 +260,9 @@ class Withdrawal extends Component {
     //clear url params
     window.history.pushState({}, null, "withdrawal");
     if(config.features.Register_CustomFlow_IDR){
-      this.props.initBankCard(channelid, bankType, detail);
+      this.props.initBankCard(channelid, bankType, detail).then((response)=>{
+        this.props.getAccountInfo();
+      });
     }
     else
     {
@@ -397,6 +447,17 @@ class Withdrawal extends Component {
     // });
     //  return result;
   };
+  handleFilterCardList = (cardList) => {
+    if(config.features.Deposit_AddCard){
+      return cardList.filter((item) => item.default).length < 0
+      ? (config.features.Register_CustomFlow_IDR ? cardList[0] : cardList.filter((item, index)=> index===0))
+        : cardList.filter((item) => item.default);
+    }
+    else
+    {
+      return cardList;
+    }
+  }
   render() {
     return (
       <Container>
@@ -468,7 +529,7 @@ class Withdrawal extends Component {
                           return (
                             <Main
                               defaultCard={this.state.defaultCard}
-                              cardList={this.props.wallet.bankCardList}
+                              cardList={this.handleFilterCardList(this.props.wallet.bankCardList)}
                               withdrawalInfo={this.state.withdrawalInfo}
                               onhandleManageCardClick={
                                 this.handleManageCardClick
@@ -564,6 +625,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(
         walletAction.doWithdraw(amount, user_account_id, password, note)
       ),
+    getAccountInfo: () => dispatch(accountAction.getAccountInfo()),
+
   };
 };
 export default withRouter(

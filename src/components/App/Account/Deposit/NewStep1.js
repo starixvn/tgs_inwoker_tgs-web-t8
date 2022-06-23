@@ -266,33 +266,35 @@ const NewStepOne = (props) => {
 
   return (
     <>
-      <FormContainer>
-        <FormLeftContainer>
-          <SubHeaderContainer>
-            <SubTitle>{i18n.t("deposit.msgPlsSelectPayment")}</SubTitle>
-          </SubHeaderContainer>
-        </FormLeftContainer>
+      {!config.features.Deposit_AddCard ? (
+        <>
+          <FormContainer>
+            <FormLeftContainer>
+              <SubHeaderContainer>
+                <SubTitle>{i18n.t("deposit.msgPlsSelectPayment")}</SubTitle>
+              </SubHeaderContainer>
+            </FormLeftContainer>
 
-        <FormRightContainer>
-          <SelectionContainer>
-            <CustomFormControl>
-              <CustomSelect
-                variant="outlined"
-                value={selectedMethodIndex}
-                displayEmpty
-                onChange={onMethodChange}
-                native
-              >
-                {methodList.map((data, key) => {
-                  return (
-                    <option value={key} key={key}>
-                      {i18n.t(data.methodcode)}
-                    </option>
-                  );
-                })}
-              </CustomSelect>
-            </CustomFormControl>
-            {/* {methodList.map((item, index) => {
+            <FormRightContainer>
+              <SelectionContainer>
+                <CustomFormControl>
+                  <CustomSelect
+                    variant="outlined"
+                    value={selectedMethodIndex}
+                    displayEmpty
+                    onChange={onMethodChange}
+                    native
+                  >
+                    {methodList.map((data, key) => {
+                      return (
+                        <option value={key} key={key}>
+                          {i18n.t(data.methodcode)}
+                        </option>
+                      );
+                    })}
+                  </CustomSelect>
+                </CustomFormControl>
+                {/* {methodList.map((item, index) => {
             return (
               <TunnelButton
                 key={index}
@@ -303,15 +305,56 @@ const NewStepOne = (props) => {
               </TunnelButton>
             );
           })} */}
-          </SelectionContainer>
-        </FormRightContainer>
-      </FormContainer>
+              </SelectionContainer>
+            </FormRightContainer>
+          </FormContainer>
+        </>
+      ) : (
+        <>
+          <FormContainer>
+            <FormLeftContainer>
+              <SubHeaderContainer>
+                <SubTitle>{i18n.t("idr1.pleaseEnterAccountName")}</SubTitle>
+              </SubHeaderContainer>
+            </FormLeftContainer>
+            <FormRightContainer>
+              <SelectionContainer>
+                <CustomFormControl>
+                  <CustomSelect
+                    variant="outlined"
+                    value={props.selectedBankCard}
+                    displayEmpty
+                    onChange={props.handleBankCardChange}
+                    native
+                  >
+                    <option value="" disabled>
+                      {i18n.t("idr1.msgPlsSelectAccount")}
+                    </option>
+                    {props.bankCardList.map((data, key) => {
+                      return (
+                        <option value={data.id} key={key}>
+                          {data.detail.bankAccount ||
+                            data.detail.address ||
+                            data.detail.phone}
+                        </option>
+                      );
+                    })}
+                  </CustomSelect>
+                </CustomFormControl>
+              </SelectionContainer>
+            </FormRightContainer>
+          </FormContainer>
+        </>
+      )}
 
       {(() => {
         if (methodList.length > 0 && selectedMethodIndex !== -1) {
           return (
             <>
-              {!config.features.Deposit_HideDepositChannel && (
+              {!(
+                config.features.Deposit_HideDepositChannel ||
+                config.features.Deposit_AddCard
+              ) && (
                 <>
                   <FormContainer>
                     <FormLeftContainer>
@@ -363,7 +406,7 @@ const NewStepOne = (props) => {
               )}
 
               {(() => {
-                if (isManual) {
+                if (isManual && !config.features.Deposit_AddCard) {
                   var channelExtend =
                     methodList[selectedMethodIndex].channel[
                       selectedChannelIndex
@@ -525,7 +568,11 @@ const NewStepOne = (props) => {
                 ) {
                   return (
                     <>
-                      {!(config.features.Deposit_RemoveAccount || isUsdt) && (
+                      {!(
+                        config.features.Deposit_RemoveAccount ||
+                        isUsdt ||
+                        config.features.Deposit_AddCard
+                      ) && (
                         <FormContainer>
                           <FormLeftContainer>
                             <SubHeaderContainer>
@@ -891,35 +938,36 @@ const NewStepOne = (props) => {
                 <FormActionContainer>{i18n.t("hint._099")}</FormActionContainer>
               )}
 
-              {config.features.Deposit_Withdrawal_PlayerNote && (isEwallet||isPulsa) && (
-                <FormContainer>
-                  <FormLeftContainer>
-                    <SubHeaderContainer>
-                      <SubTitle>{i18n.t("deposit.playerNote")}</SubTitle>
-                    </SubHeaderContainer>
-                  </FormLeftContainer>
+              {config.features.Deposit_Withdrawal_PlayerNote &&
+                (isEwallet || isPulsa) && (
+                  <FormContainer>
+                    <FormLeftContainer>
+                      <SubHeaderContainer>
+                        <SubTitle>{i18n.t("deposit.playerNote")}</SubTitle>
+                      </SubHeaderContainer>
+                    </FormLeftContainer>
 
-                  <FormRightContainer>
-                    <SelectionContainer>
-                      <TextField
-                        style={{
-                          height: "38px",
-                          width: "258px",
-                          float: "left",
-                          marginRight: "5px",
-                          padding: 0,
-                        }}
-                        placeholder={i18n.t("deposit.plsEnterPlayerNote")}
-                        onChange={onPlayerNoteChange}
-                        outputFormat="string"
-                        variant="outlined"
-                        autoComplete="off"
-                        value={playerNote}
-                      ></TextField>
-                    </SelectionContainer>
-                  </FormRightContainer>
-                </FormContainer>
-              )}
+                    <FormRightContainer>
+                      <SelectionContainer>
+                        <TextField
+                          style={{
+                            height: "38px",
+                            width: "258px",
+                            float: "left",
+                            marginRight: "5px",
+                            padding: 0,
+                          }}
+                          placeholder={i18n.t("deposit.plsEnterPlayerNote")}
+                          onChange={onPlayerNoteChange}
+                          outputFormat="string"
+                          variant="outlined"
+                          autoComplete="off"
+                          value={playerNote}
+                        ></TextField>
+                      </SelectionContainer>
+                    </FormRightContainer>
+                  </FormContainer>
+                )}
 
               <FormActionContainer>
                 <CustomButton
@@ -951,7 +999,9 @@ const NewStepOne = (props) => {
                       ].transferlimit.to ||
                     (config.features.Deposit_UploadRequired &&
                       isManual &&
-                      files.length <= 0)
+                      files.length <= 0) ||
+                    (config.features.Deposit_AddCard &&
+                      props.selectedBankCard === "")
                   }
                 ></CustomButton>
               </FormActionContainer>
