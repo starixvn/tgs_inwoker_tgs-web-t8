@@ -187,7 +187,7 @@ class Sports extends Component {
           1280,
           720
         );
-        this.props.performBalanceRefresh();
+        // this.props.performBalanceRefresh();
         // var win = window.open(
         //   `/${i18n.language}/joinlobbygame/${type}/${params}`,
         //   "gamewindow"
@@ -200,7 +200,7 @@ class Sports extends Component {
           }
         }, 1000);
       } else {
-        this.props.performBalanceRefresh();
+        // this.props.performBalanceRefresh();
         this.props.history.push(
           "/" + i18n.language + "/sports/play/" + params + "/" + type
         );
