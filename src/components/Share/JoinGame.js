@@ -4,7 +4,7 @@ import Loading from "../App/Loading";
 import { GameService } from "../../api-services/services/GameService";
 import { GameTypeEnum } from "../../api-services/utils/Enum";
 import Maintenance from "./Maintenance";
-
+const channel = new BroadcastChannel('refreshBalance');
 class JoinGame extends Component {
   state = {
     loading: true,
@@ -18,6 +18,7 @@ class JoinGame extends Component {
       GameService.JoinGame(this.props.match.params.params2, gameCode).then(
         (response) => {
           if (response.IsSuccess) {
+            channel.postMessage({action: "refresh", target:"*"});
             window.location.href = response.data.url;
           } else {
             this.handleJoinGameMaintenance(response);
@@ -33,6 +34,7 @@ class JoinGame extends Component {
       GameService.JoinGame(this.props.match.params.params2, gameCode).then(
         (response) => {
           if (response.IsSuccess) {
+            channel.postMessage({action: "refresh", target:"*"});
             window.location.href = response.data.url;
           } else {
             this.handleJoinGameMaintenance(response);
@@ -42,6 +44,7 @@ class JoinGame extends Component {
     } else {
       GameService.JoinLobbyGame(gameType, gameCode).then((response) => {
         if (response.IsSuccess) {
+          channel.postMessage({action: "refresh", target:"*"});
           window.location.href = response.data.url;
         } else {
           this.handleJoinGameMaintenance(response);
