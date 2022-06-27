@@ -322,7 +322,10 @@ const MemberContainer = (props) => {
                   .map((brand, index) => {
                     return props.game.providerList
                       .filter((item) => {
-                        return item.abbreviation === brand.abbreviation;
+                        return (
+                          item.abbreviation === brand.abbreviation &&
+                          item.transferwallet === true
+                        );
                       })
                       .map((data, index) => {
                         return (
