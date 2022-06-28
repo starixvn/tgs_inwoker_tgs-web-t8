@@ -993,8 +993,8 @@ class Header extends Component {
                   var list = this.props.game.homePageGameList
                     .filter(
                       (game) =>
-                        item.gameType.indexOf(game.type) >= 0 &&
-                        game.abbreviation.toLowerCase()
+                        (item.gameType.indexOf(game.type) >= 0 &&
+                        game.abbreviation.toLowerCase() && game.type !== GameTypeEnum.RNGSPORTS) || (game.type === GameTypeEnum.RNGSPORTS && game.abbreviation === "PPTF")
                     )
                     .sort((a, b) => {
                       if (config.features.LiveGame_Sorting_SKY) {
