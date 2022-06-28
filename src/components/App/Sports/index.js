@@ -137,7 +137,7 @@ class Sports extends Component {
     var sportsList = props.game.homePageGameList.filter((item) => {
       return (
         item.type === GameTypeEnum.SPORTS ||
-        item.type === GameTypeEnum.RNGSPORTS
+        (item.type === GameTypeEnum.RNGSPORTS && item.abbreviation === "PPTF")
       );
     });
 
@@ -157,7 +157,7 @@ class Sports extends Component {
       var sportsList = this.props.game.homePageGameList.filter((item) => {
         return (
           item.type === GameTypeEnum.SPORTS ||
-          item.type === GameTypeEnum.RNGSPORTS
+          (item.type === GameTypeEnum.RNGSPORTS && item.abbreviation === "PPTF")
         );
       });
 
