@@ -88,6 +88,7 @@ const featureList = {
     NewTransferUI: false,
     ForceRedirectAddCard: false,
     Register_CustomFlow_IDR: false,
+    HomePage_PromoRoulette: false,
   },
 };
 export default featureList;

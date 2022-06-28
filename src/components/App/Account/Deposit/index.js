@@ -135,7 +135,8 @@ class Deposit extends Component {
   componentDidMount() {
     localStorage.removeItem("depositResult");
     this.props.getDepositMethod();
-    this.props.getPlayerPromotionList(i18n.language);
+    this.props.getPromotion();
+    
     window.addEventListener("storage", this.handStorageMsg, true);
     if (this.state.paymentId) {
       WalletService.PerformGetManualDepositDetail(this.state.paymentId).then(
@@ -1083,6 +1084,7 @@ const mapDispatchToProps = (dispatch) => {
         type: RESET_WALLETRESULT,
       }),
     getDepositMethod: () => dispatch(walletAction.getDepositMethod()),
+    getPromotion: () => dispatch(generalAction.getPromotion()),
   };
 };
 export default connect(

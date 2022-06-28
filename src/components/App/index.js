@@ -46,6 +46,7 @@ import i18n from "../../utils/i18n";
 import Maintenance from "../Share/Maintenance";
 import Banned from "./Banned";
 import AnotherFloatPanel from "./Home/AnotherFloatPanel";
+import PromotionRoulette from "./Home/PromotionRoulette";
 import eSports from "./eSports";
 import config from "../../config/config";
 import LiveChat from "../Share/live-chat";
@@ -78,7 +79,7 @@ class App extends Component {
       this.props.getBanner();
       this.props.getBrand();
       this.props.getLiveChatURL();
-      this.props.getPromotionList(i18n.language);
+      this.props.getPromotion();
 
       // this.props.getVIP();
     }
@@ -166,11 +167,16 @@ class App extends Component {
           const responseToken = await this.props.checkTokenIsValid();
           if (responseToken.IsSuccess) {
             var bankInfoAuthentication = null;
-            await this.props.getAccountInfo().then((response)=>{
-              bankInfoAuthentication = response.data.bankinfoauthentication; 
+            await this.props.getAccountInfo().then((response) => {
+              bankInfoAuthentication = response.data.bankinfoauthentication;
             });
-            if (config.features.ForceRedirectAddCard && !bankInfoAuthentication) {
-              AppHistory.push("/" + i18n.language + "/account/withdrawal?do=addCard");
+            if (
+              config.features.ForceRedirectAddCard &&
+              !bankInfoAuthentication
+            ) {
+              AppHistory.push(
+                "/" + i18n.language + "/account/withdrawal?do=addCard"
+              );
               return;
             }
             // this.props.checkGame();
@@ -180,7 +186,7 @@ class App extends Component {
             this.props.getMessageList(i18n.language, 0, 99);
             this.props.getBankCardList();
             this.props.getAutoTransferStatus();
-            this.props.getPlayerPromotionList(i18n.language);
+            this.props.getPromotion();
 
             // if (inbox.IsSuccess) {
             //   this.setState({ inbox: inbox.data });
@@ -204,7 +210,7 @@ class App extends Component {
         this.props.getBanner();
         this.props.getBrand();
         this.props.getLiveChatURL();
-        this.props.getPromotionList(i18n.language);
+        this.props.getPromotion();
 
         // this.props.getVIP();
       }
@@ -278,6 +284,15 @@ class App extends Component {
   };
   onloadHideAppBar = () => {
     this.setState({ ...this.state, hideAppBar: true });
+  };
+  isRouletteAvailable = () => {
+    return (
+      this.props.general.promotionList.items &&
+      this.props.general.promotionList.items.length > 0 &&
+      this.props.general.promotionList.items.findIndex(
+        (item) => item.promotionType.toUpperCase() === "ROULETTE"
+      ) >= 0
+    );
   };
 
   render() {
@@ -474,6 +489,15 @@ class App extends Component {
                     />
                   )}
 
+                {config.features.HomePage_PromoRoulette &&
+                  this.isRouletteAvailable() && (
+                    <PromotionRoulette
+                      promotionDetail={this.props.general.promotionList.items.filter(
+                        (item) =>
+                          item.promotionType.toUpperCase() === "ROULETTE"
+                      )[0]}
+                    ></PromotionRoulette>
+                  )}
                 <Footer target={"_blank"}></Footer>
               </>
             );
@@ -534,6 +558,7 @@ const mapDispatchToProps = (dispatch) => {
       ),
 
     //  getVIP: () => dispatch(generalAction.getVIP()),
+    getPromotion: () => dispatch(generalAction.getPromotion()),
   };
 };
 
