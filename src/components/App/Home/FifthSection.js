@@ -35,15 +35,28 @@ const FifthSection = (props) => {
     <Container>
       <ProviderTitle>{i18n.t("web.footer.footerDescTitle")}</ProviderTitle>
       <ProviderContainer>
-        {props.providerList.map((item, index) => {
-          return (
-            <ProviderIMG
-              key={index}
-              provider={item.abbreviation.toLowerCase()}
-              title={item.name}
-            ></ProviderIMG>
-          );
-        })}
+        {props.providerList
+          .filter(
+            (a) =>
+              a.abbreviation.toLowerCase() !== "wgfm" &&
+              a.abbreviation.toLowerCase() !== "wgvia"
+          )
+          .filter((gp) => {
+            if (gp.abbreviation.includes("TCG")) {
+              return gp.abbreviation === "TCG_SEA";
+            } else {
+              return gp;
+            }
+          })
+          .map((item, index) => {
+            return (
+              <ProviderIMG
+                key={index}
+                provider={item.abbreviation.toLowerCase()}
+                title={item.name}
+              ></ProviderIMG>
+            );
+          })}
       </ProviderContainer>
     </Container>
   );
