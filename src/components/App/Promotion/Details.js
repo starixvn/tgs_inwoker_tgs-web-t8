@@ -227,6 +227,7 @@ const TNCContainer = styled.span`
   color: #123414;
   text-decoration: underline;
   font-weight: bold;
+  cursor: pointer;
 `;
 const PromoButtonText = styled(Grid)`
   color: #fff;
