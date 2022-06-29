@@ -217,8 +217,6 @@ const Description = styled.div`
   font-size: 14px;
 
   line-height: 1.43;
-
-  color: ${({ theme }) => theme.secondary};
 `;
 
 const useStyles = makeStyles((theme) => ({
@@ -381,9 +379,7 @@ function Register(props) {
       return;
     }
     expr = new RegExp(`^[0-9]{8,${config.features.MAX_PHONE_LENGTH || 10}}`);
-    if (
-      config.features.Register_ShowPhone
-    ) {
+    if (config.features.Register_ShowPhone) {
       if (!expr.test(phone)) {
         props.enqueueSnackbar(
           i18n
@@ -398,8 +394,8 @@ function Register(props) {
     }
 
     expr = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    if(config.features.Register_ShowEmail) {
-      if(!expr.test(email)) {
+    if (config.features.Register_ShowEmail) {
+      if (!expr.test(email)) {
         props.enqueueSnackbar(i18n.t("common.msgInvalidEmail"), {
           variant: "warning",
         });
@@ -433,8 +429,11 @@ function Register(props) {
             //   }
             // }
             if (config.features.SMSVerification) {
-                props.onRegisterSuccess(username, password);
-            } else if (config.features.Register_ShowEmail && config.features.Register_ShowPhone) {
+              props.onRegisterSuccess(username, password);
+            } else if (
+              config.features.Register_ShowEmail &&
+              config.features.Register_ShowPhone
+            ) {
               props.doLoginWithHpEmail(username, password, phone, email);
             } else if (config.features.Register_ShowPhone) {
               props.doLoginWithHp(username, password, phone);
@@ -580,7 +579,7 @@ function Register(props) {
           />
         </CustomTextWrapper>
 
-        {(config.features.Register_ShowPhone) && (
+        {config.features.Register_ShowPhone && (
           <React.Fragment>
             <CustomFormControl>
               <CustomSelect
@@ -624,8 +623,7 @@ function Register(props) {
           </React.Fragment>
         )}
         <div class="clear"></div>
-        {
-          (config.features.Register_ShowEmail) && (
+        {config.features.Register_ShowEmail && (
           <CustomTextWrapper>
             <CustomText
               onChange={handleEmailChange}
@@ -650,8 +648,7 @@ function Register(props) {
               }}
             />
           </CustomTextWrapper>
-          )
-        }
+        )}
 
         {!(config.features.Register_HideInvitation && fromCustomDomain) && (
           <CustomTextWrapper>
