@@ -218,6 +218,10 @@ class App extends Component {
         // this.props.getVIP();
       }
     }
+    if(preProps.account.token !== this.props.account.token && (this.props.account.token === null || this.props.account.token === ""))
+    {
+      this.props.getPromotion();
+    }
     if (config.features.ForceRedirectAddCard) {
       if (
         this.props.general.token !== null &&
@@ -321,6 +325,10 @@ class App extends Component {
       ) >= 0
     );
   };
+
+  isInHomePage = () => {
+    return this.props.location.pathname===`/${i18n.language}/`;
+  }
 
   render() {
     return (
@@ -544,6 +552,7 @@ class App extends Component {
                   )}
 
                 {config.features.HomePage_PromoRoulette &&
+                this.isInHomePage() &&
                   this.isRouletteAvailable() && (
                     <PromotionRoulette
                       promotionDetail={this.props.general.promotionList.items.filter(
