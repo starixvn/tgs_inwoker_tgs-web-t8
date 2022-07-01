@@ -89,6 +89,7 @@ const featureList = {
     ForceRedirectAddCard: false,
     Register_CustomFlow_IDR: false,
     HomePage_PromoRoulette: false,
+    PromoRoulette_SMSVerification: false,
   },
 };
 export default featureList;
