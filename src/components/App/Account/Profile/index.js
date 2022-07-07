@@ -584,14 +584,22 @@ class Profile extends Component {
   };
   async componentDidMount() {
     if (this.props.popup) {
-      this.handleButtonClick(this.props.popup);
+      if (this.props.popup === "member_phone" && config.features.PromoRoulette_SMSVerification) {
+        this.handleButtonClick(this.props.popup, true);
+      } else {
+        this.handleButtonClick(this.props.popup);
+      }
     }
     if (this.props.wallet.bankCardList.length === 0)
       this.props.getBankCardList();
   }
   componentDidUpdate(preProps) {
     if (preProps.popup !== this.props.popup) {
-      this.handleButtonClick(this.props.popup);
+      if (this.props.popup === "member_phone" && config.features.PromoRoulette_SMSVerification) {
+        this.handleButtonClick(this.props.popup, true);
+      } else {
+        this.handleButtonClick(this.props.popup);
+      }
     }
   }
   // handleVerifyByQuestion = () => {
@@ -987,6 +995,7 @@ class Profile extends Component {
             this.handleButtonClick
           )} */}
             {(config.features.SMSVerification ||
+              config.features.PromoRoulette_SMSVerification ||
               config.features.Register_ShowPhone) &&
               GetContentWrap(
                 this.props.account.info,
