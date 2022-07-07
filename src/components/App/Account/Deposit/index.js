@@ -135,7 +135,8 @@ class Deposit extends Component {
   componentDidMount() {
     localStorage.removeItem("depositResult");
     this.props.getDepositMethod();
-    this.props.getPlayerPromotionList(i18n.language);
+    this.props.getPromotion();
+    
     window.addEventListener("storage", this.handStorageMsg, true);
     if (this.state.paymentId) {
       WalletService.PerformGetManualDepositDetail(this.state.paymentId).then(
@@ -429,13 +430,34 @@ class Deposit extends Component {
     if (payment.paymentcode.toUpperCase() === "MANUAL") {
       // handle manual deposit
       if (method.methodcode === "BankTransfer") {
-        this.props.doBankDeposit(
-          this.state.name,
-          this.state.account,
-          this.state.amount.replace(/,/g, ""),
-          channel.id,
-          this.state.depositPromotion
-        );
+        if (config.features.Deposit_AddCard) {
+          this.props.doBankDepositWithDetail(
+            this.state.name,
+            this.state.account,
+            this.state.amount.replace(/,/g, ""),
+            channel.id,
+            this.state.depositPromotion,
+            null,
+            config.features.Deposit_AddCard
+              ? this.props.wallet.bankCardList[bankCardIndex].detail
+              : null,
+            config.features.Deposit_Withdrawal_PlayerNote
+              ? this.state.playerNote
+              : ""
+          );
+        } else {
+          this.props.doBankDeposit(
+            this.state.name,
+            this.state.account,
+            this.state.amount.replace(/,/g, ""),
+            channel.id,
+            this.state.depositPromotion,
+            null,
+            config.features.Deposit_Withdrawal_PlayerNote
+              ? this.state.playerNote
+              : ""
+          );
+        }
       } else if (method.methodcode === "FPS") {
         if (config.features.Deposit_FPSWithName) {
           this.props.doFPSDepositWithName(
@@ -466,25 +488,57 @@ class Deposit extends Component {
           this.state.depositPromotion
         );
       } else if (method.methodcode === "Pulsa") {
-        this.props.doPulsaDeposit(
-          this.state.amount.replace(/,/g, ""),
-          channel.id,
-          this.state.depositPromotion,
-          null,
-          config.features.Deposit_Withdrawal_PlayerNote
-            ? this.state.playerNote
-            : null
-        );
+        if (config.features.Deposit_AddCard) {
+          this.props.doPulsaDepositWithDetail(
+            this.state.amount.replace(/,/g, ""),
+            channel.id,
+            this.state.depositPromotion,
+            null,
+            config.features.Deposit_Withdrawal_PlayerNote
+              ? this.state.playerNote
+              : null,
+            config.features.Deposit_AddCard
+              ? this.props.wallet.bankCardList[bankCardIndex]
+                  .detail
+              : null
+          );
+        } else {
+          this.props.doPulsaDeposit(
+            this.state.amount.replace(/,/g, ""),
+            channel.id,
+            this.state.depositPromotion,
+            null,
+            config.features.Deposit_Withdrawal_PlayerNote
+              ? this.state.playerNote
+              : null
+          );
+        }
       } else if (method.methodcode === "EWallet") {
-        this.props.doEWalletDeposit(
-          this.state.amount.replace(/,/g, ""),
-          channel.id,
-          this.state.depositPromotion,
-          null,
-          config.features.Deposit_Withdrawal_PlayerNote
-            ? this.state.playerNote
-            : null
-        );
+        if (config.features.Deposit_AddCard) {
+          this.props.doEWalletDepositWithDetail(
+            this.state.amount.replace(/,/g, ""),
+            channel.id,
+            this.state.depositPromotion,
+            null,
+            config.features.Deposit_Withdrawal_PlayerNote
+              ? this.state.playerNote
+              : null,
+            config.features.Deposit_AddCard
+              ? this.props.wallet.bankCardList[bankCardIndex]
+                  .detail
+              : null
+          );
+        } else {
+          this.props.doEWalletDeposit(
+            this.state.amount.replace(/,/g, ""),
+            channel.id,
+            this.state.depositPromotion,
+            null,
+            config.features.Deposit_Withdrawal_PlayerNote
+              ? this.state.playerNote
+              : null
+          );
+        }
       }
     } else {
       this.props.performDeposit(
@@ -972,7 +1026,8 @@ const mapDispatchToProps = (dispatch) => {
       amount,
       paymentid,
       promotionid,
-      banktype
+      banktype,
+      note
     ) => {
       dispatch(
         walletAction.doBankDeposit(
@@ -981,7 +1036,8 @@ const mapDispatchToProps = (dispatch) => {
           amount,
           paymentid,
           promotionid,
-          banktype
+          banktype,
+          note
         )
       );
     },
@@ -1032,12 +1088,24 @@ const mapDispatchToProps = (dispatch) => {
     },
     doPulsaDeposit: (amount, paymentid, promotionid, banktype, note) => {
       dispatch(
-        walletAction.doPulsaDeposit(amount, paymentid, promotionid, banktype, note)
+        walletAction.doPulsaDeposit(
+          amount,
+          paymentid,
+          promotionid,
+          banktype,
+          note
+        )
       );
     },
     doEWalletDeposit: (amount, paymentid, promotionid, banktype, note) => {
       dispatch(
-        walletAction.doEWalletDeposit(amount, paymentid, promotionid, banktype, note)
+        walletAction.doEWalletDeposit(
+          amount,
+          paymentid,
+          promotionid,
+          banktype,
+          note
+        )
       );
     },
     doBankDeposit2: (amount, payment_id, promotionid, paymentcode) => {
@@ -1083,6 +1151,61 @@ const mapDispatchToProps = (dispatch) => {
         type: RESET_WALLETRESULT,
       }),
     getDepositMethod: () => dispatch(walletAction.getDepositMethod()),
+    getBankCardList: () => dispatch(walletAction.getBankCardList()),
+    addBankCard: (channelid, bankType, detail) =>
+      dispatch(walletAction.addBankCard(channelid, bankType, detail)),
+    resetResult: () =>
+      dispatch({
+        type: RESET_WALLETRESULT,
+      }),
+    doBankDepositWithDetail: (
+      name,
+      account,
+      amount,
+      paymentid,
+      promotionid,
+      banktype,
+      detail,
+      note
+    ) => {
+      dispatch(
+        walletAction.doBankDepositWithDetail(
+          name,
+          account,
+          amount,
+          paymentid,
+          promotionid,
+          banktype,
+          detail,
+          note
+        )
+      );
+    },
+    doPulsaDepositWithDetail: (amount, paymentid, promotionid, banktype, note, detail) => {
+      dispatch(
+        walletAction.doPulsaDepositWithDetail(
+          amount,
+          paymentid,
+          promotionid,
+          banktype,
+          note,
+          detail
+        )
+      );
+    },
+    doEWalletDepositWithDetail: (amount, paymentid, promotionid, banktype, note, detail) => {
+      dispatch(
+        walletAction.doEWalletDepositWithDetail(
+          amount,
+          paymentid,
+          promotionid,
+          banktype,
+          note,
+          detail
+        )
+      );
+    },
+    getPromotion: () => dispatch(generalAction.getPromotion()),
   };
 };
 export default connect(
