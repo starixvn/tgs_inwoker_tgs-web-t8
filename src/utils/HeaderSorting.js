@@ -17,7 +17,7 @@ const MenuItemList = [
   {
     path: "sports",
     title: i18n.t("common.sport"),
-    gameType: [GameTypeEnum.SPORTS],//, GameTypeEnum.RNGSPORTS],
+    gameType: [GameTypeEnum.SPORTS, GameTypeEnum.RNGSPORTS], //, GameTypeEnum.RNGSPORTS],
     sorting: 2,
     sortingGMO: 5,
     sortingHK28: 2,

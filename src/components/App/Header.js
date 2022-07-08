@@ -991,11 +991,7 @@ class Header extends Component {
                   }
                 }).map((item, index) => {
                   var list = this.props.game.homePageGameList
-                    .filter(
-                      (game) =>
-                        (item.gameType.indexOf(game.type) >= 0 &&
-                        game.abbreviation.toLowerCase() && game.type !== GameTypeEnum.RNGSPORTS) || (game.type === GameTypeEnum.RNGSPORTS && game.abbreviation === "PPTF")
-                    )
+                    .filter((game) => item.gameType.indexOf(game.type) >= 0)
                     .sort((a, b) => {
                       if (config.features.LiveGame_Sorting_SKY) {
                         var sortDGFirst = ["DG"];
