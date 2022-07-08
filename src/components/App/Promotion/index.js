@@ -251,6 +251,7 @@ class Promotion extends Component {
           <MContainer>
             <ThePromotion container>
               {this.props.general.promotionList.items.map((data, index) => {
+                var checkLocale = data.localization[i18n.language];
                 return (
                   <PromotionBannerContainer
                     onClick={() =>
@@ -259,9 +260,8 @@ class Promotion extends Component {
                   >
                     <img
                       src={
-                        data.localization.desktopBanner &&
-                        data.localization.desktopBanner !== null
-                          ? data.localization.desktopBanner
+                        checkLocale
+                          ? checkLocale.desktopBanner
                           : data.desktopBanner
                       }
                       alt={data.name}
