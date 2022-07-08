@@ -440,6 +440,7 @@ class PromotionDetails extends Component {
     AppHistory.replace("/" + i18n.language + "/promotion");
   }
   render() {
+    var checkLocale = this.state.details.localization[i18n.language];
     if (this.state.details === null) return <></>;
     return (
       <Container>
@@ -452,9 +453,8 @@ class PromotionDetails extends Component {
               <PromoDetailLeftContainer isToggled={this.state.isToggled}>
                 <img
                   src={
-                    this.state.details.localization.desktopBanner &&
-                    this.state.details.localization.desktopBanner !== null
-                      ? this.state.details.localization.desktopBanner
+                    checkLocale
+                      ? checkLocale.desktopBanner
                       : this.state.details.desktopBanner
                   }
                   alt={this.state.details.name}
