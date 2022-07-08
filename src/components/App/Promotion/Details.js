@@ -442,6 +442,7 @@ class PromotionDetails extends Component {
   render() {
     var checkLocale = this.state.details.localization[i18n.language];
     if (this.state.details === null) return <></>;
+    var isDummy = this.state.details.promotionType.toUpperCase() === "DUMMY";
     return (
       <Container>
         <MContainer>
@@ -514,18 +515,20 @@ class PromotionDetails extends Component {
               </PromoDetailRightContainer>
             </PromoDetailBodyContainer>
             <PromoDetailFooterContainer isToggled={this.state.isToggled}>
-              <PromoDetailJoinButton
-                uiDisabled={this.state.joined}
-                onClick={() =>
-                  !this.state.joined &&
-                  this.handlejoinPromotionClick(
-                    this.state.details.id,
-                    this.state.details.promotionType
-                  )
-                }
-              >
-                {i18n.t("promotion.joinPromo")}
-              </PromoDetailJoinButton>
+              {!isDummy && (
+                <PromoDetailJoinButton
+                  uiDisabled={this.state.joined}
+                  onClick={() =>
+                    !this.state.joined &&
+                    this.handlejoinPromotionClick(
+                      this.state.details.id,
+                      this.state.details.promotionType
+                    )
+                  }
+                >
+                  {i18n.t("promotion.joinPromo")}
+                </PromoDetailJoinButton>
+              )}
             </PromoDetailFooterContainer>
             {/* <PromoDetailImage
               img={(() => {
