@@ -10,6 +10,7 @@ import { generalAction } from "../../api-services/actions/generalAction";
 import { withSnackbar } from "notistack";
 import { AppHistory } from "../../history/History";
 import IMHandler from "./IMHandler";
+import config from "../../config/config";
 const Container = styled.div`
   width: 100%;
   background: url(${MaintenancePNG}) no-repeat center;
@@ -179,6 +180,19 @@ const Maintenance = (props) => {
     }
   };
 
+  const formatTime = (isoString) => {
+    var newDate = new Date(isoString);
+    var hours = newDate.getHours();
+    var minutes = newDate.getMinutes();
+    var ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    hours = hours < 10 ? "0" + hours : hours;
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    var strTime = hours + ":" + minutes + " " + ampm;
+    return strTime;
+  };
+
   return (
     <Container>
       <MaintenanceTextContainer>
@@ -186,6 +200,10 @@ const Maintenance = (props) => {
         <Text>
           如您有任何问题，请
           <Hyperlink>联系客服</Hyperlink>。
+        </Text>
+        <Text>
+          維修時間 : {formatTime(config.features.Maintenance_Detail.startTime)}{" "}
+          ~ {formatTime(config.features.Maintenance_Detail.endTime)} (GMT+8){" "}
         </Text>
         {(() => {
           if (i18n.language === "vi-VN") {
@@ -198,6 +216,12 @@ const Maintenance = (props) => {
                   Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi{" "}
                   <Hyperlink>dịch vụ khách hàng</Hyperlink>。
                 </Text>
+                <Text>
+                  thời gian bảo trì :{" "}
+                  {formatTime(config.features.Maintenance_Detail.startTime)} ~{" "}
+                  {formatTime(config.features.Maintenance_Detail.endTime)}{" "}
+                  (GMT+8){" "}
+                </Text>
               </React.Fragment>
             );
           }
@@ -207,6 +231,11 @@ const Maintenance = (props) => {
         <Text>
           If you have any questions, please contact our{" "}
           <Hyperlink>customer service</Hyperlink>.
+        </Text>
+        <Text>
+          Maintenance Time :{" "}
+          {formatTime(config.features.Maintenance_Detail.startTime)} ~{" "}
+          {formatTime(config.features.Maintenance_Detail.endTime)} (GMT+8){" "}
         </Text>
         <ButtonContainer>
           <AnotherButton onClick={handleCSClick}>
