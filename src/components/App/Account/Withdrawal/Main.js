@@ -396,7 +396,9 @@ const Main = (props) => {
       {config.features.Deposit_Withdrawal_PlayerNote &&
         props.cardList[selectedCardIndex] &&
         (props.cardList[selectedCardIndex].banktype.toUpperCase() ===
-          "EWALLET" ||
+          "BANK" ||
+          props.cardList[selectedCardIndex].banktype.toUpperCase() ===
+            "EWALLET" ||
           props.cardList[selectedCardIndex].banktype.toUpperCase() ===
             "PULSA") && (
           <React.Fragment>
