@@ -161,9 +161,9 @@ class Deposit extends Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     localStorage.removeItem("depositResult");
-    this.props.getDepositMethod();
+    await this.props.getDepositMethod();
     this.props.getPromotion();
     
     window.addEventListener("storage", this.handStorageMsg, true);
@@ -182,6 +182,16 @@ class Deposit extends Component {
           }
         }
       );
+    }
+    if (
+      config.features.Deposit_AddCard &&
+      this.props.wallet.bankCardList.length > 0 &&
+      this.props.wallet.bankCardList !== null
+    ) {
+      var defaultCard = this.props.wallet.bankCardList.filter(
+        (item) => item.default
+      )[0];
+      this.handleBankCardChange({ target: { value: defaultCard.id } });
     }
     this.countDownInterval = setInterval(() => {
       this.props.getDepositMethod(); // call api every 30 mins
@@ -388,6 +398,17 @@ class Deposit extends Component {
           }
         );
       }
+    }
+    if (
+      config.features.Deposit_AddCard &&
+      preProps.wallet.bankCardList !== this.props.wallet.bankCardList &&
+      this.props.wallet.bankCardList.length > 0 &&
+      this.props.wallet.bankCardList !== null
+    ) {
+      var defaultCard = this.props.wallet.bankCardList.filter(
+        (item) => item.default
+      )[0];
+      this.handleBankCardChange({ target: { value: defaultCard.id } });
     }
   }
 
@@ -855,9 +876,19 @@ class Deposit extends Component {
       playerNote: e.target.value,
     });
   };
-  handleRestartClick = (e) => {
+  handleRestartClick = async (e) => {
     this.setState(this.initialState);
-    this.props.resetDeposit();
+    await this.props.resetDeposit();
+    if (
+      config.features.Deposit_AddCard &&
+      this.props.wallet.bankCardList.length > 0 &&
+      this.props.wallet.bankCardList !== null
+    ) {
+      var defaultCard = this.props.wallet.bankCardList.filter(
+        (item) => item.default
+      )[0];
+      this.handleBankCardChange({ target: { value: defaultCard.id } });
+    }
   };
   switchStep = (steps) => {
     switch (steps) {
@@ -950,7 +981,13 @@ class Deposit extends Component {
               onDepositCancelClick={this.handleRestartClick}
               selectedBankCard={this.state.selectedBankCard}
               handleBankCardChange={this.handleBankCardChange}
-              bankCardList={this.props.wallet.bankCardList.filter((item)=> !item.default)}
+              bankCardList={
+                config.features.Deposit_AddCard
+                  ? this.props.wallet.bankCardList.sort(
+                      (a, b) => b.default - a.default
+                    )
+                  : this.props.wallet.bankCardList
+              }
             />
           );
         }
