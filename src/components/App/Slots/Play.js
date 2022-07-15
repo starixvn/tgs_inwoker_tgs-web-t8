@@ -18,7 +18,7 @@ import i18n from "../../../utils/i18n";
 import ErrorSwitcher from "../../../utils/ErrorSwitcher";
 
 import { AppHistory } from "../../../history/History";
-const channel = new BroadcastChannel('refreshBalance');
+// const channel = new BroadcastChannel('refreshBalance');
 const Container = styled.div`
   width: 100%;
   background: #000;//url(${BGJPG});
@@ -261,7 +261,7 @@ class Play extends Component {
     GameService.JoinGame(params, type).then((response) => {
       if (response.IsSuccess) {
         if (response.data.url != null && this.myRef.current != null) {
-          channel.postMessage({action: "refresh", target:"*"});
+          // channel.postMessage({action: "refresh", target:"*"});
           this.myRef.current.src = response.data.url;
           this.setState({ ...this.state, loading: false });
         } else {
