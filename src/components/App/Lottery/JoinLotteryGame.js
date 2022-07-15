@@ -8,7 +8,7 @@ import {GameService} from "../../../api-services/services/GameService";
 
 import Loading from "../Loading";
 import Maintenance from "../../Share/Maintenance";
-const channel = new BroadcastChannel('refreshBalance');
+// const channel = new BroadcastChannel('refreshBalance');
 
 class JoinLotteryGame extends Component {
   state = {
@@ -23,7 +23,7 @@ class JoinLotteryGame extends Component {
         if (e.data.length >= 1) {
           GameService.JoinGame(e.data[0].id, brand).then((response) => {
             if (response.IsSuccess) {
-              channel.postMessage({action: "refresh", target:"*"});
+              // channel.postMessage({action: "refresh", target:"*"});
               this.setState({ ...this.state, maintenance: false });
               window.location.href = response.data.url;
             } else {

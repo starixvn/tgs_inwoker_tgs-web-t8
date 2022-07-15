@@ -5,7 +5,7 @@ import { GameService } from "../../api-services/services/GameService";
 import { isMobileOnly } from "react-device-detect";
 import Maintenance from "./Maintenance";
 import MaintenanceMobile from "./MaintenanceMobile";
-const channel = new BroadcastChannel('refreshBalance');
+// const channel = new BroadcastChannel('refreshBalance');
 class JoinLobbyGame extends Component {
   state = {
     loading: true,
@@ -23,7 +23,7 @@ class JoinLobbyGame extends Component {
     if (gameCode === "BC") {
       GameService.JoinBetConstruct(gameType, gameCode).then((response) => {
         if (response.data !== undefined) {
-          channel.postMessage({action: "refresh", target:"*"});
+          // channel.postMessage({action: "refresh", target:"*"});
           document.write(
             "<style>body{margin:0;padding:0}</style>" + response.data
           );
@@ -34,7 +34,7 @@ class JoinLobbyGame extends Component {
     } else {
       GameService.JoinLobbyGame(gameType, gameCode).then((response) => {
         if (response.IsSuccess) {
-          channel.postMessage({action: "refresh", target:"*"});
+          // channel.postMessage({action: "refresh", target:"*"});
           window.location.href = response.data.url;
         } else {
           this.handleJoinGameMaintenance(response);
