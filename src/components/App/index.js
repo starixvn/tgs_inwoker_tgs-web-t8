@@ -52,7 +52,7 @@ import config from "../../config/config";
 import LiveChat from "../Share/live-chat";
 import CustomLibrary from "./Sports/CustomLibrary.js";
 import ForcedVerification from "./ForcedVerification";
-const bc = new BroadcastChannel("refreshBalance");
+// const bc = new BroadcastChannel("refreshBalance");
 const baseRouteUrl = Common.baseRouteUrl;
 const Main = styled.div`
   min-height: 600px;
@@ -70,9 +70,9 @@ class App extends Component {
     hideAppBar: false,
   };
   async componentDidMount() {
-    bc.onmessage = (eventMessage) => {
-      this.performBalanceRefresh();
-    };
+    // bc.onmessage = (eventMessage) => {
+    //   this.performBalanceRefresh();
+    // };
     if (this.props.general.token === "") {
       this.props.getSiteToken();
     } else {

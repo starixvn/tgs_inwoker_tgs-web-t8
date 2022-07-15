@@ -8,7 +8,7 @@ import { withSnackbar } from "notistack";
 const Container = styled.iframe`
   width: 100%;
 `;
-const channel = new BroadcastChannel('refreshBalance');
+// const channel = new BroadcastChannel('refreshBalance');
 class Play extends Component {
   constructor(props) {
     super(props);
@@ -40,7 +40,7 @@ class Play extends Component {
   JoinGame = (kind) => {
     GameService.JoinGame(JSON.parse(kind)).then((response) => {
       if (response.IsSuccess) {
-        channel.postMessage({action: "refresh", target:"*"});
+        // channel.postMessage({action: "refresh", target:"*"});
         this.setState({ ...this.state, maintenance: false });
         if (this.myRef.current) this.myRef.current.src = response.data.web_url;
       } else {
