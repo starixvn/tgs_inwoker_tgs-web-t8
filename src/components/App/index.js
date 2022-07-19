@@ -548,10 +548,10 @@ class App extends Component {
 
                 <ForcedVerification
                   forcedverify={
-                    config.features.SMSVerification &&
-                    this.props.account.info.identityformstatus === 0 &&
-                    (this.props.account.info.identityformid === "" ||
-                      this.props.account.info.identityformid === null)
+                    config.features.SMSVerification && this.props.account.registercompleted === false
+                    // this.props.account.info.identityformstatus === 0 &&
+                    // (this.props.account.info.identityformid === "" ||
+                    //   this.props.account.info.identityformid === null)
                   }
                 />
                 {this.props.account.registercompleted === false &&
