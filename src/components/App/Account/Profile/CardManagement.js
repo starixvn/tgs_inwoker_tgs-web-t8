@@ -67,13 +67,13 @@ class CardManagement extends Component {
 
   async componentDidMount() {
     if (this.props.token) {
-      if(!config.features.Register_CustomFlow_IDR)
-      {
+      if (!config.features.Register_CustomFlow_IDR) {
         if (this.props.wallet.bankCardList.length === 0)
           this.props.getBankCardList();
-      }
-      else if((config.features.Register_CustomFlow_IDR && this.props.account.info.bankInfoAuthentication))
-      {
+      } else if (
+        config.features.Register_CustomFlow_IDR &&
+        this.props.account.info.bankInfoAuthentication
+      ) {
         if (this.props.wallet.bankCardList.length === 0)
           this.props.getBankCardList();
       }
@@ -88,13 +88,13 @@ class CardManagement extends Component {
   }
   componentDidUpdate(preProps) {
     if (this.props.token !== null && preProps.token !== this.props.token) {
-      if(!config.features.Register_CustomFlow_IDR)
-      {
+      if (!config.features.Register_CustomFlow_IDR) {
         if (this.props.wallet.bankCardList.length === 0)
           this.props.getBankCardList();
-      }
-      else if((config.features.Register_CustomFlow_IDR && this.props.account.info.bankInfoAuthentication))
-      {
+      } else if (
+        config.features.Register_CustomFlow_IDR &&
+        this.props.account.info.bankInfoAuthentication
+      ) {
         if (this.props.wallet.bankCardList.length === 0)
           this.props.getBankCardList();
       }
@@ -181,13 +181,28 @@ class CardManagement extends Component {
   handleAddCardNextClick = (channelid, bankType, detail) => {
     //clear url params
     window.history.pushState({}, null, "withdrawal");
-    if(config.features.Register_CustomFlow_IDR){
-      this.props.initBankCard(channelid, bankType, detail).then((response)=>{
+    if (config.features.Register_CustomFlow_IDR) {
+      this.props.initBankCard(channelid, bankType, detail).then((response) => {
         this.props.getAccountInfo();
       });
+    } else {
+      this.props.addBankCard(channelid, bankType, detail);
     }
-    else
-    {
+  };
+
+  performAddNewCard = (channelid, bankType, detail) => {
+    window.history.pushState({}, null, "withdrawal");
+    if (config.features.Register_CustomFlow_IDR) {
+      this.props
+        .newRegister("SetWithdrawBankInfo", {
+          banktype: bankType,
+          paymentchannelid: channelid,
+          detail: detail,
+        })
+        .then((response) => {
+          this.props.getAccountInfo();
+        });
+    } else {
       this.props.addBankCard(channelid, bankType, detail);
     }
   };
@@ -232,7 +247,7 @@ class CardManagement extends Component {
         return (
           <AddCard
             name={this.props.account.info.member_name}
-            onhandleNextClick={this.handleAddCardNextClick}
+            onhandleNextClick={this.performAddNewCard}
             withdrawalList={this.props.wallet.withdrawalList}
             onhandleBackClick={this.handleBacktoProfile}
             showBack={true}
@@ -296,6 +311,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: SHOWING_DIALOG, payload });
     },
     getAccountInfo: () => dispatch(accountAction.getAccountInfo()),
+    newRegister: (type, input) =>
+      dispatch(accountAction.newRegister(type, input)),
   };
 };
 export default withRouter(
