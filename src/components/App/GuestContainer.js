@@ -134,11 +134,6 @@ class GuestContainer extends Component {
     this.props.onDialogChange("");
   };
 
-  // onhandleLoginSuccess = token => {
-  //   this.props.handleLoginSuccess(token);
-  //   this.setState({ ...this.state, openDialog: false });
-  //   this.props.showLogin(false);
-  // };
   onhandleRegister = () => {
     this.setState({
       ...this.state,
@@ -169,28 +164,6 @@ class GuestContainer extends Component {
     this.props.showLogin(false);
   };
 
-  // onhandleForgotPasswordNext = (username, code, sessionId) => {
-  //   AccountService.GetResetPasswordStep1(username, code, sessionId).then(
-  //     (response) => {
-  //       if (response.IsSuccess) {
-  //         this.setState({
-  //           ...this.state,
-  //           openDialog: true,
-  //           question: response.data.question,
-  //           forgotToken: response.data.forget_token,
-  //           emailCheck: response.data.email_check,
-  //           phoneCheck: response.data.phone_check,
-  //           questionCheck: response.data.question_check,
-  //           openDialogName: "forgotpasswordoption",
-  //         });
-  //       } else {
-  //         this.props.enqueueSnackbar(response.msg, {
-  //           variant: "error",
-  //         });
-  //       }
-  //     }
-  //   );
-  // };
   onhandleOptionClick = (method) => {
     let dialogName = "";
 
@@ -269,46 +242,7 @@ class GuestContainer extends Component {
       openDialogName: "forgotpasswordoption",
     });
   };
-  // onhandleForgotPasswordSecurityQuestionNext = (answer) => {
-  //   if (answer !== "") {
-  //     AccountService.GetResetPasswordSecurityQuestionVerify(
-  //       this.state.forgotToken,
-  //       answer
-  //     ).then((response) => {
-  //       if (response.IsSuccess) {
-  //         this.setState({
-  //           ...this.state,
-  //           openDialog: true,
-  //           openDialogName: "resetpassword",
-  //         });
-  //       } else {
-  //         this.props.enqueueSnackbar(response.msg, {
-  //           variant: "error",
-  //         });
-  //       }
-  //     });
-  //   }
-  // };
-  // onhandleForgotPasswordEmailClick = (code) => {
-  //   if (code !== "") {
-  //     AccountService.GetResetPasswordEmailVerify(
-  //       this.state.forgotToken,
-  //       code
-  //     ).then((response) => {
-  //       if (response.IsSuccess) {
-  //         this.setState({
-  //           ...this.state,
-  //           openDialog: true,
-  //           openDialogName: "resetpassword",
-  //         });
-  //       } else {
-  //         this.props.enqueueSnackbar(response.info, {
-  //           variant: "error",
-  //         });
-  //       }
-  //     });
-  //   }
-  // };
+
   onhandleResetPasswordBackClick = () => {
     this.setState({
       ...this.state,
@@ -382,20 +316,6 @@ class GuestContainer extends Component {
       this.props.enqueueSnackbar(ErrorSwitcher.getTranslation(result.info), {
         variant: "warning",
       });
-
-      // if (result.data.self_control === 1) {
-      //   this.props.showLogin(false);
-      //   this.setState({
-      //     ...this.state,
-      //     expired_time: result.data.expired_time,
-      //     openSelfControlDialog: true,
-      //     openDialog: false,
-      //   });
-      // } else {
-      //   this.props.enqueueSnackbar(result.info, {
-      //     variant: "warning",
-      //   });
-      // }
     }
   };
   handleLoginClickWithHp = async (username, password, phone) => {
@@ -414,21 +334,50 @@ class GuestContainer extends Component {
 
     const result = await this.props.accountLogin(username, password);
     if (result.IsSuccess) {
-      AccountService.Activation(username, password,this.state.areaCode, phone).then(
-        async (response) => {
+      //  AccountService.Activation(
+      //    username,
+      //    password,
+      //    this.state.areaCode,
+      //    phone
+      //  ).then(async (response) => {
+      //    if (response.IsSuccess) {
+      //      this.state.securityKey = response.data;
+      //      AccountService.VerifyActivation(
+      //        this.state.securityKey,
+      //        "123456"
+      //      ).then(async (response) => {
+      //        this.handleLoginSuccess(result.data);
+      //      });
+      //    } else {
+      //      this.handleLoginSuccess(result.data);
+      //    }
+      //  });
+
+      this.props
+        .newRegister("InitPhone", {
+          input: "Init",
+          data: {
+            areacode: this.state.areaCode,
+            phone: phone,
+          },
+        })
+        .then(async (response) => {
           if (response.IsSuccess) {
-            this.state.securityKey = response.data;
-            AccountService.VerifyActivation(
-              this.state.securityKey,
-              "123456"
-            ).then(async (response) => {
-              this.handleLoginSuccess(result.data);
-            });
+            this.props
+              .newRegister("InitPhone", {
+                input: "Valid",
+                data: {
+                  securitykey: response.data.stepResponse,
+                  validatecode: "123456",
+                },
+              })
+              .then(async (response) => {
+                this.handleLoginSuccess(result.data);
+              });
           } else {
             this.handleLoginSuccess(result.data);
           }
-        }
-      );
+        });
     }
   };
   handleLoginClickWithHpEmail = async (username, password, phone, email) => {
@@ -446,30 +395,30 @@ class GuestContainer extends Component {
     }
     const result = await this.props.accountLogin(username, password);
     if (result.IsSuccess) {
-      AccountService.Activation(username, password,this.state.areaCode, phone).then(
-        async (response) => {
-          if (response.IsSuccess) {
-            this.state.securityKey = response.data;
-            AccountService.VerifyActivation(
-              this.state.securityKey,
-              "123456"
-            )
-            // .then(async (response) => {
-              
-            // });
-          } 
-          // else {
-          //   this.handleLoginSuccess(result.data);
-          // }
+      AccountService.Activation(
+        username,
+        password,
+        this.state.areaCode,
+        phone
+      ).then(async (response) => {
+        if (response.IsSuccess) {
+          this.state.securityKey = response.data;
+          AccountService.VerifyActivation(this.state.securityKey, "123456");
+          // .then(async (response) => {
+
+          // });
         }
-      );
+        // else {
+        //   this.handleLoginSuccess(result.data);
+        // }
+      });
       AccountService.ActivationEmail(email).then(async (response) => {
         if (response.IsSuccess) {
           this.state.securityKey = response.data;
           AccountService.VerifyActivationEmail(
             this.state.securityKey,
             "123456"
-          )
+          );
           // .then(async (response) => {
           //   this.handleLoginSuccess(result.data);
           // });
@@ -478,10 +427,73 @@ class GuestContainer extends Component {
       this.handleLoginSuccess(result.data);
     }
   };
+
+  performLoginWithPhoneAndEmail = async (username, password, phone, email) => {
+    if (username === "") {
+      this.props.enqueueSnackbar(i18n.t("web.login.errorMsg.emptyUsername"), {
+        variant: "warning",
+      });
+      return;
+    }
+    if (password === "") {
+      this.props.enqueueSnackbar(i18n.t("web.login.errorMsg.emptyPassword"), {
+        variant: "warning",
+      });
+      return;
+    }
+    const result = await this.props.accountLogin(username, password);
+    if (result.IsSuccess) {
+      this.props
+        .newRegister("InitPhone", {
+          input: "Init",
+          data: {
+            areacode: this.state.areaCode,
+            phone: phone,
+          },
+        })
+        .then(async (response) => {
+          if (response.IsSuccess) {
+            this.props
+              .newRegister("InitPhone", {
+                input: "Valid",
+                data: {
+                  securitykey: response.data.stepResponse,
+                  validatecode: "123456",
+                },
+              })
+              .then(async (response) => {
+                if (response.IsSuccess) {
+                  this.props
+                    .newRegister("InitMail", {
+                      input: "Init",
+                      data: {
+                        email: email,
+                      },
+                    })
+                    .then(async (response) => {
+                      if (response.IsSuccess) {
+                        this.props.newRegister("InitMail", {
+                          input: "Valid",
+                          data: {
+                            securitykey: response.data.stepResponse,
+                            validatecode: "123456",
+                          },
+                        });
+                      }
+                    });
+                }
+              });
+          }
+        });
+
+      this.handleLoginSuccess(result.data);
+    }
+  };
+
   handleCloseSelfControlDialog = (token) => {
     this.setState({ ...this.state, openSelfControlDialog: false });
   };
-  handleLoginSuccess =  async (token) => {
+  handleLoginSuccess = async (token) => {
     let urlParams = new URLSearchParams(this.props.location.search);
     if (urlParams.has("return_url")) {
       // const returnValue = urlParams.get("return_url");
@@ -497,14 +509,15 @@ class GuestContainer extends Component {
       }
       // this.props.checkGame();
       var bankInfoAuthentication = null;
-      await this.props.getAccountInfo().then((response)=>{
-        if(response.IsSuccess)
-        {
+      await this.props.getAccountInfo().then((response) => {
+        if (response.IsSuccess) {
           bankInfoAuthentication = response.data.bankinfoauthentication;
         }
       });
-      if(!config.features.Register_CustomFlow_IDR || (config.features.Register_CustomFlow_IDR && bankInfoAuthentication))
-      {    
+      if (
+        !config.features.Register_CustomFlow_IDR ||
+        (config.features.Register_CustomFlow_IDR && bankInfoAuthentication)
+      ) {
         this.props.getBankCardList();
         this.props.getMessageList(i18n.language, 0, 99);
         this.props.getBalanceList();
@@ -605,7 +618,7 @@ class GuestContainer extends Component {
                     onRegisterSuccess={this.handleRegisterSuccess}
                     doLogin={this.handleLoginClick}
                     doLoginWithHp={this.handleLoginClickWithHp}
-                    doLoginWithHpEmail={this.handleLoginClickWithHpEmail}
+                    doLoginWithHpEmail={this.performLoginWithPhoneAndEmail}
                   ></Register>
                 );
               } else if (this.state.openDialogName === "activation") {
@@ -702,6 +715,8 @@ const mapDispatchToProps = (dispatch) => {
     getPromotionRouletteStatus: (id) =>
       dispatch(generalAction.getPromotionRouletteStatus(id)),
     getPromotion: () => dispatch(generalAction.getPromotion()),
+    newRegister: (type, input) =>
+      dispatch(accountAction.newRegister(type, input)),
   };
 };
 const mapStateToProps = (state) => {
