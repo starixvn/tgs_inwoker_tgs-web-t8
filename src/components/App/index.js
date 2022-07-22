@@ -51,7 +51,7 @@ import ESports from "./eSports";
 import config from "../../config/config";
 import LiveChat from "../Share/live-chat";
 import CustomLibrary from "./Sports/CustomLibrary.js";
-// import ForcedVerification from "./ForcedVerification";
+import ForcedVerification from "./ForcedVerification";
 // const bc = new BroadcastChannel("refreshBalance");
 const baseRouteUrl = Common.baseRouteUrl;
 const Main = styled.div`
@@ -219,8 +219,10 @@ class App extends Component {
         // this.props.getVIP();
       }
     }
-    if(preProps.account.token !== this.props.account.token && (this.props.account.token === null || this.props.account.token === ""))
-    {
+    if (
+      preProps.account.token !== this.props.account.token &&
+      (this.props.account.token === null || this.props.account.token === "")
+    ) {
       this.props.getPromotion();
     }
     if (config.features.ForceRedirectAddCard) {
@@ -328,8 +330,8 @@ class App extends Component {
   };
 
   isInHomePage = () => {
-    return this.props.location.pathname===`/${i18n.language}/`;
-  }
+    return this.props.location.pathname === `/${i18n.language}/`;
+  };
 
   render() {
     return (
@@ -544,6 +546,24 @@ class App extends Component {
                   onhandleShowCSClick={this.handleShowCSClick}
                 ></AnotherFloatPanel>
 
+                <ForcedVerification
+                  forcedverify={
+                    config.features.SMSVerification &&
+                    this.props.account.registercompleted === false &&
+                    config.features.ForcedVerification
+                    // this.props.account.info.identityformstatus === 0 &&
+                    // (this.props.account.info.identityformid === "" ||
+                    //   this.props.account.info.identityformid === null)
+                  }
+                />
+                {this.props.account.registercompleted === false &&
+                  config.features.Register_ShowPhone &&
+                  config.features.ForcedVerification && (
+                    <Redirect
+                      to={"/" + i18n.language + "/account/profile/member_phone"}
+                    />
+                  )}
+
                 {config.features.LiveChatVendor.brand &&
                   config.features.LiveChatVendor.license && (
                     <LiveChat
@@ -553,13 +573,15 @@ class App extends Component {
                   )}
 
                 {config.features.HomePage_PromoRoulette &&
-                this.isInHomePage() &&
+                  this.isInHomePage() &&
                   this.isRouletteAvailable() && (
                     <PromotionRoulette
-                      promotionDetail={this.props.general.promotionList.items.filter(
-                        (item) =>
-                          item.promotionType.toUpperCase() === "ROULETTE"
-                      )[0]}
+                      promotionDetail={
+                        this.props.general.promotionList.items.filter(
+                          (item) =>
+                            item.promotionType.toUpperCase() === "ROULETTE"
+                        )[0]
+                      }
                     ></PromotionRoulette>
                   )}
                 <Footer target={"_blank"}></Footer>
