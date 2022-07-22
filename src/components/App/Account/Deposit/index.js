@@ -162,9 +162,9 @@ class Deposit extends Component {
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     localStorage.removeItem("depositResult");
-    await this.props.getDepositMethod();
+    this.props.getDepositMethod();
     this.props.getPromotion();
 
     window.addEventListener("storage", this.handStorageMsg, true);
@@ -183,16 +183,6 @@ class Deposit extends Component {
           }
         }
       );
-    }
-    if (
-      config.features.Deposit_AddCard &&
-      this.props.wallet.bankCardList.length > 0 &&
-      this.props.wallet.bankCardList !== null
-    ) {
-      var defaultCard = this.props.wallet.bankCardList.filter(
-        (item) => item.default
-      )[0];
-      this.handleBankCardChange({ target: { value: defaultCard.id } });
     }
     this.countDownInterval = setInterval(() => {
       this.props.getDepositMethod(); // call api every 30 mins
@@ -401,17 +391,6 @@ class Deposit extends Component {
           }
         );
       }
-    }
-    if (
-      config.features.Deposit_AddCard &&
-      preProps.wallet.bankCardList !== this.props.wallet.bankCardList &&
-      this.props.wallet.bankCardList.length > 0 &&
-      this.props.wallet.bankCardList !== null
-    ) {
-      var defaultCard = this.props.wallet.bankCardList.filter(
-        (item) => item.default
-      )[0];
-      this.handleBankCardChange({ target: { value: defaultCard.id } });
     }
   }
 
@@ -877,19 +856,9 @@ class Deposit extends Component {
       playerNote: e.target.value,
     });
   };
-  handleRestartClick = async (e) => {
+  handleRestartClick = (e) => {
     this.setState(this.initialState);
-    await this.props.resetDeposit();
-    if (
-      config.features.Deposit_AddCard &&
-      this.props.wallet.bankCardList.length > 0 &&
-      this.props.wallet.bankCardList !== null
-    ) {
-      var defaultCard = this.props.wallet.bankCardList.filter(
-        (item) => item.default
-      )[0];
-      this.handleBankCardChange({ target: { value: defaultCard.id } });
-    }
+    this.props.resetDeposit();
   };
   switchStep = (steps) => {
     switch (steps) {

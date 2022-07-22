@@ -574,15 +574,13 @@ class GuestContainer extends Component {
   render() {
     return (
       <Container>
-        {
-          //    config.features.SMSVerification && (
-          //      <React.Fragment>
-          //        <BtnRegister onClick={() => this.onhandleActivation()}>
-          //          {i18n.t("web.register.activation")}
-          //        </BtnRegister>
-          //      </React.Fragment>
-          //    )
-        }
+        {config.features.SMSVerification && (
+          <React.Fragment>
+            <BtnRegister onClick={() => this.onhandleActivation()}>
+              {i18n.t("web.register.activation")}
+            </BtnRegister>
+          </React.Fragment>
+        )}
         <BtnRegister onClick={() => this.onhandleRegister()}>
           {i18n.t("common.register")}
         </BtnRegister>
@@ -725,7 +723,6 @@ const mapStateToProps = (state) => {
   return {
     ui: state.ui,
     game: state.game,
-    account: state.account,
   };
 };
 
