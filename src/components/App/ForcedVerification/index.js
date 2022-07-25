@@ -229,6 +229,20 @@ const TitleContainer = styled.div`
   font-size: 42px;
 `;
 
+const CloseIconContainer = styled.div`
+  background: url(${IconLoginClosePNG}) no-repeat;
+  width: 28px;
+  height: 28px;
+  float: right;
+  margin: 10px 10px 0 0;
+  &:hover {
+    cursor: pointer;
+  }
+  position: absolute;
+  right: 10px;
+  top: 20px;
+`;
+
 const ForcedVerification = ({ forcedverify }) => {
   const [areacode, setAreacode] = useState(config.features.PhonePrefix);
   const [phone, setPhone] = useState("");
@@ -326,6 +340,15 @@ const ForcedVerification = ({ forcedverify }) => {
   return (
     <StyledDialog open={open} onClose={() => {}}>
       <Container>
+        {
+          //    <CloseIconContainer
+          //    viewBox="4 4 16 16"
+          //    onClick={() => {
+          //      setOpen(false);
+          //    }}
+          //  ></CloseIconContainer>
+        }
+
         <TitleContainer>{i18n.t("web.register.activation")}</TitleContainer>
         <CustomFormControl>
           <CustomSelect
