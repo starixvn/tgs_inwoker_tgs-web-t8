@@ -560,7 +560,11 @@ class App extends Component {
                   config.features.Register_ShowPhone &&
                   config.features.ForcedVerification && (
                     <Redirect
-                      to={"/" + i18n.language + "/account/profile/member_phone"}
+                      to={{
+                        pathname:
+                          "/" + i18n.language + "/account/profile/member_phone",
+                        state: { forced: true },
+                      }}
                     />
                   )}
 
