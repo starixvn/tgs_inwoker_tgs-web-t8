@@ -1041,6 +1041,13 @@ class Deposit extends Component {
               this.props.wallet.bankCardList.length === 0
             }
             isDeposit={true}
+            bankCardList={
+              config.features.Deposit_AddCard
+                ? this.props.wallet.bankCardList.sort(
+                    (a, b) => b.default - a.default
+                  )
+                : this.props.wallet.bankCardList
+            }
           ></AddCard>
         );
       case 7:
