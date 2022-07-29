@@ -348,7 +348,7 @@ function GetContentWrap(accountInfo, label, attr, func, edit, disable) {
             );
           }
         })()}
-        {((status === "verifying" && attr === "member_name") ||
+        {((status === "verifying" && attr === "member_name" && config.features.Profile_DisplayEditNameButton) ||
           (attr === "member_phone" && isVerify && edit && !disable)) && (
           <ContentButton onClick={() => func(attr, edit)}>
             <ContentButtonLabel>{i18n.t("profile.edit")}</ContentButtonLabel>
