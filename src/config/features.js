@@ -98,6 +98,10 @@ const featureList = {
     },
     ForcedVerification: false,
     Profile_DisplayEditNameButton: true,
+    Home_OnlineUsers: {
+      min: 26500,
+      max: 27500,
+    },
   },
 };
 export default featureList;
