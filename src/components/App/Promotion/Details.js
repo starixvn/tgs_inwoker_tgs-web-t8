@@ -443,6 +443,8 @@ class PromotionDetails extends Component {
     var checkLocale = this.state.details.localization[i18n.language];
     if (this.state.details === null) return <></>;
     var isDummy = this.state.details.promotionType.toUpperCase() === "DUMMY";
+    var checkIfLocalizationIsEmpty =
+      JSON.stringify(this.state.details.localization) === "{}";
     return (
       <Container>
         <MContainer>
@@ -491,16 +493,41 @@ class PromotionDetails extends Component {
                   <PromoDesc
                     dangerouslySetInnerHTML={{
                       __html:
+                        "<div>" +
+                        (() => {
+                          if (
+                            !checkIfLocalizationIsEmpty &&
+                            (this.state.details.localization[i18n.language] !==
+                              "" ||
+                              this.state.details.localization[i18n.language] !==
+                                null)
+                          ) {
+                            return this.state.details.localization[
+                              i18n.language
+                            ].content;
+                          } else {
+                            return this.state.details.content;
+                          }
+                        })() +
+                        "</div>",
+                    }}
+                  ></PromoDesc>
+
+                  <PromoDesc
+                    dangerouslySetInnerHTML={{
+                      __html:
                         "<div >" +
                         (() => {
                           if (
-                            this.state.details.localization !== null &&
-                            this.state.details.localization.content &&
-                            this.state.details.localization.content !== null
+                            !checkIfLocalizationIsEmpty &&
+                            (this.state.details.localization[i18n.language] !==
+                              "" ||
+                              this.state.details.localization[i18n.language] !==
+                                null)
                           ) {
-                            return this.state.details.localization.content;
+                            return this.state.details.localization.terms;
                           } else {
-                            return this.state.details.content;
+                            return this.state.details.terms;
                           }
                         })() +
                         "</div>",
