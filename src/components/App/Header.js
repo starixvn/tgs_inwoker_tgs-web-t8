@@ -85,6 +85,7 @@ const TimerContainer = styled.div`
   display: flex;
   align-items: center;
   float: left;
+  height: 100%;
   @media (max-width: 950px) {
     display: none;
   }
@@ -1021,7 +1022,7 @@ class Header extends Component {
                               : classes.minLabel
                           }`}
                         >
-                          {item.title}
+                          {i18n.t(item.title)}
                         </RightMenuTextSpan>
                         <MouseOverContainer
                           onClick={(e) => e.stopPropagation()}
