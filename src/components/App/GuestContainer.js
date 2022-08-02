@@ -509,9 +509,16 @@ class GuestContainer extends Component {
       }
       // this.props.checkGame();
       var bankInfoAuthentication = null;
+      var isPhoneNull = null;
+      var isEmailNull = null;
+      var isRegisterCompleted = null;
+
       await this.props.getAccountInfo().then((response) => {
         if (response.IsSuccess) {
           bankInfoAuthentication = response.data.bankinfoauthentication;
+          isPhoneNull = response.data.phone === null;
+          isEmailNull = response.data.email === null;
+          isRegisterCompleted = response.data.registercompleted;
         }
       });
       if (
@@ -540,9 +547,33 @@ class GuestContainer extends Component {
         (config.features.Register_CustomFlow_IDR && !bankInfoAuthentication)
       ) {
         if (config.features.NavigateToAddCard) {
-          this.props.history.push(
-            "/" + i18n.language + "/account/bankcard/add"
-          );
+          if(isPhoneNull)
+          {
+            this.props.history.push(
+              "/" + i18n.language + "/account/profile/member_phone"
+            );
+          }
+          else
+          {
+            if(isEmailNull)
+            {
+              this.props.history.push(
+                "/" + i18n.language + "/account/profile/member_email"
+              );
+            }
+            else
+            {
+              if(!isRegisterCompleted)
+              {
+                this.props.history.push(
+                  "/" + i18n.language + "/account/bankcard/add"
+                );
+              }
+            }
+          }
+          // this.props.history.push(
+          //   "/" + i18n.language + "/account/bankcard/add"
+          // );
         }
       }
     }

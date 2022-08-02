@@ -14,6 +14,7 @@ import ErrorSwitcher from "../../../../utils/ErrorSwitcher";
 import { withSnackbar } from "notistack";
 import { Link } from "react-router-dom";
 import config from "../../../../config/config";
+import { AppHistory } from "../../../../history/History";
 const Content = styled.div`
   width: 100%;
   margin: 0 auto;
@@ -210,56 +211,116 @@ class PhoneVerification extends Component {
     }
   };
   onhandleClick = () => {
-    if (this.state.code.length < 6) {
-      this.props.enqueueSnackbar(i18n.t("common.msgEnterCode"), {
-        variant: "error",
-      });
-      return;
-    }
-    var expr = new RegExp(
-      `^[0-9]{8,${config.features.MAX_PHONE_LENGTH || 10}}`
-    );
-    if (!expr.test(this.state.phone)) {
-      this.props.enqueueSnackbar(
-        i18n
-          .t("common.noReachMin")
-          .replace(/{maxlength}/g, config.features.MAX_PHONE_LENGTH || 10),
-        {
-          variant: "warning",
+    if (
+      config.features.Register_CustomFlow_IDR &&
+      !this.props.account.registercompleted
+    ) {
+      var expr = new RegExp(
+        `^[0-9]{8,${config.features.MAX_PHONE_LENGTH || 10}}`
+      );
+      if (!expr.test(this.state.phone)) {
+        this.props.enqueueSnackbar(
+          i18n
+            .t("common.noReachMin")
+            .replace(/{maxlength}/g, config.features.MAX_PHONE_LENGTH || 10),
+          {
+            variant: "warning",
+          }
+        );
+        return;
+      }
+
+      this.props
+        .newRegister("InitPhone", {
+          input: "Init",
+          data: {
+            areacode: this.state.areacode,
+            phone: this.state.phone,
+          },
+        })
+        .then(async (response) => {
+          if (response.IsSuccess) {
+            this.props
+              .newRegister("InitPhone", {
+                input: "Valid",
+                data: {
+                  securitykey: response.data.stepResponse,
+                  validatecode: "123456",
+                },
+              })
+              .then(async (response) => {
+                this.props.getAccountInfo().then(async (response) => {
+                  if (
+                    response.data.email === null &&
+                    !response.data.registercompleted
+                  ) {
+                    AppHistory.push(
+                      "/" + i18n.language + "/account/profile/member_email"
+                    );
+                  }
+                });
+              });
+          } else {
+            this.props.enqueueSnackbar(
+              ErrorSwitcher.getTranslation(response.info),
+              {
+                variant: "error",
+              }
+            );
+          }
+        });
+    } else {
+      if (this.state.code.length < 6) {
+        this.props.enqueueSnackbar(i18n.t("common.msgEnterCode"), {
+          variant: "error",
+        });
+        return;
+      }
+      var expr = new RegExp(
+        `^[0-9]{8,${config.features.MAX_PHONE_LENGTH || 10}}`
+      );
+      if (!expr.test(this.state.phone)) {
+        this.props.enqueueSnackbar(
+          i18n
+            .t("common.noReachMin")
+            .replace(/{maxlength}/g, config.features.MAX_PHONE_LENGTH || 10),
+          {
+            variant: "warning",
+          }
+        );
+        return;
+      }
+      AccountService.UpdatePhone(this.state.securityKey, this.state.code).then(
+        (response) => {
+          if (response.IsSuccess) {
+            this.props.enqueueSnackbar(i18n.t("common.msgTokenVerified"), {
+              variant: "info",
+            });
+            if (this.state.isNew || this.state.step === 2) {
+              this.props.getAccountInfo();
+              this.props.handleCloseDialog();
+            } else {
+              this.setState({
+                ...this.state,
+                code: "",
+                phone: "",
+                securityKey: "",
+                step: 2,
+                message: i18n.t("common.msgTokenVerified"),
+                countdown: 0,
+              });
+            }
+          } else {
+            this.props.enqueueSnackbar(
+              ErrorSwitcher.getTranslation(response.info),
+              {
+                variant: "error",
+              }
+            );
+          }
         }
       );
-      return;
     }
-    AccountService.UpdatePhone(this.state.securityKey, this.state.code).then(
-      (response) => {
-        if (response.IsSuccess) {
-          this.props.enqueueSnackbar(i18n.t("common.msgTokenVerified"), {
-            variant: "info",
-          });
-          if (this.state.isNew || this.state.step === 2) {
-            this.props.getAccountInfo();
-            this.props.handleCloseDialog();
-          } else {
-            this.setState({
-              ...this.state,
-              code: "",
-              phone: "",
-              securityKey: "",
-              step: 2,
-              message: i18n.t("common.msgTokenVerified"),
-              countdown: 0,
-            });
-          }
-        } else {
-          this.props.enqueueSnackbar(
-            ErrorSwitcher.getTranslation(response.info),
-            {
-              variant: "error",
-            }
-          );
-        }
-      }
-    );
   };
 
   render() {
@@ -366,40 +427,44 @@ class PhoneVerification extends Component {
             disabled={this.state.isNew === false && this.state.step === 1}
           ></CustomText>
           {!(
-            ifNotEmpty &&
-            (config.features.ChangesNotAllowed ||
-              config.features.Profile_ExistingDetails_ViewOnly)
-          ) && (
-            <>
-              <CustomText
-                placeholder={i18n.t("common.msgEnterCode")}
-                adornment={IconInputVerifyCodePNG}
-                onChange={this.onhandleCodeChange}
-                variant="outlined"
-                autoComplete="off"
-                value={this.state.code}
-                type={"text"}
-                style={{
-                  width: "208px",
-                  height: "46px",
-                }}
-              ></CustomText>
-              <StyleButton
-                onClick={this.onhandleGetCodeClick}
-                disable={this.state.countdown > 0}
-              >
-                <ButtonLabel>
-                  {this.state.countdown <= 0
-                    ? i18n.t("common.msgSendToken")
-                    : i18n.t("common.btnTokenResendLabel") +
-                      "(" +
-                      this.state.countdown +
-                      "s)"}
-                </ButtonLabel>
-              </StyleButton>
-              <Message>{this.state.message}</Message>
-            </>
-          )}
+            config.features.Register_CustomFlow_IDR &&
+            !this.props.account.registercompleted
+          ) &&
+            !(
+              ifNotEmpty &&
+              (config.features.ChangesNotAllowed ||
+                config.features.Profile_ExistingDetails_ViewOnly)
+            ) && (
+              <>
+                <CustomText
+                  placeholder={i18n.t("common.msgEnterCode")}
+                  adornment={IconInputVerifyCodePNG}
+                  onChange={this.onhandleCodeChange}
+                  variant="outlined"
+                  autoComplete="off"
+                  value={this.state.code}
+                  type={"text"}
+                  style={{
+                    width: "208px",
+                    height: "46px",
+                  }}
+                ></CustomText>
+                <StyleButton
+                  onClick={this.onhandleGetCodeClick}
+                  disable={this.state.countdown > 0}
+                >
+                  <ButtonLabel>
+                    {this.state.countdown <= 0
+                      ? i18n.t("common.msgSendToken")
+                      : i18n.t("common.btnTokenResendLabel") +
+                        "(" +
+                        this.state.countdown +
+                        "s)"}
+                  </ButtonLabel>
+                </StyleButton>
+                <Message>{this.state.message}</Message>
+              </>
+            )}
 
           {ifNotEmpty &&
             (config.features.ChangesNotAllowed ||
@@ -443,15 +508,21 @@ class PhoneVerification extends Component {
     }
   }
 }
-
+const mapStateToProps = (state) => {
+  return {
+    account: state.account,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     getAccountInfo: () => dispatch(accountAction.getAccountInfo()),
     dispatchFunction: (json) => dispatch(json),
+    newRegister: (type, input) =>
+      dispatch(accountAction.newRegister(type, input)),
     dispatch: dispatch,
   };
 };
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(withSnackbar(PhoneVerification));
