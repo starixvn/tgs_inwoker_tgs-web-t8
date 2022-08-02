@@ -969,10 +969,15 @@ class Profile extends Component {
   };
   render() {
     const forcedverify =
-      this.props.account.registercompleted === false &&
-      config.features.Register_ShowPhone &&
-      config.features.ForcedVerification &&
-      this.props.popup === "member_phone";
+      (this.props.account.registercompleted === false &&
+        config.features.Register_ShowPhone &&
+        config.features.ForcedVerification &&
+        this.props.popup === "member_phone") ||
+      (this.props.account.registercompleted === false &&
+        config.features.Register_CustomFlow_IDR &&
+        (this.props.popup === "member_phone" ||
+          this.props.popup === "member_email"));
+
     return (
       <Container>
         <LeftContainer>
