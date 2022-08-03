@@ -443,7 +443,7 @@ class GuestContainer extends Component {
     }
     const result = await this.props.accountLogin(username, password);
     if (result.IsSuccess) {
-      this.props
+      await this.props
         .newRegister("InitPhone", {
           input: "Init",
           data: {
@@ -453,7 +453,7 @@ class GuestContainer extends Component {
         })
         .then(async (response) => {
           if (response.IsSuccess) {
-            this.props
+            await this.props
               .newRegister("InitPhone", {
                 input: "Valid",
                 data: {
@@ -463,7 +463,7 @@ class GuestContainer extends Component {
               })
               .then(async (response) => {
                 if (response.IsSuccess) {
-                  this.props
+                  await this.props
                     .newRegister("InitMail", {
                       input: "Init",
                       data: {
@@ -472,7 +472,7 @@ class GuestContainer extends Component {
                     })
                     .then(async (response) => {
                       if (response.IsSuccess) {
-                        this.props.newRegister("InitMail", {
+                        await this.props.newRegister("InitMail", {
                           input: "Valid",
                           data: {
                             securitykey: response.data.stepResponse,
