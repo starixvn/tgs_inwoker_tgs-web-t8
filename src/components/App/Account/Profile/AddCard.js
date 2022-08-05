@@ -7,6 +7,7 @@ import Button from "../../../Share/Button";
 import i18n from "../../../../utils/i18n";
 import config from "../../../../config/config";
 import { withSnackbar } from "notistack";
+import Common from "../../../../utils/Common";
 const Container = styled.div`
   width: 100%;
 `;
@@ -452,32 +453,20 @@ class AddCard extends Component {
   };
   render() {
     const { withdrawalList, depositList } = this.props;
-    // These checking to prevent error to display #justToBeSafe
-    var depositListNotValid =
-      depositList === undefined ||
-      depositList === null ||
-      depositList === "" ||
-      depositList.length === 0;
-
-    var withdrawalListNotValid =
-      withdrawalList === undefined ||
-      withdrawalList === null ||
-      withdrawalList === "" ||
-      withdrawalList.length === 0;
 
     var depositListEWallet =
-      !depositListNotValid &&
+      Common.arrayValidator(depositList) &&
       depositList[this.state.selectedBankTypeIndex].banktype === "EWallet";
 
     var withdrawalListEwallet =
-      !withdrawalListNotValid &&
+      Common.arrayValidator(withdrawalList) &&
       withdrawalList[this.state.selectedBankTypeIndex].banktype === "EWallet";
 
     var depositListPulsa =
-      !depositListNotValid &&
+      Common.arrayValidator(depositList) &&
       depositList[this.state.selectedBankTypeIndex].banktype === "Pulsa";
     var withdrawalListPulsa =
-      !withdrawalListNotValid &&
+      Common.arrayValidator(withdrawalList) &&
       withdrawalList[this.state.selectedBankTypeIndex].banktype === "Pulsa";
 
     const isEwallet = this.props.isDeposit
