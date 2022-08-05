@@ -452,16 +452,41 @@ class AddCard extends Component {
   };
   render() {
     const { withdrawalList, depositList } = this.props;
-    const isEwallet =
-      this.state.channelList.length &&
-      (this.state.channelList[this.state.selectedChannelIndex].channelcode ===
-        "E-wallet" ||
-        this.state.channelList[this.state.selectedChannelIndex].channelcode ===
-          "EWallet");
-    const isPulsa =
-      this.state.channelList.length &&
-      this.state.channelList[this.state.selectedChannelIndex].channelcode ===
-        "Pulsa";
+    // These checking to prevent error to display #justToBeSafe
+    var depositListNotValid =
+      depositList === undefined ||
+      depositList === null ||
+      depositList === "" ||
+      depositList.length === 0;
+
+    var withdrawalListNotValid =
+      withdrawalList === undefined ||
+      withdrawalList === null ||
+      withdrawalList === "" ||
+      withdrawalList.length === 0;
+
+    var depositListEWallet =
+      !depositListNotValid &&
+      depositList[this.state.selectedBankTypeIndex].banktype === "EWallet";
+
+    var withdrawalListEwallet =
+      !withdrawalListNotValid &&
+      withdrawalList[this.state.selectedBankTypeIndex].banktype === "EWallet";
+
+    var depositListPulsa =
+      !depositListNotValid &&
+      depositList[this.state.selectedBankTypeIndex].banktype === "Pulsa";
+    var withdrawalListPulsa =
+      !withdrawalListNotValid &&
+      withdrawalList[this.state.selectedBankTypeIndex].banktype === "Pulsa";
+
+    const isEwallet = this.props.isDeposit
+      ? depositListEWallet
+      : withdrawalListEwallet;
+
+    const isPulsa = this.props.isDeposit
+      ? depositListPulsa
+      : withdrawalListPulsa;
 
     const eWalletCustom = isEwallet && config.features.AddCard_EWalletCustoms;
 
