@@ -121,9 +121,11 @@ class AddCard extends Component {
       var name = "";
       var disableBankAccountNameInput = false;
       if (
+        Common.arrayValidator(this.props.depositList) &&
         this.props.depositList[
           this.state.selectedBankTypeIndex
-        ].banktype.toUpperCase() === defaultCard.banktype.toUpperCase()
+        ].banktype.toUpperCase() ===
+          (defaultCard && defaultCard.banktype.toUpperCase())
       ) {
         switch (
           this.props.depositList[
@@ -226,8 +228,9 @@ class AddCard extends Component {
         (card) => card.default
       )[0];
       if (
+        Common.arrayValidator(this.props.depositList) &&
         this.props.depositList[e.target.value].banktype.toUpperCase() ===
-        defaultCard.banktype.toUpperCase()
+          (defaultCard && defaultCard.banktype.toUpperCase())
       ) {
         switch (this.props.depositList[e.target.value].banktype.toUpperCase()) {
           // case "BANK":
