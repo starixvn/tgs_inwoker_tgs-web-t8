@@ -81,6 +81,7 @@ const featureList = {
     Profile_DisableVerifyPhone: false,
     Deposit_Withdrawal_PlayerNote: false,
     AddCard_CustomParam_IDR: false,
+    Custom_Temp_show_verify_SMS_hints: false,
 
     Download_PointlessDialog: false,
     Register_ShowEmail: false,
