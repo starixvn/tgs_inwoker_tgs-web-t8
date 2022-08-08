@@ -456,21 +456,28 @@ class AddCard extends Component {
   };
   render() {
     const { withdrawalList, depositList } = this.props;
+    var depositListEWallet = false;
+    var withdrawalListEwallet = false;
+    var depositListPulsa = false;
+    var withdrawalListPulsa = false;
 
-    var depositListEWallet =
-      Common.arrayValidator(depositList) &&
-      depositList[this.state.selectedBankTypeIndex].banktype === "EWallet";
+    if (this.props.isDeposit) {
+      depositListEWallet =
+        Common.arrayValidator(depositList) &&
+        depositList[this.state.selectedBankTypeIndex].banktype === "EWallet";
 
-    var withdrawalListEwallet =
-      Common.arrayValidator(withdrawalList) &&
-      withdrawalList[this.state.selectedBankTypeIndex].banktype === "EWallet";
+      depositListPulsa =
+        Common.arrayValidator(depositList) &&
+        depositList[this.state.selectedBankTypeIndex].banktype === "Pulsa";
+    } else {
+      withdrawalListEwallet =
+        Common.arrayValidator(withdrawalList) &&
+        withdrawalList[this.state.selectedBankTypeIndex].banktype === "EWallet";
 
-    var depositListPulsa =
-      Common.arrayValidator(depositList) &&
-      depositList[this.state.selectedBankTypeIndex].banktype === "Pulsa";
-    var withdrawalListPulsa =
-      Common.arrayValidator(withdrawalList) &&
-      withdrawalList[this.state.selectedBankTypeIndex].banktype === "Pulsa";
+      withdrawalListPulsa =
+        Common.arrayValidator(withdrawalList) &&
+        withdrawalList[this.state.selectedBankTypeIndex].banktype === "Pulsa";
+    }
 
     const isEwallet = this.props.isDeposit
       ? depositListEWallet

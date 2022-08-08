@@ -7,6 +7,7 @@ import Button from "../../../Share/Button";
 import i18n from "../../../../utils/i18n";
 import config from "../../../../config/config";
 import { withSnackbar } from "notistack";
+import Common from "../../../../utils/Common";
 const Container = styled.div`
   width: 100%;
 `;
@@ -295,7 +296,39 @@ class AddCard extends Component {
     );
   };
   render() {
-    const { withdrawalList } = this.props;
+    const { withdrawalList, depositList } = this.props;
+    var depositListEWallet = false;
+    var withdrawalListEwallet = false;
+    var depositListPulsa = false;
+    var withdrawalListPulsa = false;
+
+    if (this.props.isDeposit) {
+      depositListEWallet =
+        Common.arrayValidator(depositList) &&
+        depositList[this.state.selectedBankTypeIndex].banktype === "EWallet";
+
+      depositListPulsa =
+        Common.arrayValidator(depositList) &&
+        depositList[this.state.selectedBankTypeIndex].banktype === "Pulsa";
+    } else {
+      withdrawalListEwallet =
+        Common.arrayValidator(withdrawalList) &&
+        withdrawalList[this.state.selectedBankTypeIndex].banktype === "EWallet";
+
+      withdrawalListPulsa =
+        Common.arrayValidator(withdrawalList) &&
+        withdrawalList[this.state.selectedBankTypeIndex].banktype === "Pulsa";
+    }
+
+    const isEwallet = this.props.isDeposit
+      ? depositListEWallet
+      : withdrawalListEwallet;
+
+    const isPulsa = this.props.isDeposit
+      ? depositListPulsa
+      : withdrawalListPulsa;
+
+    const eWalletCustom = isEwallet && config.features.AddCard_EWalletCustoms;
 
     const bankList = [
       "กสิกรไทย (Kasikorn Bank- KKR)",
