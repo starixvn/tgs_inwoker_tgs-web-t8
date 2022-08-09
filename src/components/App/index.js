@@ -249,7 +249,7 @@ class App extends Component {
       if (
         this.props.general.token !== null &&
         this.props.account.token !== null &&
-        this.props.account.info.member_phone !== null && 
+        this.props.account.info.member_phone !== null &&
         this.props.account.info.member_email !== null &&
         this.props.account.info.bankInfoAuthentication !== undefined &&
         !this.props.account.info.bankInfoAuthentication &&
@@ -352,7 +352,13 @@ class App extends Component {
   };
 
   isInHomePage = () => {
-    return this.props.location.pathname === `/${i18n.language}/`;
+    const path = this.props.location.pathname;
+    const pathArray = path.split("/");
+    if (pathArray[2] !== "account") {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   render() {
