@@ -103,6 +103,7 @@ const featureList = {
       min: 26500,
       max: 27500,
     },
+    MergeEVORTNT: false,
   },
 };
 export default featureList;

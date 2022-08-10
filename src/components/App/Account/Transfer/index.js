@@ -23,6 +23,7 @@ import Common from "../../../../utils/Common";
 import Messagebox from "../../Messagebox";
 import i18n from "../../../../utils/i18n";
 import ErrorSwitcher from "../../../../utils/ErrorSwitcher";
+import config from "../../../../config/config";
 
 export const rotateKeyFrame = keyframes`
   0% {
@@ -745,6 +746,19 @@ class Transfer extends Component {
                   .filter(
                     (item) => item.status === 0 && item.transferwallet === true
                   )
+                  .filter((e) => {
+                    if (config.features.MergeEVORTNT) {
+                      if (
+                        !(
+                          e.abbreviation === "NTTF" || e.abbreviation === "RTTF"
+                        )
+                      ) {
+                        return e;
+                      }
+                    } else {
+                      return e;
+                    }
+                  })
                   .map((item, index) => (
                     <option value={item.abbreviation} key={index}>
                       {item.name}
@@ -769,6 +783,19 @@ class Transfer extends Component {
                   .filter(
                     (item) => item.status === 0 && item.transferwallet === true
                   )
+                  .filter((e) => {
+                    if (config.features.MergeEVORTNT) {
+                      if (
+                        !(
+                          e.abbreviation === "NTTF" || e.abbreviation === "RTTF"
+                        )
+                      ) {
+                        return e;
+                      }
+                    } else {
+                      return e;
+                    }
+                  })
                   .map((item, index) => (
                     <option value={item.abbreviation} key={index}>
                       {item.name}
@@ -848,31 +875,54 @@ class Transfer extends Component {
               .filter(
                 (item) => item.status === 0 && item.transferwallet === true
               )
-              .map((item, key) => (
-                <GameTranferWallet key={item.id}>
-                  <GameTranferLeftWrap>
-                    <GameIcon
-                      src={
-                        process.env.PUBLIC_URL +
-                        `/assets/images/provider/transfer/${item.abbreviation.toLowerCase()}.png`
-                      }
-                    ></GameIcon>
-                    <GameName> {item.name}</GameName>
-                  </GameTranferLeftWrap>
+              .filter((e) => {
+                if (config.features.MergeEVORTNT) {
+                  if (
+                    !(e.abbreviation === "NTTF" || e.abbreviation === "RTTF")
+                  ) {
+                    return e;
+                  }
+                } else {
+                  return e;
+                }
+              })
+              .map((item, key) => {
+                const displayLogo = () => {
+                  if (
+                    item.abbreviation.toLowerCase() === "evotf" &&
+                    config.features.MergeEVORTNT
+                  ) {
+                    return "evontrt";
+                  } else {
+                    return item.abbreviation.toLowerCase();
+                  }
+                };
+                return (
+                  <GameTranferWallet key={item.id}>
+                    <GameTranferLeftWrap>
+                      <GameIcon
+                        src={
+                          process.env.PUBLIC_URL +
+                          `/assets/images/provider/transfer/${displayLogo()}.png`
+                        }
+                      ></GameIcon>
+                      <GameName> {item.name}</GameName>
+                    </GameTranferLeftWrap>
 
-                  <GameWalletButton
-                    disabled={item.maintenance === 1}
-                    onClick={() => this.handleTranferIn(item.abbreviation)}
-                  >
-                    {i18n.t("transfer.oneKeyTransferIn")}
-                  </GameWalletButton>
-                  <GameWalletAmount>
-                    {item.maintenance === 1
-                      ? i18n.t("transfer.maintenance")
-                      : "$" + Common.formatNumberWithCommas(item.balance)}
-                  </GameWalletAmount>
-                </GameTranferWallet>
-              ))}
+                    <GameWalletButton
+                      disabled={item.maintenance === 1}
+                      onClick={() => this.handleTranferIn(item.abbreviation)}
+                    >
+                      {i18n.t("transfer.oneKeyTransferIn")}
+                    </GameWalletButton>
+                    <GameWalletAmount>
+                      {item.maintenance === 1
+                        ? i18n.t("transfer.maintenance")
+                        : "$" + Common.formatNumberWithCommas(item.balance)}
+                    </GameWalletAmount>
+                  </GameTranferWallet>
+                );
+              })}
           </TransferContainer>
         </GameWalletWrap>
         <Loading
