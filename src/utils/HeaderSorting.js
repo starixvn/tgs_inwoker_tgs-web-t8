@@ -5,7 +5,7 @@ import i18n from "./i18n";
 const MenuItemList = [
   {
     path: "esports",
-    title: i18n.t("common.esports"),
+    title: "common.esports",
     gameType: [GameTypeEnum.ESPORTS],
     sorting: 1,
     sortingGMO: 7,
@@ -16,7 +16,7 @@ const MenuItemList = [
   },
   {
     path: "sports",
-    title: i18n.t("common.sport"),
+    title: "common.sport",
     gameType: [GameTypeEnum.SPORTS, GameTypeEnum.RNGSPORTS], //, GameTypeEnum.RNGSPORTS],
     sorting: 2,
     sortingGMO: 5,
@@ -27,7 +27,7 @@ const MenuItemList = [
   },
   {
     path: "live",
-    title: i18n.t("common.live"),
+    title: "common.live",
     gameType: [GameTypeEnum.LIVELOBBY],
     sorting: 3,
     sortingGMO: 1,
@@ -38,7 +38,7 @@ const MenuItemList = [
   },
   {
     path: "chess",
-    title: i18n.t("common.chess"),
+    title: "common.chess",
     gameType: [GameTypeEnum.QIPAILOBBY],
     sorting: 4,
     sortingGMO: 2,
@@ -50,7 +50,7 @@ const MenuItemList = [
 
   {
     path: "lottery",
-    title: i18n.t("common.lottery"),
+    title: "common.lottery",
     gameType: [GameTypeEnum.LOTTERYLOBBY],
     sorting: 5,
     sortingGMO: 6,
@@ -61,7 +61,7 @@ const MenuItemList = [
   },
   {
     path: `slots`,
-    title: i18n.t("common.slot"),
+    title: "common.slot",
     gameType: [GameTypeEnum.SLOT],
     sorting: 6,
     sortingGMO: 8,
@@ -72,7 +72,7 @@ const MenuItemList = [
   },
   {
     path: `electron`,
-    title: i18n.t("common.electron"),
+    title: "common.electron",
     gameType: [GameTypeEnum.TABLEGAME],
     sorting: 7,
     sortingGMO: 3,
@@ -83,7 +83,7 @@ const MenuItemList = [
   },
   {
     path: `fish`,
-    title: i18n.t("common.fish"),
+    title: "common.fish",
     gameType: [GameTypeEnum.FISH],
     sorting: 8,
     sortingGMO: 4,

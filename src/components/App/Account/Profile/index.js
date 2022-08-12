@@ -348,7 +348,7 @@ function GetContentWrap(accountInfo, label, attr, func, edit, disable) {
             );
           }
         })()}
-        {((status === "verifying" && attr === "member_name") ||
+        {((status === "verifying" && attr === "member_name" && config.features.Profile_DisplayEditNameButton) ||
           (attr === "member_phone" && isVerify && edit && !disable)) && (
           <ContentButton onClick={() => func(attr, edit)}>
             <ContentButtonLabel>{i18n.t("profile.edit")}</ContentButtonLabel>
@@ -969,10 +969,15 @@ class Profile extends Component {
   };
   render() {
     const forcedverify =
-      this.props.account.registercompleted === false &&
-      config.features.Register_ShowPhone &&
-      config.features.ForcedVerification &&
-      this.props.popup === "member_phone";
+      (this.props.account.registercompleted === false &&
+        config.features.Register_ShowPhone &&
+        config.features.ForcedVerification &&
+        this.props.popup === "member_phone") ||
+      (this.props.account.registercompleted === false &&
+        config.features.Register_CustomFlow_IDR &&
+        (this.props.popup === "member_phone" ||
+          this.props.popup === "member_email"));
+
     return (
       <Container>
         <LeftContainer>

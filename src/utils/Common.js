@@ -418,6 +418,10 @@ function addComma(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function arrayValidator(array) {
+  return array && Array.isArray(array) && array.length > 0;
+}
+
 const Common = {
   baseRouteUrl,
   ConvertSlotGameParentIdToString,
@@ -438,5 +442,7 @@ const Common = {
   getLanguagePrefixFolder,
   getCDNLanguagePrefix,
   addComma,
+
+  arrayValidator,
 };
 export default Common;

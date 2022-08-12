@@ -171,7 +171,7 @@ const QRCodeHolder = styled.div`
   align-items: center;
   justify-content: center;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 24px;
   border: solid 1px rgba(0, 0, 0, 0.5);
 `;
 
@@ -247,6 +247,16 @@ const Download = () => {
     } else {
     }
   }, []);
+
+  function logoSwitcher(brand) {
+    switch (brand) {
+      case "Atinbet":
+        return "Atinbet";
+      default:
+        return "PB";
+    }
+  }
+
   return (
     <Container>
       <ContentPlacedHere>
@@ -287,9 +297,11 @@ const Download = () => {
                   <img
                     src={
                       process.env.PUBLIC_URL +
-                      "/assets/images/download/brand/PB_logo.png"
+                      `/assets/images/download/brand/${logoSwitcher(
+                        config.brand
+                      )}_logo.png`
                     }
-                    alt="pointless download section"
+                    alt="download section"
                   />
                 </QRCodeHolder>
 

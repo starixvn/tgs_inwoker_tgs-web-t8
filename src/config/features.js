@@ -98,6 +98,8 @@ const featureList = {
       endTime: "2022-07-12T04:30:00.000Z",
     },
     ForcedVerification: false,
+    Profile_DisplayEditNameButton: true,
+    MergeEVORTNT: false,
   },
 };
 export default featureList;

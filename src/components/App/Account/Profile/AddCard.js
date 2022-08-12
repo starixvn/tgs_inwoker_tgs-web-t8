@@ -7,6 +7,7 @@ import Button from "../../../Share/Button";
 import i18n from "../../../../utils/i18n";
 import config from "../../../../config/config";
 import { withSnackbar } from "notistack";
+import Common from "../../../../utils/Common";
 const Container = styled.div`
   width: 100%;
 `;
@@ -105,14 +106,51 @@ class AddCard extends Component {
       selectedBankTypeIndex: 0,
       channelList: [],
       disableBankNameInput: false,
-
+      disableBankAccountNameInput: false,
       name: "",
       phone: "",
     };
   }
 
-  componentDidMount() {
-    this.formatChannelList();
+  async componentDidMount() {
+    await this.formatChannelList();
+    if (this.props.isDeposit && this.props.bankCardList.length > 0) {
+      var defaultCard = this.props.bankCardList.filter(
+        (card) => card.default
+      )[0];
+      var name = "";
+      var disableBankAccountNameInput = false;
+      if (
+        Common.arrayValidator(this.props.depositList) &&
+        this.props.depositList[
+          this.state.selectedBankTypeIndex
+        ].banktype.toUpperCase() ===
+          (defaultCard && defaultCard.banktype.toUpperCase())
+      ) {
+        switch (
+          this.props.depositList[
+            this.state.selectedBankTypeIndex
+          ].banktype.toUpperCase()
+        ) {
+          // case "BANK":
+          //   name = defaultCard.detail.name;
+          //   disableBankAccountNameInput = true;
+          //   break;
+          case "EWALLET":
+            name = defaultCard.detail.eMoneyName;
+            disableBankAccountNameInput = true;
+            break;
+          default:
+            name = "";
+            break;
+        }
+        this.setState({
+          ...this.state,
+          bankAccountName: name,
+          disableBankAccountNameInput: disableBankAccountNameInput,
+        });
+      }
+    }
   }
   componentDidUpdate(preProps, preState) {
     if (
@@ -183,10 +221,38 @@ class AddCard extends Component {
     return channel;
   };
   handleBankTypeChange = (e) => {
+    var name = "";
+    var disableBankAccountNameInput = false;
+    if (this.props.isDeposit && this.props.bankCardList.length > 0) {
+      var defaultCard = this.props.bankCardList.filter(
+        (card) => card.default
+      )[0];
+      if (
+        Common.arrayValidator(this.props.depositList) &&
+        this.props.depositList[e.target.value].banktype.toUpperCase() ===
+          (defaultCard && defaultCard.banktype.toUpperCase())
+      ) {
+        switch (this.props.depositList[e.target.value].banktype.toUpperCase()) {
+          // case "BANK":
+          //   name = defaultCard.detail.name;
+          //   disableBankAccountNameInput = true;
+          //   break;
+          case "EWALLET":
+            name = defaultCard.detail.eMoneyName;
+            disableBankAccountNameInput = true;
+            break;
+          default:
+            break;
+        }
+      }
+    }
     this.setState({
       ...this.state,
       selectedBankTypeIndex: e.target.value,
       selectedChannelIndex: 0,
+      bankAccountName: name,
+      disableBankAccountNameInput: disableBankAccountNameInput,
+      number: "",
     });
   };
   handleChannelChange = (e) => {
@@ -390,16 +456,36 @@ class AddCard extends Component {
   };
   render() {
     const { withdrawalList, depositList } = this.props;
-    const isEwallet =
-      this.state.channelList.length &&
-      (this.state.channelList[this.state.selectedChannelIndex].channelcode ===
-        "E-wallet" ||
-        this.state.channelList[this.state.selectedChannelIndex].channelcode ===
-          "EWallet");
-    const isPulsa =
-      this.state.channelList.length &&
-      this.state.channelList[this.state.selectedChannelIndex].channelcode ===
-        "Pulsa";
+    var depositListEWallet = false;
+    var withdrawalListEwallet = false;
+    var depositListPulsa = false;
+    var withdrawalListPulsa = false;
+
+    if (this.props.isDeposit) {
+      depositListEWallet =
+        Common.arrayValidator(depositList) &&
+        depositList[this.state.selectedBankTypeIndex].banktype === "EWallet";
+
+      depositListPulsa =
+        Common.arrayValidator(depositList) &&
+        depositList[this.state.selectedBankTypeIndex].banktype === "Pulsa";
+    } else {
+      withdrawalListEwallet =
+        Common.arrayValidator(withdrawalList) &&
+        withdrawalList[this.state.selectedBankTypeIndex].banktype === "EWallet";
+
+      withdrawalListPulsa =
+        Common.arrayValidator(withdrawalList) &&
+        withdrawalList[this.state.selectedBankTypeIndex].banktype === "Pulsa";
+    }
+
+    const isEwallet = this.props.isDeposit
+      ? depositListEWallet
+      : withdrawalListEwallet;
+
+    const isPulsa = this.props.isDeposit
+      ? depositListPulsa
+      : withdrawalListPulsa;
 
     const eWalletCustom = isEwallet && config.features.AddCard_EWalletCustoms;
 
@@ -640,6 +726,8 @@ class AddCard extends Component {
                       float={"none"}
                       maxLength={255}
                       handleTextFieldChange={this.handleBankAccountNameChange}
+                      value={this.state.bankAccountName}
+                      disabled={this.state.disableBankAccountNameInput}
                     ></CustomTextField>
                   </TextFieldContainer>
                 </TextFieldItem>
@@ -681,6 +769,8 @@ class AddCard extends Component {
                   float={"none"}
                   maxLength={255}
                   handleTextFieldChange={this.handleBankAccountNameChange}
+                  value={this.state.bankAccountName}
+                  disabled={this.state.disableBankAccountNameInput}
                 ></CustomTextField>
               </TextFieldContainer>
             </TextFieldItem>
