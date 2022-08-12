@@ -396,7 +396,7 @@ const SearchImg = styled.img`
 const SearchFilterItemInput = styled.input`
   background: transparent;
   border: none;
-  color: ${({ theme }) => theme.secondary};
+
   font-size: 15px;
   margin: 0;
   margin-left: 10px;
@@ -441,6 +441,7 @@ transition: all 0.3s;
   border-radius: 7px;
   margin-top: 5px;
   float: right;
+  color: #000;
 `;
 
 const GameListContainer = styled.div`
