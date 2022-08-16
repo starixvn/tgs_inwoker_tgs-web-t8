@@ -220,6 +220,16 @@ const useStyles = makeStyles((theme) => ({
     "input:hover ~ &": {},
   },
 }));
+const Description = styled.div`
+  float: left;
+  width: 310px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  margin-left: 5px;
+  font-size: 14px;
+  color:red;
+  line-height: 1.43;
+`;
 const CustomFormControl = withStyles((theme) => ({
   root: {
     width: "100px",
@@ -586,6 +596,33 @@ function Activation(props) {
             </StyleButton>
           </>
         )}
+        {/* <div class="clear"></div>
+        <CustomText
+          placeholder={i18n.t("common.msgEnterCode")}
+          adornment={IconInputVerifyCodePNG}
+          onChange={(e) => {
+            setCode(e.target.value);
+          }}
+          variant="outlined"
+          autoComplete="off"
+          value={code}
+          type={"text"}
+          style={{
+            width: "200px",
+            height: "51px",
+            marginTop: "0",
+          }}
+        ></CustomText>
+        <StyleButton onClick={handleGetCodeClick} disable={countdown > 0}>
+          <ButtonLabel>
+            {countdown <= 0
+              ? i18n.t("common.msgSendToken")
+              : i18n.t("common.btnTokenResendLabel") + "(" + countdown + "s)"}
+          </ButtonLabel>
+        </StyleButton> */}
+        {config.features.Custom_Temp_show_verify_SMS_hints && (
+        <Description>{i18n.t("web.register.errorCustomDesc")}</Description>
+                  )}
         <ButtonLogin onClick={handleActivationClick}>
           <ButtonLoginLabel>{i18n.t("common.submit")}</ButtonLoginLabel>
         </ButtonLogin>
