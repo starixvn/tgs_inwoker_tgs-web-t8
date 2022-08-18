@@ -471,15 +471,19 @@ class PromotionDetails extends Component {
               <PromoDetailRightContainer isToggled={this.state.isToggled}>
                 <EventTitle>{i18n.t("promotion.promoTarget")}：</EventTitle>
                 <EventText>
-                  {this.state.details.vipLevels.map((a, index) => {
-                    return (
-                      <span key={index}>
-                        VIP{a}
-                        {index < this.state.details.vipLevels.length - 1 &&
-                          ", "}
-                      </span>
-                    );
-                  })}
+                  {this.state.details.vipLevels
+                    .sort((a, b) => {
+                      return a - b;
+                    })
+                    .map((a, index) => {
+                      return (
+                        <span key={index}>
+                          VIP{a}
+                          {index < this.state.details.vipLevels.length - 1 &&
+                            ", "}
+                        </span>
+                      );
+                    })}
                 </EventText>
                 <EventTitle>{i18n.t("promotion.promoDate")}：</EventTitle>
                 <EventText>
@@ -504,9 +508,10 @@ class PromotionDetails extends Component {
                           ) {
                             return this.state.details.localization[
                               i18n.language
-                            ].content ? this.state.details.localization[
-                              i18n.language
-                            ].content : this.state.details.content;
+                            ].content
+                              ? this.state.details.localization[i18n.language]
+                                  .content
+                              : this.state.details.content;
                           } else {
                             return this.state.details.content;
                           }
@@ -527,8 +532,12 @@ class PromotionDetails extends Component {
                               this.state.details.localization[i18n.language] !==
                                 null)
                           ) {
-                            return this.state.details.localization[i18n.language].terms ? this.state.details.localization[i18n.language].terms 
-                            : this.state.details.terms; 
+                            return this.state.details.localization[
+                              i18n.language
+                            ].terms
+                              ? this.state.details.localization[i18n.language]
+                                  .terms
+                              : this.state.details.terms;
                           } else {
                             return this.state.details.terms;
                           }
