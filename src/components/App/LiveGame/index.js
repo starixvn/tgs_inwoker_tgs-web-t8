@@ -108,11 +108,7 @@ const BottomContainer = styled.div`
   width: 1280px;
 
   ::-webkit-scrollbar {
-    height: 2px;
-
-    :hover {
-      height: 4px;
-    }
+    height: 4px;
   }
 
   ::-webkit-scrollbar-track {
