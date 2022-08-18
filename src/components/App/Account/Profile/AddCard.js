@@ -543,7 +543,7 @@ class AddCard extends Component {
           </TextFieldItem>
         )}
 
-        {!(config.features.AddCard_HideChannel || eWalletCustom || isPulsa) && (
+        {!(config.features.AddCard_HideChannel || isPulsa) && (
           <>
             <TextFieldItem>
               <TextFieldLabel>
