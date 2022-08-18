@@ -101,16 +101,36 @@ const Maintenance = styled.div`
 
 const BottomContainer = styled.div`
   bottom: 0;
-  left: 0;
+  left: 16%;
   position: absolute;
   width: 100%;
+  overflow: auto;
+  width: 1280px;
+
+  ::-webkit-scrollbar {
+    height: 2px;
+
+    :hover {
+      height: 4px;
+    }
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    height: 4px;
+  }
 `;
 
 const BottomNavItemContainer = styled.ul`
   display: flex;
-  justify-content: center;
-  padding-bottom: 1.8%;
-  list-style-type: none;
 `;
 
 const GameButton = styled.div`
