@@ -36,16 +36,10 @@ class Step2Form extends Component {
   // Similar to componentDidMount and componentDidUpdate:
   state = {
     exchangeRate: { buyprice: 0, sellprice: 0 },
-    name: "",
-
   };
   componentDidMount() {
     if (this.props.isCrypto === true) {
       this.GetExchangeRate();
-    }
-    else if(this.props.isEWallet)
-    {
-      this.GetEmoneyName();
     }
   }
   componentDidUpdate(preProps) {
@@ -81,15 +75,6 @@ class Step2Form extends Component {
         }
       );
     }
-  }
-  GetEmoneyName () {
-    var bankCardIndex = this.props.bankCardList.findIndex(
-      (item) => item.id === this.props.selectedBankCard
-    );
-    this.setState({
-      ...this.state,
-      name: this.props.bankCardList[bankCardIndex].detail.eMoneyName
-    });
   }
   render() {
     return (
@@ -157,16 +142,6 @@ class Step2Form extends Component {
                     );
                   });
                 }
-              }
-            })()}
-            {(() => {
-              if (this.props.isEWallet === true) {
-                return (
-                  <tr>
-                    <TitleTD>{i18n.t("deposit.eWalletAccount")}</TitleTD>
-                    <ValueTD>{this.state.name}</ValueTD>
-                  </tr>
-                );
               }
             })()}
           </tbody>
