@@ -547,24 +547,17 @@ class GuestContainer extends Component {
         (config.features.Register_CustomFlow_IDR && !bankInfoAuthentication)
       ) {
         if (config.features.NavigateToAddCard) {
-          if(isPhoneNull)
-          {
+          if (isPhoneNull) {
             this.props.history.push(
               "/" + i18n.language + "/account/profile/member_phone"
             );
-          }
-          else
-          {
-            if(isEmailNull)
-            {
+          } else {
+            if (isEmailNull) {
               this.props.history.push(
                 "/" + i18n.language + "/account/profile/member_email"
               );
-            }
-            else
-            {
-              if(!isRegisterCompleted)
-              {
+            } else {
+              if (!isRegisterCompleted) {
                 this.props.history.push(
                   "/" + i18n.language + "/account/bankcard/add"
                 );
@@ -605,13 +598,15 @@ class GuestContainer extends Component {
   render() {
     return (
       <Container>
-        {config.features.SMSVerification && (
-          <React.Fragment>
-            <BtnRegister onClick={() => this.onhandleActivation()}>
-              {i18n.t("web.register.activation")}
-            </BtnRegister>
-          </React.Fragment>
-        )}
+        {
+          //    config.features.SMSVerification && (
+          //      <React.Fragment>
+          //        <BtnRegister onClick={() => this.onhandleActivation()}>
+          //          {i18n.t("web.register.activation")}
+          //        </BtnRegister>
+          //      </React.Fragment>
+          //    )
+        }
         <BtnRegister onClick={() => this.onhandleRegister()}>
           {i18n.t("common.register")}
         </BtnRegister>
