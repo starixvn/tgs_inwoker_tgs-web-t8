@@ -105,6 +105,7 @@ const featureList = {
     },
     Wap_DisplayButton: false,
     MergeEVORTNT: false,
+    Deposit_AccountNameManualInput: false,
   },
 };
 export default featureList;

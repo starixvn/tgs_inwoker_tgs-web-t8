@@ -586,13 +586,15 @@ const NewStepOne = (props) => {
 
                           <FormRightContainer>
                             <SelectionContainer>
-                              {props.accountList.length > 1 ? (
+                              {props.accountList.length > 1 &&
+                              !config.features
+                                .Deposit_AccountNameManualInput ? (
                                 <CustomFormControl>
                                   <CustomSelect
                                     variant="outlined"
-                                    value={account}
+                                    value={props.selectedBankCard}
                                     displayEmpty
-                                    onChange={onAccountChange}
+                                    onChange={props.handleSelectAccountChange}
                                     native
                                   >
                                     <option value="">
@@ -607,11 +609,7 @@ const NewStepOne = (props) => {
 
                                       return (
                                         <option
-                                          value={
-                                            detail.bankAccount ||
-                                            detail.address ||
-                                            detail.phone
-                                          }
+                                          value={data.id}
                                           key={key}
                                         >
                                           {detail.bankAccount ||
@@ -642,6 +640,8 @@ const NewStepOne = (props) => {
                                   variant="outlined"
                                   autoComplete="off"
                                   disabled={
+                                    !config.features
+                                      .Deposit_AccountNameManualInput &&
                                     config.features.Deposit_AutofillFirstCard &&
                                     props.accountList.length > 1
                                   }
