@@ -200,7 +200,20 @@ class CardManagement extends Component {
           detail: detail,
         })
         .then((response) => {
-          this.props.getAccountInfo();
+          let setRealName = response.data.nextStepType === "SetRealName";
+          if (setRealName) {
+            this.props
+              .newRegister("SetRealName", {
+                realname: detail.name || detail.eMoneyName || detail.username,
+              })
+              .then((response) => {
+                this.props.getAccountInfo();
+              });
+          }
+          else
+          {
+            this.props.getAccountInfo();
+          }
         });
     } else {
       this.props.addBankCard(channelid, bankType, detail);
