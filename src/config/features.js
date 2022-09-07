@@ -106,6 +106,7 @@ const featureList = {
     Wap_DisplayButton: false,
     MergeEVORTNT: false,
     Deposit_AccountNameManualInput: false,
+    RouletteNewFlow: false,
   },
 };
 export default featureList;
