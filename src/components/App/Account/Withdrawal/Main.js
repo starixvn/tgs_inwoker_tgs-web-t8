@@ -151,6 +151,17 @@ const GameWalletButton = styled.div`
         : " box-shadow: inset 1px 1px 9px 0  rgba(255, 255, 255, 0.75);"}
   }
 `;
+const GapLeaver = styled.div`
+  padding-left: 50px;
+`;
+
+const FeeSpot = styled.div`
+  color: ${({ theme }) => theme.primary};
+
+  span {
+    font-weight: bold;
+  }
+`;
 
 const Main = (props) => {
   const [selectedCardIndex, setSelectedCardIndex] = useState(props.defaultCard);
@@ -159,6 +170,7 @@ const Main = (props) => {
   const [disabled, setDisabled] = useState("");
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(0);
+  const [fee, setFee] = useState(0);
   const [paymentList, setPaymentList] = useState(props.wallet.withdrawalList);
   const [exchangeRate, setExchangeRate] = useState(
     config.features.Withdrawal_USDT_ExchangeRate
@@ -204,11 +216,8 @@ const Main = (props) => {
         last4Digits = item.detail.address.slice(-4);
         return last4Digits.padStart(item.detail.address.length, "*");
       }
-    // } else if (item.banktype === "Pulsa" || item.banktype === "EWallet") {
-    } else if (
-      item.banktype === "Pulsa" ||
-      item.banktype === "EWallet"
-    ) {
+      // } else if (item.banktype === "Pulsa" || item.banktype === "EWallet") {
+    } else if (item.banktype === "Pulsa" || item.banktype === "EWallet") {
       if (item.detail.phone) {
         last4Digits = item.detail.phone.slice(-4);
         return last4Digits.padStart(item.detail.phone.length, "*");
@@ -233,17 +242,20 @@ const Main = (props) => {
     maxValue = [];
     setMin(0);
     setMax(0);
+    setFee(0);
     //update new data.
     for (var i = 0; i < paymentList.length; i++) {
       const methodList = paymentList[i].channel;
       if (methodList) {
         for (var inner = 0; inner < methodList.length; inner++) {
           const channelList = methodList[inner];
+
           if (channelList.channelid === channelId) {
             minValue.push(channelList.transferlimit.from);
             maxValue.push(channelList.transferlimit.to);
             setMin(Math.min(...minValue));
             setMax(Math.max(...maxValue));
+            setFee(channelList.fees);
           }
         }
       }
@@ -312,7 +324,12 @@ const Main = (props) => {
       )}
 
       <SubHeaderContainer>
-        <SubTitle>{i18n.t("withdrawal.enterAmount")}</SubTitle>
+        <SubTitle>{i18n.t("withdrawal.enterAmount")}</SubTitle>{" "}
+        <GapLeaver>
+          <FeeSpot>
+            {i18n.t("fees.withdraw")}: <span>{fee}%</span>
+          </FeeSpot>
+        </GapLeaver>
         {(() => {
           if (
             props.cardList[selectedCardIndex] &&
@@ -395,8 +412,7 @@ const Main = (props) => {
       </Turnover>
       {config.features.Deposit_Withdrawal_PlayerNote &&
         props.cardList[selectedCardIndex] &&
-        (props.cardList[selectedCardIndex].banktype.toUpperCase() ===
-          "BANK" ||
+        (props.cardList[selectedCardIndex].banktype.toUpperCase() === "BANK" ||
           props.cardList[selectedCardIndex].banktype.toUpperCase() ===
             "EWALLET" ||
           props.cardList[selectedCardIndex].banktype.toUpperCase() ===

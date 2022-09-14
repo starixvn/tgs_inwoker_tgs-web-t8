@@ -96,7 +96,11 @@ const TabButton = styled.div`
     cursor: pointer;
   }
 `;
-const SubHeaderContainer = styled.div``;
+const SubHeaderContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+`;
 const NumberContainer = styled.div`
   width: 20px;
   height: 20px;
@@ -209,6 +213,14 @@ const CopyIcon = styled.div`
     no-repeat center / contain;
   cursor: pointer;
   margin-left: 10px;
+`;
+
+const FeeSpot = styled.div`
+  color: ${({ theme }) => theme.primary};
+
+  span {
+    font-weight: bold;
+  }
 `;
 
 const NewStepOne = (props) => {
@@ -608,10 +620,7 @@ const NewStepOne = (props) => {
                                       var detail = data.detail;
 
                                       return (
-                                        <option
-                                          value={data.id}
-                                          key={key}
-                                        >
+                                        <option value={data.id} key={key}>
                                           {detail.bankAccount ||
                                             detail.address ||
                                             detail.phone}{" "}
@@ -724,6 +733,17 @@ const NewStepOne = (props) => {
                     <SubTitle>
                       {i18n.t("deposit.plsEnterDepositAmount")}
                     </SubTitle>
+                    <FeeSpot>
+                      {i18n.t("fees.deposit")}:{" "}
+                      <span>
+                        {
+                          methodList[selectedMethodIndex].channel[
+                            selectedChannelIndex
+                          ].fees
+                        }
+                        %
+                      </span>
+                    </FeeSpot>
                   </SubHeaderContainer>
                 </FormLeftContainer>
 
