@@ -102,13 +102,13 @@ class PopupAnnouncement extends Component {
                   var checkLocale = data.localization[i18n.language];
                   return (
                     <ImageBanner
+                      key={index}
+                      order={data.order}
                       img={
                         checkLocale
                           ? checkLocale.mobileBanner
                           : data.mobileBanner
                       }
-                      key={index}
-                      order={data.order}
                       onClick={() => {
                         this.handlePromotionClick(data.id);
                       }}

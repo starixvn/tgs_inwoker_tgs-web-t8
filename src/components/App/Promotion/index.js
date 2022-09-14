@@ -251,6 +251,7 @@ class Promotion extends Component {
           <MContainer>
             <ThePromotion container>
               {this.props.general.promotionList.items
+
                 .sort((a, b) => {
                   return a.order - b.order;
                 })
