@@ -250,31 +250,38 @@ class Promotion extends Component {
         <Wrap>
           <MContainer>
             <ThePromotion container>
-              {this.props.general.promotionList.items.map((data, index) => {
-                var checkLocale = data.localization[i18n.language];
-                return (
-                  <PromotionBannerContainer
-                    onClick={() =>
-                      this.handlePromotionClick(data.id, data.promotionType)
-                    }
-                  >
-                    <img
-                      src={
-                        checkLocale
-                          ? checkLocale.desktopBanner
-                          : data.desktopBanner
+              {this.props.general.promotionList.items
+
+                .sort((a, b) => {
+                  return a.order - b.order;
+                })
+                .map((data, index) => {
+                  var checkLocale = data.localization[i18n.language];
+                  return (
+                    <PromotionBannerContainer
+                      key={index}
+                      order={data.order}
+                      onClick={() =>
+                        this.handlePromotionClick(data.id, data.promotionType)
                       }
-                      alt={data.name}
-                    ></img>
-                    {/* <img
+                    >
+                      <img
+                        src={
+                          checkLocale
+                            ? checkLocale.desktopBanner
+                            : data.desktopBanner
+                        }
+                        alt={data.name}
+                      ></img>
+                      {/* <img
                      src={
                         process.env.PUBLIC_URL +
                         `/assets/images/promotion/${i18n.language}/BN-${index}.jpg`
                       } alt={data.name}>
                     </img> */}
-                  </PromotionBannerContainer>
-                );
-              })}
+                    </PromotionBannerContainer>
+                  );
+                })}
             </ThePromotion>
           </MContainer>
         </Wrap>
