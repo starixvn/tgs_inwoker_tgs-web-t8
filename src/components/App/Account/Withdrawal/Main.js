@@ -325,11 +325,13 @@ const Main = (props) => {
 
       <SubHeaderContainer>
         <SubTitle>{i18n.t("withdrawal.enterAmount")}</SubTitle>{" "}
-        <GapLeaver>
-          <FeeSpot>
-            {i18n.t("fees.withdraw")}: <span>{fee}%</span>
-          </FeeSpot>
-        </GapLeaver>
+        {
+          //    <GapLeaver>
+          //    <FeeSpot>
+          //      {i18n.t("fees.withdraw")}: <span>{fee}%</span>
+          //    </FeeSpot>
+          //  </GapLeaver>
+        }
         {(() => {
           if (
             props.cardList[selectedCardIndex] &&
