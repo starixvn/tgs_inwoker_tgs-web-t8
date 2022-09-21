@@ -948,7 +948,12 @@ class Deposit extends Component {
                     "FirstDeposit",
                     "DailySecondDeposit",
                     "DailyFirstDeposit",
-                  ].indexOf(item.promotionType) >= 0
+                    "DepositReward",
+                  ].indexOf(item.promotionType) >= 0 &&
+                  (item.promotionType === "DepositReward"
+                    ? this.state.amount >=
+                      item.campaignDetail.depositMinimumLimit
+                    : true)
               )}
               depositPromotion={this.state.depositPromotion}
               handleDepositPromotionChange={this.handleDepositPromotionChange}
@@ -989,7 +994,12 @@ class Deposit extends Component {
                     "FirstDeposit",
                     "DailySecondDeposit",
                     "DailyFirstDeposit",
-                  ].indexOf(item.promotionType) >= 0
+                    "DepositReward",
+                  ].indexOf(item.promotionType) >= 0 &&
+                  (item.promotionType === "DepositReward"
+                    ? this.state.amount >=
+                      item.campaignDetail.depositMinimumLimit
+                    : true)
               )}
               depositPromotion={this.state.depositPromotion}
               handleDepositPromotionChange={this.handleDepositPromotionChange}
