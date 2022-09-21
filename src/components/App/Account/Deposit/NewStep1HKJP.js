@@ -128,7 +128,11 @@ const TabButton = styled.div`
     cursor: pointer;
   }
 `;
-const SubHeaderContainer = styled.div``;
+const SubHeaderContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+`;
 const NumberContainer = styled.div`
   width: 20px;
   height: 20px;
@@ -193,6 +197,18 @@ const ExchangeRateContainer = styled.div``;
 const Remark = styled.div`
   color: ${({ theme }) => theme.primary};
   opacity: 0.75;
+`;
+
+const GapLeaver = styled.div`
+  padding-left: 50px;
+`;
+
+const FeeSpot = styled.div`
+  color: ${({ theme }) => theme.primary};
+
+  span {
+    font-weight: bold;
+  }
 `;
 
 class NewStepOne extends Component {
@@ -384,7 +400,20 @@ class NewStepOne extends Component {
                     <SubHeaderContainer>
                       <SubTitle>
                         {i18n.t("deposit.plsEnterDepositAmount")}
-                      </SubTitle>
+                      </SubTitle>{" "}
+                      <GapLeaver>
+                        <FeeSpot>
+                          {i18n.t("fees.deposit")}:{" "}
+                          <span>
+                            {
+                              methodList[selectedMethodIndex].channel[
+                                selectedChannelIndex
+                              ].fees
+                            }
+                            %
+                          </span>
+                        </FeeSpot>
+                      </GapLeaver>
                     </SubHeaderContainer>
                   </FormLeftContainer>
                   <FormRightContainer>
@@ -534,35 +563,36 @@ class NewStepOne extends Component {
                     </FormActionContainer>
                   )}
 
-                {config.features.Deposit_Withdrawal_PlayerNote && (isEwallet||isPulsa) && (
-                  <FormContainer>
-                    <FormLeftContainer>
-                      <SubHeaderContainer>
-                        <SubTitle>{i18n.t("deposit.playerNote")}</SubTitle>
-                      </SubHeaderContainer>
-                    </FormLeftContainer>
+                {config.features.Deposit_Withdrawal_PlayerNote &&
+                  (isEwallet || isPulsa) && (
+                    <FormContainer>
+                      <FormLeftContainer>
+                        <SubHeaderContainer>
+                          <SubTitle>{i18n.t("deposit.playerNote")}</SubTitle>
+                        </SubHeaderContainer>
+                      </FormLeftContainer>
 
-                    <FormRightContainer>
-                      <SelectionContainer>
-                        <TextField
-                          style={{
-                            height: "38px",
-                            width: "258px",
-                            float: "left",
-                            marginRight: "5px",
-                            padding: 0,
-                          }}
-                          placeholder={i18n.t("deposit.plsEnterPlayerNote")}
-                          onChange={onPlayerNoteChange}
-                          outputFormat="string"
-                          variant="outlined"
-                          autoComplete="off"
-                          value={playerNote}
-                        ></TextField>
-                      </SelectionContainer>
-                    </FormRightContainer>
-                  </FormContainer>
-                )}
+                      <FormRightContainer>
+                        <SelectionContainer>
+                          <TextField
+                            style={{
+                              height: "38px",
+                              width: "258px",
+                              float: "left",
+                              marginRight: "5px",
+                              padding: 0,
+                            }}
+                            placeholder={i18n.t("deposit.plsEnterPlayerNote")}
+                            onChange={onPlayerNoteChange}
+                            outputFormat="string"
+                            variant="outlined"
+                            autoComplete="off"
+                            value={playerNote}
+                          ></TextField>
+                        </SelectionContainer>
+                      </FormRightContainer>
+                    </FormContainer>
+                  )}
 
                 <FormActionContainer>
                   <CustomButton
