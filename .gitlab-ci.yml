@@ -12,8 +12,6 @@ variables:
 build:
   stage: build
   extends: .build
-  variables:
-    GIT_CHECKOUT: "true" 
   only:
     - master
     - release/current
@@ -24,7 +22,7 @@ build:
     - export DOCKER_BUILDKIT=0
     - export COMPOSE_DOCKER_CLI_BUILD=0
     - pwd
-    - ll
+    - ls
     - git config --file=.gitmodules submodule.src/components/Wap.branch $CI_COMMIT_BRANCH
     - git config --file=.gitmodules submodule.src/components/App/Account.branch $CI_COMMIT_BRANCH
     - git config --file=.gitmodules submodule.src/api-services.branch $CI_COMMIT_BRANCH
