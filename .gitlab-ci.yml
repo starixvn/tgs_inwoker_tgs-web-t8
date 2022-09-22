@@ -22,6 +22,7 @@ build:
     - export DOCKER_BUILDKIT=0
     - export COMPOSE_DOCKER_CLI_BUILD=0
     - git init
+    - git checkout $CI_COMMIT_BRANCH
     - printenv
     - echo "branch:$CI_COMMIT_BRANCH"
     - git config --file=.gitmodules submodule.src/components/Wap.branch $CI_COMMIT_BRANCH
