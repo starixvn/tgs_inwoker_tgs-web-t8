@@ -20,8 +20,8 @@ build:
     - git config --file=.gitmodules submodule.src/components/Wap.branch $CI_COMMIT_BRANCH
     - git config --file=.gitmodules submodule.src/components/App/Account.branch $CI_COMMIT_BRANCH
     - git config --file=.gitmodules submodule.src/api-services.branch $CI_COMMIT_BRANCH
-    - git submodule init
-    - git submodule update --recursive --remote
+    - git submodule sync
+    - git submodule update --remote
   script:
     - export TAG="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d).$CI_PIPELINE_IID"
     - docker build -t ${ImageName}:${TAG} .
