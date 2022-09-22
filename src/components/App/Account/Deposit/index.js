@@ -949,6 +949,7 @@ class Deposit extends Component {
                     "DailySecondDeposit",
                     "DailyFirstDeposit",
                     "DepositReward",
+                    "DepositAccumulateRoulette",
                   ].indexOf(item.promotionType) >= 0 &&
                   (item.promotionType === "DepositReward"
                     ? this.state.amount >=
@@ -995,6 +996,7 @@ class Deposit extends Component {
                     "DailySecondDeposit",
                     "DailyFirstDeposit",
                     "DepositReward",
+                    "DepositAccumulateRoulette",
                   ].indexOf(item.promotionType) >= 0 &&
                   (item.promotionType === "DepositReward"
                     ? this.state.amount >=
