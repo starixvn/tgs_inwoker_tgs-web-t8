@@ -23,6 +23,7 @@ build:
     - echo "branch:$CI_COMMIT_BRANCH"
     - export DOCKER_BUILDKIT=0
     - export COMPOSE_DOCKER_CLI_BUILD=0
+    - ls
     - git config --file=.gitmodules submodule.src/components/Wap.branch $CI_COMMIT_BRANCH
     - git config --file=.gitmodules submodule.src/components/App/Account.branch $CI_COMMIT_BRANCH
     - git config --file=.gitmodules submodule.src/api-services.branch $CI_COMMIT_BRANCH
