@@ -11,7 +11,7 @@ variables:
 
 build:
   extends: .build
-
+    
 deploy-dev:
   extends: .deploy-dev
 
