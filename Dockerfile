@@ -8,7 +8,7 @@ RUN apt-get update && \
     apt-get install -y git
 
 
-RUN npm ci
+RUN npm install
 RUN npm run build
 
 FROM caddy:2.1.1-alpine
