@@ -27,8 +27,8 @@ build:
     #- git submodule update --recursive --remote
     #- git submodule sync
     #- git submodule update
-    - git submodule sync --recursive
-    - git submodule update --init --recursive
+    #- git submodule sync --recursive
+    - git submodule update --remote
   script:
     - export TAG="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d).$CI_PIPELINE_IID"
     - echo "TAG=${TAG}"
