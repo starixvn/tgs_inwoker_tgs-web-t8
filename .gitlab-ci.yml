@@ -10,6 +10,7 @@ variables:
   components_prod: lobby-gpi-t8,lobby-gmo,lobby-mgm,lobby-sky
   GIT_SUBMODULE_STRATEGY: recursive
   GIT_SUBMODULE_UPDATE_FLAGS: --remote --jobs 4
+  GIT_DEPTH: "3"
 build:
   extends: .build
   stage: build
