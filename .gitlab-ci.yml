@@ -24,6 +24,9 @@ build:
     - printenv
     - echo "branch:$CI_COMMIT_BRANCH"
     - pwd
+    - git submodule sync --recursive
+    - git submodule foreach --recursive git fetch
+    - git submodule update --init --recursive
     - git config --file=.gitmodules submodule.src/api-services.branch develop
     - git config --file=.gitmodules submodule.src/components/Wap.branch develop
     - git submodule status
