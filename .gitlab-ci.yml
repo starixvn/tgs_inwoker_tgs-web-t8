@@ -9,7 +9,6 @@ variables:
   components_staging: lobby-gpi-t8,lobby-gmo,lobby-mgm,lobby-sky,lobby-gpi-t9
   components_prod: lobby-gpi-t8,lobby-gmo,lobby-mgm,lobby-sky
   GIT_STRATEGY: clone
-  GIT_SUBMODULE_STRATEGY: recursive
   GIT_SUBMODULE_UPDATE_FLAGS: --remote
 
 
