@@ -21,8 +21,8 @@ build:
     - printenv
     - echo "branch:$CI_COMMIT_BRANCH"
     - pwd
-    - git config --file=.gitmodules submodule.src/api-services.branch master
-    - git config --file=.gitmodules submodule.src/components/Wap.branch master
+    - git config --file=.gitmodules submodule.src/api-services.branch develop
+    - git config --file=.gitmodules submodule.src/components/Wap.branch develop
     - git submodule sync
     - git submodule update --remote
     #- git submodule init
