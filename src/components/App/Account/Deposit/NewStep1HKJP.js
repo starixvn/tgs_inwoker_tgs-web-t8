@@ -401,19 +401,23 @@ class NewStepOne extends Component {
                       <SubTitle>
                         {i18n.t("deposit.plsEnterDepositAmount")}
                       </SubTitle>{" "}
-                      <GapLeaver>
-                        <FeeSpot>
-                          {i18n.t("fees.deposit")}:{" "}
-                          <span>
-                            {
-                              methodList[selectedMethodIndex].channel[
-                                selectedChannelIndex
-                              ].fees
-                            }
-                            %
-                          </span>
-                        </FeeSpot>
-                      </GapLeaver>
+                      {methodList[selectedMethodIndex].channel[
+                        selectedChannelIndex
+                      ].fees > 0 && (
+                        <GapLeaver>
+                          <FeeSpot>
+                            {i18n.t("fees.deposit")}:{" "}
+                            <span>
+                              {
+                                methodList[selectedMethodIndex].channel[
+                                  selectedChannelIndex
+                                ].fees
+                              }
+                              %
+                            </span>
+                          </FeeSpot>
+                        </GapLeaver>
+                      )}
                     </SubHeaderContainer>
                   </FormLeftContainer>
                   <FormRightContainer>
