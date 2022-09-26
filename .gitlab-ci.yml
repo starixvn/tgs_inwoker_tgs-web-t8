@@ -9,7 +9,8 @@ variables:
   components_staging: lobby-gpi-t8,lobby-gmo,lobby-mgm,lobby-sky,lobby-gpi-t9
   components_prod: lobby-gpi-t8,lobby-gmo,lobby-mgm,lobby-sky
   GIT_STRATEGY: clone
-  GIT_SUBMODULE_UPDATE_FLAGS: --remote
+  GIT_SUBMODULE_STRATEGY: normal
+  GIT_SUBMODULE_UPDATE_FLAGS: "--remote --checkout --no-single-branch"
 
 
 build:
@@ -24,8 +25,6 @@ build:
     - echo "branch:$CI_COMMIT_BRANCH"
     - pwd
     - git submodule sync --recursive
-    - git submodule foreach --recursive git checkout develop
-    - git submodule update --init --recursive
     - git config --file=.gitmodules submodule.src/api-services.branch develop
     - git config --file=.gitmodules submodule.src/components/Wap.branch develop
     - git submodule status
