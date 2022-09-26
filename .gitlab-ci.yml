@@ -30,7 +30,7 @@ build:
     - git config --file=.gitmodules submodule.src/api-services.branch develop
     - git config --file=.gitmodules submodule.src/components/Wap.branch develop
     - git submodule status
-    - git submodule update --init --remote
+    - git submodule update --remote
     - git submodule status
 
     #- git submodule init
