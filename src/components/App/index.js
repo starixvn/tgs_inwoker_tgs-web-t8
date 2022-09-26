@@ -93,7 +93,6 @@ class App extends Component {
       this.props.getBrand();
       this.props.getLiveChatURL();
       this.props.getPromotion();
-      this.props.getPromotionRouletteCount();
 
       // this.props.getVIP();
     }
@@ -247,7 +246,6 @@ class App extends Component {
         this.props.getLiveChatURL();
         this.props.getPromotion();
 
-        this.props.getPromotionRouletteCount();
         // this.props.getVIP();
       }
     }
