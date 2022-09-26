@@ -8,7 +8,7 @@ variables:
   components_dev: lobby-t8
   components_staging: lobby-gpi-t8,lobby-gmo,lobby-mgm,lobby-sky,lobby-gpi-t9
   components_prod: lobby-gpi-t8,lobby-gmo,lobby-mgm,lobby-sky
-
+  GIT_STRATEGY: clone
 
 build:
   extends: .build
@@ -23,8 +23,10 @@ build:
     - pwd
     - git config --file=.gitmodules submodule.src/api-services.branch develop
     - git config --file=.gitmodules submodule.src/components/Wap.branch develop
-    - git submodule sync
-    - git submodule update --remote
+    - git submodule status
+    - git submodule update --init --remote
+    - git submodule status
+
     #- git submodule init
     #- git submodule update --recursive --remote
     #- git submodule sync
