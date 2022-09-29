@@ -301,6 +301,7 @@ class PromotionDetails extends Component {
     var term = "";
     if (details) {
       if (
+        JSON.stringify(details.localization) !== "{}" &&
         (details.localization[i18n.language] !== "" ||
           details.localization[i18n.language] !== null)
       ) {
