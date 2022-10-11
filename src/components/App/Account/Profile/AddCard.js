@@ -415,7 +415,7 @@ class AddCard extends Component {
       } else {
         detail = {
           name: bankAccountName,
-          address: number,
+          phone: number,
         };
       }
     } else if (selected.banktype === "Pulsa") {
@@ -432,7 +432,7 @@ class AddCard extends Component {
         };
       } else {
         detail = {
-          address: number,
+          phone: number,
         };
       }
     } else {
