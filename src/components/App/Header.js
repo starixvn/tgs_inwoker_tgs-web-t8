@@ -766,7 +766,7 @@ class Header extends Component {
             this.props.history.push(
               "/" + i18n.language + "/sports/" + gameCode
             );
-          } else if (gameCode === "WGFM" || gameCode === "WGVIA") {
+          } else if ((gameCode === "WGFM" && !config.features.WGSports_UseIframe) || gameCode === "WGVIA") {
             if (document.getElementById("audio") != null)
               document.getElementById("audio").volume = 0;
             if (this.props.history.location.pathname.indexOf("play") >= 0) {

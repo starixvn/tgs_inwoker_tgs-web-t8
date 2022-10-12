@@ -178,7 +178,7 @@ class Sports extends Component {
       Common.closePreviousPopup();
       if (type === GameTypeEnum.RNGSPORTS) {
         this.props.history.push("/" + i18n.language + "/sports/" + params);
-      } else if (params === "WGFM" || params === "WGVIA") {
+      } else if ((params === "WGFM" && !config.features.WGSports_UseIframe) || params === "WGVIA") {
         if (document.getElementById("audio") != null)
           document.getElementById("audio").volume = 0.0;
         var win = Common.PopupCenter(

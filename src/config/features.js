@@ -109,6 +109,7 @@ const featureList = {
     Deposit_AccountNameManualInput: false,
     RouletteNewFlow: false,
     HaveVIPFeature: true,
+    WGSports_UseIframe: false,
   },
 };
 export default featureList;
