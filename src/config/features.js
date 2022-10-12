@@ -62,6 +62,7 @@ const featureList = {
     MenuItem_Sorting_WLGHK: false,
     MenuItem_Sorting_PB: false,
     MenuItem_Sorting_GMO: false,
+    MenuItem_Sorting_BUNNY: false,
     VIP_CustomLevel_BUNNY: false,
     Withdrawal_Ignore_Verification: true,
     HomePage_DisplayVIP: false,
