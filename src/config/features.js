@@ -108,6 +108,7 @@ const featureList = {
     MergeEVORTNT: false,
     Deposit_AccountNameManualInput: false,
     RouletteNewFlow: false,
+    HaveVIPFeature: true,
   },
 };
 export default featureList;

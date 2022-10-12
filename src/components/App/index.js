@@ -547,11 +547,13 @@ class App extends Component {
                         path={baseRouteUrl + "/promotion/:id"}
                         render={(props) => <PromotionDetails />}
                       />
-                      <Route
-                        exact
-                        path={baseRouteUrl + "/vip"}
-                        render={(props) => <VIP />}
-                      />
+                      {config.features.HaveVIPFeature && (
+                        <Route
+                          exact
+                          path={baseRouteUrl + "/vip"}
+                          render={(props) => <VIP />}
+                        />
+                      )}
 
                       {/* <Route
                       exact
@@ -598,7 +600,7 @@ class App extends Component {
                     <Redirect to={"/" + i18n.language} />
                   </Switch>
                 </Main>
-                
+
                 {config.features.LiveChatVendor.brand &&
                   config.features.LiveChatVendor.license && (
                     <LiveChat

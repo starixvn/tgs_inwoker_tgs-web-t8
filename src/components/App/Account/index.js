@@ -443,11 +443,13 @@ class Account extends Component {
                   )}
                 />
 
-                <Route
-                  exact
-                  path={baseRouteUrl + "/account/vip"}
-                  render={(props) => <VIP token={this.props.account.token} />}
-                />
+                {config.features.HaveVIPFeature && (
+                  <Route
+                    exact
+                    path={baseRouteUrl + "/account/vip"}
+                    render={(props) => <VIP token={this.props.account.token} />}
+                  />
+                )}
 
                 {config.features.HaveAffiliateFeature && (
                   <Route
