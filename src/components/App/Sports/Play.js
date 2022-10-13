@@ -12,6 +12,7 @@ import IconFavPNG from "../../../assets/images/icon-fav.png";
 import i18n from "../../../utils/i18n";
 import LoadingGIF from "../../../assets/images/loading.gif";
 import { AppHistory } from "../../../history/History";
+import config from "../../../config/config";
 // const channel = new BroadcastChannel('refreshBalance');
 const Container = styled.div`
   width: 100%;
@@ -209,12 +210,30 @@ class Play extends Component {
               maintenance: false,
               loading: false,
             });
-            if (this.myRef.current) {
-              var url =
-                (response.data.url.indexOf("http") <= -1 ? "https:" : "") +
-                response.data.url;
-
-              this.myRef.current.src = url;
+            if(config.features.WGSports_UseIframe && gameCode === "WGFM")
+            {
+              console.log(response)
+              let arr = document.domain.split(".");
+              let host = arr[arr.length - 2] + "." + arr[arr.length - 1];
+              var currentDomain = host;
+              if (this.myRef.current) {
+                var wgsportUrl =
+                  (response.data.url.indexOf("http") <= -1 ? "https:" : "") +
+                  response.data.url;
+                var getExistingParam = wgsportUrl.split("/")[3];
+                this.myRef.current.src =
+                  "https://" + currentDomain + "/" + getExistingParam;
+              }
+            }
+            else
+            {
+              if (this.myRef.current) {
+                var url =
+                  (response.data.url.indexOf("http") <= -1 ? "https:" : "") +
+                  response.data.url;
+  
+                this.myRef.current.src = url;
+              }
             }
           } else {
             document.getElementsByTagName("body")[0].style.overflow = "";
