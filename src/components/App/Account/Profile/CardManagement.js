@@ -200,19 +200,35 @@ class CardManagement extends Component {
           detail: detail,
         })
         .then((response) => {
-          let setRealName = response.data.nextStepType === "SetRealName";
-          if (setRealName) {
-            this.props
-              .newRegister("SetRealName", {
-                realname: detail.name || detail.eMoneyName || detail.username,
-              })
-              .then((response) => {
-                this.props.getAccountInfo();
-              });
-          }
-          else
-          {
-            this.props.getAccountInfo();
+          if (response.IsSuccess) {
+            let setRealName = response.data.nextStepType === "SetRealName";
+            if (setRealName) {
+              this.props
+                .newRegister("SetRealName", {
+                  realname: detail.name || detail.eMoneyName || detail.username,
+                })
+                .then((response) => {
+                  if (response.IsSuccess) {
+                    this.props.getAccountInfo();
+                  } else {
+                    this.props.enqueueSnackbar(
+                      ErrorSwitcher.getTranslation(response.info),
+                      {
+                        variant: "error",
+                      }
+                    );
+                  }
+                });
+            } else {
+              this.props.getAccountInfo();
+            }
+          } else {
+            this.props.enqueueSnackbar(
+              ErrorSwitcher.getTranslation(response.info),
+              {
+                variant: "error",
+              }
+            );
           }
         });
     } else {
