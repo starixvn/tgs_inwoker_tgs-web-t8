@@ -1207,6 +1207,19 @@ class Profile extends Component {
                 .filter(
                   (item) => item.status === 0 && item.transferwallet === true
                 )
+                .filter((e) => {
+                  if (config.features.MergeEVORTNT) {
+                    if (
+                      !(
+                        e.abbreviation === "NTTF" || e.abbreviation === "RTTF"
+                      )
+                    ) {
+                      return e;
+                    }
+                  } else {
+                    return e;
+                  }
+                })
                 .map((item, key) => (
                   <WalletItem key={item.id}>
                     <WalletItemTitle>{item.name}</WalletItemTitle>
