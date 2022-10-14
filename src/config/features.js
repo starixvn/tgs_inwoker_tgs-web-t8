@@ -104,7 +104,7 @@ const featureList = {
       max: 27500,
     },
     Wap_DisplayButton: false,
-    MergeEVORTNT: false,
+    MergeEVORTNT: true,
     Deposit_AccountNameManualInput: false,
     RouletteNewFlow: false,
   },
