@@ -643,6 +643,12 @@ class Transfer extends Component {
       //   this.props.getAutoTransferStatus();
     });
   };
+  gpNameSwitcher = ({abbreviation, name}) => {
+    if(abbreviation && abbreviation.toLowerCase() === "wgfm" && config.brand === "TIGER")
+      return "Tiger Sports";
+    else 
+      return name ? name : "";
+  }
   render() {
     return (
       <Container>
@@ -761,7 +767,7 @@ class Transfer extends Component {
                   })
                   .map((item, index) => (
                     <option value={item.abbreviation} key={index}>
-                      {item.name}
+                      {this.gpNameSwitcher(item)}
                     </option>
                   ))}
               </CustomSelect>
@@ -798,7 +804,7 @@ class Transfer extends Component {
                   })
                   .map((item, index) => (
                     <option value={item.abbreviation} key={index}>
-                      {item.name}
+                      {this.gpNameSwitcher(item)}
                     </option>
                   ))}
               </CustomSelect>
@@ -906,7 +912,7 @@ class Transfer extends Component {
                           `/assets/images/provider/transfer/${displayLogo()}.png`
                         }
                       ></GameIcon>
-                      <GameName> {item.name}</GameName>
+                      <GameName> {this.gpNameSwitcher(item)}</GameName>
                     </GameTranferLeftWrap>
 
                     <GameWalletButton
