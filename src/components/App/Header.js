@@ -1105,6 +1105,12 @@ class Header extends Component {
                                               ? i18n.t(
                                                   `${game.abbreviation}.sports`
                                                 )
+                                              : i18n.exists(
+                                                  `${game.abbreviation}.${config.brand}.${item.path}`
+                                                )
+                                              ? i18n.t(
+                                                  `${game.abbreviation}.${config.brand}.${item.path}`
+                                                )
                                               : i18n.t(
                                                   `${game.abbreviation}.${item.path}`
                                                 )}
@@ -1182,6 +1188,12 @@ class Header extends Component {
                                               item.path === "esports"
                                                 ? i18n.t(
                                                     `${game.abbreviation}.sports`
+                                                  )
+                                                : i18n.exists(
+                                                    `${game.abbreviation}.${config.brand}.${item.path}`
+                                                  )
+                                                ? i18n.t(
+                                                    `${game.abbreviation}.${config.brand}.${item.path}`
                                                   )
                                                 : i18n.t(
                                                     `${game.abbreviation}.${item.path}`

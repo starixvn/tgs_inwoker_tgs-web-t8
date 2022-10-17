@@ -598,7 +598,19 @@ class App extends Component {
                     <Redirect to={"/" + i18n.language} />
                   </Switch>
                 </Main>
-
+                
+                {config.features.LiveChatVendor.brand &&
+                  config.features.LiveChatVendor.license && (
+                    <LiveChat
+                      license={config.features.LiveChatVendor.license}
+                      vendor={config.features.LiveChatVendor.brand}
+                      group={
+                        config.features.LiveChatVendor.group
+                          ? config.features.LiveChatVendor.group
+                          : 0
+                      }
+                    />
+                  )}
                 <AnotherFloatPanel
                   onhandleShowCSClick={this.handleShowCSClick}
                 ></AnotherFloatPanel>
