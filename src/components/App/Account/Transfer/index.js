@@ -912,7 +912,11 @@ class Transfer extends Component {
                           `/assets/images/provider/transfer/${displayLogo()}.png`
                         }
                       ></GameIcon>
-                      <GameName> {this.gpNameSwitcher(item)}</GameName>
+                      <GameName>
+                        <DynamicFont
+                          content={this.gpNameSwitcher(item)}
+                        ></DynamicFont>
+                      </GameName>
                     </GameTranferLeftWrap>
 
                     <GameWalletButton

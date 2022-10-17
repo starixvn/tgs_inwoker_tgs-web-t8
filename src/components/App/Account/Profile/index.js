@@ -967,6 +967,12 @@ class Profile extends Component {
       }
     }
   };
+  gpNameSwitcher = ({abbreviation, name}) => {
+    if(abbreviation && abbreviation.toLowerCase() === "wgfm" && config.brand === "TIGER")
+      return "Tiger Sports";
+    else 
+      return name ? name : "";
+  }
   render() {
     const forcedverify =
       (this.props.account.registercompleted === false &&
@@ -1222,7 +1228,7 @@ class Profile extends Component {
                 })
                 .map((item, key) => (
                   <WalletItem key={item.id}>
-                    <WalletItemTitle>{item.name}</WalletItemTitle>
+                    <WalletItemTitle>{this.gpNameSwitcher(item)}</WalletItemTitle>
                     <WalletItemInfo>
                       <DynamicFont
                         content={
