@@ -211,7 +211,43 @@ function TableList(props) {
       pathname: "/" + i18n.language + "/account/manual/" + id,
     });
   };
-
+  const gpNameSwitcher = ({ gameProviderCode, gameProviderName, from, to }, type) => {
+    let label = "";
+    switch (type) {
+      case "gp":
+        label = gameProviderName;
+        break;
+      case "from":
+        label = from;
+        break;
+      case "to":
+        label = to;
+        break;
+      default:
+        break;
+    }
+    if (
+      type === "gp" &&
+      gameProviderCode &&
+      gameProviderCode.toString().toUpperCase() === "WGFM"
+    ) {
+      if (config.brand === "TIGER")
+        label = gameProviderName.toString().replace("WG", "Tiger");
+    }
+    if (
+      type === "from" &&
+      from &&
+      from.toString().toUpperCase() === "WG SPORTS"
+    ) {
+      if (config.brand === "TIGER")
+        label = from.toString().replace("WG", "Tiger");
+    }
+    if (type === "to" && to && to.toString().toUpperCase() === "WG SPORTS") {
+      if (config.brand === "TIGER")
+        label = to.toString().replace("WG", "Tiger");
+    }
+    return label;
+  };
   const getTableList = () => {
     switch (props.type) {
       case "transactionDetails":
@@ -256,7 +292,7 @@ function TableList(props) {
                     <StyledTableCell>{date}</StyledTableCell>
                     <StyledTableCell>{row.id}</StyledTableCell>
                     <StyledTableCell>
-                      {row.gameProviderName}-{row.gameName}
+                      {gpNameSwitcher(row, "gp")}-{row.gameName}
                     </StyledTableCell>
                     <StyledTableCell align="right">
                       {row.betAmount}
@@ -315,8 +351,8 @@ function TableList(props) {
           return (
             <StyledTableRow hover role="checkbox" tabIndex={-1} key={index}>
               <StyledTableCell>{date}</StyledTableCell>
-              <StyledTableCell>{row.from}</StyledTableCell>
-              <StyledTableCell>{row.to}</StyledTableCell>
+              <StyledTableCell>{gpNameSwitcher(row, "from")}</StyledTableCell>
+              <StyledTableCell>{gpNameSwitcher(row, "to")}</StyledTableCell>
               <StyledTableCell>{row.amount}</StyledTableCell>
             </StyledTableRow>
           );
