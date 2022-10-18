@@ -1224,7 +1224,7 @@ class Header extends Component {
                   null
                 )}
 
-                {config.features.HaveVIPFeatures &&
+                {config.features.HaveVIPFeature &&
                   config.features.HomePage_DisplayVIP &&
                   this.RightMenuItem(
                     "vip",
