@@ -547,7 +547,7 @@ class App extends Component {
                         path={baseRouteUrl + "/promotion/:id"}
                         render={(props) => <PromotionDetails />}
                       />
-                      {config.features.HaveVIPFeature && (
+                      {config.features.HaveVIPFeatures && (
                         <Route
                           exact
                           path={baseRouteUrl + "/vip"}
