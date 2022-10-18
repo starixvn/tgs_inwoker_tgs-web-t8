@@ -13,7 +13,7 @@ import { generalAction } from "../../../api-services/actions/generalAction";
 import { SHOW_LOGIN } from "../../../api-services/constant/actionType";
 import IconLoginClosePNG from "../../../assets/images/icon-login-close.png";
 import { Grid, Container as MContainer } from "@material-ui/core";
-
+import config from "../../../config/config";
 const moment = require("moment");
 
 const Container = styled.div`
@@ -471,22 +471,26 @@ class PromotionDetails extends Component {
                 ></PromoDetailToggleButton>
               </PromoDetailLeftContainer>
               <PromoDetailRightContainer isToggled={this.state.isToggled}>
-                <EventTitle>{i18n.t("promotion.promoTarget")}：</EventTitle>
-                <EventText>
-                  {this.state.details.vipLevels
-                    .sort((a, b) => {
-                      return a - b;
-                    })
-                    .map((a, index) => {
-                      return (
-                        <span key={index}>
-                          VIP{a}
-                          {index < this.state.details.vipLevels.length - 1 &&
-                            ", "}
-                        </span>
-                      );
-                    })}
-                </EventText>
+                {config.features.HaveVIPFeatures && (
+                  <React.Fragment>
+                    <EventTitle>{i18n.t("promotion.promoTarget")}：</EventTitle>
+                    <EventText>
+                      {this.state.details.vipLevels
+                        .sort((a, b) => {
+                          return a - b;
+                        })
+                        .map((a, index) => {
+                          return (
+                            <span key={index}>
+                              VIP{a}
+                              {index <
+                                this.state.details.vipLevels.length - 1 && ", "}
+                            </span>
+                          );
+                        })}
+                    </EventText>
+                  </React.Fragment>
+                )}
                 <EventTitle>{i18n.t("promotion.promoDate")}：</EventTitle>
                 <EventText>
                   {moment(this.state.details.from).format(
@@ -508,12 +512,13 @@ class PromotionDetails extends Component {
                               this.state.details.localization[i18n.language] !==
                                 null)
                           ) {
-                            return (this.state.details.localization[
-                              i18n.language
-                            ].content
-                              ? this.state.details.localization[i18n.language]
-                                  .content
-                              : this.state.details.content) ?? "";
+                            return (
+                              (this.state.details.localization[i18n.language]
+                                .content
+                                ? this.state.details.localization[i18n.language]
+                                    .content
+                                : this.state.details.content) ?? ""
+                            );
                           } else {
                             return this.state.details.content ?? "";
                           }

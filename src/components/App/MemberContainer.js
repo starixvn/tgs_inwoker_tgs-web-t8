@@ -356,11 +356,11 @@ const MemberContainer = (props) => {
         <CustomLink to={"/" + i18n.language + "/account/profile"}>
           {/* {i18n.t("web.header.welcomBack")}{" "} */}
           <MemberUserName>
-            {props.account.info.member_username}(
-            {config.features.CustomVIP
-              ? vipSwitcher(props.account.info.member_level_id)
-              : "VIP" + props.account.info.member_level_id}
-            )
+            {props.account.info.member_username}
+            {config.features.HaveVIPFeatures &&
+              (config.features.CustomVIP
+                ? vipSwitcher(props.account.info.member_level_id)
+                : "VIP" + props.account.info.member_level_id)}
           </MemberUserName>
         </CustomLink>
       </WelcomeContainer>
