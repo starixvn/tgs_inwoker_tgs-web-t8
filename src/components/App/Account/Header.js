@@ -252,10 +252,10 @@ function Header(props) {
       canDisplay: config.features.HaveAffiliateFeature,
       img: IconBonusPNG,
     },
-    config.features.HaveVIPFeatures && {
+    {
       path: "vip",
       title: "VIP",
-      canDisplay: true,
+      canDisplay: config.features.HaveVIPFeature,
       img: IconVIPPNG,
     },
     {
