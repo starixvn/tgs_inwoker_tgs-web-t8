@@ -357,7 +357,7 @@ const MemberContainer = (props) => {
           {/* {i18n.t("web.header.welcomBack")}{" "} */}
           <MemberUserName>
             {props.account.info.member_username}
-            {config.features.HaveVIPFeatures &&
+            {config.features.HaveVIPFeature &&
               (config.features.CustomVIP
                 ? vipSwitcher(props.account.info.member_level_id)
                 : "VIP" + props.account.info.member_level_id)}
