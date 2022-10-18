@@ -471,7 +471,7 @@ class PromotionDetails extends Component {
                 ></PromoDetailToggleButton>
               </PromoDetailLeftContainer>
               <PromoDetailRightContainer isToggled={this.state.isToggled}>
-                {config.features.HaveVIPFeature && (
+                {config.features.HaveVIPFeatures && (
                   <React.Fragment>
                     <EventTitle>{i18n.t("promotion.promoTarget")}：</EventTitle>
                     <EventText>

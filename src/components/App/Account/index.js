@@ -443,7 +443,7 @@ class Account extends Component {
                   )}
                 />
 
-                {config.features.HaveVIPFeature && (
+                {config.features.HaveVIPFeatures && (
                   <Route
                     exact
                     path={baseRouteUrl + "/account/vip"}
