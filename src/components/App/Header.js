@@ -1135,7 +1135,7 @@ class Header extends Component {
                                               ? i18n.t(
                                                   `${game.abbreviation}.${
                                                     config.brand
-                                                  }${
+                                                  }.${
                                                     usecustom ? "custom" : ""
                                                   }${item.path}`
                                                 )
@@ -1245,7 +1245,7 @@ class Header extends Component {
                                                 ? i18n.t(
                                                     `${game.abbreviation}.${
                                                       config.brand
-                                                    }${
+                                                    }.${
                                                       usecustom ? "custom" : ""
                                                     }${item.path}`
                                                   )
