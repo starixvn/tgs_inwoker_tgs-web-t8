@@ -110,6 +110,7 @@ const featureList = {
     RouletteNewFlow: false,
     HaveVIPFeature: true,
     WGSports_UseIframe: false,
+    PP_CustomTranslation: false,
   },
 };
 export default featureList;
