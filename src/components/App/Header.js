@@ -766,7 +766,10 @@ class Header extends Component {
             this.props.history.push(
               "/" + i18n.language + "/sports/" + gameCode
             );
-          } else if ((gameCode === "WGFM" && !config.features.WGSports_UseIframe) || gameCode === "WGVIA") {
+          } else if (
+            (gameCode === "WGFM" && !config.features.WGSports_UseIframe) ||
+            gameCode === "WGVIA"
+          ) {
             if (document.getElementById("audio") != null)
               document.getElementById("audio").volume = 0;
             if (this.props.history.location.pathname.indexOf("play") >= 0) {
@@ -996,6 +999,7 @@ class Header extends Component {
                 }).map((item, index) => {
                   var list = this.props.game.homePageGameList
                     .filter((game) => item.gameType.indexOf(game.type) >= 0)
+
                     .sort((a, b) => {
                       if (config.features.LiveGame_Sorting_SKY) {
                         var sortDGFirst = ["DG"];
@@ -1042,6 +1046,7 @@ class Header extends Component {
                               {(() => {
                                 return list.length <= 5 ? (
                                   list.map((game, index) => {
+                                    var usecustom = false;
                                     return (
                                       <GameFrame
                                         key={index}
@@ -1057,6 +1062,19 @@ class Header extends Component {
                                           </Maintenance>
                                           {(() => {
                                             var gameCode = game.abbreviation.toLowerCase();
+                                            // check if gamecode is "pptf" and  game.abbreviation is sports then change  game.abbreviation to "customsports"
+                                            if (
+                                              config.features
+                                                .PP_CustomTranslation
+                                            ) {
+                                              if (
+                                                gameCode === "pptf" &&
+                                                item.path === "sports"
+                                              ) {
+                                                usecustom = true;
+                                              }
+                                            }
+
                                             if (
                                               config.features.SportsHideLogo
                                             ) {
@@ -1103,16 +1121,28 @@ class Header extends Component {
                                             {game.abbreviation.toLowerCase() ===
                                               "imes" && item.path === "esports"
                                               ? i18n.t(
-                                                  `${game.abbreviation}.sports`
+                                                  `${game.abbreviation}.${
+                                                    usecustom ? "custom" : ""
+                                                  }sports`
                                                 )
                                               : i18n.exists(
-                                                  `${game.abbreviation}.${config.brand}.${item.path}`
+                                                  `${game.abbreviation}.${
+                                                    config.brand
+                                                  }.${
+                                                    usecustom ? "custom" : ""
+                                                  }${item.path}`
                                                 )
                                               ? i18n.t(
-                                                  `${game.abbreviation}.${config.brand}.${item.path}`
+                                                  `${game.abbreviation}.${
+                                                    config.brand
+                                                  }${
+                                                    usecustom ? "custom" : ""
+                                                  }${item.path}`
                                                 )
                                               : i18n.t(
-                                                  `${game.abbreviation}.${item.path}`
+                                                  `${game.abbreviation}.${
+                                                    usecustom ? "custom" : ""
+                                                  }${item.path}`
                                                 )}
                                           </GameTitle>
                                         </GameFrameWrapper>
@@ -1122,6 +1152,7 @@ class Header extends Component {
                                 ) : (
                                   <Slider {...settings}>
                                     {list.map((game, index) => {
+                                      var usecustom = false;
                                       return (
                                         <GameFrame
                                           key={index}
@@ -1137,6 +1168,19 @@ class Header extends Component {
                                             </Maintenance>
                                             {(() => {
                                               var gameCode = game.abbreviation.toLowerCase();
+
+                                              if (
+                                                config.features
+                                                  .PP_CustomTranslation
+                                              ) {
+                                                if (
+                                                  gameCode === "pptf" &&
+                                                  item.path === "sports"
+                                                ) {
+                                                  usecustom = true;
+                                                }
+                                              }
+
                                               if (
                                                 config.features.SportsHideLogo
                                               ) {
@@ -1187,16 +1231,28 @@ class Header extends Component {
                                                 "imes" &&
                                               item.path === "esports"
                                                 ? i18n.t(
-                                                    `${game.abbreviation}.sports`
+                                                    `${game.abbreviation}.${
+                                                      usecustom ? "custom" : ""
+                                                    }sports`
                                                   )
                                                 : i18n.exists(
-                                                    `${game.abbreviation}.${config.brand}.${item.path}`
+                                                    `${game.abbreviation}.${
+                                                      config.brand
+                                                    }.${
+                                                      usecustom ? "custom" : ""
+                                                    }${item.path}`
                                                   )
                                                 ? i18n.t(
-                                                    `${game.abbreviation}.${config.brand}.${item.path}`
+                                                    `${game.abbreviation}.${
+                                                      config.brand
+                                                    }${
+                                                      usecustom ? "custom" : ""
+                                                    }${item.path}`
                                                   )
                                                 : i18n.t(
-                                                    `${game.abbreviation}.${item.path}`
+                                                    `${game.abbreviation}.${
+                                                      usecustom ? "custom" : ""
+                                                    }${item.path}`
                                                   )}
                                             </GameTitle>
                                           </GameFrameWrapper>

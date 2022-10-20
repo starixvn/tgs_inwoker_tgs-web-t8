@@ -178,7 +178,10 @@ class Sports extends Component {
       Common.closePreviousPopup();
       if (type === GameTypeEnum.RNGSPORTS) {
         this.props.history.push("/" + i18n.language + "/sports/" + params);
-      } else if ((params === "WGFM" && !config.features.WGSports_UseIframe) || params === "WGVIA") {
+      } else if (
+        (params === "WGFM" && !config.features.WGSports_UseIframe) ||
+        params === "WGVIA"
+      ) {
         if (document.getElementById("audio") != null)
           document.getElementById("audio").volume = 0.0;
         var win = Common.PopupCenter(
@@ -220,6 +223,13 @@ class Sports extends Component {
             >
               <LeftNavItemContainer>
                 {this.state.list.map((data, index) => {
+                  var customtranslation = false;
+                  if (
+                    config.features.PP_CustomTranslation &&
+                    data.abbreviation === "PPTF"
+                  ) {
+                    customtranslation = true;
+                  }
                   return (
                     <LeftNavItem
                       selected={this.state.selected === index}
@@ -244,12 +254,20 @@ class Sports extends Component {
                       ></GameImage>
                       <GameTitle>
                         {i18n.exists(
-                          `${data.abbreviation}.${config.brand}.sports`
+                          `${data.abbreviation}.${config.brand}.${
+                            customtranslation ? "custom" : ""
+                          }sports`
                         )
                           ? i18n.t(
-                              `${data.abbreviation}.${config.brand}.sports`
+                              `${data.abbreviation}.${config.brand}.${
+                                customtranslation ? "custom" : ""
+                              }sports`
                             )
-                          : i18n.t(`${data.abbreviation}.sports`)}
+                          : i18n.t(
+                              `${data.abbreviation}.${
+                                customtranslation ? "custom" : ""
+                              }sports`
+                            )}
                       </GameTitle>
                     </LeftNavItem>
                   );
