@@ -818,7 +818,7 @@ const NewStepOne = (props) => {
                               {" : "}
                               <LimitAmount>{` ${
                                 isNaN(amount) === false
-                                  ? (amount * usdtRate).toFixed(2)
+                                  ? Common.formatNumberWithCommasNoRounding(amount / usdtRate)
                                   : 0
                               }`}</LimitAmount>
                             </ExchangeRateContainer>
