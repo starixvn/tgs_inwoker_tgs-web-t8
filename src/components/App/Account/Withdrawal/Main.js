@@ -332,7 +332,7 @@ const Main = (props) => {
           //    </FeeSpot>
           //  </GapLeaver>
         }
-        {(() => {
+        {/* {(() => {
           if (
             props.cardList[selectedCardIndex] &&
             props.cardList[selectedCardIndex].banktype === "Usdt"
@@ -352,7 +352,7 @@ const Main = (props) => {
               </ExchangeRateContainer>
             );
           }
-        })()}
+        })()} */}
       </SubHeaderContainer>
 
       <SelectionContainer>
