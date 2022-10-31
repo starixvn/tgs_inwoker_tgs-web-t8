@@ -235,10 +235,7 @@ class Sports extends Component {
                       selected={this.state.selected === index}
                       onClick={() => {
                         if (data.status === 0) {
-                          this.handleJoinGameClick(
-                            data.abbreviation,
-                            data.type
-                          );
+                          this.handleJoinGameClick(data.gpcode, data.type);
                         }
                       }}
                       maintenance={data.status !== 0}

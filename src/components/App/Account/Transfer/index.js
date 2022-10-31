@@ -643,12 +643,11 @@ class Transfer extends Component {
       //   this.props.getAutoTransferStatus();
     });
   };
-  gpNameSwitcher = ({abbreviation, name}) => {
-    if(abbreviation && abbreviation.toLowerCase() === "wgfm" && config.brand === "TIGER")
+  gpNameSwitcher = ({ gpcode, name }) => {
+    if (gpcode && gpcode.toLowerCase() === "wgfm" && config.brand === "TIGER")
       return "Tiger Sports";
-    else 
-      return name ? name : "";
-  }
+    else return name ? name : "";
+  };
   render() {
     return (
       <Container>
@@ -754,11 +753,7 @@ class Transfer extends Component {
                   )
                   .filter((e) => {
                     if (config.features.MergeEVORTNT) {
-                      if (
-                        !(
-                          e.abbreviation === "NTTF" || e.abbreviation === "RTTF"
-                        )
-                      ) {
+                      if (!(e.gpcode === "NTTF" || e.gpcode === "RTTF")) {
                         return e;
                       }
                     } else {
@@ -766,7 +761,7 @@ class Transfer extends Component {
                     }
                   })
                   .map((item, index) => (
-                    <option value={item.abbreviation} key={index}>
+                    <option value={item.gpcode} key={index}>
                       {this.gpNameSwitcher(item)}
                     </option>
                   ))}
@@ -791,11 +786,7 @@ class Transfer extends Component {
                   )
                   .filter((e) => {
                     if (config.features.MergeEVORTNT) {
-                      if (
-                        !(
-                          e.abbreviation === "NTTF" || e.abbreviation === "RTTF"
-                        )
-                      ) {
+                      if (!(e.gpcode === "NTTF" || e.gpcode === "RTTF")) {
                         return e;
                       }
                     } else {
@@ -803,7 +794,7 @@ class Transfer extends Component {
                     }
                   })
                   .map((item, index) => (
-                    <option value={item.abbreviation} key={index}>
+                    <option value={item.gpcode} key={index}>
                       {this.gpNameSwitcher(item)}
                     </option>
                   ))}
@@ -883,9 +874,7 @@ class Transfer extends Component {
               )
               .filter((e) => {
                 if (config.features.MergeEVORTNT) {
-                  if (
-                    !(e.abbreviation === "NTTF" || e.abbreviation === "RTTF")
-                  ) {
+                  if (!(e.gpcode === "NTTF" || e.gpcode === "RTTF")) {
                     return e;
                   }
                 } else {
@@ -895,12 +884,12 @@ class Transfer extends Component {
               .map((item, key) => {
                 const displayLogo = () => {
                   if (
-                    item.abbreviation.toLowerCase() === "evotf" &&
+                    item.gpcode.toLowerCase() === "evotf" &&
                     config.features.MergeEVORTNT
                   ) {
                     return "evontrt";
                   } else {
-                    return item.abbreviation.toLowerCase();
+                    return item.gpcode.toLowerCase();
                   }
                 };
                 return (
@@ -921,7 +910,7 @@ class Transfer extends Component {
 
                     <GameWalletButton
                       disabled={item.maintenance === 1}
-                      onClick={() => this.handleTranferIn(item.abbreviation)}
+                      onClick={() => this.handleTranferIn(item.gpcode)}
                     >
                       {i18n.t("transfer.oneKeyTransferIn")}
                     </GameWalletButton>
