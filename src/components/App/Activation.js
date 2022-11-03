@@ -6,17 +6,10 @@ import { AccountService } from "../../api-services/services/AccountService";
 import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
 import LoginBGPNG from "../../assets/images/login-bg.png";
-
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import UserIconPNG from "../../assets/images/user-icon.png";
-import Password1IconPNG from "../../assets/images/password1-icon.png";
 import IconMobilePNG from "../../assets/images/icon-mobile.png";
-import IconInboxSelectedPNG from "../../assets/images/icon-inbox-selected.png";
 import IconInputVerifyCodePNG from "../../assets/images/icon-input-verifycode.png";
-
-import { makeStyles } from "@material-ui/core/styles";
-
 import { withSnackbar } from "notistack";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
@@ -145,81 +138,6 @@ const ButtonLoginLabel = styled.span`
   margin-top: 10px;
 `;
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingTop: "2px",
-    border: "solid #404040 1px",
-  },
-  formControl: {
-    width: "78px",
-    height: "46px",
-    marginTop: "14px",
-    marginRight: "10px",
-
-    broder: "solid 2px #000",
-
-    "& label.Mui-focused": {
-      color: "#b6b6b6",
-    },
-    "& .MuiInput-underline:after": {
-      borderBottomColor: "#b6b6b6",
-    },
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        borderColor: "#b6b6b6",
-        marginTop: "1px",
-      },
-      "&:hover fieldset": {
-        borderColor: "#b6b6b6",
-        marginTop: "1px",
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: "#b6b6b6",
-        marginTop: "1px",
-      },
-    },
-  },
-  input: {
-    fontSize: "14px",
-  },
-  checkboxRoot: {
-    padding: "0",
-    margin: "0",
-    float: "left",
-    "& .MuiIconButton-label": {
-      borderRadius: "6px",
-      border: "solid 1px #000",
-    },
-  },
-  icon: {
-    width: 20,
-    height: 20,
-
-    borderRadius: "5px",
-    backgroundColor: "#fff",
-    "$root.Mui-focusVisible &": {},
-    "input:hover ~ &": {},
-    "input:disabled ~ &": {},
-  },
-  checkedIcon: {
-    backgroundImage: "url(" + IconInboxSelectedPNG + ")",
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center",
-    backgroundColor: "#fff",
-    borderRadius: "5px",
-    "&:before": {
-      display: "block",
-      width: 20,
-      height: 20,
-      backgroundImage: "url(" + IconInboxSelectedPNG + ")",
-      backgroundPosition: "center",
-      backgroundRepeat: "no-repeat",
-      borderRadius: "5px",
-      content: '""',
-    },
-    "input:hover ~ &": {},
-  },
-}));
 const Description = styled.div`
   float: left;
   width: 310px;
@@ -227,7 +145,7 @@ const Description = styled.div`
   margin-top: 10px;
   margin-left: 5px;
   font-size: 14px;
-  color:red;
+  color: red;
   line-height: 1.43;
 `;
 const CustomFormControl = withStyles((theme) => ({
@@ -479,53 +397,6 @@ function Activation(props) {
       <TitleContainer>{i18n.t("web.register.activation")}</TitleContainer>
 
       <FormContainer>
-        {
-          //       <CustomText
-          //       onChange={handleUsernameChange}
-          //       id="username"
-          //       value={username}
-          //       placeholder={i18n.t("web.register.username")}
-          //       variant="outlined"
-          //       autoComplete="off"
-          //       inputProps={{
-          //         maxLength: 32,
-          //       }}
-          //       InputProps={{
-          //         startAdornment: (
-          //           <InputAdornment
-          //             position="start"
-          //             style={{ height: "24px", width: "30px" }}
-          //           >
-          //             <img src={UserIconPNG} alt=""></img>
-          //           </InputAdornment>
-          //         ),
-          //       }}
-          //     />
-          //
-          //     <CustomText
-          //       onChange={handlePasswordChange}
-          //       id="password"
-          //       value={password}
-          //       placeholder={i18n.t("web.register.password")}
-          //       variant="outlined"
-          //       type="password"
-          //       autoComplete="off"
-          //       inputProps={{
-          //         maxLength: 20,
-          //       }}
-          //       InputProps={{
-          //         startAdornment: (
-          //           <InputAdornment
-          //             position="start"
-          //             style={{ height: "26px", width: "30px" }}
-          //           >
-          //             <img src={Password1IconPNG} alt=""></img>
-          //           </InputAdornment>
-          //         ),
-          //       }}
-          //     />
-        }
-
         <CustomFormControl>
           <CustomSelect
             native
@@ -596,33 +467,10 @@ function Activation(props) {
             </StyleButton>
           </>
         )}
-        {/* <div class="clear"></div>
-        <CustomText
-          placeholder={i18n.t("common.msgEnterCode")}
-          adornment={IconInputVerifyCodePNG}
-          onChange={(e) => {
-            setCode(e.target.value);
-          }}
-          variant="outlined"
-          autoComplete="off"
-          value={code}
-          type={"text"}
-          style={{
-            width: "200px",
-            height: "51px",
-            marginTop: "0",
-          }}
-        ></CustomText>
-        <StyleButton onClick={handleGetCodeClick} disable={countdown > 0}>
-          <ButtonLabel>
-            {countdown <= 0
-              ? i18n.t("common.msgSendToken")
-              : i18n.t("common.btnTokenResendLabel") + "(" + countdown + "s)"}
-          </ButtonLabel>
-        </StyleButton> */}
+
         {config.features.Custom_Temp_show_verify_SMS_hints && (
-        <Description>{i18n.t("web.register.errorCustomDesc")}</Description>
-                  )}
+          <Description>{i18n.t("web.register.errorCustomDesc")}</Description>
+        )}
         <ButtonLogin onClick={handleActivationClick}>
           <ButtonLoginLabel>{i18n.t("common.submit")}</ButtonLoginLabel>
         </ButtonLogin>

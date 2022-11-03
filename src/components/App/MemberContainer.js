@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React from "react";
+
 import styled, { keyframes } from "styled-components";
-import InboxIconPNG from "../../assets/images/inbox-icon.png";
+
 import IconRefreshBalancePNG from "../../assets/images/icon-refresh-balance.png";
 import IconRefreshBalanceHoverPNG from "../../assets/images/icon-refresh-balance-hover.png";
 import { Link } from "react-router-dom";
@@ -27,28 +27,6 @@ const Container = styled.div`
   flex-direction: row-reverse;
   line-height: 38px;
   justify-content: space-evenly;
-`;
-const BtnStyle1 = styled.div`
-  width: 68px;
-  height: 35px;
-  border-radius: 4px;
-
-  float: right;
-  margin-right: 10px;
-  text-align: center;
-  line-height: 220%;
-  border: solid 1px #ffffff;
-  color: #fff;
-  background-image: linear-gradient(
-    to top,
-    ${({ theme }) => theme.primaryGradient},
-    ${({ theme }) => theme.primary}
-  );
-  &:hover {
-    border: solid 1px #fde73f;
-    color: #fde73f;
-    cursor: pointer;
-  }
 `;
 
 const TabButton = styled.div`
@@ -76,9 +54,6 @@ const BtnLogout = styled.button`
     filter: grayscale(0.3);
   }
 `;
-
-const BtnTransfer = styled(BtnStyle1)``;
-const BtnDeposit = styled(BtnStyle1)``;
 
 const BalanceContainer = styled.div`
   color: #ffffff;
@@ -120,32 +95,7 @@ const MemberUserName = styled.span`
   color: #edd092;
   font-weight: 700;
 `;
-const Spliter = styled.div`
-  width: 2px;
-  height: 16px;
-  margin: 12px 10px 0px 10px;
-  float: right;
-  background-color: rgba(255, 255, 255, 0.2);
-`;
-const InboxContainer = styled(BalanceContainer)`
-  color: #ffffff;
-  text-align: right;
-  padding: 10px 0px 0 0;
-  &:hover {
-    cursor: pointer;
-  }
-`;
-const InboxIconImg = styled.img`
-  display: inline-block;
-  float: right;
-  margin-top: 2px;
-`;
-const InboxCountLabel = styled.span`
-  margin-left: 6px;
-  color: #fde73f;
-  display: inline-block;
-  float: right;
-`;
+
 const WelcomeContainer = styled(BalanceContainer)`
   color: #f6f6f6;
   float: right;
@@ -157,30 +107,6 @@ const CustomLink = styled(Link)`
   color: inherit;
   &:hover {
     cursor: pointer;
-  }
-`;
-
-const CustomPopoverContent = styled.div`
-  min-width: 225px;
-  padding: 10px;
-  display: grid;
-  max-height: 400px;
-  overflow: auto;
-  user-select: none;
-  ::-webkit-scrollbar {
-    width: 5px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #888;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555;
   }
 `;
 

@@ -179,14 +179,6 @@ const PromoDetailFooterContainer = styled.div`
     `}
 `;
 
-const PromoDetailImage = styled.div`
-  width: 100%;
-  height: 486px;
-  margin-bottom: 20px;
-  background: url(${(props) => props.img}) no-repeat;
-  background-size: contain;
-`;
-
 const EventTitle = styled.div`
   color: ${({ theme }) => theme.primary};
   margin-bottom: 10px;
@@ -202,37 +194,14 @@ const EventText = styled.div`
   line-height: 26px;
   margin-bottom: 20px;
 `;
-const PromoButtonContainer = styled(Grid)`
-  cursor: pointer;
-  user-select: none;
-  position: relative;
-  width: 100%;
-  border-radius: 5px;
-  height: 62px;
-  background-image: linear-gradient(
-    to top,
-    ${({ theme }) => theme.primaryGradient},
-    ${({ theme }) => theme.primary}
-  );
 
-  ${({ disableTheButton }) => {
-    return disableTheButton
-      ? `
-    opacity: 0.65;
-    cursor: not-allowed;`
-      : ``;
-  }}
-`;
 const TNCContainer = styled.span`
   color: #123414;
   text-decoration: underline;
   font-weight: bold;
   cursor: pointer;
 `;
-const PromoButtonText = styled(Grid)`
-  color: #fff;
-  font-size: 20px;
-`;
+
 const StyledDialog = withStyles({
   root: {
     boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
@@ -401,9 +370,13 @@ class PromotionDetails extends Component {
   performRedirect = (id, promotionType) => {
     this.props.joinPromotion(id);
     if (
-      ["FirstDeposit", "DailySecondDeposit", "DailyFirstDeposit", "DepositReward", "DepositAccumulateRoulette"].indexOf(
-        promotionType
-      ) >= 0
+      [
+        "FirstDeposit",
+        "DailySecondDeposit",
+        "DailyFirstDeposit",
+        "DepositReward",
+        "DepositAccumulateRoulette",
+      ].indexOf(promotionType) >= 0
     ) {
       AppHistory.push({
         pathname: "/" + i18n.language + "/account/deposit/" + id,
@@ -417,9 +390,13 @@ class PromotionDetails extends Component {
       this.props.joinPromotion(id);
 
       if (
-        ["FirstDeposit", "DailySecondDeposit", "DailyFirstDeposit", "DepositReward", "DepositAccumulateRoulette"].indexOf(
-          promotionType
-        ) >= 0
+        [
+          "FirstDeposit",
+          "DailySecondDeposit",
+          "DailyFirstDeposit",
+          "DepositReward",
+          "DepositAccumulateRoulette",
+        ].indexOf(promotionType) >= 0
       ) {
         AppHistory.push({
           pathname: "/" + i18n.language + "/account/deposit/" + id,
@@ -527,31 +504,6 @@ class PromotionDetails extends Component {
                     }}
                   ></PromoDesc>
 
-                  {/* <PromoDesc
-                    dangerouslySetInnerHTML={{
-                      __html:
-                        "<div >" +
-                        (() => {
-                          if (
-                            !checkIfLocalizationIsEmpty &&
-                            (this.state.details.localization[i18n.language] !==
-                              "" ||
-                              this.state.details.localization[i18n.language] !==
-                                null)
-                          ) {
-                            return this.state.details.localization[
-                              i18n.language
-                            ].terms
-                              ? this.state.details.localization[i18n.language]
-                                  .terms
-                              : this.state.details.terms;
-                          } else {
-                            return this.state.details.terms;
-                          }
-                        })() +
-                        "</div>",
-                    }}
-                  ></PromoDesc> */}
                   {this.state.term !== "" && (
                     <TNCContainer onClick={this.handleShowDialog}>
                       {i18n.t("common.termsAndCondition")}
@@ -576,84 +528,6 @@ class PromotionDetails extends Component {
                 </PromoDetailJoinButton>
               )}
             </PromoDetailFooterContainer>
-            {/* <PromoDetailImage
-              img={(() => {
-                if (this.state.details.localization !== null) {
-                  if (
-                    this.state.details.localization.desktopBanner &&
-                    this.state.details.localization.desktopBanner !== null
-                  ) {
-                    return this.state.details.localization.desktopBanner;
-                  } else {
-                    return this.state.details.desktopBanner;
-                  }
-                } else {
-                  return this.state.details.desktopBanner;
-                }
-              })()}
-            ></PromoDetailImage>
-            <EventTitle>{i18n.t("promotion.promoTarget")}：</EventTitle>
-            <EventText>
-              {this.state.details.vipLevels.map((a, index) => {
-                return (
-                  <span key={index}>
-                    VIP{a}
-                    {index < this.state.details.vipLevels.length - 1 && ", "}
-                  </span>
-                );
-              })}
-            </EventText>
-            <EventTitle>{i18n.t("promotion.promoDate")}：</EventTitle>
-            <EventText>
-              {moment(this.state.details.from).format("YYYY/MM/DD HH:mm:ss")}
-              {" - "}
-              {moment(this.state.details.to).format("YYYY/MM/DD HH:mm:ss")}
-            </EventText>
-            <EventText>
-              <PromoDesc
-                dangerouslySetInnerHTML={{
-                  __html:
-                    "<div >" +
-                    (() => {
-                      if (
-                        this.state.details.localization !== null &&
-                        this.state.details.localization.content &&
-                        this.state.details.localization.content !== null
-                      ) {
-                        return this.state.details.localization.content;
-                      } else {
-                        return this.state.details.content;
-                      }
-                    })() +
-                    "</div>",
-                }}
-              ></PromoDesc>
-              {this.state.term !== "" && (
-                <TNCContainer onClick={this.handleShowDialog}>
-                  {i18n.t("common.termsAndCondition")}
-                </TNCContainer>
-              )}
-            </EventText>
-            <Grid container justify="center">
-              <PromoButtonContainer
-                container
-                alignItems="center"
-                justify="center"
-                md={3}
-                disableTheButton={this.state.joined}
-                onClick={() =>
-                  !this.state.joined &&
-                  this.handlejoinPromotionClick(
-                    this.state.details.id,
-                    this.state.details.promotionType
-                  )
-                }
-              >
-                <PromoButtonText item>
-                  {i18n.t("promotion.joinPromo")}
-                </PromoButtonText>
-              </PromoButtonContainer>
-            </Grid> */}
           </PromoDetailContainer>
         </MContainer>
         <StyledDialog

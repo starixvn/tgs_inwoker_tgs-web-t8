@@ -1,12 +1,9 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled, { css, keyframes } from "styled-components";
-
 import i18n from "../../../utils/i18n";
-
 import LiveGameButtonPNG from "../../../assets/images/live/live-game-button.png";
 import ScrollAnimation from "react-animate-on-scroll";
-
 import config from "../../../config/config";
 import { GameTypeEnum } from "../../../api-services/utils/Enum";
 import { SHOW_LOGIN } from "../../../api-services/constant/actionType";
@@ -54,32 +51,6 @@ const Container = styled.div`
     no-repeat center;
 `;
 
-const NoContentText = styled.div`
-  color: #000;
-  font-size: ${(props) =>
-    props.lang === "zh-CN" || props.lang === "zh-TW" ? `3.2em` : `2.3em`};
-  text-shadow: 0 0 18px #ffe14e;
-  -webkit-text-stroke: 0.5px white;
-  font-weight: bold;
-  width: 450px;
-  height: auto;
-  margin-left: 180px;
-  overflow: visible;
-  font-family: "微軟正黑粗";
-  &:first-child {
-    margin-top: 210px;
-  }
-  &:last-child {
-    ${(props) => (props.lang === "en-US" ? `font-size: 3.2em;` : ``)}
-  }
-`;
-
-const LeftSlide = styled(ScrollAnimation)`
-  display: flex;
-`;
-const RightSlide = styled(ScrollAnimation)`
-  display: flex;
-`;
 const LiveWrapper = styled.div``;
 
 const Maintenance = styled.div`
@@ -299,19 +270,7 @@ class LiveGame extends Component {
                             );
                           }}
                           name={data.abbreviation}
-                        >
-                          {/* <img
-                          alt={data.abbreviation}
-                          src={
-                            process.env.PUBLIC_URL +
-                            `/assets/images/pcGamePage/live/${data.abbreviation.toLowerCase()}${
-                              index === this.state.selected
-                                ? "-selected.png"
-                                : "-not-selected.png"
-                            }`
-                          }
-                        /> */}
-                        </GameButton>
+                        ></GameButton>
                       </BottomNavItem>
                     );
                   })}

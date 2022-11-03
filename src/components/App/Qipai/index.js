@@ -1,20 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { AppHistory } from "../../../history/History";
 import ScrollAnimation from "react-animate-on-scroll";
-
 import { SHOW_LOGIN } from "../../../api-services/constant/actionType";
 import { GameTypeEnum } from "../../../api-services/utils/Enum";
-import { GameService } from "../../../api-services/services/GameService";
-
-import SlotAllPNG from "../../../assets/images/slot-all.png";
-import SlotAllInactivePNG from "../../../assets/images/slot-all-inactive.png";
-
-import Loading from "../../../components/App/Loading";
-
 import i18n from "../../../utils/i18n";
-import config from "../../../config/config";
 import Common from "../../../utils/Common";
 
 const Container = styled.div`
@@ -30,25 +20,6 @@ const Container = styled.div`
     no-repeat center;
 `;
 
-const NoContentText = styled.div`
-  color: #000;
-  font-size: ${(props) =>
-    props.lang === "zh-CN" || props.lang === "zh-TW" ? `3.2em` : `2.3em`};
-  text-shadow: 0 0 18px #ffe14e;
-  -webkit-text-stroke: 0.5px white;
-  font-weight: bold;
-  width: 450px;
-  height: auto;
-  margin-left: 180px;
-  overflow: visible;
-  font-family: "微軟正黑粗";
-  &:first-child {
-    margin-top: 210px;
-  }
-  &:last-child {
-    ${(props) => (props.lang === "en-US" ? `font-size: 3.2em;` : ``)}
-  }
-`;
 const QipaiWrapper = styled.div`
   margin: 0 auto;
   width: 1280px;

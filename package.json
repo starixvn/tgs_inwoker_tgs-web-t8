@@ -15,6 +15,7 @@
     "es6-promise": "^4.2.8",
     "i18next": "^19.9.2",
     "i18next-browser-languagedetector": "^4.3.1",
+    "i18next-http-backend": "^2.0.1",
     "lodash.debounce": "^4.0.8",
     "moment": "^2.29.1",
     "notistack": "^0.9.17",
@@ -49,8 +50,8 @@
   "scripts": {
     "wap:get": "git submodule update --init --recursive",
     "wap:update": "git submodule update --remote",
-    "start": "env-cmd -f .env react-scripts start",
-    "build": "env-cmd -f .env react-scripts build",
+    "start": "SET NODE_OPTIONS=--openssl-legacy-provider && env-cmd -f .env react-scripts start",
+    "build": "SET NODE_OPTIONS=--openssl-legacy-provider && env-cmd -f .env react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "test:build": "env-cmd -f .env react-scripts build",

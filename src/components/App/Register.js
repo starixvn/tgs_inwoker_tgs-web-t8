@@ -526,7 +526,8 @@ function Register(props) {
               variant: "warning",
             });
           } else if (response.IsSuccess) {
-            let setPhoneDontCareDuplicate = response.data.nextStepType === "SetPhoneDontCareDuplicate";
+            let setPhoneDontCareDuplicate =
+              response.data.nextStepType === "SetPhoneDontCareDuplicate";
 
             if (config.features.SMSVerification) {
               props.onRegisterSuccess(username, password);
@@ -534,7 +535,13 @@ function Register(props) {
               config.features.Register_ShowEmail &&
               config.features.Register_ShowPhone
             ) {
-              props.doLoginWithHpEmail(username, password, phone, email, setPhoneDontCareDuplicate);
+              props.doLoginWithHpEmail(
+                username,
+                password,
+                phone,
+                email,
+                setPhoneDontCareDuplicate
+              );
             } else if (config.features.Register_ShowPhone) {
               props.doLoginWithHp(username, password, phone);
             } else {

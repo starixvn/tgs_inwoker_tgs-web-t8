@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import styled, { css, keyframes } from "styled-components";
+import styled from "styled-components";
 import { AppHistory } from "../../../history/History";
 
 import { GameService } from "../../../api-services/services/GameService";
 import { SHOW_LOGIN } from "../../../api-services/constant/actionType";
-import { GameTypeEnum, GameEnum } from "../../../api-services/utils/Enum";
+import { GameTypeEnum } from "../../../api-services/utils/Enum";
 
 import SlotAllPNG from "../../../assets/images/slot-all.png";
 import SlotAllInactivePNG from "../../../assets/images/slot-all-inactive.png";
@@ -27,26 +27,6 @@ const Container = styled.div`
     no-repeat;
   background-attachment: fixed;
   background-size: cover;
-`;
-
-const NoContentText = styled.div`
-  color: #000;
-  font-size: ${(props) =>
-    props.lang === "zh-CN" || props.lang === "zh-TW" ? `3.2em` : `2.3em`};
-  text-shadow: 0 0 18px #ffe14e;
-  -webkit-text-stroke: 0.5px white;
-  font-weight: bold;
-  width: 450px;
-  height: auto;
-  margin-left: 180px;
-  overflow: visible;
-  font-family: "微軟正黑粗";
-  &:first-child {
-    margin-top: 210px;
-  }
-  &:last-child {
-    ${(props) => (props.lang === "en-US" ? `font-size: 3.2em;` : ``)}
-  }
 `;
 
 const GameTabContainer = styled.div`
@@ -314,7 +294,6 @@ class Fishing extends Component {
   handleJoinGameClick = (gpcode, gpid) => {
     if (this.props.token) {
       Common.closePreviousPopup();
-      // this.props.performBalanceRefresh();
       this.props.history.push(`/${i18n.language}/fish/play/${gpcode}/${gpid}`);
     } else {
       this.props.showLogin(true);
@@ -331,24 +310,6 @@ class Fishing extends Component {
     AppHistory.push(`/${i18n.language}/${type}/${platform}`);
   };
 
-  // handleJoinGameClick = (gid) => {
-  //   if (this.props.token) {
-  //     Common.PopupCenter(
-  //       "/" +
-  //         i18n.language +
-  //         "/joingame/" +
-  //         GameTypeEnum.FISH +
-  //         "/" +
-  //         GameEnum.JDB +
-  //         "/" +
-  //         gid,
-  //       1280,
-  //       720
-  //     );
-  //   } else {
-  //     this.props.showLogin(true);
-  //   }
-  // };
   getGameList(
     page = this.state.page,
     platform = this.state.platform,
