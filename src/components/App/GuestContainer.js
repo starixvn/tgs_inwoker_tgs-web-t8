@@ -54,15 +54,6 @@ const BtnRegister = styled(BtnLoginRegister)``;
 
 const BtnLogin = styled(BtnLoginRegister)``;
 
-const BtnSpliter = styled.div`
-  float: right;
-  margin-top: 8px;
-`;
-const BtnLoginRegisterLabel = styled.span`
-  text-align: center;
-  display: block;
-  margin-top: 7px;
-`;
 const StyledDialog = withStyles({
   root: {
     boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",

@@ -34,7 +34,6 @@ const CloseIconContainer = styled.div`
 `;
 const TitleContainer = styled.div`
   text-align: center;
-
   font-size: 42px;
 `;
 
@@ -280,24 +279,6 @@ class ForgotPasswordPhone extends Component {
           variant: "error",
         });
       }
-      // AccountService.GetPhoneVerificationCode(
-      //   "",
-      //   this.state.phone,
-      //   "resetPassword"
-      // ).then(response => {
-      //   // this.setState({ ...this.state, message: response.msg });
-      //   if (response.IsSuccess) {
-      //     this.props.enqueueSnackbar(response.msg, {
-      //       variant: "info"
-      //     });
-      //   } else {
-      //     this.props.enqueueSnackbar(response.msg, {
-      //       variant: "error"
-      //     });
-      //   }
-      //   this.setState({ ...this.state, countdown: response.data });
-      //   this.checkCountdown();
-      // });
     }
   };
   onhandleNextClick = () => {

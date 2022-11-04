@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import TextField from "../../Share/TextField";
 import Button from "../../Share/Button";
-import {AccountService} from "../../../api-services/services/AccountService";
-import {UPDATE_INFO} from "../../../api-services/constant/actionType";
+import { AccountService } from "../../../api-services/services/AccountService";
+import { UPDATE_INFO } from "../../../api-services/constant/actionType";
 import ErrorSwitcher from "../../../utils/ErrorSwitcher";
 import { withSnackbar } from "notistack";
 const Container = styled.div`

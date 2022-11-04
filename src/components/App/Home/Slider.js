@@ -63,14 +63,6 @@ class Slider extends React.Component {
               );
             });
           })()}
-
-          {/* {this.props.list.map((row, index) => {
-            return (
-              <ATag href={row.go_url} key={index}>
-                <Img src={row.pc_file_url}></Img>
-              </ATag>
-            );
-          })} */}
         </Slick>
       </Container>
     );

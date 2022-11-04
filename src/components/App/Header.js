@@ -21,23 +21,8 @@ import { Link } from "react-router-dom";
 import GuestContainer from "./GuestContainer";
 import MemberContainer from "./MemberContainer";
 
-import TopMenuLivePNG from "../../assets/images/top-menu-live.png";
-import TopMenuQipaiPNG from "../../assets/images/top-menu-qipai.png";
-import TopMenuSportsPNG from "../../assets/images/top-menu-sports.png";
-import TopMenuLotteryPNG from "../../assets/images/top-menu-lottery.png";
-import TopMenueSportsPNG from "../../assets/images/top-menu-gun.png";
-import TopMenuTigerPNG from "../../assets/images/top-menu-tiger.png";
-import TopMenuFishPNG from "../../assets/images/top-menu-fish.png";
 import TopMenuPromoPNG from "../../assets/images/top-menu-promo.png";
-import TopMenuSlotPNG from "../../assets/images/top-menu-slot.png";
 
-import TopMenuLiveHoverPNG from "../../assets/images/top-menu-live-hover.png";
-import TopMenuQipaiHoverPNG from "../../assets/images/top-menu-qipai-hover.png";
-import TopMenuSportsHoverPNG from "../../assets/images/top-menu-sports-hover.png";
-import TopMenuLotteryHoverPNG from "../../assets/images/top-menu-lottery-hover.png";
-import TopMenueSportsHoverPNG from "../../assets/images/top-menu-gun-hover.png";
-import TopMenuTigerHoverPNG from "../../assets/images/top-menu-tiger-hover.png";
-import TopMenuFishHoverPNG from "../../assets/images/top-menu-fish-hover.png";
 import TopMenuPromoHoverPNG from "../../assets/images/top-menu-promo-hover.png";
 import TopMenuSlotHoverPNG from "../../assets/images/top-menu-slot-hover.png";
 
