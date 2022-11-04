@@ -10,6 +10,7 @@ import Common from "../../../../utils/Common";
 import config from "../../../../config/config";
 import copy from "copy-to-clipboard";
 import { withSnackbar } from "notistack";
+import { utility } from "../../../../utils/utility";
 const CustomImage = styled.img`
   height: 130px;
   width: auto;
@@ -263,7 +264,7 @@ const NewStepOne = (props) => {
       variant: "success",
     });
 
-    copy(content);
+    utility.copy(content);
   };
 
   const CopyFeature = ({ copyContent }) => {

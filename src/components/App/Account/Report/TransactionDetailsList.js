@@ -10,6 +10,7 @@ import TablePagination from "@material-ui/core/TablePagination";
 import i18n from "../../../../utils/i18n";
 import copy from "copy-to-clipboard";
 import { withSnackbar } from "notistack";
+import { utility } from "../../../../utils/utility";
 const moment = require("moment");
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -67,7 +68,7 @@ function TransactionDetailsList(props) {
       props.enqueueSnackbar(i18n.t("affiliate.copied"), {
         variant: "success",
       });
-      copy(id);
+      utility.copy(id);
     }
   };
 

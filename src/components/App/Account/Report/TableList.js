@@ -13,6 +13,7 @@ import { useSnackbar } from "notistack";
 
 import { AppHistory } from "../../../../history/History";
 import config from "../../../../config/config";
+import { utility } from "../../../../utils/utility";
 const moment = require("moment");
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -203,7 +204,7 @@ function TableList(props) {
     enqueueSnackbar(i18n.t("affiliate.copied"), {
       variant: "success",
     });
-    copy(id);
+    utility.copy(id);
   };
 
   const handleManualDeposit = (id) => {
@@ -211,7 +212,10 @@ function TableList(props) {
       pathname: "/" + i18n.language + "/account/manual/" + id,
     });
   };
-  const gpNameSwitcher = ({ gameProviderCode, gameProviderName, from, to }, type) => {
+  const gpNameSwitcher = (
+    { gameProviderCode, gameProviderName, from, to },
+    type
+  ) => {
     let label = "";
     switch (type) {
       case "gp":

@@ -3,18 +3,11 @@ import { connect } from "react-redux";
 import styled, { keyframes } from "styled-components";
 import DynamicFont from "react-dynamic-font";
 import { withSnackbar } from "notistack";
-import IconTransferRedPNG from "../../../../assets/images/icon-transfer.png";
-import TransferMWalletPNG from "../../../../assets/images/transfer-mwallet.png";
-import TransferTWalletPNG from "../../../../assets/images/transfer-twallet.png";
-import TransferTotalPNG from "../../../../assets/images/transfer-total.png";
 import ArrowRightPNG from "../../../../assets/images/arrow-right.png";
 import { withStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import Switch from "@material-ui/core/Switch";
 import Select from "@material-ui/core/Select";
-
-import CurrencyTextField from "@unicef/material-ui-currency-textfield";
-
 import { walletAction } from "../../../../api-services/actions/walletAction";
 import { RESET_WALLETRESULT } from "../../../../api-services/constant/actionType";
 import IconRefreshPNG from "../../../../assets/images/icon-refresh.png";
@@ -400,10 +393,20 @@ const CustomSwitch = withStyles((theme) => ({
   );
 });
 
-const SubtitleContent = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+const CurrencyTextFieldReplacement = styled.input`
+  height: 35px;
+  width: 154px;
+  border-radius: 4px;
+  border: solid 1px #b6b6b6;
+  padding: 0px 10px;
+
+  ::placeholder {
+    color: #818181;
+  }
+
+  :focus {
+    outline: none;
+  }
 `;
 
 const CustomSwitchContainer = styled.div`
@@ -422,7 +425,7 @@ class Transfer extends Component {
     loading: false,
     transferFrom: "",
     transferTo: 0,
-    transferAmount: "0.00",
+    transferAmount: "",
     showMessagebox: false,
     messageboxText: "",
     mainAccountId: "0",
@@ -802,30 +805,21 @@ class Transfer extends Component {
             </CustomFormControl>
 
             <QuickTransferLabel>{i18n.t("common.amount")}</QuickTransferLabel>
-            <CurrencyTextField
-              style={{
-                height: "38px",
-                width: "154px",
-                float: "left",
-                backgroundColor: "#fff",
-              }}
+            <CurrencyTextFieldReplacement
               value={this.state.transferAmount}
-              placeholder={i18n.t("transfer.msgEnterAmount")}
+              placeholder="0.00"
               onChange={(e) => {
                 this.setState({
                   ...this.state,
                   transferAmount: e.target.value,
                 });
               }}
-              variant="outlined"
               autoComplete="off"
               minimumValue="0"
               inputProps={{
                 maxLength: 15,
               }}
-              currencySymbol=""
-              decimalPlaces="0"
-            ></CurrencyTextField>
+            ></CurrencyTextFieldReplacement>
             <QuickTransferButton
               disabled={
                 this.state.transferFrom === "" ||
