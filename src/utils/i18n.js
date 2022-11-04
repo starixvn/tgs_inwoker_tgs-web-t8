@@ -13,8 +13,8 @@ i18n
   .use(initReactI18next)
   .init({
     backend: {
-      loadPath: `https://app12.srvptt.com.s3.ap-east-1.amazonaws.com/translation/{{lng}}.json`,
-      addPath: `https://app12.srvptt.com.s3.ap-east-1.amazonaws.com/translation/{{lng}}`,
+      loadPath: `https://app12.srvptt.com/translation/{{lng}}.json`,
+      addPath: `https://app12.srvptt.com/translation/{{lng}}`,
     },
 
     whitelist: ["en-US", "zh-CN", "zh-TW", "th-TH", "id-ID", "vi-VN"],
