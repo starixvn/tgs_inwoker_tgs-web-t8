@@ -204,11 +204,9 @@ class Account extends Component {
   getAllGameBalance = () => {
     this.props.game.providerList
       .filter((item) => item.status === 0 && item.transferwallet === true)
-      .filter(
-        (item) => item.abbreviation !== "NTTF" && item.abbreviation !== "RTTF"
-      )
+      .filter((item) => item.gpcode !== "NTTF" && item.gpcode !== "RTTF")
       .map((a) => {
-        this.props.getGameBalance(a.abbreviation);
+        this.props.getGameBalance(a.gpcode);
       });
   };
   handleRefreshClick = () => {

@@ -348,7 +348,9 @@ function GetContentWrap(accountInfo, label, attr, func, edit, disable) {
             );
           }
         })()}
-        {((status === "verifying" && attr === "member_name" && config.features.Profile_DisplayEditNameButton) ||
+        {((status === "verifying" &&
+          attr === "member_name" &&
+          config.features.Profile_DisplayEditNameButton) ||
           (attr === "member_phone" && isVerify && edit && !disable)) && (
           <ContentButton onClick={() => func(attr, edit)}>
             <ContentButtonLabel>{i18n.t("profile.edit")}</ContentButtonLabel>
@@ -967,12 +969,11 @@ class Profile extends Component {
       }
     }
   };
-  gpNameSwitcher = ({abbreviation, name}) => {
-    if(abbreviation && abbreviation.toLowerCase() === "wgfm" && config.brand === "TIGER")
+  gpNameSwitcher = ({ gpcode, name }) => {
+    if (gpcode && gpcode.toLowerCase() === "wgfm" && config.brand === "TIGER")
       return "Tiger Sports";
-    else 
-      return name ? name : "";
-  }
+    else return name ? name : "";
+  };
   render() {
     const forcedverify =
       (this.props.account.registercompleted === false &&
@@ -1215,11 +1216,7 @@ class Profile extends Component {
                 )
                 .filter((e) => {
                   if (config.features.MergeEVORTNT) {
-                    if (
-                      !(
-                        e.abbreviation === "NTTF" || e.abbreviation === "RTTF"
-                      )
-                    ) {
+                    if (!(e.gpcode === "NTTF" || e.gpcode === "RTTF")) {
                       return e;
                     }
                   } else {
@@ -1228,7 +1225,9 @@ class Profile extends Component {
                 })
                 .map((item, key) => (
                   <WalletItem key={item.id}>
-                    <WalletItemTitle>{this.gpNameSwitcher(item)}</WalletItemTitle>
+                    <WalletItemTitle>
+                      {this.gpNameSwitcher(item)}
+                    </WalletItemTitle>
                     <WalletItemInfo>
                       <DynamicFont
                         content={
