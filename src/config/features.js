@@ -111,6 +111,9 @@ const featureList = {
     HaveVIPFeature: true,
     WGSports_UseIframe: false,
     PP_CustomTranslation: false,
+
+    TIGER_CustomTranslation: false,
+
   },
 };
 export default featureList;
