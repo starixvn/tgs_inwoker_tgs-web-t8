@@ -432,46 +432,6 @@ class Transfer extends Component {
     disabled: false,
   };
 
-  // mainAccountId = 0;
-  // bindData() {
-  //   let singleWalletGameName = "";
-  //   let transferWalletAmount = 0;
-  //   let mainWalletAmount = 0;
-  //   let totalAmount = 0;
-  //   let transferWalletList = [];
-  //   for (let wallet of this.props.wallet.balanceList) {
-  //     if (wallet.purse_type === WalletType.MainWallet) {
-  //       mainWalletAmount = parseFloat(wallet.balance);
-  //       transferWalletList.push(wallet);
-  //       this.mainAccountId = wallet.id;
-  //     } else if (wallet.purse_type === WalletType.SingleWallet) {
-  //       singleWalletGameName += wallet.name + "、";
-  //     } else if (wallet.purse_type === WalletType.TransferWallet) {
-  //       transferWalletAmount += parseFloat(wallet.balance);
-  //       transferWalletList.push(wallet);
-  //     }
-  //     totalAmount += parseFloat(wallet.balance);
-  //   }
-  //   if (singleWalletGameName.length > 1) {
-  //     singleWalletGameName = singleWalletGameName.substring(
-  //       0,
-  //       singleWalletGameName.length - 1
-  //     );
-  //   }
-  //   this.setState({
-  //     ...this.state,
-  //     mainWalletAmount: Common.formatNumberWithCommas(mainWalletAmount),
-  //     singleWalletGameName,
-  //     transferWalletAmount: Common.formatNumberWithCommas(transferWalletAmount),
-  //     totalAmount: Common.formatNumberWithCommas(totalAmount),
-  //   });
-  // }
-
-  componentDidMount() {
-    // if (this.props.wallet.balanceList.length > 0) {
-    //   this.bindData();
-    // }
-  }
   componentDidUpdate(preProps) {
     if (
       preProps.wallet.transferResult !== this.props.wallet.transferResult &&
@@ -501,18 +461,6 @@ class Transfer extends Component {
           ...this.state,
           disabled: false,
         });
-        // if (
-        //   this.props.wallet.transferResult.code === 208 ||
-        //   this.props.wallet.transferResult.code === 209
-        // ) {
-        //   this.props.enqueueSnackbar(i18n.t("transfer.msgFailedTransfer"), {
-        //     variant: "error",
-        //   });
-        // } else {
-        //   this.props.enqueueSnackbar(this.props.wallet.transferResult.info, {
-        //     variant: "error",
-        //   });
-        // }
       }
     }
 
@@ -548,7 +496,7 @@ class Transfer extends Component {
 
   handleTransferFromChange = (e) => {
     const fromWallet = e.target.value;
-    if (fromWallet != this.state.mainAccountId) {
+    if (fromWallet !== this.state.mainAccountId) {
       this.setState({
         ...this.state,
         transferFrom: fromWallet,
@@ -564,7 +512,7 @@ class Transfer extends Component {
   };
   handleTransferToChange = (e) => {
     const toWallet = e.target.value;
-    if (toWallet != this.state.mainAccountId) {
+    if (toWallet !== this.state.mainAccountId) {
       this.setState({
         ...this.state,
         transferFrom: this.state.mainAccountId,
@@ -618,8 +566,8 @@ class Transfer extends Component {
     this.props.doTransfer(
       transferAmount,
       this.state.mainAccountId,
-      transferTo == this.state.mainAccountId ? transferFrom : transferTo,
-      transferFrom == this.state.mainAccountId ? 1 : 2
+      transferTo === this.state.mainAccountId ? transferFrom : transferTo,
+      transferFrom === this.state.mainAccountId ? 1 : 2
     );
   };
   handleWithdrawAllClick = (e) => {
@@ -627,18 +575,6 @@ class Transfer extends Component {
   };
   handleTranferIn = (gpcode) => {
     this.props.doTransfer(gpcode, this.props.wallet.mainBalance);
-    // if (item.maintenance !== 1) {
-    //   const transferFrom = this.props.wallet.mainId; //main account
-    //   const transferTo = item.parent_id;
-    //   const transferAmount = parseInt(this.props.wallet.mainBalance);
-    //   if (parseFloat(transferAmount) > 0) {
-    //     this.transfer(transferFrom, transferTo, transferAmount);
-    //   } else {
-    //     this.props.enqueueSnackbar(i18n.t("transfer.insufficient"), {
-    //       variant: "error",
-    //     });
-    //   }
-    // }
   };
 
   handleSwitchAutoTransfer = () => {
@@ -730,12 +666,6 @@ class Transfer extends Component {
             <h3>{i18n.t("transfer.quickTransfer")}</h3>
           </Title>
         </Header>
-
-        {/* <SubTitle>
-            <SubtitleContent>
-              <div>{i18n.t("transfer.quickTransfer")}</div>
-            </SubtitleContent>
-          </SubTitle> */}
 
         <QuickTransferWrap>
           <QuickTransferContainer>

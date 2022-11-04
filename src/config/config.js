@@ -5,9 +5,9 @@ const config = {
   baseUrl: window?.env ? "/api/" : "https://dev-t1.rpgp.cc/api/",
   client:
     window?.env?.client ||
-    "I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ",
-  currency: window?.env?.currency || "CNY",
-  brand: window?.env?.brand || process.env.REACT_APP_BRAND || "GMO",
+    "yorAqGm7MHug45YZ0B6umuTaQnYJdawIQQjEUgsDAQeidDl8j4t0uUi",
+  currency: window?.env?.currency || "HKD",
+  brand: window?.env?.brand || process.env.REACT_APP_BRAND || "xxxx",
   brandName: window?.env?.brandName
     ? window?.env?.brandName
     : window?.env?.brand || "M9THB",

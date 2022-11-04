@@ -8,7 +8,6 @@ import {
 import React, { useEffect, useState } from "react";
 import LoginBGPNG from "../../../assets/images/login-bg.png";
 import styled from "styled-components";
-import IconLoginClosePNG from "../../../assets/images/icon-login-close.png";
 import config from "../../../config/config";
 import i18n from "../../../utils/i18n";
 import InputAdornment from "@material-ui/core/InputAdornment";

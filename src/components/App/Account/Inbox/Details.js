@@ -2,7 +2,6 @@ import React from "react";
 
 import styled from "styled-components";
 import CustomTextField from "../../../Share/TextField";
-import CustomButton from "../../../Share/Button";
 import moment from "moment";
 const Container = styled.div``;
 const Content = styled.div`

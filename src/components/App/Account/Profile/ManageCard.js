@@ -1,21 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { Select, FormControl, withStyles } from "@material-ui/core";
-import CustomTextField from "../../../Share/TextField";
+
 import Button from "../../../Share/Button";
 import i18n from "../../../../utils/i18n";
 import config from "../../../../config/config";
 import { withSnackbar } from "notistack";
 const Container = styled.div`
   width: 100%;
-`;
-const SubTitle = styled.div`
-  font-size: 22px;
-  font-weight: bold;
-  padding: 0 10px 10px;
-  color: #16242a;
-  margin-top: 0px;
 `;
 
 const TextFieldItem = styled.div`

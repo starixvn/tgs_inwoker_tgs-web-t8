@@ -1,24 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-
-import IconDepositRedPNG from "../../../../assets/images/icon-deposit.png";
-
 import { walletAction } from "../../../../api-services/actions/walletAction";
 import { WalletService } from "../../../../api-services/services/WalletService";
 import { generalAction } from "../../../../api-services/actions/generalAction";
 import { RESET_WALLETRESULT } from "../../../../api-services/constant/actionType";
 import { withRouter } from "react-router-dom";
-
-import NameVerification from "../../Share/NameVerification";
 import Loading from "../../../../components/App/Loading";
-
 import UnderConstructionPNG from "../../../../assets/images/underconstruction.png";
-
 import { withSnackbar } from "notistack";
-
 import Step2Form from "./Step2Form";
-
 import Success from "./Success";
 import i18n from "../../../../utils/i18n";
 import ErrorSwitcher from "../../../../utils/ErrorSwitcher";
@@ -99,16 +90,6 @@ const UnderConstructionWrap = styled.div`
 const DescLabel = styled.div`
   margin: 330px auto 0 auto;
   text-align: center;
-`;
-
-const NameVerificationWrap = styled.div`
-  width: 935px;
-  min-height: 532px;
-  margin-top: 4px;
-  box-sizing: border-box;
-  background-color: #f7f7f7;
-  padding: 25px;
-  position: relative;
 `;
 
 const ButtonAddCard = styled.div`
@@ -224,14 +205,13 @@ class Deposit extends Component {
     }
 
     if (
-      preProps.wallet.depositResult != this.props.wallet.depositResult &&
+      preProps.wallet.depositResult !== this.props.wallet.depositResult &&
       this.props.wallet.depositResult !== null
     ) {
       if (this.props.wallet.depositResult.IsSuccess) {
         const response = this.props.wallet.depositResult;
-        var payment = this.props.wallet.depositTypeList[
-          this.state.selectedPaymentIndex
-        ];
+        var payment =
+          this.props.wallet.depositTypeList[this.state.selectedPaymentIndex];
         if (config.features.Deposit_DualPage) {
           this.setState({
             ...this.state,
@@ -299,7 +279,7 @@ class Deposit extends Component {
       }
     }
     if (
-      preProps.wallet.depositUploadResult !=
+      preProps.wallet.depositUploadResult !==
         this.props.wallet.depositUploadResult &&
       this.props.wallet.depositUploadResult !== null
     ) {
@@ -429,9 +409,8 @@ class Deposit extends Component {
       var depositResult = JSON.parse(ev.newValue);
 
       if (depositResult !== null && depositResult.IsSuccess) {
-        var payment = this.props.wallet.depositTypeList[
-          this.state.selectedPaymentIndex
-        ];
+        var payment =
+          this.props.wallet.depositTypeList[this.state.selectedPaymentIndex];
         // var paymenturl = "";
         // if (payment.paymentcode.toUpperCase() !== "MANUAL") {
         //   paymenturl = response.data.paymenturl;
@@ -539,9 +518,8 @@ class Deposit extends Component {
   handleNextClick = (e) => {
     this.setState({ ...this.state, loading: true });
 
-    var payment = this.props.wallet.depositTypeList[
-      this.state.selectedPaymentIndex
-    ];
+    var payment =
+      this.props.wallet.depositTypeList[this.state.selectedPaymentIndex];
     var method = payment.method[this.state.selectedMethodIndex];
 
     var channel = method.channel[this.state.selectedChannelIndex];
@@ -842,10 +820,10 @@ class Deposit extends Component {
     );
   };
   handleAmountChange = (e) => {
-    var max = this.props.wallet.depositTypeList[this.state.selectedPaymentIndex]
-      .method[this.state.selectedMethodIndex].channel[
-      this.state.selectedChannelIndex
-    ].transferlimit.to;
+    var max =
+      this.props.wallet.depositTypeList[this.state.selectedPaymentIndex].method[
+        this.state.selectedMethodIndex
+      ].channel[this.state.selectedChannelIndex].transferlimit.to;
 
     this.setState({
       ...this.state,
@@ -1380,7 +1358,14 @@ const mapDispatchToProps = (dispatch) => {
         )
       );
     },
-    doEWalletDeposit: (amount, paymentid, promotionid, banktype, note, emoneyname) => {
+    doEWalletDeposit: (
+      amount,
+      paymentid,
+      promotionid,
+      banktype,
+      note,
+      emoneyname
+    ) => {
       dispatch(
         walletAction.doEWalletDeposit(
           amount,

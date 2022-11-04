@@ -4,7 +4,6 @@ import styled from "styled-components";
 import addDays from "date-fns/addDays";
 import DateSelection from "./DateSelection";
 
-import RebateReportList from "./RebateReportList";
 import TableList from "./TableList";
 
 const moment = require("moment");
@@ -29,7 +28,6 @@ const InnerWrap = styled.div`
   box-sizing: border-box;
   background-color: #f7f7f7;
 `;
-
 
 class RebateReport extends Component {
   state = {
@@ -86,16 +84,15 @@ class RebateReport extends Component {
             defaultDateFrom={this.state.dateRange.dateFrom}
             defaultDateTo={this.state.dateRange.dateTo}
           ></DateSelection>
-
         </FilterContainer>
         <InnerWrap>
-        <TableList
+          <TableList
             type="rebate"
             page={this.state.page}
             rows={this.props.rebateList.list}
             total={this.props.rebateList.count}
             onhandleChangePage={this.handleChangePage}
-           />
+          />
           {/* <RebateReportList
             page={this.state.page}
             rows={this.props.rebateList.list}

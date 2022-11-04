@@ -4,7 +4,7 @@ import i18n from "../../../utils/i18n";
 import { Dialog } from "@material-ui/core";
 import config from "../../../config/config";
 import QRCode from "react-qr-code";
-import copy from "copy-to-clipboard";
+
 import { useSnackbar } from "notistack";
 import { utility } from "../../../utils/utility";
 

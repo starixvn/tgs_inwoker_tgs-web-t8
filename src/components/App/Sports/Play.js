@@ -157,7 +157,7 @@ class Play extends Component {
     if (
       preProps.match.params.params !== this.props.match.params.params ||
       preProps.match.params.type !== this.props.match.params.type ||
-      preProps.token != this.props.token
+      preProps.token !== this.props.token
     ) {
       this.setState({
         ...this.state,

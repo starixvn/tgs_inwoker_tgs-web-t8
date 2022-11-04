@@ -2,17 +2,12 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import Dialog from "@material-ui/core/Dialog";
-import IconInboxRedPNG from "../../../../assets/images/icon-inbox.png";
 import IconRefreshPNG from "../../../../assets/images/icon-refresh.png";
-
-import LoginBGPNG from "../../../../assets/images/login-bg.png";
 import IconLoginClosePNG from "../../../../assets/images/icon-login-close.png";
 import { withStyles } from "@material-ui/core/styles";
 import { withSnackbar } from "notistack";
-
 import List from "./List";
 import Details from "./Details";
-
 import { accountAction } from "../../../../api-services/actions/accountAction";
 import { inboxAction } from "../../../../api-services/actions/inboxAction";
 import { InboxService } from "../../../../api-services/services/InboxService";
@@ -66,7 +61,7 @@ const RefreshInboxButton = styled.div`
   float: left;
   margin: 10px 10px;
   border: 1px solid #272727;
-  background-color: rgba(0,0,0,.3);
+  background-color: rgba(0, 0, 0, 0.3);
   border-color: #fff;
   font-size: 0;
   padding: 4px;
@@ -123,7 +118,7 @@ const DialogCloseIconContainer = styled.div`
 `;
 const DialogHeader = styled.div`
   height: 50px;
-  background-color: ${({theme})=>theme.primary};
+  background-color: ${({ theme }) => theme.primary};
 `;
 const DialogHeadertitle = styled.div`
   text-align: center;

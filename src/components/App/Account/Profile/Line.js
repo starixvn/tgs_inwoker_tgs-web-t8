@@ -37,14 +37,6 @@ const Line = (props) => {
   };
 
   const onhandleClick = () => {
-    // const re = new RegExp("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$");
-    // if (!line.match(re)) {
-    //   props.enqueueSnackbar(i18n.t("profile.line.msgInvalidLine"), {
-    //     variant: "error",
-    //   });
-    //   return;
-    // }
-
     AccountService.UpdateLine(line).then((response) => {
       if (response.IsSuccess) {
         props.dispatch({

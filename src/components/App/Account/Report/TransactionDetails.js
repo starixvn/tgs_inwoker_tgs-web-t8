@@ -4,7 +4,6 @@ import styled from "styled-components";
 import addDays from "date-fns/addDays";
 import DateSelection from "./DateSelection";
 
-import TransactionDetailsList from "./TransactionDetailsList";
 import TableList from "./TableList";
 const moment = require("moment");
 const Container = styled.div`

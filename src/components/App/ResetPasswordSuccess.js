@@ -9,7 +9,7 @@ import CloseIcon from "@material-ui/icons/Close";
 const Container = styled.div`
   width: 506px;
 
-  background: #fff;//url(${LoginBGPNG});
+  background: #fff; //url(${LoginBGPNG});
   display: table;
 `;
 const CloseIconContainer = styled(CloseIcon)`

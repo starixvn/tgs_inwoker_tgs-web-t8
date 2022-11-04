@@ -6,7 +6,7 @@ import DateSelection from "./DateSelection";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import i18n from "../../../../utils/i18n";
-import AccountDetailsList from "./AccountDetailsList";
+
 import TableList from "./TableList";
 const moment = require("moment");
 const Container = styled.div`
@@ -178,12 +178,12 @@ class AccountDetails extends Component {
           </CustomFormControl>
         </FilterContainer>
         <TableList
-            type="account"
-            page={this.state.page}
-            rows={this.props.accountList.list}
-            total={this.props.accountList.count}
-            onhandleChangePage={this.handleChangePage}
-           />
+          type="account"
+          page={this.state.page}
+          rows={this.props.accountList.list}
+          total={this.props.accountList.count}
+          onhandleChangePage={this.handleChangePage}
+        />
         {/* <AccountDetailsList
           page={this.state.page}
           rows={this.props.accountList.list}

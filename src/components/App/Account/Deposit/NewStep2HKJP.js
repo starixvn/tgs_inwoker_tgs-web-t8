@@ -109,13 +109,7 @@ class NewStepTwo extends Component {
     this.props.performUploadImage(this.state.files[0]);
   };
   render() {
-    const {
-      extended,
-      depositResult,
-      amount,
-      performUploadImage,
-      handleRestartClick,
-    } = this.props;
+    const { extended, depositResult, amount } = this.props;
 
     return (
       <Container>

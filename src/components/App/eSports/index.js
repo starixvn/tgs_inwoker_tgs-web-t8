@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
-import config from "../../../config/config";
 import { GameTypeEnum } from "../../../api-services/utils/Enum";
 import { SHOW_LOGIN } from "../../../api-services/constant/actionType";
 import i18n from "../../../utils/i18n";

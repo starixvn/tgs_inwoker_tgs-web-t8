@@ -1,13 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Component } from "react";
-import { TextField, Select, FormControl, withStyles } from "@material-ui/core";
 import i18n from "../../../../utils/i18n";
-import CustomButton from "../../../Share/Button";
-
-import LimitPopupPNG from "../../../../assets/images/limit-popup.png";
-import Common from "../../../../utils/Common";
-import config from "../../../../config/config";
 
 const TabButtonContainer = styled.div`
   padding: 6px;
@@ -56,11 +50,8 @@ const SmallTabLabel = styled.small`
 
 class DepositTypeSelection extends Component {
   render() {
-    const {
-      depositTypeList,
-      selectedPaymentIndex,
-      onhandleTabClick,
-    } = this.props;
+    const { depositTypeList, selectedPaymentIndex, onhandleTabClick } =
+      this.props;
 
     return (
       <TabButtonContainer>

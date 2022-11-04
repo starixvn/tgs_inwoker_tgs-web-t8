@@ -114,7 +114,7 @@ class Qipai extends Component {
     super(props);
 
     var qipaiList = props.game.homePageGameList.filter((item) => {
-      return item.type == GameTypeEnum.QIPAI;
+      return item.type === GameTypeEnum.QIPAI;
     });
 
     this.state = {
@@ -141,7 +141,7 @@ class Qipai extends Component {
       this.props.game.homePageGameList.length
     ) {
       var qipaiList = this.props.game.homePageGameList.filter((item) => {
-        return item.type == GameTypeEnum.QIPAI;
+        return item.type === GameTypeEnum.QIPAI;
       });
 
       this.setState({

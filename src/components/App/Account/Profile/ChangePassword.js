@@ -6,7 +6,7 @@ import CustomButton from "../../../Share/Button";
 import Password1IconPNG from "../../../../assets/images/password1-icon.png";
 import Password2IconPNG from "../../../../assets/images/password2-icon.png";
 import IconInputNewpassPNG from "../../../../assets/images/icon-input-newpass.png";
-import {AccountService} from "../../../../api-services/services/AccountService";
+import { AccountService } from "../../../../api-services/services/AccountService";
 import { withSnackbar } from "notistack";
 import i18n from "../../../../utils/i18n";
 const Container = styled.div``;

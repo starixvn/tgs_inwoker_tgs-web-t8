@@ -37,14 +37,6 @@ const Whatsapp = (props) => {
   };
 
   const onhandleClick = () => {
-    // const re = new RegExp("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$");
-    // if (!whatsapp.match(re)) {
-    //   props.enqueueSnackbar(i18n.t("profile.whatsapp.msgInvalidWhatsapp"), {
-    //     variant: "error",
-    //   });
-    //   return;
-    // }
-
     AccountService.UpdateWhatsapp(whatsapp).then((response) => {
       if (response.IsSuccess) {
         props.dispatch({

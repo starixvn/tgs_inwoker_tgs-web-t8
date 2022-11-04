@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import i18n from "../../../../utils/i18n";
 import CustomButton from "../../../Share/Button";
-import {WalletService} from "../../../../api-services/services/WalletService";
+import { WalletService } from "../../../../api-services/services/WalletService";
 const Container = styled.div`
   font-size: 14px;
   color: #818181;

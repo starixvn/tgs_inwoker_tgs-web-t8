@@ -7,11 +7,11 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 
-const StyledTableCell = withStyles(theme => ({
+const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: "#f7f7f7",
     color: "#747474",
-    padding: "5px 20px 5px 20px"
+    padding: "5px 20px 5px 20px",
   },
   body: {
     fontSize: 14,
@@ -20,18 +20,18 @@ const StyledTableCell = withStyles(theme => ({
     color: "#7b7b7b",
     whiteSpace: "nowrap",
     overflow: "hidden",
-    textOverflow: "ellipsis"
-  }
+    textOverflow: "ellipsis",
+  },
 }))(TableCell);
 
-const StyledTableRow = withStyles(theme => ({
+const StyledTableRow = withStyles((theme) => ({
   root: {
     backgroundColor: "#FFFFFF",
     "&:hover": {
       backgroundColor: "#fdeced !important",
-      cursor: "pointer"
-    }
-  }
+      cursor: "pointer",
+    },
+  },
 }))(TableRow);
 
 // function stableSort(array, cmp) {
@@ -60,7 +60,7 @@ const StyledTableRow = withStyles(theme => ({
 // }
 
 const InnerWrap = styled.div`
-width: 100%;
+  width: 100%;
   float: left;
   margin-top: 8px;
   box-sizing: border-box;
