@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import DynamicFont from "react-dynamic-font";
 
 import Dialog from "@material-ui/core/Dialog";
-import LoginBGPNG from "../../../../assets/images/login-bg.png";
 import IconLoginClosePNG from "../../../../assets/images/icon-login-close.png";
 import IconAddCardPNG from "../../../../assets/images/icon-addcard.png";
 
@@ -12,7 +11,7 @@ import { accountAction } from "../../../../api-services/actions/accountAction";
 import { walletAction } from "../../../../api-services/actions/walletAction";
 import { SHOWING_DIALOG } from "../../../../api-services/constant/actionType";
 import { withStyles } from "@material-ui/core/styles";
-// import Address from "./Address";
+
 import ChangePassword from "./ChangePassword";
 import Email from "./Email";
 import WithdrawalPassword from "./WithdrawalPassword";
@@ -20,8 +19,6 @@ import ChangeWithdrawalPassword from "./ChangeWithdrawalPassword";
 
 import IDVerification from "./id-verification";
 import PhoneVerification from "./PhoneVerification";
-// import SecurityQuestion from "./SecurityQuestion";
-// import ResetSecurityQuestion from "./ResetSecurityQuestion";
 
 import QQ from "./QQ";
 import Wechat from "./Wechat";
@@ -111,13 +108,7 @@ const ContentButton = styled.div`
     filter: grayscale(1);
   }
 `;
-// const ButtonDisable = styled(ContentButton)`
-//   color: #747474;
-//   background-color: #fff;
-//   &:hover {
-//     background: #fff;
-//   }
-// `;
+
 const ContentButtonLabel = styled.div`
   text-align: center;
   margin-top: 5px;
@@ -137,7 +128,6 @@ const ButtonWrapper = styled.div`
 function GetContentWrap(accountInfo, label, attr, func, edit, disable) {
   let attrValue = accountInfo[attr];
   let isMemberName = false;
-  let verified = accountInfo["check_pass_account"];
   let containMemberName = accountInfo["member_name"];
   if (attr === "member_address") {
     if (attrValue !== "") {
@@ -610,38 +600,7 @@ class Profile extends Component {
       }
     }
   }
-  // handleVerifyByQuestion = () => {
-  //   this.setState({
-  //     ...this.state,
-  //     openDialog: true,
-  //     dialogTitle: "安全问题验证",
-  //     dialogComponent: (
-  //       <SecurityQuestion
-  //         handleCloseDialog={this.handleCloseDialog}
-  //         token={this.props.account.token}
-  //         memberQuestion={this.props.account.info.member_question}
-  //         isVerify={true}
-  //         onVerifySuccess={this.handleVerifySuccess}
-  //       ></SecurityQuestion>
-  //     ),
-  //   });
-  // };
-  // handleEmailVerificationClick = () => {
-  //   this.setState({
-  //     ...this.state,
-  //     openDialog: true,
-  //     dialogTitle: "邮件验证",
-  //     dialogComponent: (
-  //       <Email
-  //         handleCloseDialog={this.handleCloseDialog}
-  //         email={this.props.account.info.member_email}
-  //         token={this.props.account.token}
-  //         onhandleVerifySuccess={this.handleVerifySuccess}
-  //         isForSecurityQuestion={true}
-  //       ></Email>
-  //     ),
-  //   });
-  // };
+
   handlePhoneVerificationClick = () => {
     this.setState({
       ...this.state,
@@ -668,20 +627,6 @@ class Profile extends Component {
     smsCode
   ) => {
     if (isForSecurityQuestion) {
-      // this.setState({
-      //   ...this.state,
-      //   openDialog: true,
-      //   dialogTitle: "设置安全问题",
-      //   dialogComponent: (
-      //     <SecurityQuestion
-      //       handleCloseDialog={this.handleCloseDialog}
-      //       token={this.props.account.token}
-      //       memberQuestion={0}
-      //       isVerify={false}
-      //       isReset={true}
-      //     ></SecurityQuestion>
-      //   ),
-      // });
     } else if (isForWithdrawalPassword) {
       this.setState({
         ...this.state,
@@ -773,15 +718,7 @@ class Profile extends Component {
           ></QQ>
         );
         break;
-      // case "member_address":
-      //   title = "收货地址";
-      //   component = (
-      //     <Address
-      //       handleCloseDialog={this.handleCloseDialog}
-      //       account={this.props.account}
-      //     ></Address>
-      //   );
-      //   break;
+
       case "member_password":
         title = i18n.t("profile.changePassword.title");
         component = (
@@ -875,40 +812,6 @@ class Profile extends Component {
           ></PhoneVerification>
         );
         break;
-      // case "member_question":
-      //   component = null;
-
-      //   if (this.props.account.info.member_question === 0) {
-      //     // first time
-      //     title = "设置安全问题";
-      //     component = (
-      //       <SecurityQuestion
-      //         handleCloseDialog={this.handleCloseDialog}
-      //         token={this.props.account.token}
-      //         memberQuestion={this.props.account.info.member_question}
-      //         isVerify={false}
-      //         isReset={false}
-      //       ></SecurityQuestion>
-      //     );
-      //   } else {
-      //     // reset
-      //     title = "修改安全问题";
-      //     component = (
-      //       <ResetSecurityQuestion
-      //         handleCloseDialog={this.handleCloseDialog}
-      //         token={this.props.account.token}
-      //         memberQuestion={this.props.account.info.member_question}
-      //         passEmail={this.props.account.info.check_pass_email}
-      //         passPhone={this.props.account.info.check_pass_phone}
-      //         onhandleVerifyByQuestion={this.handleVerifyByQuestion}
-      //         onhandlePhoneVerificationClick={this.handlePhoneVerificationClick}
-      //         onhandleEmailVerificationClick={this.handleEmailVerificationClick}
-      //         onhandleCSClick={this.props.onhandleCSClick}
-      //       ></ResetSecurityQuestion>
-      //     );
-      //   }
-
-      //   break;
 
       default:
         component = null;
@@ -1059,41 +962,6 @@ class Profile extends Component {
                   this.handleButtonClick
                 );
               })}
-            {/* {GetContentWrap(
-            this.props.account.info,
-            "电子邮件",
-            "member_email",
-            this.handleButtonClick
-          )}
-          {GetContentWrap(
-            this.props.account.info,
-            "QQ",
-            "member_qq",
-            this.handleButtonClick
-          )}
-          {GetContentWrap(
-            this.props.account.info,
-            "Wechat",
-            "member_wechat",
-            this.handleButtonClick
-          )}
-          {GetContentWrap(
-            this.props.account.info,
-            "您的生日",
-            "member_birthday",
-            this.handleButtonClick
-          )} */}
-            {/* {(() => {
-            if (config.brand !== "HKJP" && config.brand !== "GPI") {
-              return GetContentWrap(
-                this.props.account.info,
-                i18n.t("profile.withdrawalPassword.title"),
-                "member_safe_password",
-                this.handleButtonClick,
-                i18n.t("profile.edit")
-              );
-            }
-          })()} */}
 
             {GetContentWrap(
               this.props.account.info,
@@ -1101,18 +969,6 @@ class Profile extends Component {
               "member_password",
               this.handleButtonClick
             )}
-            {/* {GetContentWrap(
-            this.props.account.info,
-            "安全问题",
-            "member_question",
-            this.handleButtonClick
-          )}
-          {GetContentWrap(
-            this.props.account.info,
-            "收货地址",
-            "member_address",
-            this.handleButtonClick
-          )} */}
           </InnerWrap>
           <InnerWrap>
             <BankCardContainer>

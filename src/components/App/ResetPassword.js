@@ -10,7 +10,7 @@ import IconLoginClosePNG from "../../assets/images/icon-login-close.png";
 const Container = styled.div`
   width: 506px;
   height: 360px;
-  background: #fff;//url(${LoginBGPNG});
+  background: #fff; //url(${LoginBGPNG});
   display: table;
 `;
 const CloseIconContainer = styled.div`

@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-
 import CustomButton from "../../../Share/Button";
 import TextField from "@material-ui/core/TextField";
 import IconInputVerifyCodePNG from "../../../../assets/images/icon-input-verifycode.png";
 import { withStyles } from "@material-ui/core/styles";
-import {AccountService} from "../../../../api-services/services/AccountService";
+import { AccountService } from "../../../../api-services/services/AccountService";
 import CustomTextField from "../../../Share/TextField";
 import Password1IconPNG from "../../../../assets/images/password1-icon.png";
 import ErrorSwitcher from "../../../../utils/ErrorSwitcher";
@@ -144,15 +143,6 @@ class ChangeWithdrawalPassword extends Component {
               variant: "error",
             }
           );
-          // if (response.code === 405) {
-          //   this.props.enqueueSnackbar(i18n.t("common.msgInvalidPhoneCode"), {
-          //     variant: "error",
-          //   });
-          // } else {
-          //   this.props.enqueueSnackbar(response.info, {
-          //     variant: "error",
-          //   });
-          // }
         }
       });
     }

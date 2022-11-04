@@ -1,19 +1,15 @@
 import "react-app-polyfill/ie11";
 import "react-app-polyfill/stable";
-
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import { Router, Route, Switch, Redirect } from "react-router";
-
 import Web from "./components/App/index";
 import Wap from "./components/Wap/index";
 import * as serviceWorker from "./utils/serviceWorker";
 import { isMobileOnly } from "react-device-detect";
 import { Provider } from "react-redux";
-//import store from "./store/index";
 import { createStore, applyMiddleware } from "redux";
-
 import thunk from "redux-thunk";
 import InterceptorService from "./api-services/services/InterceptorService";
 import JoinGame from "./components/Share/JoinGame";
@@ -22,10 +18,6 @@ import RedirectPage from "./components/Share/Redirect";
 import JoinLobbyGame from "./components/Share/JoinLobbyGame";
 import JoinLotteryGame from "./components/Share/JoinLotteryGame";
 import Maintenance from "./components/Share/Maintenance";
-// import IPRestrict from "./components/App/IPRestrict";
-// import CS from "./components/App/CS";
-// import AboutUs from "./components/AboutUs/index";
-// import GameRules from "./components/GameRules/index";
 import { AppHistory } from "./history/History";
 import { SnackbarProvider } from "notistack";
 import styled from "styled-components";
@@ -46,8 +38,6 @@ import Common from "./utils/Common";
 import { ThemeProvider } from "styled-components";
 import { themeList } from "./theme";
 import { GlobalStyles } from "./global";
-
-import featureList from "./config/features";
 import FeatureGetter from "./components/Share/feature-getter";
 import AudioPlayer from "./components/Share/audioplayer";
 

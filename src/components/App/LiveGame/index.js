@@ -134,9 +134,12 @@ const BottomNavItem = styled.li`
   transform: scale3d(0.9, 0.9, 1);
   transform-origin: center;
   transition: transform 0.4s;
-  filter: grayscale(1) contrast(80%) drop-shadow(0 2px 4px rgba(0,0,0,.75)) drop-shadow(0 4px 8px rgba(0,0,0,.75));
+  filter: grayscale(1) contrast(80%) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.75))
+    drop-shadow(0 4px 8px rgba(0, 0, 0, 0.75));
   &:hover {
-    filter: grayscale(.5) contrast(90%) drop-shadow(0 2px 4px rgba(0,0,0,.75)) drop-shadow(0 4px 8px rgba(0,0,0,.75));
+    filter: grayscale(0.5) contrast(90%)
+      drop-shadow(0 2px 4px rgba(0, 0, 0, 0.75))
+      drop-shadow(0 4px 8px rgba(0, 0, 0, 0.75));
   }
   ${(props) =>
     props.selected &&
@@ -152,8 +155,8 @@ const BottomNavItem = styled.li`
     `}
 
     ${({ maintenance }) => {
-      return maintenance
-        ? `
+    return maintenance
+      ? `
       ${Maintenance}{
         display: flex;
       }
@@ -161,8 +164,8 @@ const BottomNavItem = styled.li`
         filter: brightness(40%) grayscale(200%);
       }
       `
-        : ``;
-    }}
+      : ``;
+  }}
 `;
 class LiveGame extends Component {
   constructor(props) {
@@ -255,7 +258,7 @@ class LiveGame extends Component {
                     return (
                       <BottomNavItem
                         selected={this.state.selected === index}
-                        maintenance={data.status != 0}
+                        maintenance={data.status !== 0}
                       >
                         <Maintenance>
                           {i18n.t("transfer.maintenance")}

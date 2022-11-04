@@ -147,7 +147,6 @@ const SliderButtonLabel = styled.div`
 `;
 
 const SecondSection = (props) => {
-  const [current] = useState(0);
   const [isSliding, setIsSliding] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeSlide2, setActiveSlide2] = useState(0);

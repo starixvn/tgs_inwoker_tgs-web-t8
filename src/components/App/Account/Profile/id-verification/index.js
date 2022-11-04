@@ -107,15 +107,6 @@ function IDVerification(props) {
         props.enqueueSnackbar(ErrorSwitcher.getTranslation(response.info), {
           variant: "error",
         });
-        // if (response.code === 401) {
-        //   props.enqueueSnackbar(i18n.t("profile.nameVerify.msgInvalidICNum"), {
-        //     variant: "error",
-        //   });
-        // } else {
-        //   props.enqueueSnackbar(response.info, {
-        //     variant: "error",
-        //   });
-        // }
       }
     });
   };

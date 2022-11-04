@@ -13,10 +13,6 @@ import { SHOWING_DIALOG } from "../../api-services/constant/actionType";
 import { SHOW_LOGIN } from "../../api-services/constant/actionType";
 import { GameTypeEnum } from "../../api-services/utils/Enum";
 
-import BtnCSPNG from "../../assets/images/btn-cs.png";
-
-import BtnCSHoverPNG from "../../assets/images/btn-cs-hover.png";
-
 import { Link } from "react-router-dom";
 import GuestContainer from "./GuestContainer";
 import MemberContainer from "./MemberContainer";
@@ -24,7 +20,6 @@ import MemberContainer from "./MemberContainer";
 import TopMenuPromoPNG from "../../assets/images/top-menu-promo.png";
 
 import TopMenuPromoHoverPNG from "../../assets/images/top-menu-promo-hover.png";
-import TopMenuSlotHoverPNG from "../../assets/images/top-menu-slot-hover.png";
 
 import IconPhonePNG from "../../assets/images/icon-mobile.png";
 
@@ -109,11 +104,6 @@ const CustomLink = styled(Link)`
     color: #fde73f;
     text-decoration: underline;
   }
-`;
-
-const RightContainer = styled.div`
-  float: right;
-  padding-top: 5px;
 `;
 
 const BtnAppsAndCS = styled.div`
@@ -793,8 +783,8 @@ class Header extends Component {
         AppHistory.goBack();
       }
       // this.handleRefreshBalanceClick();
-      var win = Common.PopupCenter(url, gameCode, 1280, 720);
-      var timer = setInterval(function () {
+      win = Common.PopupCenter(url, gameCode, 1280, 720);
+      timer = setInterval(function () {
         if (win.closed) {
           clearInterval(timer);
           if (document.getElementById("audio") != null)
@@ -827,7 +817,7 @@ class Header extends Component {
 
           alert(
             i18n.t("web.header.plsClick") +
-              (navigator.userAgent.toLowerCase().indexOf("mac") != -1
+              (navigator.userAgent.toLowerCase().indexOf("mac") !== -1
                 ? "Cmd"
                 : "Ctrl") +
               "+D" +
@@ -1044,7 +1034,8 @@ class Header extends Component {
                                             {i18n.t("transfer.maintenance")}
                                           </Maintenance>
                                           {(() => {
-                                            var gameCode = game.abbreviation.toLowerCase();
+                                            var gameCode =
+                                              game.abbreviation.toLowerCase();
                                             // check if gamecode is "pptf" and  game.abbreviation is sports then change  game.abbreviation to "customsports"
                                             if (
                                               config.features
@@ -1150,7 +1141,8 @@ class Header extends Component {
                                               {i18n.t("transfer.maintenance")}
                                             </Maintenance>
                                             {(() => {
-                                              var gameCode = game.abbreviation.toLowerCase();
+                                              var gameCode =
+                                                game.abbreviation.toLowerCase();
 
                                               if (
                                                 config.features

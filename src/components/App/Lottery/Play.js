@@ -28,7 +28,7 @@ class Play extends Component {
   componentDidUpdate(preProps) {
     if (
       preProps.match.params.params !== this.props.match.params.params ||
-      preProps.token != this.props.token
+      preProps.token !== this.props.token
     ) {
       this.JoinGame(this.props.match.params.params);
     }

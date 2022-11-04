@@ -262,6 +262,7 @@ const VIP = (props) => {
                               process.env.PUBLIC_URL +
                               `/assets/images/vip/${data.level}.png`
                             }
+                            alt={data.level}
                           />
                         </VIPLevelImage>
                         {getVIPTitle(data.level)}

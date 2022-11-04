@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
-import DynamicFont from "react-dynamic-font";
+
 import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router-dom";
 
@@ -17,7 +17,7 @@ import IconInboxPNG from "../../../assets/images/icon-inbox.png";
 import IconVIPPNG from "../../../assets/images/icon-vip-hover.png";
 
 import i18n from "../../../utils/i18n";
-import Common from "../../../utils/Common";
+
 import config from "../../../config/config";
 
 export const rotateKeyFrame = keyframes`
@@ -212,7 +212,7 @@ const styles = {
 
 function Header(props) {
   const { classes } = props;
-  const [selected, setSelected] = useState("/");
+
   const [shouldShow, setShouldShow] = useState(null);
   const MenuItemList = [
     {
@@ -311,8 +311,7 @@ function Header(props) {
           ></LogoContainer>
           <RightMenuContainer>
             <RightMenuUL
-              className="top-menu"
-              className={`${
+              className={`top-menu ${
                 shouldShow === null
                   ? classes.maxMenu
                   : shouldShow

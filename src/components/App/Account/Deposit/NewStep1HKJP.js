@@ -1,13 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Component } from "react";
-import {
-  Grid,
-  TextField,
-  Select,
-  FormControl,
-  withStyles,
-} from "@material-ui/core";
+import { TextField, Select, FormControl, withStyles } from "@material-ui/core";
 import i18n from "../../../../utils/i18n";
 import CustomButton from "../../../Share/Button";
 
@@ -33,37 +27,6 @@ const FormActionContainer = styled.div`
   justify-content: center;
   gap: 20px;
 `;
-
-const CustomText = withStyles({
-  root: {
-    marginTop: "10px",
-    float: "left",
-    backgroundColor: "#fff",
-    "& .MuiOutlinedInput-input": {
-      fontSize: "14px",
-    },
-    "& .MuiOutlinedInput-input[readonly]": {
-      color: "#b6b6b6",
-    },
-    "& label.Mui-focused": {
-      color: "#b6b6b6",
-    },
-    "& .MuiInput-underline:after": {
-      borderBottomColor: "#b6b6b6",
-    },
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        borderColor: "#b6b6b6",
-      },
-      "&:hover fieldset": {
-        borderColor: "#b6b6b6",
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: "#b6b6b6",
-      },
-    },
-  },
-})(TextField);
 
 const CustomFormControl = withStyles((theme) => ({
   root: {
@@ -133,19 +96,7 @@ const SubHeaderContainer = styled.div`
   flex-direction: column;
   align-items: flex-end;
 `;
-const NumberContainer = styled.div`
-  width: 20px;
-  height: 20px;
-  border-radius: 3.2px;
-  background-color: #151a34;
-  font-family: Arial;
-  font-size: 14px;
-  font-weight: bold;
-  color: #ffffff;
-  text-align: center;
-  padding-top: 2px;
-  float: left;
-`;
+
 const SubTitle = styled.div`
   font-size: 16px;
   float: left;
@@ -155,19 +106,7 @@ const SubTitle = styled.div`
 const SelectionContainer = styled.div`
   margin: 15px 0 0 30px;
 `;
-const TunnelButton = styled(TabButton)`
-  min-width: 133px;
-  height: 41px;
 
-  margin-top: 3px;
-  padding: 10px 20px 0 20px;
-`;
-const SplitLine = styled.div`
-  width: 100%;
-  height: 1px;
-  background-color: #e1dfdf;
-  margin: 20px 0;
-`;
 const CustomSelect = withStyles((theme) => ({
   root: {
     fontSize: "14px",
@@ -222,11 +161,9 @@ class NewStepOne extends Component {
       onMethodChange,
       selectedChannelIndex,
       onChannelChange,
-      selectedPaymentIndex,
       paymentType,
       onNextClick,
       exchangeRate,
-      isCrypto,
       onDepositCancelClick,
       playerNote,
       onPlayerNoteChange,
@@ -264,17 +201,6 @@ class NewStepOne extends Component {
                 })}
               </CustomSelect>
             </CustomFormControl>
-            {/* {methodList.map((item, index) => {
-              return (
-                <TunnelButton
-                  key={index}
-                  onClick={() => onMethodChange(index)}
-                  active={selectedMethodIndex === index}
-                >
-                  {i18n.t(item.methodcode)}
-                </TunnelButton>
-              );
-            })} */}
           </SelectionContainer>
           <FormRightContainer></FormRightContainer>
         </FormContainer>
@@ -315,19 +241,6 @@ class NewStepOne extends Component {
                               )}
                             </CustomSelect>
                           </CustomFormControl>
-                          {/* {methodList[selectedMethodIndex].channel.map(
-                    (item, index) => {
-                      return (
-                        <TunnelButton
-                          key={index}
-                          onClick={() => onChannelChange(index)}
-                          active={selectedChannelIndex === index}
-                        >
-                          {item.channelname}
-                        </TunnelButton>
-                      );
-                    }
-                  )} */}
                         </SelectionContainer>
                       </FormRightContainer>
                     </FormContainer>

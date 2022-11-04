@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { Redirect } from "react-router";
 
 import { withRouter } from "react-router-dom";
 import Loading from "../../Loading";
 import NameVerification from "../../Share/NameVerification";
-// import PassSetting from "./PassSetting";
 
 import AddCard from "../Profile/AddCard";
 import AddCardSuccess from "../Profile/AddCardSuccess";

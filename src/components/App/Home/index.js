@@ -207,8 +207,8 @@ class Home extends Component {
       Common.closePreviousPopup();
       if (slotPageGameType.indexOf(gameType) >= 0) {
         if (
-          gameType == GameTypeEnum.SPORTS ||
-          gameType == GameTypeEnum.ESPORTS
+          gameType === GameTypeEnum.SPORTS ||
+          gameType === GameTypeEnum.ESPORTS
         ) {
           if (!this.props.token) {
             this.props.showLogin(true);

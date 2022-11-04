@@ -6,7 +6,7 @@ import DateSelection from "./DateSelection";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { withStyles } from "@material-ui/core/styles";
-import DepositReportList from "./DepositReportList";
+
 import TableList from "./TableList";
 import i18n from "../../../../utils/i18n";
 const moment = require("moment");
@@ -161,35 +161,35 @@ class DepositReport extends Component {
           ></DateSelection>
           <div className="clear"></div>
           <CustomFilterContainer>
-          <Label>{i18n.t("report.status")}</Label>
-          <CustomFormControl>
-            <Select
-              native
-              value={this.state.status}
-              onChange={this.onhandleStatusChange}
-              variant="outlined"
-            >
-              <option value={""}>{i18n.t("report.all")}</option>
-              {Object.keys(this.props.depositStatusList).map((key) => {
-                return (
-                  <option value={key}>
-                    {i18n.t(`report.deposit.status${key}`)}
-                  </option>
-                );
-              })}
-            </Select>
-          </CustomFormControl>
+            <Label>{i18n.t("report.status")}</Label>
+            <CustomFormControl>
+              <Select
+                native
+                value={this.state.status}
+                onChange={this.onhandleStatusChange}
+                variant="outlined"
+              >
+                <option value={""}>{i18n.t("report.all")}</option>
+                {Object.keys(this.props.depositStatusList).map((key) => {
+                  return (
+                    <option value={key}>
+                      {i18n.t(`report.deposit.status${key}`)}
+                    </option>
+                  );
+                })}
+              </Select>
+            </CustomFormControl>
           </CustomFilterContainer>
         </FilterContainer>
         <InnerWrap>
           <TableList
-            type="depositReport"        
+            type="depositReport"
             page={this.state.page}
             rows={this.props.depositList.list}
             total={this.props.depositList.count}
             onhandleChangePage={this.handleChangePage}
-            depositStatusList={this.props.depositStatusList} 
-            />
+            depositStatusList={this.props.depositStatusList}
+          />
           {/* <DepositReportList
             page={this.state.page}
             rows={this.props.depositList.list}

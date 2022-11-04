@@ -91,7 +91,7 @@ const DisabledOverlay = styled.div`
 const GameTabButton = styled.div`
   width: 141px;
   height: 95px;
-  background-color: #B2B2B2;
+  background-color: #b2b2b2;
   position: relative;
   float: left;
   z-index: 1;
@@ -101,18 +101,18 @@ const GameTabButton = styled.div`
   }
 
   &:hover:after {
-    background-color: #0091FE;
+    background-color: #0091fe;
     transform: scaleY(1);
   }
 
-  &:after { 
+  &:after {
     content: "";
     height: 100%;
     left: 0;
     position: absolute;
     top: 0;
     transform: scaleY(0);
-    transition: transform .4s;
+    transition: transform 0.4s;
     width: 100%;
     z-index: -1;
   }
@@ -149,21 +149,20 @@ const GameTabButton = styled.div`
 
   &:hover ${GameTab} {
     background: url(${(props) =>
-      process.env.PUBLIC_URL +
-      `/assets/images/pcGamePage/slots/` +
-      props.img +
-      `-white.png`})
+        process.env.PUBLIC_URL +
+        `/assets/images/pcGamePage/slots/` +
+        props.img +
+        `-white.png`})
       no-repeat;
-      background-position: center;
-      background-size: contain;
+    background-position: center;
+    background-size: contain;
     filter: brightness(500%) grayscale(100%);
     transition: filter 3s;
   }
   &:hover ${GameTabAll} {
-    background: url(${SlotAllInactivePNG})
-      no-repeat;
-      background-position: center;
-      background-size: contain;
+    background: url(${SlotAllInactivePNG}) no-repeat;
+    background-position: center;
+    background-size: contain;
     filter: brightness(500%) grayscale(100%);
     transition: filter 1s;
   }
@@ -391,10 +390,10 @@ class Fishing extends Component {
       <Container>
         <GameTabContainer>
           <GameTabButton
-            active={this.state.platform == ""}
+            active={this.state.platform === ""}
             onClick={() => this.handleParentClick("")}
           >
-            <GameTabAll active={this.state.platform == ""}></GameTabAll>
+            <GameTabAll active={this.state.platform === ""}></GameTabAll>
           </GameTabButton>
 
           {this.props.game.homePageGameList
@@ -408,16 +407,16 @@ class Fishing extends Component {
                 <GameTabButton
                   key={index}
                   img={row.abbreviation.toLowerCase()}
-                  active={this.state.platform == row.abbreviation}
+                  active={this.state.platform === row.abbreviation}
                   onClick={() => this.handleParentClick(row.abbreviation)}
-                  maintenance={row.status != 0}
+                  maintenance={row.status !== 0}
                 >
                   <DisabledOverlay>
                     {i18n.t("transfer.maintenance")}
                   </DisabledOverlay>
                   <GameTab
                     img={row.abbreviation.toLowerCase()}
-                    active={this.state.platform == row.abbreviation}
+                    active={this.state.platform === row.abbreviation}
                   ></GameTab>
                 </GameTabButton>
               );

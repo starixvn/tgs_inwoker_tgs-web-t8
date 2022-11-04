@@ -12,7 +12,7 @@ import IconLoginClosePNG from "../../assets/images/icon-login-close.png";
 import i18n from "../../utils/i18n";
 const Container = styled.div`
   width: 506px;
-  background: #fff;//url(${LoginBGPNG});
+  background: #fff; //url(${LoginBGPNG});
   background-attachment: fixed;
   background-position: center;
   display: table;

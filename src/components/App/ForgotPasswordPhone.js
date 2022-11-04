@@ -17,7 +17,7 @@ import config from "../../config/config";
 import ErrorSwitcher from "../../utils/ErrorSwitcher";
 const Container = styled.div`
   width: 506px;
-  background: #fff;//url(${LoginBGPNG});
+  background: #fff; //url(${LoginBGPNG});
   background-attachment: fixed;
   background-position: center;
   display: table;
