@@ -37,7 +37,7 @@ const Line = (props) => {
   };
 
   const onhandleClick = () => {
-    AccountService.UpdateLine(line).then((response) => {
+    AccountService.UpdateIM(line, "line").then((response) => {
       if (response.IsSuccess) {
         props.dispatch({
           type: UPDATE_INFO,

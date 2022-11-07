@@ -46,7 +46,7 @@ const QQ = (props) => {
       return;
     }
 
-    AccountService.UpdateQQ(memberQQ).then((response) => {
+    AccountService.UpdateIM(memberQQ, "qq").then((response) => {
       if (response.IsSuccess) {
         props.dispatch({
           type: UPDATE_INFO,
