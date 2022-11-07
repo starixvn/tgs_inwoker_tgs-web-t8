@@ -657,7 +657,8 @@ export const TIGER = {
   downloadButtonIcon: "#fff",
   customButtonText: "#404040",
   customProfileText: "#404040",
-  customDatePickerText: "#404040"
+  customDatePickerText: "#404040",
+  customDepositTab: "#FDE740 !important"
 
 };
 
