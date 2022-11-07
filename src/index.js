@@ -192,10 +192,23 @@ const muiTheme = createMuiTheme({
         minWidth: "210px",
         height: "64px",
         "&.Mui-selected": {
-          color: "#658AF8  !important",
+          color: muiThemeMode.customDepositTab ?? "#658AF8  !important",
         },
       },
     },
+    MuiDialog:{
+      root:{
+        "& .MuiPickersBasePicker-container .MuiPickersToolbarText-toolbarTxt" :{
+          color: muiThemeMode.customDatePickerText,
+        },
+        "& .MuiPickersBasePicker-container .MuiTypography-root": {
+          color: muiThemeMode.customDatePickerText,
+        },
+        "& .MuiPickersModal-withAdditionalAction .MuiButtonBase-root":{
+          color: muiThemeMode.customDatePickerText,
+        }
+      },
+    }
   },
 });
 const AppWrapper = () => {

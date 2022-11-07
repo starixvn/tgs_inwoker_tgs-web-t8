@@ -8,7 +8,8 @@ const StyleButton = styled.div`
   padding-top: 22px;
   font-size: 34px;
 
-  color: #ffffff;
+  color: ${({ theme }) =>
+    theme.customButtonText ? theme.customButtonText : "#ffffff"};
   width: 637px;
   height: 93px;
   border-radius: 20px;

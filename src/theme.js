@@ -622,7 +622,7 @@ export const TIGER = {
   secondaryText: "rgba(0,0,0,0.5)",
   tertiary: "rgba(255, 255, 255, 1)",
   tertiaryText: "rgba(255, 255, 255, 0.5)",
-  buttonText: "#ffffff",
+  buttonText: "#404040",
   buttonBackground: `linear-gradient(180deg, #F0DE81, #B0803A);`,
   buttonText2: "#fff",
   bottomnav: `linear-gradient(180deg, #F0DE81, #B0803A);`,
@@ -655,6 +655,12 @@ export const TIGER = {
   downloadButtonBorderRad: "50px",
   downloadButtonText: "#fff",
   downloadButtonIcon: "#fff",
+  customButtonText: "#404040",
+  customProfileText: "#404040",
+  customDatePickerText: "#404040",
+  customDepositTab: "#FDE740 !important",
+  customSlotTabText: "#404040",
+  customSlotTabTextSelected: "#000",
 
 };
 
