@@ -192,7 +192,7 @@ const muiTheme = createMuiTheme({
         minWidth: "210px",
         height: "64px",
         "&.Mui-selected": {
-          color: "#658AF8  !important",
+          color: muiThemeMode.customDepositTab ?? "#658AF8  !important",
         },
       },
     },
