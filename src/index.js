@@ -40,6 +40,7 @@ import { themeList } from "./theme";
 import { GlobalStyles } from "./global";
 import FeatureGetter from "./components/Share/feature-getter";
 import AudioPlayer from "./components/Share/audioplayer";
+import config from "./config/config";
 
 require("es6-promise").polyfill();
 const store = createStore(rootReducer, applyMiddleware(thunk));
@@ -89,17 +90,17 @@ Config.isPC = isMobileOnly ? 1 : 0;
 //   Config.baseUrl = baseUrl;
 // }
 
-var fontFamily = "Tahoma, Helvetica, Arial, sans-serif";
-if (i18n.language === "zh-CN") {
-  fontFamily =
-    "'Noto Sans SC', Microsoft Yahei, '微软雅黑', STXihei, '华文细黑'";
-} else if (i18n.language === "zh-TW") {
-  fontFamily =
-    "'Noto Sans TC', Tahoma, Helvetica, Arial, sans-serif, '微軟正黑粗'";
-} else if (i18n.language === "th-TH") {
-  fontFamily = "'Sarabun', sans-serif";
-}
-document.getElementById("root").style.fontFamily = fontFamily;
+// var fontFamily = "Tahoma, Helvetica, Arial, sans-serif";
+// if (i18n.language === "zh-CN") {
+//   fontFamily =
+//     "'Noto Sans SC', Microsoft Yahei, '微软雅黑', STXihei, '华文细黑'";
+// } else if (i18n.language === "zh-TW") {
+//   fontFamily =
+//     "'Noto Sans TC', Tahoma, Helvetica, Arial, sans-serif, '微軟正黑粗'";
+// } else if (i18n.language === "th-TH") {
+//   fontFamily = "'Sarabun', sans-serif";
+// }
+// document.getElementById("root").style.fontFamily = fontFamily;
 var muiThemeMode = isMobileOnly
   ? themeList[Config.brand] || themeList[Config.theme]
   : themeList[Config.features.web_theme] || themeList[Config.theme];
@@ -124,7 +125,7 @@ const muiTheme = createMuiTheme({
     type: "light",
   },
   typography: {
-    fontFamily: fontFamily,
+    // fontFamily: fontFamily,
 
     fontWeightLight: 300,
     fontWeightRegular: 400,
@@ -176,6 +177,19 @@ const muiTheme = createMuiTheme({
         },
       },
     },
+    MuiDialog:{
+      root:{
+        "& .MuiPickersBasePicker-container .MuiPickersToolbarText-toolbarTxt" :{
+          color: muiThemeMode.customDatePickerText,
+        },
+        "& .MuiPickersBasePicker-container .MuiTypography-root": {
+          color: muiThemeMode.customDatePickerText,
+        },
+        "& .MuiPickersModal-withAdditionalAction .MuiButtonBase-root":{
+          color: muiThemeMode.customDatePickerText,
+        }
+      },
+    }
   },
 });
 const AppWrapper = () => {
