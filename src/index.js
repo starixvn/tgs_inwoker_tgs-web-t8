@@ -177,6 +177,19 @@ const muiTheme = createMuiTheme({
         },
       },
     },
+    MuiDialog:{
+      root:{
+        "& .MuiPickersBasePicker-container .MuiPickersToolbarText-toolbarTxt" :{
+          color: muiThemeMode.customDatePickerText,
+        },
+        "& .MuiPickersBasePicker-container .MuiTypography-root": {
+          color: muiThemeMode.customDatePickerText,
+        },
+        "& .MuiPickersModal-withAdditionalAction .MuiButtonBase-root":{
+          color: muiThemeMode.customDatePickerText,
+        }
+      },
+    }
   },
 });
 const AppWrapper = () => {
