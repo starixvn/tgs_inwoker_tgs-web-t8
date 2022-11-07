@@ -658,7 +658,9 @@ export const TIGER = {
   customButtonText: "#404040",
   customProfileText: "#404040",
   customDatePickerText: "#404040",
-  customDepositTab: "#FDE740 !important"
+  customDepositTab: "#FDE740 !important",
+  customSlotTabText: "#404040",
+  customSlotTabTextSelected: "#000",
 
 };
 
