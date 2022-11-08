@@ -558,7 +558,7 @@ class AddCard extends Component {
                   }
                   width={395}
                   height={38}
-                  maxLength={10}
+                  maxLength={config.features.MAX_PHONE_LENGTH || 10}
                   float={"none"}
                   handleTextFieldChange={this.handlePhoneChange}
                 ></CustomTextField>
