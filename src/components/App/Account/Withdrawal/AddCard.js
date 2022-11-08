@@ -7,6 +7,7 @@ import Button from "../../../Share/Button";
 import i18n from "../../../../utils/i18n";
 import config from "../../../../config/config";
 import { withSnackbar } from "notistack";
+import Common from "../../../../utils/Common";
 const Container = styled.div`
   width: 100%;
 `;
@@ -295,7 +296,24 @@ class AddCard extends Component {
     );
   };
   render() {
-    const { withdrawalList } = this.props;
+    const { withdrawalList, depositList } = this.props;
+    const listDetector = (list, type) => {
+      return (
+        Common.arrayValidator(list) &&
+        list[this.state.selectedBankTypeIndex].banktype === type
+      );
+    };
+
+    const isEwallet = this.props.isDeposit
+      ? listDetector(depositList, "EWallet")
+      : listDetector(withdrawalList, "EWallet");
+    const isPulsa = this.props.isDeposit
+      ? listDetector(depositList, "Pulsa")
+      : listDetector(withdrawalList, "Pulsa");
+    const isCrypto = this.props.isDeposit
+      ? listDetector(depositList, "Crypto")
+      : listDetector(withdrawalList, "Crypto");
+    const eWalletCustom = isEwallet && config.features.AddCard_EWalletCustoms;
 
     const bankList = [
       "กสิกรไทย (Kasikorn Bank- KKR)",
@@ -550,25 +568,35 @@ class AddCard extends Component {
         ) : (
           <TextFieldItem>
             <TextFieldLabel>
-              {config.features.AddCard_DisplayGCash
+              {eWalletCustom || isPulsa
+                ? i18n.t("card.addCard.phone")
+                : config.features.AddCard_DisplayGCash
                 ? i18n.t("piso.withdrawalNumber")
                 : config.features.AddCard_DisplayFPS
                 ? i18n.t("hk28.withdrawalNumber")
+                : config.features.AddCard_Bank_Custom_IDR
+                ? i18n.t("idr.withdrawalNumber")
                 : i18n.t("common.withdrawalNumber")}
             </TextFieldLabel>
             <TextFieldContainer>
               <CustomTextField
                 marginTop={10}
                 placeholder={
-                  config.features.AddCard_DisplayGCash
+                  eWalletCustom || isPulsa
+                    ? i18n.t("card.addCard.msgEnterPhone")
+                    : config.features.AddCard_DisplayGCash
                     ? i18n.t("piso.msgEnterWithdrawalNumber")
                     : config.features.AddCard_DisplayFPS
                     ? i18n.t("hk28.msgEnterWithdrawalNumber")
+                    : config.features.AddCard_Bank_Custom_IDR
+                    ? i18n.t("idr.msgEnterWithdrawalNumber")
                     : i18n.t("common.msgEnterWithdrawalNumber")
                 }
                 width={395}
                 height={38}
-                maxLength={50}
+                maxLength={
+                  !isCrypto && (config.features.MAX_PHONE_LENGTH || 10)
+                }
                 float={"none"}
                 handleTextFieldChange={this.handleNumberChange}
               ></CustomTextField>
