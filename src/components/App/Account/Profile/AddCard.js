@@ -172,8 +172,8 @@ class AddCard extends Component {
     var addedChannel = [];
     if (this.props.isDeposit) {
       if (this.props.depositList.length > 0) {
-        channelList =
-          this.props.depositList[this.state.selectedBankTypeIndex].channel;
+        channelList = this.props.depositList[this.state.selectedBankTypeIndex]
+          .channel;
         if (this.props.depositList.length > 0) {
           for (i = 0; i < channelList.length; i++) {
             if (addedChannel.indexOf(channelList[i].channelid) < 0) {
@@ -185,8 +185,9 @@ class AddCard extends Component {
       }
     } else {
       if (this.props.withdrawalList.length > 0) {
-        channelList =
-          this.props.withdrawalList[this.state.selectedBankTypeIndex].channel;
+        channelList = this.props.withdrawalList[
+          this.state.selectedBankTypeIndex
+        ].channel;
         if (this.props.withdrawalList.length > 0) {
           for (i = 0; i < channelList.length; i++) {
             if (addedChannel.indexOf(channelList[i].channelid) < 0) {
@@ -291,8 +292,8 @@ class AddCard extends Component {
     var detail = {};
 
     if (selected.banktype === "Bank") {
-      var bankName =
-        this.state.channelList[this.state.selectedChannelIndex].channelcode;
+      var bankName = this.state.channelList[this.state.selectedChannelIndex]
+        .channelcode;
       if (
         this.state.channelList[this.state.selectedChannelIndex].channelcode ===
           "CustomBank" &&
@@ -827,7 +828,7 @@ class AddCard extends Component {
                   }
                   width={395}
                   height={38}
-                  maxLength={10}
+                  maxLength={config.features.MAX_PHONE_LENGTH || 10}
                   float={"none"}
                   handleTextFieldChange={this.handlePhoneChange}
                 ></CustomTextField>
@@ -863,7 +864,7 @@ class AddCard extends Component {
                 }
                 width={395}
                 height={38}
-                maxLength={50}
+                maxLength={config.features.MAX_PHONE_LENGTH || 10}
                 float={"none"}
                 handleTextFieldChange={this.handleNumberChange}
               ></CustomTextField>

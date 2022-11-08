@@ -125,8 +125,9 @@ class AddCard extends Component {
   formatChannelList = () => {
     var channel = [];
     if (this.props.withdrawalList.length > 0) {
-      var channelList =
-        this.props.withdrawalList[this.state.selectedBankTypeIndex].channel;
+      var channelList = this.props.withdrawalList[
+        this.state.selectedBankTypeIndex
+      ].channel;
       var addedChannel = [];
       if (this.props.withdrawalList.length > 0) {
         for (var i = 0; i < channelList.length; i++) {
@@ -539,7 +540,7 @@ class AddCard extends Component {
                   }
                   width={395}
                   height={38}
-                  maxLength={10}
+                  maxLength={config.features.MAX_PHONE_LENGTH || 10}
                   float={"none"}
                   handleTextFieldChange={this.handlePhoneChange}
                 ></CustomTextField>
