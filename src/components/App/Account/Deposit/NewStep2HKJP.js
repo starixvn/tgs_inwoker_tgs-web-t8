@@ -124,7 +124,7 @@ class NewStepTwo extends Component {
                 <TitleTD>{i18n.t("deposit.qrCode")}</TitleTD>
                 <ValueTD>
                   <QRCodeContainer>
-                    <QRCodeImg src={extended.qrCodeFileUrl} />
+                    <QRCodeImg src={extended.qrCode} />
                   </QRCodeContainer>
                 </ValueTD>
               </tr>
