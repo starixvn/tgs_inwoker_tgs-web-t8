@@ -196,8 +196,8 @@ const Main = (props) => {
 
   const handleWithdrawalClick = (e) => {
     props.onhandleWithdrawalClick(
-      props.cardList[this.state.selectedCardIndex].id,
-      this.state.amount,
+      props.cardList[selectedCardIndex].id,
+      amount,
       playerNote
     );
     setDisabled(true);

@@ -75,8 +75,8 @@ class DepositTypeSelection extends Component {
                 onClick={() => onhandleTabClick(item, index)}
                 active={selectedPaymentIndex === index}
               >
-                <TabLabel> {i18n.t(item.paymentcode)}</TabLabel>
-                <SmallTabLabel> {i18n.t(item.paymentcode)}</SmallTabLabel>
+                <TabLabel> {i18n.t(item.paymentcode.toLowerCase() === "skypay-cn" ? config.features.SkyPayCustomTitle ? config.features.SkyPayCustomName : item.paymentcode :  item.paymentcode)}</TabLabel>
+                <SmallTabLabel> {i18n.t(item.paymentcode.toLowerCase() === "skypay-cn" ? config.features.SkyPayCustomTitle ? config.features.SkyPayCustomName : item.paymentcode :  item.paymentcode)}</SmallTabLabel>
               </TabButton>
             );
           })}
