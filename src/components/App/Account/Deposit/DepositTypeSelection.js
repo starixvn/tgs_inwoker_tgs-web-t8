@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Component } from "react";
 import i18n from "../../../../utils/i18n";
+import config from "../../../../config/config";
 
 const TabButtonContainer = styled.div`
   padding: 6px;
