@@ -69,14 +69,25 @@ class DepositTypeSelection extends Component {
             return a.displayorder - b.displayorder;
           })
           .map((item, index) => {
+            var customPaymentCodeName = "";
+            {
+              config.features.DepositCustomPaymentNames.length > 0 && 
+              config.features.DepositCustomPaymentNames.map((platform) => {
+                if (platform.code === item.paymentcode.toLowerCase() ) {
+                  customPaymentCodeName = platform.customName
+                }
+              })
+            }
             return (
               <TabButton
                 key={index}
                 onClick={() => onhandleTabClick(item, index)}
                 active={selectedPaymentIndex === index}
               >
-                <TabLabel> {i18n.t(item.paymentcode.toLowerCase() === "skypay-cn" ? config.features.SkyPayCustomTitle ? config.features.SkyPayCustomName : item.paymentcode :  item.paymentcode)}</TabLabel>
-                <SmallTabLabel> {i18n.t(item.paymentcode.toLowerCase() === "skypay-cn" ? config.features.SkyPayCustomTitle ? config.features.SkyPayCustomName : item.paymentcode :  item.paymentcode)}</SmallTabLabel>
+                <TabLabel> { customPaymentCodeName !== "" ? customPaymentCodeName :
+                i18n.t( item.paymentcode)}</TabLabel>
+                <SmallTabLabel> {customPaymentCodeName !== "" ? customPaymentCodeName :
+                i18n.t( item.paymentcode)}</SmallTabLabel>
               </TabButton>
             );
           })}
