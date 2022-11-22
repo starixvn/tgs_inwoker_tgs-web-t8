@@ -309,7 +309,12 @@ class GuestContainer extends Component {
       });
     }
   };
-  handleLoginClickWithHp = async (username, password, phone) => {
+  handleLoginClickWithHp = async (
+    username,
+    password,
+    phone,
+    setPhoneDontCareDuplicate
+  ) => {
     if (username === "") {
       this.props.enqueueSnackbar(i18n.t("web.login.errorMsg.emptyUsername"), {
         variant: "warning",
@@ -343,32 +348,38 @@ class GuestContainer extends Component {
       //      this.handleLoginSuccess(result.data);
       //    }
       //  });
-
-      this.props
-        .newRegister("InitPhone", {
-          input: "Init",
-          data: {
-            areacode: this.state.areaCode,
-            phone: phone,
-          },
-        })
-        .then(async (response) => {
-          if (response.IsSuccess) {
-            this.props
-              .newRegister("InitPhone", {
-                input: "Valid",
-                data: {
-                  securitykey: response.data.stepResponse,
-                  validatecode: "123456",
-                },
-              })
-              .then(async (response) => {
-                this.handleLoginSuccess(result.data);
-              });
-          } else {
-            this.handleLoginSuccess(result.data);
-          }
+      if (setPhoneDontCareDuplicate) {
+        await this.props.newRegister("SetPhoneDontCareDuplicate", {
+          areacode: this.state.areaCode,
+          phone: phone,
         });
+      } else {
+        this.props
+          .newRegister("InitPhone", {
+            input: "Init",
+            data: {
+              areacode: this.state.areaCode,
+              phone: phone,
+            },
+          })
+          .then(async (response) => {
+            if (response.IsSuccess) {
+              this.props
+                .newRegister("InitPhone", {
+                  input: "Valid",
+                  data: {
+                    securitykey: response.data.stepResponse,
+                    validatecode: "123456",
+                  },
+                })
+                .then(async (response) => {
+                  this.handleLoginSuccess(result.data);
+                });
+            } else {
+              this.handleLoginSuccess(result.data);
+            }
+          });
+      }
     }
   };
   handleLoginClickWithHpEmail = async (username, password, phone, email) => {
