@@ -35,7 +35,17 @@ class Deposit extends Component {
     var amount = this.props.match.params.amount.replace(/,/g, "");
     var name = this.props.match.params.name;
     var account = this.props.match.params.account;
-    if (paymentcode.toUpperCase() === "MANUAL") {
+
+    if (
+      paymentcode.toUpperCase() === "USDT" &&
+      config.features.Deposit_SplitUsdt
+    ) {
+      this.props.doUsdtDeposit(
+        this.state.amount.replace(/,/g, ""),
+        channelid,
+        this.state.depositPromotion
+      );
+    } else if (paymentcode.toUpperCase() === "MANUAL") {
       // handle manual deposit
       if (methodcode === "BankTransfer") {
         this.props.doBankDeposit(
@@ -164,7 +174,14 @@ const mapDispatchToProps = (dispatch) => {
         )
       );
     },
-    doFPSDepositWithName: (name, account, amount, paymentid, promotionid, banktype) => {
+    doFPSDepositWithName: (
+      name,
+      account,
+      amount,
+      paymentid,
+      promotionid,
+      banktype
+    ) => {
       dispatch(
         walletAction.doFPSDepositWithName(
           name,
