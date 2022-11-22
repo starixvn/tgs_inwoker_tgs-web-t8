@@ -6,17 +6,16 @@ pipeline {
 	agent any
 	environment {
         TAG = sh(script: "echo `date +%Y-%m%d-%H%M`", returnStdout: true).trim()
-        Registry = "registry.gitlab.com/rayprosoft/turnkey-gaming-system/"
-        GitUrl = "gitlab.com/cjennhong/tgs-web.git"
-        ImageTagUrl = "https://gitlab.com/api/v4/projects/20478010/registry/repositories/2804396/tags"
-        gitlab_user_pwd = credentials('gitlab-user-pwd')
+        Registry = "pgtgs/"
+        GitUrl = "gitlab.com/cjennhong/tgs-web-t8.git"
+        dockerhub = credentials('dockerhub')
         Image = "lobby-t8"
     }
 	
     stages {		    	
         stage('Prepare Env') {
             steps {
-                sh "sudo docker login registry.gitlab.com -u ${gitlab_user_pwd_USR} -p ${gitlab_user_pwd_PSW}"
+                sh "docker login -u ${dockerhub_USR} -p ${dockerhub_PSW}"
                 sh "echo 'Branch: ${env.GIT_BRANCH}'";
                 script {
                     switch(env.GIT_BRANCH)
