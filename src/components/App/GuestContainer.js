@@ -349,10 +349,14 @@ class GuestContainer extends Component {
       //    }
       //  });
       if (setPhoneDontCareDuplicate) {
-        await this.props.newRegister("SetPhoneDontCareDuplicate", {
-          areacode: this.state.areaCode,
-          phone: phone,
-        });
+        await this.props
+          .newRegister("SetPhoneDontCareDuplicate", {
+            areacode: this.state.areaCode,
+            phone: phone,
+          })
+          .then(async (response) => {
+            this.handleLoginSuccess(result.data);
+          });
       } else {
         this.props
           .newRegister("InitPhone", {
