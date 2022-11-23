@@ -113,6 +113,10 @@ const featureList = {
     PP_CustomTranslation: false,
 
     TIGER_CustomTranslation: false,
+    SkyPayCustomTitle: false,
+    SkyPayCustomName: "SkyPay-RMB",
+    DepositCustomPaymentNames: [
+   ],
 
   },
 };
