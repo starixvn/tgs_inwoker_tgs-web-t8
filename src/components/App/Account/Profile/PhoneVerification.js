@@ -212,8 +212,9 @@ class PhoneVerification extends Component {
   };
   onhandleClick = () => {
     if (
-      config.features.Register_CustomFlow_IDR &&
-      !this.props.account.registercompleted
+      (config.features.Register_CustomFlow_IDR &&
+        !this.props.account.registercompleted) ||
+      config.features.InitPhone_WithoutVerify
     ) {
       var expr = new RegExp(
         `^[0-9]{8,${config.features.MAX_PHONE_LENGTH || 10}}`
@@ -230,23 +231,15 @@ class PhoneVerification extends Component {
         return;
       }
 
-      this.props
-        .newRegister("InitPhone", {
-          input: "Init",
-          data: {
-            areacode: this.state.areacode,
-            phone: this.state.phone,
-          },
-        })
-        .then(async (response) => {
-          if (response.IsSuccess) {
-            this.props
-              .newRegister("InitPhone", {
-                input: "Valid",
-                data: {
-                  securitykey: response.data.stepResponse,
-                  validatecode: "123456",
-                },
+
+      this.props.getRegisterStatus().then(async (response) => {
+        if (response.IsSuccess) {
+          var currentStepKey = response.data;
+          if (currentStepKey === "SetPhoneDontCareDuplicate") {
+            await this.props
+              .newRegister("SetPhoneDontCareDuplicate", {
+                areacode: this.state.areacode,
+                phone: this.state.phone,
               })
               .then(async (response) => {
                 this.props.getAccountInfo().then(async (response) => {
@@ -257,18 +250,64 @@ class PhoneVerification extends Component {
                     AppHistory.push(
                       "/" + i18n.language + "/account/profile/member_email"
                     );
+                  } else {
+                    this.props.handleCloseDialog();
                   }
                 });
               });
           } else {
-            this.props.enqueueSnackbar(
-              ErrorSwitcher.getTranslation(response.info),
-              {
-                variant: "error",
-              }
-            );
+            this.props
+              .newRegister("InitPhone", {
+                input: "Init",
+                data: {
+                  areacode: this.state.areacode,
+                  phone: this.state.phone,
+                },
+              })
+              .then(async (response) => {
+                if (response.IsSuccess) {
+                  this.props
+                    .newRegister("InitPhone", {
+                      input: "Valid",
+                      data: {
+                        securitykey: response.data.stepResponse,
+                        validatecode: "123456",
+                      },
+                    })
+                    .then(async (response) => {
+                      this.props.getAccountInfo().then(async (response) => {
+                        if (
+                          response.data.email === null &&
+                          !response.data.registercompleted
+                        ) {
+                          AppHistory.push(
+                            "/" +
+                              i18n.language +
+                              "/account/profile/member_email"
+                          );
+                        }
+                      });
+                    });
+                } else {
+                  this.props.enqueueSnackbar(
+                    ErrorSwitcher.getTranslation(response.info),
+                    {
+                      variant: "error",
+                    }
+                  );
+                }
+              });
           }
-        });
+        } else {
+          this.props.enqueueSnackbar(
+            ErrorSwitcher.getTranslation(response.info),
+            {
+              variant: "error",
+            }
+          );
+        }
+      });
+
     } else {
       if (this.state.code.length < 6) {
         this.props.enqueueSnackbar(i18n.t("common.msgEnterCode"), {
@@ -517,6 +556,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getAccountInfo: () => dispatch(accountAction.getAccountInfo()),
     dispatchFunction: (json) => dispatch(json),
+    getRegisterStatus: () => dispatch(accountAction.GetRegisterStatus()),
     newRegister: (type, input) =>
       dispatch(accountAction.newRegister(type, input)),
     dispatch: dispatch,
