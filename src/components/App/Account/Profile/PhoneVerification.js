@@ -422,7 +422,8 @@ class PhoneVerification extends Component {
       );
     };
 
-    if (config.features.Profile_DisableVerifyPhone) {
+    if (config.features.Profile_DisableVerifyPhone &&
+      !config.features.InitPhone_WithoutVerify) {
       return <Disabled />;
     }
 
@@ -463,12 +464,15 @@ class PhoneVerification extends Component {
             }}
             variant="outlined"
             autoComplete="off"
-            disabled={this.state.isNew === false && this.state.step === 1}
+            disabled={ config.features.InitPhone_WithoutVerify &&
+              this.state.isNew === false &&
+              this.state.step === 1}
           ></CustomText>
           {!(
             config.features.Register_CustomFlow_IDR &&
             !this.props.account.registercompleted
           ) &&
+            !config.features.InitPhone_WithoutVerify &&
             !(
               ifNotEmpty &&
               (config.features.ChangesNotAllowed ||
