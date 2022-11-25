@@ -289,7 +289,7 @@ const NewStepOne = (props) => {
         return displaysequence.indexOf(a) - displaysequence.indexOf(b);
       })
       .map((key, index) => {
-        if (content[key] !== "") {
+        if (content[key] !== "" && content[key]) {
           if (typeof content[key] === "number") {
             return <></>;
           } else if (content[key].includes("http")) {
