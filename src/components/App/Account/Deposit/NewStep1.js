@@ -252,6 +252,12 @@ const NewStepOne = (props) => {
     return paymentType.paymentcode.toUpperCase() === payment.toUpperCase();
   };
 
+  const alteredPaymentCode = (payment) => {
+    return (
+      paymentType.alteredpaymentcode.toUpperCase() === payment.toUpperCase()
+    );
+  };
+
   const methodCode = (method) => {
     return (
       methodList[selectedMethodIndex].methodcode.toUpperCase() ===
@@ -468,7 +474,7 @@ const NewStepOne = (props) => {
 
               {(() => {
                 if (
-                  (paymentCode("MANUAL") || paymentCode("USDT")) &&
+                  (paymentCode("MANUAL") || paymentCode("USDT") || alteredPaymentCode("USDT")) &&
                   !config.features.Deposit_AddCard
                 ) {
                   var channelExtend =
@@ -493,7 +499,7 @@ const NewStepOne = (props) => {
 
                           <FormRightContainer>
                             <SelectionContainer>
-                              <QRCodeImg src={channelExtend.qrCodeFileUrl} />
+                            <QRCodeImg src={channelExtend.qrCodeFileUrl} />
                             </SelectionContainer>
                           </FormRightContainer>
                         </FormContainer>
@@ -755,7 +761,7 @@ const NewStepOne = (props) => {
                             selectedChannelIndex
                           ].extended.rate;
                         if (
-                          paymentType.paymentcode.toUpperCase() === "MANUAL"
+                          paymentType.paymentcode.toUpperCase() === "MANUAL" ||  alteredPaymentCode("USDT")
                         ) {
                           return (
                             <ExchangeRateContainer style={{ marginTop: "4px" }}>
@@ -881,7 +887,7 @@ const NewStepOne = (props) => {
               </FormContainer>
 
               {(() => {
-                if (paymentType.paymentcode.toUpperCase() === "MANUAL") {
+                if (paymentType.paymentcode.toUpperCase() === "MANUAL" ||  alteredPaymentCode("USDT")) {
                   return (
                     <React.Fragment>
                       <FormContainer>

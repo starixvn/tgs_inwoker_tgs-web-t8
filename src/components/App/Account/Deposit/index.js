@@ -1213,7 +1213,7 @@ class Deposit extends Component {
                   ) : (
                     <></>
                   )}
-                  {this.state.showTabContainer && <SplitLine></SplitLine>}
+             
                   {(() => {
                     if (this.props.wallet.depositTypeList.length <= 0)
                       return null;
