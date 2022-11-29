@@ -540,9 +540,9 @@ class Deposit extends Component {
       }
     };
 
-    if (
-      payment.alteredpaymentcode.toUpperCase() === "USDT" &&
-      config.features.Deposit_SplitUsdt
+    if (  
+      config.features.Deposit_SplitUsdt &&
+      payment.alteredpaymentcode.toUpperCase() === "USDT" 
     ) {
       this.props.doUsdtDeposit(
         this.state.amount.replace(/,/g, ""),
@@ -1191,7 +1191,7 @@ class Deposit extends Component {
                   ) : (
                     <></>
                   )}
-                  {this.state.showTabContainer && <SplitLine></SplitLine>}
+             
                   {(() => {
                     if (this.props.wallet.depositTypeList.length <= 0)
                       return null;
