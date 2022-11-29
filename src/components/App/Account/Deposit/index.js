@@ -562,16 +562,8 @@ class Deposit extends Component {
       }
     };
 
-    if (  
-      config.features.Deposit_SplitUsdt &&
-      payment.alteredpaymentcode.toUpperCase() === "USDT" 
-    ) {
-      this.props.doUsdtDeposit(
-        this.state.amount.replace(/,/g, ""),
-        channel.id,
-        this.state.depositPromotion
-      );
-    } else if (payment.paymentcode.toUpperCase() === "MANUAL") {
+    if ((config.features.Deposit_SplitUsdt && payment.alteredpaymentcode &&
+      payment.alteredpaymentcode.toUpperCase() === "MANUAL") || payment.paymentcode.toUpperCase() === "MANUAL" ) {
       // handle manual deposit
       if (method.methodcode === "BankTransfer") {
         if (config.features.Deposit_AddCard) {
