@@ -41,7 +41,7 @@ const TabLabel = styled.h3`
   font-size: 20px;
   font-stretch: normal;
   font-style: normal;
-  font-weight: 300;
+  font-weight: 600;
   line-height: 1.1;
 `;
 
