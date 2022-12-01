@@ -227,7 +227,7 @@ const NewStepOne = (props) => {
 
   const alteredPaymentCode = (payment) => {
     return (
-      paymentType.alteredpaymentcode.toUpperCase() === payment.toUpperCase()
+      paymentType.alteredpaymentcode && paymentType.alteredpaymentcode.toUpperCase() === payment.toUpperCase()
     );
   };
 
