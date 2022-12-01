@@ -649,13 +649,14 @@ class App extends Component {
                   >
                     {this.props.general.rouletteCount.length > 0 &&
                       this.props.general.rouletteCount
-                        .filter(
-                          (item) =>
+                        .filter((item) => {
+                          return (
                             item.promotiontype.toUpperCase() ===
                             "DEPOSITACCUMULATEROULETTE"
-                        )
+                          );
+                        })
                         .map((roulette, index) => {
-                          return roulette.roulettecount > 0 && index === 0 ? (
+                          return roulette.roulettecount >= 0 && index === 0 ? (
                             <PromotionRoulette
                               rouletteType={roulette.promotiontype.toUpperCase()}
                               promotionDetail={{ id: roulette.promotionid }}
