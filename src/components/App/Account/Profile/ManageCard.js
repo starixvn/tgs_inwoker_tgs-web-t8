@@ -66,6 +66,9 @@ class ManageCard extends Component {
         Crypto: {
           address: i18n.t("common.withdrawalNumber"),
         },
+        Usdt: {
+          address: i18n.t("common.withdrawalNumber"),
+        }
       },
     };
   }
