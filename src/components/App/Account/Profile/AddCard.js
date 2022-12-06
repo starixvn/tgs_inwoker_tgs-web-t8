@@ -176,8 +176,8 @@ class AddCard extends Component {
           .channel;
         if (this.props.depositList.length > 0) {
           for (i = 0; i < channelList.length; i++) {
-            if (addedChannel.indexOf(channelList[i].channelid) < 0) {
-              addedChannel.push(channelList[i].channelid);
+            if (addedChannel.indexOf(channelList[i].id) < 0) {
+              addedChannel.push(channelList[i].id);
               channel.push(channelList[i]);
             }
           }
@@ -190,8 +190,8 @@ class AddCard extends Component {
         ].channel;
         if (this.props.withdrawalList.length > 0) {
           for (i = 0; i < channelList.length; i++) {
-            if (addedChannel.indexOf(channelList[i].channelid) < 0) {
-              addedChannel.push(channelList[i].channelid);
+            if (addedChannel.indexOf(channelList[i].id) < 0) {
+              addedChannel.push(channelList[i].id);
               channel.push(channelList[i]);
             }
           }
