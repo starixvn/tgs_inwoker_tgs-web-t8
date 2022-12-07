@@ -260,6 +260,16 @@ class Sports extends Component {
                                 customtranslation ? "custom" : ""
                               }sports`
                             )
+                          : i18n.exists(
+                              `${data.abbreviation}.${config.brandName}.${
+                                customtranslation ? "custom" : ""
+                              }sports`
+                            )
+                          ? i18n.t(
+                              `${data.abbreviation}.${config.brandName}.${
+                                customtranslation ? "custom" : ""
+                              }sports`
+                            )
                           : i18n.t(
                               `${data.abbreviation}.${
                                 customtranslation ? "custom" : ""
