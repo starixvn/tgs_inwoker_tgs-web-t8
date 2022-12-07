@@ -32,7 +32,7 @@ const languageSwitcher = (language, brand) => {
 };
 export const GlobalStyles = createGlobalStyle`
   * {
-    font-family: ${languageSwitcher(i18n.language, config.brand)};
+    font-family: ${languageSwitcher(i18n.language, config.brandName)};
   }
   
   body {
