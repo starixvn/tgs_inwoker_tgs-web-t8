@@ -2,7 +2,7 @@ import config from "../../../../config/config";
 import { themeList } from "./../../../../theme";
 import { isMobileOnly } from "react-device-detect";
 var muiThemeMode = isMobileOnly
-  ? themeList[config.brand] || themeList[config.theme]
+  ? themeList[config.brand] || themeList[config.brandName] || themeList[config.theme]
   : themeList[config.theme];
 
 const Smartsupp = ({ smartsuppkey, xPosition, yPosition }) => {
