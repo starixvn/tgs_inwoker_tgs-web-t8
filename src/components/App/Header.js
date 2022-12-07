@@ -1113,6 +1113,20 @@ class Header extends Component {
                                                     usecustom ? "custom" : ""
                                                   }${item.path}`
                                                 )
+                                              : i18n.exists(
+                                                  `${game.abbreviation}.${
+                                                    config.brandName
+                                                  }.${
+                                                    usecustom ? "custom" : ""
+                                                  }${item.path}`
+                                                )
+                                              ? i18n.t(
+                                                  `${game.abbreviation}.${
+                                                    config.brandName
+                                                  }.${
+                                                    usecustom ? "custom" : ""
+                                                  }${item.path}`
+                                                )
                                               : i18n.t(
                                                   `${game.abbreviation}.${
                                                     usecustom ? "custom" : ""
@@ -1220,6 +1234,20 @@ class Header extends Component {
                                                 ? i18n.t(
                                                     `${game.abbreviation}.${
                                                       config.brand
+                                                    }.${
+                                                      usecustom ? "custom" : ""
+                                                    }${item.path}`
+                                                  )
+                                                : i18n.exists(
+                                                    `${game.abbreviation}.${
+                                                      config.brandName
+                                                    }.${
+                                                      usecustom ? "custom" : ""
+                                                    }${item.path}`
+                                                  )
+                                                ? i18n.t(
+                                                    `${game.abbreviation}.${
+                                                      config.brandName
                                                     }.${
                                                       usecustom ? "custom" : ""
                                                     }${item.path}`
