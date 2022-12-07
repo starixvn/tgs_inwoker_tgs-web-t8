@@ -59,7 +59,9 @@
     "test:wlghk": "env-cmd -f .env.wlghk react-scripts build",
     "test:mess8": "env-cmd -f .env.mess8 react-scripts build",
     "test:mgm": "env-cmd -f .env.mgm react-scripts build",
-    "test:28bet": "env-cmd -f .env.28bet react-scripts build"
+    "test:28bet": "env-cmd -f .env.28bet react-scripts build",
+    "start:legacy": "SET NODE_OPTIONS=--openssl-legacy-provider && env-cmd -f .env react-scripts start",
+    "build:legacy": "SET NODE_OPTIONS=--openssl-legacy-provider && env-cmd -f .env react-scripts build"
   },
   "eslintConfig": {
     "extends": "react-app"

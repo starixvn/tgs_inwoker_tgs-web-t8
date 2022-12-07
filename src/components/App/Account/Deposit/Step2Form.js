@@ -93,6 +93,8 @@ class Step2Form extends Component {
               <ValueTD>
                 {this.props.depositResult
                   ? this.props.depositResult.data.formid
+                    ? this.props.depositResult.data.formid
+                    : this.props.depositResult.data
                   : ""}
               </ValueTD>
               <TitleTD>{i18n.t("deposit.depositAmount")}</TitleTD>
