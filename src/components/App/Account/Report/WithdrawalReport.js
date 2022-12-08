@@ -82,6 +82,9 @@ const CustomFormControl = withStyles((theme) => ({
         marginTop: "1px",
       },
     },
+    "& .MuiSelect-root":{
+      color: "#7b7b7b"
+    }
   },
 }))(FormControl);
 
