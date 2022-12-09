@@ -644,7 +644,7 @@ class Transfer extends Component {
     });
   };
   gpNameSwitcher = ({ gpcode, name }) => {
-    if (gpcode && gpcode.toLowerCase() === "wgfm" && config.brand === "TIGER")
+    if (gpcode && gpcode.toLowerCase() === "wgfm" && config.brandName === "TIGER")
       return "Tiger Sports";
     else return name ? name : "";
   };

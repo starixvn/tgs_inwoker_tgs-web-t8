@@ -231,7 +231,7 @@ function TableList(props) {
       gameProviderCode &&
       gameProviderCode.toString().toUpperCase() === "WGFM"
     ) {
-      if (config.brand === "TIGER")
+      if (config.brandName === "TIGER")
         label = gameProviderName.toString().replace("WG", "Tiger");
     }
     if (
@@ -239,11 +239,11 @@ function TableList(props) {
       from &&
       from.toString().toUpperCase() === "WG SPORTS"
     ) {
-      if (config.brand === "TIGER")
+      if (config.brandName === "TIGER")
         label = from.toString().replace("WG", "Tiger");
     }
     if (type === "to" && to && to.toString().toUpperCase() === "WG SPORTS") {
-      if (config.brand === "TIGER")
+      if (config.brandName === "TIGER")
         label = to.toString().replace("WG", "Tiger");
     }
     return label;
