@@ -250,8 +250,15 @@ function Activation(props) {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
   function smsVerification(securityKey, code) {
-    AccountService.VerifyActivation(securityKey, code).then(
-      async (response) => {
+    props
+      .newRegister("InitPhone", {
+        input: "Valid",
+        data: {
+          securitykey: securityKey,
+          validatecode: code,
+        },
+      })
+      .then(async (response) => {
         if (response.IsSuccess) {
           props.enqueueSnackbar(i18n.t("common.msgTokenVerified"), {
             variant: "success",
@@ -266,8 +273,7 @@ function Activation(props) {
             variant: "warning",
           });
         }
-      }
-    );
+      });
   }
 
   const handleActivationClick = async () => {
@@ -312,8 +318,16 @@ function Activation(props) {
       var result = await AccountService.Login(username, password);
       if (result.IsSuccess) {
         props.getAccountInfo();
-        AccountService.Activation("", "", areacode, phone).then(
-          async (response) => {
+
+        props
+          .newRegister("InitPhone", {
+            input: "Init",
+            data: {
+              areacode: areacode,
+              phone: phone,
+            },
+          })
+          .then(async (response) => {
             if (response.IsSuccess) {
               smsVerification(response.data, "123456");
             } else {
@@ -321,8 +335,7 @@ function Activation(props) {
                 variant: "warning",
               });
             }
-          }
-        );
+          });
       }
     } else {
       smsVerification(securityKey, code);
@@ -362,8 +375,17 @@ function Activation(props) {
       }
       if ((result !== null && result.IsSuccess) || isLoggedIn) {
         setIsLoggedIn(true);
-        AccountService.Activation("", "", areacode, phone).then(
-          async (response) => {
+
+        props
+          .newRegister("InitPhone", {
+            input: "Init",
+            data: {
+              areacode: areacode,
+              phone: phone,
+            },
+          })
+
+          .then(async (response) => {
             if (response.IsSuccess) {
               setSecurityKey(response.data);
               props.enqueueSnackbar(i18n.t("common.msgTokenSent"), {
@@ -375,8 +397,7 @@ function Activation(props) {
                 variant: "warning",
               });
             }
-          }
-        );
+          });
       }
     }
   };
@@ -488,6 +509,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(
         accountAction.registerAccount(username, pwd, confirmpwd, invitationcode)
       ),
+        newRegister: (type, input) =>
+      dispatch(accountAction.newRegister(type, input)),
     accountLogin: (username, password) =>
       dispatch(accountAction.accountLogin(username, password)),
   };
