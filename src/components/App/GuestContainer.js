@@ -54,6 +54,15 @@ const BtnRegister = styled(BtnLoginRegister)``;
 
 const BtnLogin = styled(BtnLoginRegister)``;
 
+const BtnSpliter = styled.div`
+  float: right;
+  margin-top: 8px;
+`;
+const BtnLoginRegisterLabel = styled.span`
+  text-align: center;
+  display: block;
+  margin-top: 7px;
+`;
 const StyledDialog = withStyles({
   root: {
     boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
@@ -84,6 +93,12 @@ class GuestContainer extends Component {
   };
   componentDidMount() {
     let urlParams = new URLSearchParams(this.props.location.search);
+    if (
+      localStorage.getItem("subid") !== "" &&
+      config.features.CustomBunnyAffiliate
+    ) {
+      this.onhandleRegister();
+    }
     if (urlParams.has("do")) {
       const doValue = urlParams.get("do");
       switch (doValue) {
@@ -293,7 +308,6 @@ class GuestContainer extends Component {
     }
     const result = await this.props.accountLogin(username, password);
 
-    //TODO: Temporary fix modal close when found wrong password.
     if (result.code === 101 && result.IsSuccess === false) {
       this.props.showLogin(true);
     } else if (result.code === 210) {
@@ -330,24 +344,6 @@ class GuestContainer extends Component {
 
     const result = await this.props.accountLogin(username, password);
     if (result.IsSuccess) {
-      //  AccountService.Activation(
-      //    username,
-      //    password,
-      //    this.state.areaCode,
-      //    phone
-      //  ).then(async (response) => {
-      //    if (response.IsSuccess) {
-      //      this.state.securityKey = response.data;
-      //      AccountService.VerifyActivation(
-      //        this.state.securityKey,
-      //        "123456"
-      //      ).then(async (response) => {
-      //        this.handleLoginSuccess(result.data);
-      //      });
-      //    } else {
-      //      this.handleLoginSuccess(result.data);
-      //    }
-      //  });
       if (setPhoneDontCareDuplicate) {
         await this.props
           .newRegister("SetPhoneDontCareDuplicate", {
@@ -401,35 +397,49 @@ class GuestContainer extends Component {
     }
     const result = await this.props.accountLogin(username, password);
     if (result.IsSuccess) {
-      AccountService.Activation(
-        username,
-        password,
-        this.state.areaCode,
-        phone
-      ).then(async (response) => {
-        if (response.IsSuccess) {
-          this.state.securityKey = response.data;
-          AccountService.VerifyActivation(this.state.securityKey, "123456");
-          // .then(async (response) => {
+      this.props
+        .newRegister("InitPhone", {
+          input: "Init",
+          data: {
+            areacode: this.state.areaCode,
+            phone: phone,
+          },
+        })
 
-          // });
-        }
-        // else {
-        //   this.handleLoginSuccess(result.data);
-        // }
-      });
-      AccountService.ActivationEmail(email).then(async (response) => {
-        if (response.IsSuccess) {
-          this.state.securityKey = response.data;
-          AccountService.VerifyActivationEmail(
-            this.state.securityKey,
-            "123456"
-          );
-          // .then(async (response) => {
-          //   this.handleLoginSuccess(result.data);
-          // });
-        }
-      });
+        .then(async (response) => {
+          if (response.IsSuccess) {
+            this.state.securityKey = response.data;
+
+            AccountService.NewRegister("InitPhone", {
+              input: "Valid",
+              data: {
+                securitykey: this.state.securityKey,
+                validatecode: "123456",
+              },
+            });
+          }
+        });
+
+      this.props
+        .newRegister("InitMail", {
+          input: "Init",
+          data: {
+            email: email,
+          },
+        })
+        .then(async (response) => {
+          if (response.IsSuccess) {
+            this.state.securityKey = response.data;
+
+            this.props.newRegister("InitMail", {
+              input: "Valid",
+              data: {
+                securitykey: this.state.securityKey,
+                validatecode: "123456",
+              },
+            });
+          }
+        });
       this.handleLoginSuccess(result.data);
     }
   };
@@ -589,13 +599,13 @@ class GuestContainer extends Component {
             } else {
               if (!isRegisterCompleted) {
                 this.props.history.push(
-                  "/" + i18n.language + "/account/bankcard/add"
+                  "/" + i18n.language + "/account/withdrawal?do=addCard"
                 );
               }
             }
           }
           // this.props.history.push(
-          //   "/" + i18n.language + "/account/bankcard/add"
+          //   "/" + i18n.language + "/account/withdrawal?do=addCard"
           // );
         }
       }
