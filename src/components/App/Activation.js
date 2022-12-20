@@ -227,7 +227,7 @@ const Description = styled.div`
   margin-top: 10px;
   margin-left: 5px;
   font-size: 14px;
-  color:red;
+  color: red;
   line-height: 1.43;
 `;
 const CustomFormControl = withStyles((theme) => ({
@@ -469,7 +469,7 @@ function Activation(props) {
 
           .then(async (response) => {
             if (response.IsSuccess) {
-              setSecurityKey(response.data);
+              setSecurityKey(response.data.stepResponse);
               props.enqueueSnackbar(i18n.t("common.msgTokenSent"), {
                 variant: "info",
               });
@@ -642,8 +642,8 @@ function Activation(props) {
           </ButtonLabel>
         </StyleButton> */}
         {config.features.Custom_Temp_show_verify_SMS_hints && (
-        <Description>{i18n.t("web.register.errorCustomDesc")}</Description>
-                  )}
+          <Description>{i18n.t("web.register.errorCustomDesc")}</Description>
+        )}
         <ButtonLogin onClick={handleActivationClick}>
           <ButtonLoginLabel>{i18n.t("common.submit")}</ButtonLoginLabel>
         </ButtonLogin>
@@ -661,7 +661,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(
         accountAction.registerAccount(username, pwd, confirmpwd, invitationcode)
       ),
-        newRegister: (type, input) =>
+    newRegister: (type, input) =>
       dispatch(accountAction.newRegister(type, input)),
     accountLogin: (username, password) =>
       dispatch(accountAction.accountLogin(username, password)),
