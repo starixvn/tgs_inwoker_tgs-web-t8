@@ -37,7 +37,15 @@ const Viber = (props) => {
   };
 
   const onhandleClick = () => {
-    AccountService.UpdateIM(viber, "viber").then((response) => {
+    // const re = new RegExp("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$");
+    // if (!viber.match(re)) {
+    //   props.enqueueSnackbar(i18n.t("profile.viber.msgInvalidViber"), {
+    //     variant: "error",
+    //   });
+    //   return;
+    // }
+
+    AccountService.UpdateIM(viber, "viber", "viber").then((response) => {
       if (response.IsSuccess) {
         props.dispatch({
           type: UPDATE_INFO,

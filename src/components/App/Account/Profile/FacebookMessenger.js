@@ -37,7 +37,15 @@ const FacebookMessenger = (props) => {
   };
 
   const onhandleClick = () => {
-    AccountService.UpdateIM(fb, "fb").then((response) => {
+    // const re = new RegExp("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$");
+    // if (!fb.match(re)) {
+    //   props.enqueueSnackbar(i18n.t("profile.fb.msgInvalidFB"), {
+    //     variant: "error",
+    //   });
+    //   return;
+    // }
+
+    AccountService.UpdateIM(fb, "fb", "facebookmessenger").then((response) => {
       if (response.IsSuccess) {
         props.dispatch({
           type: UPDATE_INFO,
