@@ -45,7 +45,7 @@ const Wechat = (props) => {
       return;
     }
 
-    AccountService.UpdateIM(wechat, "wechat").then((response) => {
+    AccountService.UpdateIM(wechat, "wechat", "wechat").then((response) => {
       if (response.IsSuccess) {
         props.dispatch({
           type: UPDATE_INFO,
