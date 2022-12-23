@@ -855,6 +855,24 @@ class Header extends Component {
     }
   };
 
+  filterGameList = (item) => {
+    if (
+      item.include &&
+      item.include !== undefined
+    ) {
+      this.props.game.homePageGameList.map((game) => {
+        if (item.include.indexOf(game.game_platform_name) >= 0) {
+          game.type = item.gameType[0];
+        }
+        return item;
+      });
+    }
+
+    return this.props.game.homePageGameList.filter((game) => {
+      return item.gameType.indexOf(game.type) >= 0;
+    });
+  };
+
   render() {
     const { classes } = this.props;
 
@@ -955,24 +973,8 @@ class Header extends Component {
                     : classes.minMenu
                 }`}
               >
-                {SortedMenuList.sort((a, b) => {
-                  if (config.features.MenuItem_Sorting_HK28) {
-                    return a.sortingHK28 > b.sortingHK28 ? 1 : -1;
-                  } else if (config.features.MenuItem_Sorting_WLGHK) {
-                    return a.sortingWLGHK > b.sortingWLGHK ? 1 : -1;
-                  } else if (config.features.MenuItem_Sorting_SKY) {
-                    return a.sortingSKY > b.sortingSKY ? 1 : -1;
-                  } else if (config.features.MenuItem_Sorting_PB) {
-                    return a.sortingPB > b.sortingPB ? 1 : -1;
-                  } else if (config.features.MenuItem_Sorting_GMO) {
-                    return a.sortingGMO > b.sortingGMO ? 1 : -1;
-                  } else {
-                    return a.sorting > b.sorting ? 1 : -1;
-                  }
-                }).map((item, index) => {
-                  var list = this.props.game.homePageGameList
-                    .filter((game) => item.gameType.indexOf(game.type) >= 0)
-
+                {SortedMenuList.map((item, index) => {
+                  var list = this.filterGameList(item)
                     .sort((a, b) => {
                       if (config.features.LiveGame_Sorting_SKY) {
                         var sortDGFirst = ["DG"];
