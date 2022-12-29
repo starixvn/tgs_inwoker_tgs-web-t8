@@ -13,33 +13,13 @@ import { SHOWING_DIALOG } from "../../api-services/constant/actionType";
 import { SHOW_LOGIN } from "../../api-services/constant/actionType";
 import { GameTypeEnum } from "../../api-services/utils/Enum";
 
-import BtnCSPNG from "../../assets/images/btn-cs.png";
-
-import BtnCSHoverPNG from "../../assets/images/btn-cs-hover.png";
-
 import { Link } from "react-router-dom";
 import GuestContainer from "./GuestContainer";
 import MemberContainer from "./MemberContainer";
 
-import TopMenuLivePNG from "../../assets/images/top-menu-live.png";
-import TopMenuQipaiPNG from "../../assets/images/top-menu-qipai.png";
-import TopMenuSportsPNG from "../../assets/images/top-menu-sports.png";
-import TopMenuLotteryPNG from "../../assets/images/top-menu-lottery.png";
-import TopMenueSportsPNG from "../../assets/images/top-menu-gun.png";
-import TopMenuTigerPNG from "../../assets/images/top-menu-tiger.png";
-import TopMenuFishPNG from "../../assets/images/top-menu-fish.png";
 import TopMenuPromoPNG from "../../assets/images/top-menu-promo.png";
-import TopMenuSlotPNG from "../../assets/images/top-menu-slot.png";
 
-import TopMenuLiveHoverPNG from "../../assets/images/top-menu-live-hover.png";
-import TopMenuQipaiHoverPNG from "../../assets/images/top-menu-qipai-hover.png";
-import TopMenuSportsHoverPNG from "../../assets/images/top-menu-sports-hover.png";
-import TopMenuLotteryHoverPNG from "../../assets/images/top-menu-lottery-hover.png";
-import TopMenueSportsHoverPNG from "../../assets/images/top-menu-gun-hover.png";
-import TopMenuTigerHoverPNG from "../../assets/images/top-menu-tiger-hover.png";
-import TopMenuFishHoverPNG from "../../assets/images/top-menu-fish-hover.png";
 import TopMenuPromoHoverPNG from "../../assets/images/top-menu-promo-hover.png";
-import TopMenuSlotHoverPNG from "../../assets/images/top-menu-slot-hover.png";
 
 import IconPhonePNG from "../../assets/images/icon-mobile.png";
 
@@ -125,11 +105,6 @@ const CustomLink = styled(Link)`
     color: #fde73f;
     text-decoration: underline;
   }
-`;
-
-const RightContainer = styled.div`
-  float: right;
-  padding-top: 5px;
 `;
 
 const BtnAppsAndCS = styled.div`
@@ -809,8 +784,8 @@ class Header extends Component {
         AppHistory.goBack();
       }
       // this.handleRefreshBalanceClick();
-      var win = Common.PopupCenter(url, gameCode, 1280, 720);
-      var timer = setInterval(function () {
+      win = Common.PopupCenter(url, gameCode, 1280, 720);
+      timer = setInterval(function () {
         if (win.closed) {
           clearInterval(timer);
           if (document.getElementById("audio") != null)
@@ -843,7 +818,7 @@ class Header extends Component {
 
           alert(
             i18n.t("web.header.plsClick") +
-              (navigator.userAgent.toLowerCase().indexOf("mac") != -1
+              (navigator.userAgent.toLowerCase().indexOf("mac") !== -1
                 ? "Cmd"
                 : "Ctrl") +
               "+D" +
@@ -865,8 +840,10 @@ class Header extends Component {
       }
     });
   };
-  consolidateJoinGame = (game, item) => {
-    if (game.type === GameTypeEnum.COCKFIGHT) {
+  handleCockfight = (item) => {
+    if (!this.props.account.token) {
+      this.props.showLogin(true);
+    } else {
       if (item.include.indexOf("SM01") >= 0) {
         this.popup = window.open("", "Cockfight");
         GameService.GetCockfight()
@@ -879,6 +856,12 @@ class Header extends Component {
             this.popup.close();
           });
       }
+    }
+  };
+
+  consolidateJoinGame = (game, item) => {
+    if (game.type === GameTypeEnum.COCKFIGHT) {
+      this.handleCockfight(item);
     } else if (
       game.type === GameTypeEnum.LOTTERYLOBBY ||
       game.type === GameTypeEnum.LOBBY
