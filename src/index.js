@@ -102,7 +102,9 @@ Config.isPC = isMobileOnly ? 1 : 0;
 // }
 // document.getElementById("root").style.fontFamily = fontFamily;
 var muiThemeMode = isMobileOnly
-  ? themeList[Config.brand] || themeList[Config.brandName] || themeList[Config.theme]
+  ? themeList[Config.brand] ||
+    themeList[Config.brandName] ||
+    themeList[Config.theme]
   : themeList[Config.features.web_theme] || themeList[Config.theme];
 muiThemeMode.lang = i18n.language;
 const muiTheme = createMuiTheme({
@@ -194,8 +196,11 @@ const muiTheme = createMuiTheme({
 });
 const AppWrapper = () => {
   const classes = useStyles();
+  const languageDetector =
+    i18n.language ||
+    localStorage.getItem("i18nextLng") ||
+    config.defaultLanguage;
 
-  const languageFromLocalStorage = localStorage.getItem("i18nextLng");
   const [isReady, setIsReady] = React.useState(false);
   useEffect(() => {
     i18n.on("languageChanged", (lng) => {
@@ -297,13 +302,7 @@ const AppWrapper = () => {
                       path={Common.baseRouteUrl + "/"}
                       render={(props) => (isMobileOnly ? <Wap /> : <Web />)}
                     />
-                    <Redirect
-                      to={`/${
-                        languageFromLocalStorage ||
-                        i18n.language ||
-                        Config.defaultLanguage
-                      }`}
-                    />
+                    <Redirect to={`/${languageDetector}`} />
                   </Switch>
                 </Router>
               </SnackbarProvider>
