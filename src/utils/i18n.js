@@ -15,6 +15,9 @@ i18n.on("languageChanged", function (lng) {
   //   }
 });
 
+const languageDetector =
+  localStorage.getItem("i18nextLng") || Config.defaultLanguage;
+
 i18n.use(LanguageDetector).init({
   resources: {
     "en-US": {
@@ -40,7 +43,7 @@ i18n.use(LanguageDetector).init({
     },
   },
   whitelist: ["en-US", "zh-CN", "zh-TW", "th-TH", "id-ID", "vi-VN"],
-  fallbackLng: [Config.defaultLanguage],
+  fallbackLng: [languageDetector],
   detection: {
     order: ["path"],
     lookupFromPathIndex: 0,

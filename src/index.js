@@ -121,7 +121,9 @@ document
 // }
 // document.getElementById("root").style.fontFamily = fontFamily;
 var muiThemeMode = isMobileOnly
-  ? themeList[Config.brand] || themeList[Config.brandName] || themeList[Config.theme]
+  ? themeList[Config.brand] ||
+    themeList[Config.brandName] ||
+    themeList[Config.theme]
   : themeList[Config.features.web_theme] || themeList[Config.theme];
 muiThemeMode.lang = i18n.language;
 const muiTheme = createMuiTheme({
@@ -196,23 +198,27 @@ const muiTheme = createMuiTheme({
         },
       },
     },
-    MuiDialog:{
-      root:{
-        "& .MuiPickersBasePicker-container .MuiPickersToolbarText-toolbarTxt" :{
+    MuiDialog: {
+      root: {
+        "& .MuiPickersBasePicker-container .MuiPickersToolbarText-toolbarTxt": {
           color: muiThemeMode.customDatePickerText,
         },
         "& .MuiPickersBasePicker-container .MuiTypography-root": {
           color: muiThemeMode.customDatePickerText,
         },
-        "& .MuiPickersModal-withAdditionalAction .MuiButtonBase-root":{
+        "& .MuiPickersModal-withAdditionalAction .MuiButtonBase-root": {
           color: muiThemeMode.customDatePickerText,
-        }
+        },
       },
-    }
+    },
   },
 });
 const AppWrapper = () => {
   const classes = useStyles();
+  const languageDetector =
+    i18n.language ||
+    localStorage.getItem("i18nextLng") ||
+    config.defaultLanguage;
 
   return (
     <Provider store={store}>
@@ -293,7 +299,7 @@ const AppWrapper = () => {
                     path={Common.baseRouteUrl + "/"}
                     render={(props) => (isMobileOnly ? <Wap /> : <Web />)}
                   />
-                  <Redirect to={`/${i18n.language}`} />
+                  <Redirect to={`/${languageDetector}`} />
                 </Switch>
               </Router>
             </SnackbarProvider>

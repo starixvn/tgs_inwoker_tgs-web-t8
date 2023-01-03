@@ -386,6 +386,10 @@ class App extends Component {
   };
 
   render() {
+    const languageDetector =
+      i18n.language ||
+      localStorage.getItem("i18nextLng") ||
+      config.defaultLanguage;
     return (
       <Router history={AppHistory}>
         {(() => {
@@ -592,7 +596,7 @@ class App extends Component {
                         component={Download}
                       />
                     </>
-                    <Redirect to={"/" + i18n.language} />
+                    <Redirect to={"/" + languageDetector} />
                   </Switch>
                 </Main>
 
