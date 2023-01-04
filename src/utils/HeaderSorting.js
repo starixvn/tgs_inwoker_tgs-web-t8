@@ -110,7 +110,7 @@ const MenuItemList = [
     sortingSKY: 9,
     sortingWLGHK: 9,
     sortingBUNNY: 9,
-    include: ["SM01"]
+    include: ["SM01", "AWC_COCKFIGHT"],
   },
 ];
 
