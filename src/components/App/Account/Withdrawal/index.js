@@ -82,6 +82,12 @@ class Withdrawal extends Component {
   urlParams = new URLSearchParams(this.props.location.search);
   async componentDidMount() {
     if (this.props.token) {
+      if (config.features.Withdrawal_WalletTransfer) {
+        this.props.performWithdrawFromEveryBrand().then((e) => {
+          this.props.getBalanceList();
+          this.getAllGameBalance();
+        });
+      }
       this.props.getWithdrawalChannel();
       if (!config.features.Register_CustomFlow_IDR) {
         WalletService.GetMinWithdrawLimit().then((e) => {
@@ -498,6 +504,19 @@ class Withdrawal extends Component {
       return cardList;
     }
   };
+  getAllGameBalance = () => {
+    this.props.game.providerList
+      .filter((item) => item.status === 0 && item.transferwallet === true)
+      .filter(
+        (item) => item.abbreviation !== "NTTF" && item.abbreviation !== "RTTF"
+      )
+      .map((a) => {
+        this.props.getGameBalance(a.abbreviation).then((e) => {
+          if (e.IsSuccess) {
+          }
+        });
+      });
+  };
   render() {
     return (
       <Container>
@@ -670,6 +689,9 @@ const mapDispatchToProps = (dispatch) => {
     getAccountInfo: () => dispatch(accountAction.getAccountInfo()),
     newRegister: (type, input) =>
       dispatch(accountAction.newRegister(type, input)),
+    performWithdrawFromEveryBrand: () =>
+      dispatch(walletAction.performWithdrawFromEveryBrand()),
+    getGameBalance: (gpcode) => dispatch(walletAction.getGameBalance(gpcode)),
   };
 };
 export default withRouter(

@@ -118,6 +118,7 @@ const featureList = {
     DepositCustomPaymentNames: [],
 
     Deposit_SplitUsdt: false,
+    Withdrawal_WalletTransfer: false,
   },
 };
 export default featureList;
