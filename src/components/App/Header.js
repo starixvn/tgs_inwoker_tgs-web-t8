@@ -1087,6 +1087,13 @@ class Header extends Component {
                                                 usecustom = true;
                                               }
                                             }
+                                            if(config.features.BC_CustomTranslation)
+                                            {
+                                              if(gameCode === "bc" && item.path ==="sports")
+                                              {
+                                                usecustom = true;
+                                              }
+                                            }
 
                                             if (
                                               config.features.SportsHideLogo
@@ -1205,6 +1212,14 @@ class Header extends Component {
                                                   gameCode === "pptf" &&
                                                   item.path === "sports"
                                                 ) {
+                                                  usecustom = true;
+                                                }
+                                              }
+
+                                              if(config.features.BC_CustomTranslation)
+                                              {
+                                                if(gameCode === "bc" && item.path ==="sports")
+                                                {
                                                   usecustom = true;
                                                 }
                                               }

@@ -209,6 +209,11 @@ class Sports extends Component {
                     data.abbreviation === "PPTF"
                   ) {
                     customtranslation = true;
+                  } else if (
+                    config.features.BC_CustomTranslation &&
+                    data.abbreviation === "BC"
+                  ) {
+                    customtranslation = true;
                   }
                   return (
                     <LeftNavItem
