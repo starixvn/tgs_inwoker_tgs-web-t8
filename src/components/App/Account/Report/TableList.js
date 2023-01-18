@@ -13,6 +13,7 @@ import { useSnackbar } from "notistack";
 
 import { AppHistory } from "../../../../history/History";
 import config from "../../../../config/config";
+import ErrorSwitcher from "../../../../utils/ErrorSwitcher";
 import { utility } from "../../../../utils/utility";
 const moment = require("moment");
 const StyledTableCell = withStyles((theme) => ({
@@ -191,6 +192,17 @@ const headerLists = {
       title: `report.rebate.amount`,
     },
   ],
+  balanceChanges: [
+    {
+      title: `report.dateTime`
+    },
+    {
+      title: `report.balanceChanges.type`
+    },
+    {
+      title: `report.balanceChanges.amount`
+    }
+  ]
 };
 
 function TableList(props) {
@@ -403,6 +415,17 @@ function TableList(props) {
               <StyledTableCell align="right">
                 {row.rebate_amount_text}
               </StyledTableCell>
+            </StyledTableRow>
+          );
+        });
+      case "balanceChanges":
+        return props.rows.map((row, index) => {
+          const date = moment(row.recordedon).format("YYYY/MM/DD hh:mm:ss");
+          return (
+            <StyledTableRow hover role="checkbox" tabIndex={-1} key={index}>
+              <StyledTableCell>{date}</StyledTableCell>
+              <StyledTableCell>{ErrorSwitcher.getTranslation(row.type)}</StyledTableCell>
+              <StyledTableCell>{row.amount}</StyledTableCell>
             </StyledTableRow>
           );
         });
