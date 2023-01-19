@@ -136,9 +136,16 @@ pipeline {
         //    }
         //}
         stage('Undo') {
+            when {
+                expression {
+                    return env.kube_ns == 'prod';
+                }
+            }
             steps {
                 script {
-                    input message: 'Ready to Undo?', ok: 'yes';
+                    timeout(time: 600, unit: 'SECONDS') {
+                        input message: 'Ready to Undo?', ok: 'yes';
+                    }
                 }
                 
                 sh "echo start deploy"
