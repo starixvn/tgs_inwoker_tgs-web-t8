@@ -1216,10 +1216,14 @@ class Header extends Component {
                                                 }
                                               }
 
-                                              if(config.features.BC_CustomTranslation)
-                                              {
-                                                if(gameCode === "bc" && item.path ==="sports")
-                                                {
+                                              if (
+                                                config.features
+                                                  .BC_CustomTranslation
+                                              ) {
+                                                if (
+                                                  gameCode === "bc" &&
+                                                  item.path === "sports"
+                                                ) {
                                                   usecustom = true;
                                                 }
                                               }
@@ -1278,6 +1282,10 @@ class Header extends Component {
                                                       usecustom ? "custom" : ""
                                                     }sports`
                                                   )
+                                                : game.abbreviation.toLowerCase() ===
+                                                    "sbotf" &&
+                                                  item.path === "sports"
+                                                ? i18n.t(`SBO.sports`)
                                                 : i18n.exists(
                                                     `${game.abbreviation}.${
                                                       config.brand
