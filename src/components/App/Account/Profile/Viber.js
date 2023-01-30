@@ -45,7 +45,7 @@ const Viber = (props) => {
     //   return;
     // }
 
-    AccountService.UpdateViber(viber).then((response) => {
+    AccountService.UpdateIM(viber, "viber", "viber").then((response) => {
       if (response.IsSuccess) {
         props.dispatch({
           type: UPDATE_INFO,

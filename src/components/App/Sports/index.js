@@ -23,26 +23,6 @@ const Container = styled.div`
     no-repeat center;
 `;
 
-const NoContentText = styled.div`
-  color: #000;
-  font-size: ${(props) =>
-    props.lang === "zh-CN" || props.lang === "zh-TW" ? `3.2em` : `2.3em`};
-  text-shadow: 0 0 18px #ffe14e;
-  -webkit-text-stroke: 0.5px white;
-  font-weight: bold;
-  width: 450px;
-  height: auto;
-  margin-left: 180px;
-  overflow: visible;
-  font-family: "微軟正黑粗";
-  &:first-child {
-    margin-top: 210px;
-  }
-  &:last-child {
-    ${(props) => (props.lang === "en-US" ? `font-size: 3.2em;` : ``)}
-  }
-`;
-
 const Maintenance = styled.div`
   width: 100%;
   height: 100%;
@@ -227,6 +207,11 @@ class Sports extends Component {
                   if (
                     config.features.PP_CustomTranslation &&
                     data.abbreviation === "PPTF"
+                  ) {
+                    customtranslation = true;
+                  } else if (
+                    config.features.BC_CustomTranslation &&
+                    data.abbreviation === "BC"
                   ) {
                     customtranslation = true;
                   }

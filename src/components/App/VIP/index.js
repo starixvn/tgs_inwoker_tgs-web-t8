@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { generalAction } from "../../../api-services/actions/generalAction";
 import i18n from "../../../utils/i18n";
-import IconVIPPNG from "../../../assets/images/icon-vip.png";
 import config from "../../../config/config";
 import Common from "../../../utils/Common";
 
@@ -263,6 +262,7 @@ const VIP = (props) => {
                               process.env.PUBLIC_URL +
                               `/assets/images/vip/${data.level}.png`
                             }
+                            alt={data.level}
                           />
                         </VIPLevelImage>
                         {getVIPTitle(data.level)}

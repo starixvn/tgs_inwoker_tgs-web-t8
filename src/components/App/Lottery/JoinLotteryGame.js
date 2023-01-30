@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-
-import {SHOW_LOGIN} from "../../../api-services/constant/actionType";
-import {GameTypeEnum} from "../../../api-services/utils/Enum";
-import {GameService} from "../../../api-services/services/GameService";
+import { SHOW_LOGIN } from "../../../api-services/constant/actionType";
+import { GameTypeEnum } from "../../../api-services/utils/Enum";
+import { GameService } from "../../../api-services/services/GameService";
 
 import Loading from "../Loading";
 import Maintenance from "../../Share/Maintenance";
-// const channel = new BroadcastChannel('refreshBalance');
 
 class JoinLotteryGame extends Component {
   state = {

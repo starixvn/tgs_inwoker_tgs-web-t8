@@ -1,19 +1,15 @@
 import "react-app-polyfill/ie11";
 import "react-app-polyfill/stable";
-
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import { Router, Route, Switch, Redirect } from "react-router";
-
 import Web from "./components/App/index";
 import Wap from "./components/Wap/index";
 import * as serviceWorker from "./utils/serviceWorker";
 import { isMobileOnly } from "react-device-detect";
 import { Provider } from "react-redux";
-//import store from "./store/index";
 import { createStore, applyMiddleware } from "redux";
-
 import thunk from "redux-thunk";
 import InterceptorService from "./api-services/services/InterceptorService";
 import JoinGame from "./components/Share/JoinGame";
@@ -22,10 +18,6 @@ import RedirectPage from "./components/Share/Redirect";
 import JoinLobbyGame from "./components/Share/JoinLobbyGame";
 import JoinLotteryGame from "./components/Share/JoinLotteryGame";
 import Maintenance from "./components/Share/Maintenance";
-// import IPRestrict from "./components/App/IPRestrict";
-// import CS from "./components/App/CS";
-// import AboutUs from "./components/AboutUs/index";
-// import GameRules from "./components/GameRules/index";
 import { AppHistory } from "./history/History";
 import { SnackbarProvider } from "notistack";
 import styled from "styled-components";
@@ -46,8 +38,6 @@ import Common from "./utils/Common";
 import { ThemeProvider } from "styled-components";
 import { themeList } from "./theme";
 import { GlobalStyles } from "./global";
-
-import featureList from "./config/features";
 import FeatureGetter from "./components/Share/feature-getter";
 import AudioPlayer from "./components/Share/audioplayer";
 import config from "./config/config";
@@ -83,15 +73,6 @@ const Icon = styled.img`
 Config.from = isMobileOnly ? "h5" : "h5";
 Config.isPC = isMobileOnly ? 1 : 0;
 
-document.getElementById("title").innerHTML = i18n
-  .t("common.title")
-  .replace(/{brand}/g, Config.brandName);
-document
-  .getElementById("description")
-  .setAttribute(
-    "content",
-    i18n.t("common.title").replace(/{brand}/g, Config.brandName)
-  );
 // if (
 //   process.env.REACT_APP_CUSTOM_NODE_ENV !== "development" &&
 //   (process.env.REACT_APP_CUSTOM_NODE_ENV !== "qa" || Config.baseUrl === "") &&
@@ -121,7 +102,9 @@ document
 // }
 // document.getElementById("root").style.fontFamily = fontFamily;
 var muiThemeMode = isMobileOnly
-  ? themeList[Config.brand] || themeList[Config.brandName] || themeList[Config.theme]
+  ? themeList[Config.brand] ||
+    themeList[Config.brandName] ||
+    themeList[Config.theme]
   : themeList[Config.features.web_theme] || themeList[Config.theme];
 muiThemeMode.lang = i18n.language;
 const muiTheme = createMuiTheme({
@@ -196,112 +179,141 @@ const muiTheme = createMuiTheme({
         },
       },
     },
-    MuiDialog:{
-      root:{
-        "& .MuiPickersBasePicker-container .MuiPickersToolbarText-toolbarTxt" :{
+    MuiDialog: {
+      root: {
+        "& .MuiPickersBasePicker-container .MuiPickersToolbarText-toolbarTxt": {
           color: muiThemeMode.customDatePickerText,
         },
         "& .MuiPickersBasePicker-container .MuiTypography-root": {
           color: muiThemeMode.customDatePickerText,
         },
-        "& .MuiPickersModal-withAdditionalAction .MuiButtonBase-root":{
+        "& .MuiPickersModal-withAdditionalAction .MuiButtonBase-root": {
           color: muiThemeMode.customDatePickerText,
-        }
+        },
       },
-    }
+    },
   },
 });
 const AppWrapper = () => {
   const classes = useStyles();
+  const languageDetector =
+    i18n.language ||
+    localStorage.getItem("i18nextLng") ||
+    config.defaultLanguage;
 
-  return (
-    <Provider store={store}>
-      <FeatureGetter />
-      {Config.features.BackgroundMusic && <AudioPlayer />}
-      <StylesProvider injectFirst>
-        <MuiThemeProvider theme={muiTheme}>
-          <ThemeProvider theme={muiThemeMode}>
-            <GlobalStyles />
-            <SnackbarProvider
-              classes={{
-                variantSuccess: classes.success,
-                variantError: classes.error,
-                variantWarning: classes.warning,
-                variantInfo: classes.info,
-              }}
-              iconVariant={{
-                success: <Icon src={SuccessPNG}></Icon>,
-                error: <Icon src={DangerPNG}></Icon>,
-                warning: <Icon src={DangerPNG}></Icon>,
-                info: <Icon src={InfoPNG}></Icon>,
-              }}
-              action={(key) => (
-                <Dismiss onClick={onClickDismiss(key)}>x</Dismiss>
-              )}
-              maxSnack={3}
-              autoHideDuration={3000}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "center",
-              }}
-              ref={notistackRef}
-            >
-              <Router history={AppHistory}>
-                <Switch>
-                  <Route
-                    exact
-                    path={
-                      Common.baseRouteUrl +
-                      "/deposit/:paymentcode/:methodcode/:channelid/:amount/:promotion/:name?"
-                    }
-                    component={Deposit}
-                  />
-                  <Route
-                    exact
-                    path={
-                      Common.baseRouteUrl + "/joingame/:type/:params/:params2?"
-                    }
-                    component={JoinGame}
-                  />
-                  <Route
-                    exact
-                    path={Common.baseRouteUrl + "/redirect/:url"}
-                    component={RedirectPage}
-                  />
-                  <Route
-                    exact
-                    path={Common.baseRouteUrl + "/joinlottery/:brand"}
-                    component={JoinLotteryGame}
-                  />
-                  <Route
-                    exact
-                    path={Common.baseRouteUrl + "/joinlobbygame/:type/:params"}
-                    component={JoinLobbyGame}
-                  />
-                  {(() => {
-                    if (!isMobileOnly) {
-                      return (
-                        <Route
-                          exact
-                          path={Common.baseRouteUrl + "/maintenance"}
-                          render={(props) => <Maintenance />}
-                        />
-                      );
-                    }
-                  })()}
-                  <Route
-                    path={Common.baseRouteUrl + "/"}
-                    render={(props) => (isMobileOnly ? <Wap /> : <Web />)}
-                  />
-                  <Redirect to={`/${i18n.language}`} />
-                </Switch>
-              </Router>
-            </SnackbarProvider>
-          </ThemeProvider>
-        </MuiThemeProvider>
-      </StylesProvider>
-    </Provider>
-  );
+  const [isReady, setIsReady] = React.useState(false);
+  useEffect(() => {
+    i18n.on("languageChanged", (lng) => {
+      document.getElementById("title").innerHTML = i18n
+        .t("common.title")
+        .replace(/{brand}/g, Config.brandName);
+      document
+        .getElementById("description")
+        .setAttribute(
+          "content",
+          i18n.t("common.title").replace(/{brand}/g, Config.brandName)
+        );
+    });
+    i18n.on("loaded", function (options) {
+      setIsReady(true);
+    });
+  }, []);
+
+  if (isReady) {
+    return (
+      <Provider store={store}>
+        <FeatureGetter />
+        {Config.features.BackgroundMusic && <AudioPlayer />}
+        <StylesProvider injectFirst>
+          <MuiThemeProvider theme={muiTheme}>
+            <ThemeProvider theme={muiThemeMode}>
+              <GlobalStyles />
+              <SnackbarProvider
+                classes={{
+                  variantSuccess: classes.success,
+                  variantError: classes.error,
+                  variantWarning: classes.warning,
+                  variantInfo: classes.info,
+                }}
+                iconVariant={{
+                  success: <Icon src={SuccessPNG}></Icon>,
+                  error: <Icon src={DangerPNG}></Icon>,
+                  warning: <Icon src={DangerPNG}></Icon>,
+                  info: <Icon src={InfoPNG}></Icon>,
+                }}
+                action={(key) => (
+                  <Dismiss onClick={onClickDismiss(key)}>x</Dismiss>
+                )}
+                maxSnack={3}
+                autoHideDuration={3000}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "center",
+                }}
+                ref={notistackRef}
+              >
+                <Router history={AppHistory}>
+                  <Switch>
+                    <Route
+                      exact
+                      path={
+                        Common.baseRouteUrl +
+                        "/deposit/:paymentcode/:methodcode/:channelid/:amount/:promotion/:name?"
+                      }
+                      component={Deposit}
+                    />
+                    <Route
+                      exact
+                      path={
+                        Common.baseRouteUrl +
+                        "/joingame/:type/:params/:params2?"
+                      }
+                      component={JoinGame}
+                    />
+                    <Route
+                      exact
+                      path={Common.baseRouteUrl + "/redirect/:url"}
+                      component={RedirectPage}
+                    />
+                    <Route
+                      exact
+                      path={Common.baseRouteUrl + "/joinlottery/:brand"}
+                      component={JoinLotteryGame}
+                    />
+                    <Route
+                      exact
+                      path={
+                        Common.baseRouteUrl + "/joinlobbygame/:type/:params"
+                      }
+                      component={JoinLobbyGame}
+                    />
+                    {(() => {
+                      if (!isMobileOnly) {
+                        return (
+                          <Route
+                            exact
+                            path={Common.baseRouteUrl + "/maintenance"}
+                            render={(props) => <Maintenance />}
+                          />
+                        );
+                      }
+                    })()}
+                    <Route
+                      path={Common.baseRouteUrl + "/"}
+                      render={(props) => (isMobileOnly ? <Wap /> : <Web />)}
+                    />
+                    <Redirect to={`/${languageDetector}`} />
+                  </Switch>
+                </Router>
+              </SnackbarProvider>
+            </ThemeProvider>
+          </MuiThemeProvider>
+        </StylesProvider>
+      </Provider>
+    );
+  } else {
+    return <React.Fragment></React.Fragment>;
+  }
 };
 
 ReactDOM.render(<AppWrapper></AppWrapper>, document.getElementById("root"));

@@ -1,8 +1,6 @@
-import { Grid, Container as MContainer } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
-
-import ItemPNG from "../../../assets/images/home/section/section3-item.png";
 import i18n from "../../../utils/i18n";
 
 const Container = styled(Grid)`
@@ -25,7 +23,8 @@ const ProviderContainer = styled.div`
 `;
 const ProviderIMG = styled.div`
   background: url("${process.env.PUBLIC_URL}/assets/images/provider/${(props) =>
-  props.provider}.png") no-repeat;
+      props.provider}.png")
+    no-repeat;
   width: 130px;
   height: 66px;
 `;

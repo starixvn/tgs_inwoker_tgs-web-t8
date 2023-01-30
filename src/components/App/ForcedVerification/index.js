@@ -8,7 +8,6 @@ import {
 import React, { useEffect, useState } from "react";
 import LoginBGPNG from "../../../assets/images/login-bg.png";
 import styled from "styled-components";
-import IconLoginClosePNG from "../../../assets/images/icon-login-close.png";
 import config from "../../../config/config";
 import i18n from "../../../utils/i18n";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -229,20 +228,6 @@ const TitleContainer = styled.div`
   font-size: 42px;
 `;
 
-const CloseIconContainer = styled.div`
-  background: url(${IconLoginClosePNG}) no-repeat;
-  width: 28px;
-  height: 28px;
-  float: right;
-  margin: 10px 10px 0 0;
-  &:hover {
-    cursor: pointer;
-  }
-  position: absolute;
-  right: 10px;
-  top: 20px;
-`;
-
 const ForcedVerification = ({ forcedverify }) => {
   const [areacode, setAreacode] = useState(config.features.PhonePrefix);
   const [phone, setPhone] = useState("");
@@ -416,15 +401,6 @@ const ForcedVerification = ({ forcedverify }) => {
   return (
     <StyledDialog open={open} onClose={() => {}}>
       <Container>
-        {
-          //    <CloseIconContainer
-          //    viewBox="4 4 16 16"
-          //    onClick={() => {
-          //      setOpen(false);
-          //    }}
-          //  ></CloseIconContainer>
-        }
-
         <TitleContainer>{i18n.t("web.register.activation")}</TitleContainer>
         <CustomFormControl>
           <CustomSelect

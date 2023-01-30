@@ -297,38 +297,22 @@ class AddCard extends Component {
   };
   render() {
     const { withdrawalList, depositList } = this.props;
-    var depositListEWallet = false;
-    var withdrawalListEwallet = false;
-    var depositListPulsa = false;
-    var withdrawalListPulsa = false;
+    const listDetector = (list, type) => {
+      return (
+        Common.arrayValidator(list) &&
+        list[this.state.selectedBankTypeIndex].banktype === type
+      );
+    };
 
-    if (this.props.isDeposit) {
-      depositListEWallet =
-        Common.arrayValidator(depositList) &&
-        depositList[this.state.selectedBankTypeIndex].banktype === "EWallet";
+    const selectedBankType = (type) => {
+      return this.props.isDeposit
+        ? listDetector(depositList, type)
+        : listDetector(withdrawalList, type);
+    };
 
-      depositListPulsa =
-        Common.arrayValidator(depositList) &&
-        depositList[this.state.selectedBankTypeIndex].banktype === "Pulsa";
-    } else {
-      withdrawalListEwallet =
-        Common.arrayValidator(withdrawalList) &&
-        withdrawalList[this.state.selectedBankTypeIndex].banktype === "EWallet";
+    const eWalletCustom =
+      selectedBankType("Ewallet") && config.features.AddCard_EWalletCustoms;
 
-      withdrawalListPulsa =
-        Common.arrayValidator(withdrawalList) &&
-        withdrawalList[this.state.selectedBankTypeIndex].banktype === "Pulsa";
-    }
-
-    const isEwallet = this.props.isDeposit
-      ? depositListEWallet
-      : withdrawalListEwallet;
-
-    const isPulsa = this.props.isDeposit
-      ? depositListPulsa
-      : withdrawalListPulsa;
-
-    const eWalletCustom = isEwallet && config.features.AddCard_EWalletCustoms;
 
     const bankList = [
       "กสิกรไทย (Kasikorn Bank- KKR)",
@@ -573,7 +557,7 @@ class AddCard extends Component {
                   }
                   width={395}
                   height={38}
-                  maxLength={10}
+                  maxLength={config.features.MAX_PHONE_LENGTH || 10}
                   float={"none"}
                   handleTextFieldChange={this.handlePhoneChange}
                 ></CustomTextField>
@@ -583,25 +567,37 @@ class AddCard extends Component {
         ) : (
           <TextFieldItem>
             <TextFieldLabel>
-              {config.features.AddCard_DisplayGCash
+              {eWalletCustom || selectedBankType("Pulsa")
+                ? i18n.t("card.addCard.phone")
+                : config.features.AddCard_DisplayGCash
                 ? i18n.t("piso.withdrawalNumber")
                 : config.features.AddCard_DisplayFPS
                 ? i18n.t("hk28.withdrawalNumber")
+                : config.features.AddCard_Bank_Custom_IDR
+                ? i18n.t("idr.withdrawalNumber")
                 : i18n.t("common.withdrawalNumber")}
             </TextFieldLabel>
             <TextFieldContainer>
               <CustomTextField
                 marginTop={10}
                 placeholder={
-                  config.features.AddCard_DisplayGCash
+                  eWalletCustom || selectedBankType("Pulsa")
+                    ? i18n.t("card.addCard.msgEnterPhone")
+                    : config.features.AddCard_DisplayGCash
                     ? i18n.t("piso.msgEnterWithdrawalNumber")
                     : config.features.AddCard_DisplayFPS
                     ? i18n.t("hk28.msgEnterWithdrawalNumber")
+                    : config.features.AddCard_Bank_Custom_IDR
+                    ? i18n.t("idr.msgEnterWithdrawalNumber")
                     : i18n.t("common.msgEnterWithdrawalNumber")
                 }
                 width={395}
                 height={38}
-                maxLength={50}
+                maxLength={
+                  (selectedBankType("ThirdParty") ||
+                  selectedBankType("Pulsa") ||
+                  selectedBankType("FPS")) && (config.features.MAX_PHONE_LENGTH || 10)
+                }
                 float={"none"}
                 handleTextFieldChange={this.handleNumberChange}
               ></CustomTextField>

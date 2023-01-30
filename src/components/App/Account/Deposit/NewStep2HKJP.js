@@ -109,13 +109,7 @@ class NewStepTwo extends Component {
     this.props.performUploadImage(this.state.files[0]);
   };
   render() {
-    const {
-      extended,
-      depositResult,
-      amount,
-      performUploadImage,
-      handleRestartClick,
-    } = this.props;
+    const { extended, depositResult, amount } = this.props;
 
     return (
       <Container>
@@ -130,7 +124,7 @@ class NewStepTwo extends Component {
                 <TitleTD>{i18n.t("deposit.qrCode")}</TitleTD>
                 <ValueTD>
                   <QRCodeContainer>
-                    <QRCodeImg src={extended.qrCodeFileUrl} />
+                    <QRCodeImg src={extended.qrCode} />
                   </QRCodeContainer>
                 </ValueTD>
               </tr>

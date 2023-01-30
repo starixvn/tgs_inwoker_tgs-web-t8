@@ -132,10 +132,6 @@ class AddCard extends Component {
             this.state.selectedBankTypeIndex
           ].banktype.toUpperCase()
         ) {
-          // case "BANK":
-          //   name = defaultCard.detail.name;
-          //   disableBankAccountNameInput = true;
-          //   break;
           case "EWALLET":
             name = defaultCard.detail.eMoneyName;
             disableBankAccountNameInput = true;
@@ -456,38 +452,21 @@ class AddCard extends Component {
   };
   render() {
     const { withdrawalList, depositList } = this.props;
-    var depositListEWallet = false;
-    var withdrawalListEwallet = false;
-    var depositListPulsa = false;
-    var withdrawalListPulsa = false;
+    const listDetector = (list, type) => {
+      return (
+        Common.arrayValidator(list) &&
+        list[this.state.selectedBankTypeIndex].banktype === type
+      );
+    };
 
-    if (this.props.isDeposit) {
-      depositListEWallet =
-        Common.arrayValidator(depositList) &&
-        depositList[this.state.selectedBankTypeIndex].banktype === "EWallet";
+    const selectedBankType = (type) => {
+      return this.props.isDeposit
+        ? listDetector(depositList, type)
+        : listDetector(withdrawalList, type);
+    };
 
-      depositListPulsa =
-        Common.arrayValidator(depositList) &&
-        depositList[this.state.selectedBankTypeIndex].banktype === "Pulsa";
-    } else {
-      withdrawalListEwallet =
-        Common.arrayValidator(withdrawalList) &&
-        withdrawalList[this.state.selectedBankTypeIndex].banktype === "EWallet";
-
-      withdrawalListPulsa =
-        Common.arrayValidator(withdrawalList) &&
-        withdrawalList[this.state.selectedBankTypeIndex].banktype === "Pulsa";
-    }
-
-    const isEwallet = this.props.isDeposit
-      ? depositListEWallet
-      : withdrawalListEwallet;
-
-    const isPulsa = this.props.isDeposit
-      ? depositListPulsa
-      : withdrawalListPulsa;
-
-    const eWalletCustom = isEwallet && config.features.AddCard_EWalletCustoms;
+    const eWalletCustom =
+      selectedBankType("Ewallet") && config.features.AddCard_EWalletCustoms;
 
     const bankList = [
       "กสิกรไทย (Kasikorn Bank- KKR)",
@@ -543,7 +522,7 @@ class AddCard extends Component {
           </TextFieldItem>
         )}
 
-        {!(config.features.AddCard_HideChannel) && (
+        {!config.features.AddCard_HideChannel && (
           <>
             <TextFieldItem>
               <TextFieldLabel>
@@ -832,7 +811,7 @@ class AddCard extends Component {
                   }
                   width={395}
                   height={38}
-                  maxLength={10}
+                  maxLength={config.features.MAX_PHONE_LENGTH || 10}
                   float={"none"}
                   handleTextFieldChange={this.handlePhoneChange}
                 ></CustomTextField>
@@ -842,7 +821,7 @@ class AddCard extends Component {
         ) : (
           <TextFieldItem>
             <TextFieldLabel>
-              {eWalletCustom || isPulsa
+              {eWalletCustom || selectedBankType("Pulsa")
                 ? i18n.t("card.addCard.phone")
                 : config.features.AddCard_DisplayGCash
                 ? i18n.t("piso.withdrawalNumber")
@@ -856,7 +835,7 @@ class AddCard extends Component {
               <CustomTextField
                 marginTop={10}
                 placeholder={
-                  eWalletCustom || isPulsa
+                  eWalletCustom || selectedBankType("Pulsa")
                     ? i18n.t("card.addCard.msgEnterPhone")
                     : config.features.AddCard_DisplayGCash
                     ? i18n.t("piso.msgEnterWithdrawalNumber")
@@ -868,7 +847,11 @@ class AddCard extends Component {
                 }
                 width={395}
                 height={38}
-                maxLength={50}
+                maxLength={
+                  (selectedBankType("ThirdParty") ||
+                  selectedBankType("Pulsa") ||
+                  selectedBankType("FPS")) && (config.features.MAX_PHONE_LENGTH || 10)
+                }
                 float={"none"}
                 handleTextFieldChange={this.handleNumberChange}
               ></CustomTextField>

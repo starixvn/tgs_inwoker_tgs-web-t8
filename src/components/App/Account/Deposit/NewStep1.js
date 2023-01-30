@@ -1,15 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { Component } from "react";
 import { TextField, Select, FormControl, withStyles } from "@material-ui/core";
 import i18n from "../../../../utils/i18n";
 import CustomButton from "../../../Share/Button";
-
 import LimitPopupPNG from "../../../../assets/images/limit-popup.png";
 import Common from "../../../../utils/Common";
 import config from "../../../../config/config";
-import copy from "copy-to-clipboard";
 import { withSnackbar } from "notistack";
+import { utility } from "../../../../utils/utility";
 const CustomImage = styled.img`
   height: 130px;
   width: auto;
@@ -101,19 +99,7 @@ const SubHeaderContainer = styled.div`
   flex-direction: column;
   align-items: flex-end;
 `;
-const NumberContainer = styled.div`
-  width: 20px;
-  height: 20px;
-  border-radius: 3.2px;
-  background-color: #151a34;
-  font-family: Arial;
-  font-size: 14px;
-  font-weight: bold;
-  color: #ffffff;
-  text-align: center;
-  padding-top: 2px;
-  float: left;
-`;
+
 const SubTitle = styled.div`
   font-size: 16px;
   color: #818181;
@@ -124,19 +110,7 @@ const SelectionContainer = styled.div`
   margin: 15px 0 0 30px;
 `;
 const QRCodeImg = styled.img``;
-const TunnelButton = styled(TabButton)`
-  min-width: 133px;
-  height: 41px;
 
-  margin-top: 3px;
-  padding: 10px 20px 0 20px;
-`;
-const SplitLine = styled.div`
-  width: 100%;
-  height: 1px;
-  background-color: #e1dfdf;
-  margin: 20px 0;
-`;
 const CustomSelect = withStyles((theme) => ({
   root: {
     fontSize: "14px",
@@ -269,7 +243,7 @@ const NewStepOne = (props) => {
       variant: "success",
     });
 
-    copy(content);
+    utility.copy(content);
   };
 
   const CopyFeature = ({ copyContent }) => {
@@ -360,17 +334,6 @@ const NewStepOne = (props) => {
                     })}
                   </CustomSelect>
                 </CustomFormControl>
-                {/* {methodList.map((item, index) => {
-            return (
-              <TunnelButton
-                key={index}
-                onClick={() => onMethodChange(index)}
-                active={selectedMethodIndex === index}
-              >
-                {i18n.t(item.methodcode)}
-              </TunnelButton>
-            );
-          })} */}
               </SelectionContainer>
             </FormRightContainer>
           </FormContainer>
@@ -498,7 +461,7 @@ const NewStepOne = (props) => {
 
                           <FormRightContainer>
                             <SelectionContainer>
-                            <QRCodeImg src={channelExtend.qrCodeFileUrl} />
+                              <QRCodeImg src={channelExtend.qrCode} />
                             </SelectionContainer>
                           </FormRightContainer>
                         </FormContainer>

@@ -21,7 +21,7 @@ import { AppHistory } from "../../../history/History";
 // const channel = new BroadcastChannel('refreshBalance');
 const Container = styled.div`
   width: 100%;
-  background: #000;//url(${BGJPG});
+  background: #000; //url(${BGJPG});
   min-height: 800px;
 `;
 const InnerContainer = styled.div`

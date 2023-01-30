@@ -45,7 +45,7 @@ const Whatsapp = (props) => {
     //   return;
     // }
 
-    AccountService.UpdateWhatsapp(whatsapp).then((response) => {
+    AccountService.UpdateIM(whatsapp, "whatsapp", "whatsapp").then((response) => {
       if (response.IsSuccess) {
         props.dispatch({
           type: UPDATE_INFO,

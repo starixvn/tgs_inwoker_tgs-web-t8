@@ -6,8 +6,8 @@ import CustomButton from "../../../Share/Button";
 
 import Password2IconPNG from "../../../../assets/images/password2-icon.png";
 import IconInputNewpassPNG from "../../../../assets/images/icon-input-newpass.png";
-import {AccountService} from "../../../../api-services/services/AccountService";
-import {UPDATE_INFO} from "../../../../api-services/constant/actionType";
+import { AccountService } from "../../../../api-services/services/AccountService";
+import { UPDATE_INFO } from "../../../../api-services/constant/actionType";
 
 import { withSnackbar } from "notistack";
 import i18n from "../../../../utils/i18n";
@@ -83,15 +83,8 @@ class WithdrawalPassword extends Component {
           handleTextFieldChange={this.onhandlePass2Change}
           type="password"
         ></CustomTextField>
-        {/* <CustomButton
-          width={170}
-          float={"left"}
-          name={i18n.t("common.back")}
-          handleClick={this.props.handleBackClick}
-        ></CustomButton> */}
+
         <CustomButton
-          // width={170}
-          // float={"right"}
           name={i18n.t("common.submit")}
           handleClick={this.onhandleClick}
         ></CustomButton>

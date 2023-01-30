@@ -1,11 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { withStyles } from "@material-ui/core/styles";
 import addDays from "date-fns/addDays";
 import DateSelection from "./DateSelection";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import TransferReportList from "./TransferReportList";
 import TableList from "./TableList";
 const moment = require("moment");
 const Container = styled.div`
@@ -29,51 +25,6 @@ const InnerWrap = styled.div`
   box-sizing: border-box;
   background-color: #f7f7f7;
 `;
-const Label = styled.span`
-  float: left;
-  margin: 20px 5px 0 0;
-`;
-const CustomFormControl = withStyles((theme) => ({
-  root: {
-    width: "135px",
-    height: "40px",
-    marginTop: "10px",
-    marginRight: "5px",
-    float: "left",
-    broder: "solid 2px #000",
-    backgroundColor: "#fff",
-    "&:before": {
-      borderRight: "1px solid #b6b6b6",
-      content: '"\\00a0"',
-      position: "absolute",
-      top: "1px",
-      right: "36px",
-      zIndex: " 2",
-      display: "block",
-      height: "100%",
-    },
-    "& label.Mui-focused": {
-      color: "#b6b6b6",
-    },
-    "& .MuiInput-underline:after": {
-      borderBottomColor: "#b6b6b6",
-    },
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        borderColor: "#b6b6b6",
-        marginTop: "1px",
-      },
-      "&:hover fieldset": {
-        borderColor: "#b6b6b6",
-        marginTop: "1px",
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: "#b6b6b6",
-        marginTop: "1px",
-      },
-    },
-  },
-}))(FormControl);
 
 class TransferReport extends Component {
   state = {
@@ -193,19 +144,13 @@ class TransferReport extends Component {
           </CustomFormControl> */}
         </FilterContainer>
         <InnerWrap>
-          <TableList 
+          <TableList
             type="transfer"
             page={this.state.page}
             rows={this.props.transferReportList.list}
             total={this.props.transferReportList.count}
             onhandleChangePage={this.handleChangePage}
           />
-          {/* <TransferReportList 
-            page={this.state.page}
-            rows={this.props.transferReportList.list}
-            total={this.props.transferReportList.count}
-            onhandleChangePage={this.handleChangePage}
-          ></TransferReportList> */}
         </InnerWrap>
       </Container>
     );

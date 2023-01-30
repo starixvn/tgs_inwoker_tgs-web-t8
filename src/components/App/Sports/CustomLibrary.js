@@ -13,9 +13,6 @@ import { SHOW_LOGIN } from "../../../api-services/constant/actionType";
 import SearchIcon from "../../../assets/images/search.svg";
 import SearchActiveIcon from "../../../assets/images/search-active.svg";
 
-import SlotAllPNG from "../../../assets/images/slot-all.png";
-import SlotAllInactivePNG from "../../../assets/images/slot-all-inactive.png";
-
 import SlotAllGamePNG from "../../../assets/images/slot-allgame.png";
 import SlotAllGameActivePNG from "../../../assets/images/slot-allgame-active.png";
 import SlotHotGamePNG from "../../../assets/images/slot-hotgame.png";
@@ -53,26 +50,6 @@ const Container = styled.div`
   background-size: cover;
 `;
 
-const NoContentText = styled.div`
-  color: #000;
-  font-size: ${(props) =>
-    props.lang === "zh-CN" || props.lang === "zh-TW" ? `3.2em` : `2.3em`};
-  text-shadow: 0 0 18px #ffe14e;
-  -webkit-text-stroke: 0.5px white;
-  font-weight: bold;
-  width: 450px;
-  height: auto;
-  margin-left: 180px;
-  overflow: visible;
-  font-family: "微軟正黑粗";
-  &:first-child {
-    margin-top: 210px;
-  }
-  &:last-child {
-    ${(props) => (props.lang === "en-US" ? `font-size: 3.2em;` : ``)}
-  }
-`;
-
 const InnerWrap = styled.div`
   width: 1020px;
   min-height: 780px;
@@ -82,145 +59,6 @@ const InnerWrap = styled.div`
   box-sizing: border-box;
   overflow-y: auto;
   padding-bottom: 50px;
-`;
-const GameTabContainer = styled.div`
-  display: flex;
-  overflow: auto;
-  padding-right: 60px;
-  background-color: #b2b2b2;
-`;
-const GameTab = styled.div`
-  cursor: pointer;
-  flex-shrink: 0;
-  font-size: 14px;
-  height: 96px;
-  padding: 3px;
-  position: relative;
-  text-align: center;
-  transition: color 0.4s, filter 0.4s;
-  z-index: 1;
-  filter: ${(props) =>
-    props.active === true
-      ? `brightness(500%) grayscale(100%);`
-      : `brightness(50%) grayscale(100%);`};
-  margin: 0 auto;
-  background: url(${(props) =>
-      process.env.PUBLIC_URL +
-      `/assets/images/pcGamePage/slots/` +
-      props.img +
-      (props.active === true ? `-white` : `-color`) +
-      `.png`})
-    no-repeat;
-  background-position: center;
-  background-size: contain;
-  width: 100px;
-`;
-
-const GameTabAll = styled(GameTab)`
-  background: url(${(props) =>
-      props.active === true ? `${SlotAllPNG}` : `${SlotAllInactivePNG}`})
-    no-repeat;
-  background-position: center;
-  background-size: contain;
-  width: 100px;
-`;
-
-const DisabledOverlay = styled.div`
-  height: 100%;
-  width: 100%;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.75);
-  position: absolute;
-  color: white;
-  font-weight: bold;
-  pointer-event: none;
-  text-transform: capitalize;
-  z-index: 3;
-  cursor: not-allowed;
-  text-align: center;
-`;
-
-const GameTabButton = styled.div`
-  width: 141px;
-  height: 95px;
-  background-color: #B2B2B2;
-  position: relative;
-  float: left;
-  z-index: 1;
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  &:hover:after {
-    background-color: #0091FE;
-    transform: scaleY(1);
-  }
-
-  &:after { 
-    content: "";
-    height: 100%;
-    left: 0;
-    position: absolute;
-    top: 0;
-    transform: scaleY(0);
-    transition: transform .4s;
-    width: 100%;
-    z-index: -1;
-  }
-
-  &:first-child {
-    margin-left: auto;
-  }
-  &:last-child {
-    margin-right: auto;
-  }
-
-  ${(props) =>
-    props.active
-      ? `  background-color: #0091FE; `
-      : `  background-color: #B2B2B2;`};
-
-  ${({ maintenance }) => {
-    return maintenance
-      ? `
-          pointer-events: none !important;
-        ${DisabledOverlay}{
-          display: flex; 
-          pointer-events: none !important;
-          cursor: not-allowed;
-        }
-    
-        ${GameTab}{
-          pointer-events: none;
-         
-        }
-        `
-      : ``;
-  }}
-
-  &:hover ${GameTab} {
-    background: url(${(props) =>
-      process.env.PUBLIC_URL +
-      `/assets/images/pcGamePage/slots/` +
-      props.img +
-      `-white.png`})
-      no-repeat;
-      background-position: center;
-      background-size: contain;
-    filter: brightness(500%) grayscale(100%);
-    transition: filter 3s;
-  }
-  &:hover ${GameTabAll} {
-    background: url(${SlotAllInactivePNG})
-      no-repeat;
-      background-position: center;
-      background-size: contain;
-    filter: brightness(500%) grayscale(100%);
-    transition: filter 1s;
-  }
 `;
 
 const GameDisplayContainer = styled.div`
@@ -448,21 +286,6 @@ const GameListContainer = styled.div`
   padding: 5px;
 `;
 
-const GameHoverSelection = styled.div`
-  width: 165px;
-  height: 205px;
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: none;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 2;
-  color: #fff;
-  font-size: 65px;
-  text-align: center;
-  padding-top: 55px;
-`;
-
 const bounceInAnimation = keyframes`
 0% {
   opacity: 0;
@@ -572,7 +395,7 @@ const GameItemOverlay = styled.div`
     top: 0;
     width: 100%;
 
-    transition: transform .6s .6s,opacity .4s .4s;
+    transition: transform 0.6s 0.6s, opacity 0.4s 0.4s;
   }
 
   ${GameItem}:hover &:before, ${GameItem}:hover &:after {
@@ -580,23 +403,21 @@ const GameItemOverlay = styled.div`
     transform: scaleX(1);
   }
 
-  
-
-  &:after {    
+  &:after {
     content: "";
     height: 100%;
     opacity: 0;
-    transform: scale3d(.25,.25,1);
+    transform: scale3d(0.25, 0.25, 1);
     z-index: -1;
 
-    background-color: rgba(0,0,0,.4);
+    background-color: rgba(0, 0, 0, 0.4);
     border-radius: 8px;
     left: 0;
     position: absolute;
     top: 0;
     width: 100%;
 
-    transition: transform .6s .2s,opacity .4s;
+    transition: transform 0.6s 0.2s, opacity 0.4s;
   }
 
   ${GameItem}:hover & {

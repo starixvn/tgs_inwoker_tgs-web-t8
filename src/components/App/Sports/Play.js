@@ -8,7 +8,6 @@ import SportsBGNewPNG from "../../../assets/images/sportsbook/sports-bg2.jpg";
 
 import IconRefreshLargePNG from "../../../assets/images/icon-refresh-large.png";
 import IconLeftArrowPNG from "../../../assets/images/left-arrow-thicc.png";
-import IconFavPNG from "../../../assets/images/icon-fav.png";
 import i18n from "../../../utils/i18n";
 import LoadingGIF from "../../../assets/images/loading.gif";
 import { AppHistory } from "../../../history/History";
@@ -158,7 +157,7 @@ class Play extends Component {
     if (
       preProps.match.params.params !== this.props.match.params.params ||
       preProps.match.params.type !== this.props.match.params.type ||
-      preProps.token != this.props.token
+      preProps.token !== this.props.token
     ) {
       this.setState({
         ...this.state,
@@ -210,9 +209,8 @@ class Play extends Component {
               maintenance: false,
               loading: false,
             });
-            if(config.features.WGSports_UseIframe && gameCode === "WGFM")
-            {
-              console.log(response)
+            if (config.features.WGSports_UseIframe && gameCode === "WGFM") {
+              console.log(response);
               let arr = document.domain.split(".");
               let host = arr[arr.length - 2] + "." + arr[arr.length - 1];
               var currentDomain = host;
@@ -224,14 +222,12 @@ class Play extends Component {
                 this.myRef.current.src =
                   "https://" + currentDomain + "/" + getExistingParam;
               }
-            }
-            else
-            {
+            } else {
               if (this.myRef.current) {
                 var url =
                   (response.data.url.indexOf("http") <= -1 ? "https:" : "") +
                   response.data.url;
-  
+
                 this.myRef.current.src = url;
               }
             }

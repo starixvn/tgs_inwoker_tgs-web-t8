@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { withSnackbar } from "notistack";
-import copy from "copy-to-clipboard";
 import i18n from "../../../../utils/i18n";
 import { AppHistory } from "../../../../history/History";
 import QRCode from "react-qr-code";
+import { utility } from "../../../../utils/utility";
 
 const QRCodeLabel = styled.div`
   margin: 30px auto;
@@ -96,7 +96,7 @@ class Affiliate extends Component {
     this.props.enqueueSnackbar(i18n.t("affiliate.copied"), {
       variant: "success",
     });
-    copy(
+    utility.copy(
       `${window.location.hostname}/${i18n.language}/p/${this.props.account.info.playercode}?do=register`
     );
   };

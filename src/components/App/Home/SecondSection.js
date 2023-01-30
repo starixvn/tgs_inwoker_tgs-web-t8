@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 
-import { connect } from "react-redux";
 import SliderPNG from "../../../assets/images/home/section/game-slider.png";
 import SliderBackgroundPNG from "../../../assets/images/home/section/game-slider-bg.png";
 import Section2SlotsPNG from "../../../assets/images/home/section/section2-slots.png";
@@ -11,8 +10,6 @@ import Section2LivePNG from "../../../assets/images/home/section/section2-live.p
 import Section2SportsPNG from "../../../assets/images/home/section/section2-sports.png";
 import Section2EsportsPNG from "../../../assets/images/home/section/section2-esports.png";
 import i18n from "../../../utils/i18n";
-import Common from "../../../utils/Common";
-import { GameTypeEnum } from "../../../api-services/utils/Enum";
 import ScrollAnimation from "react-animate-on-scroll";
 import Slider from "react-slick";
 
@@ -150,7 +147,6 @@ const SliderButtonLabel = styled.div`
 `;
 
 const SecondSection = (props) => {
-  const [current] = useState(0);
   const [isSliding, setIsSliding] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeSlide2, setActiveSlide2] = useState(0);

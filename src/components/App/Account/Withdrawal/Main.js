@@ -109,17 +109,6 @@ const Turnover = styled.div`
   }
 `;
 
-const LimitLabel = styled.span`
-  color: #747474;
-`;
-
-const LimitAmount = styled.span`
-  color: #c0252d;
-`;
-const ExchangeRateContainer = styled.div`
-  font-size: 14px;
-`;
-
 const ButtonWrapper = styled.div`
   margin: 15px 0 15px 30px;
   display: flex;
@@ -149,17 +138,6 @@ const GameWalletButton = styled.div`
       props.disabled
         ? "   background-image: linear-gradient(to top, #797979, #c3c3c3);"
         : " box-shadow: inset 1px 1px 9px 0  rgba(255, 255, 255, 0.75);"}
-  }
-`;
-const GapLeaver = styled.div`
-  padding-left: 50px;
-`;
-
-const FeeSpot = styled.div`
-  color: ${({ theme }) => theme.primary};
-
-  span {
-    font-weight: bold;
   }
 `;
 
@@ -325,34 +303,6 @@ const Main = (props) => {
 
       <SubHeaderContainer>
         <SubTitle>{i18n.t("withdrawal.enterAmount")}</SubTitle>{" "}
-        {
-          //    <GapLeaver>
-          //    <FeeSpot>
-          //      {i18n.t("fees.withdraw")}: <span>{fee}%</span>
-          //    </FeeSpot>
-          //  </GapLeaver>
-        }
-        {/* {(() => {
-          if (
-            props.cardList[selectedCardIndex] &&
-            props.cardList[selectedCardIndex].banktype === "Usdt"
-          ) {
-            return (
-              <ExchangeRateContainer
-                style={{
-                  paddingTop: "1px",
-                  paddingLeft: "20px",
-                  whiteSpace: "break-spaces",
-                }}
-              >
-                <LimitLabel>{i18n.t("deposit.exchangeRate")} : </LimitLabel>
-                <LimitAmount>1</LimitAmount>
-                <LimitLabel> {"\t"} USDT : </LimitLabel>
-                <LimitAmount>{` ${exchangeRate}`}</LimitAmount>
-              </ExchangeRateContainer>
-            );
-          }
-        })()} */}
       </SubHeaderContainer>
 
       <SelectionContainer>

@@ -119,6 +119,7 @@ const featureList = {
 
     Deposit_SplitUsdt: false,
     Withdrawal_WalletTransfer: false,
+    BC_CustomTranslation: false,
   },
 };
 export default featureList;

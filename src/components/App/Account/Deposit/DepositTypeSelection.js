@@ -1,12 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Component } from "react";
-import { TextField, Select, FormControl, withStyles } from "@material-ui/core";
 import i18n from "../../../../utils/i18n";
-import CustomButton from "../../../Share/Button";
-
-import LimitPopupPNG from "../../../../assets/images/limit-popup.png";
-import Common from "../../../../utils/Common";
 import config from "../../../../config/config";
 
 const TabButtonContainer = styled.div`
@@ -71,12 +66,12 @@ class DepositTypeSelection extends Component {
           .map((item, index) => {
             var customPaymentCodeName = "";
             {
-              config.features.DepositCustomPaymentNames.length > 0 && 
-              config.features.DepositCustomPaymentNames.map((platform) => {
-                if (platform.code === item.paymentcode.toLowerCase() ) {
-                  customPaymentCodeName = platform.customName
-                }
-              })
+              config.features.DepositCustomPaymentNames.length > 0 &&
+                config.features.DepositCustomPaymentNames.map((platform) => {
+                  if (platform.code === item.paymentcode.toLowerCase()) {
+                    customPaymentCodeName = platform.customName;
+                  }
+                });
             }
             return (
               <TabButton
@@ -84,10 +79,18 @@ class DepositTypeSelection extends Component {
                 onClick={() => onhandleTabClick(item, index)}
                 active={selectedPaymentIndex === index}
               >
-                <TabLabel> { customPaymentCodeName !== "" ? customPaymentCodeName :
-                i18n.t( item.paymentcode)}</TabLabel>
-                <SmallTabLabel> {customPaymentCodeName !== "" ? customPaymentCodeName :
-                i18n.t( item.paymentcode)}</SmallTabLabel>
+                <TabLabel>
+                  {" "}
+                  {customPaymentCodeName !== ""
+                    ? customPaymentCodeName
+                    : i18n.t(item.paymentcode)}
+                </TabLabel>
+                <SmallTabLabel>
+                  {" "}
+                  {customPaymentCodeName !== ""
+                    ? customPaymentCodeName
+                    : i18n.t(item.paymentcode)}
+                </SmallTabLabel>
               </TabButton>
             );
           })}

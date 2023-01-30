@@ -53,26 +53,6 @@ const Container = styled.div`
   background-size: cover;
 `;
 
-const NoContentText = styled.div`
-  color: #000;
-  font-size: ${(props) =>
-    props.lang === "zh-CN" || props.lang === "zh-TW" ? `3.2em` : `2.3em`};
-  text-shadow: 0 0 18px #ffe14e;
-  -webkit-text-stroke: 0.5px white;
-  font-weight: bold;
-  width: 450px;
-  height: auto;
-  margin-left: 180px;
-  overflow: visible;
-  font-family: "微軟正黑粗";
-  &:first-child {
-    margin-top: 210px;
-  }
-  &:last-child {
-    ${(props) => (props.lang === "en-US" ? `font-size: 3.2em;` : ``)}
-  }
-`;
-
 const InnerWrap = styled.div`
   width: 1020px;
   min-height: 780px;
@@ -145,7 +125,7 @@ const DisabledOverlay = styled.div`
 const GameTabButton = styled.div`
   width: 141px;
   height: 95px;
-  background-color: #B2B2B2;
+  background-color: #b2b2b2;
   position: relative;
   float: left;
   z-index: 1;
@@ -155,18 +135,18 @@ const GameTabButton = styled.div`
   }
 
   &:hover:after {
-    background-color: #0091FE;
+    background-color: #0091fe;
     transform: scaleY(1);
   }
 
-  &:after { 
+  &:after {
     content: "";
     height: 100%;
     left: 0;
     position: absolute;
     top: 0;
     transform: scaleY(0);
-    transition: transform .4s;
+    transition: transform 0.4s;
     width: 100%;
     z-index: -1;
   }
@@ -203,21 +183,20 @@ const GameTabButton = styled.div`
 
   &:hover ${GameTab} {
     background: url(${(props) =>
-      process.env.PUBLIC_URL +
-      `/assets/images/pcGamePage/slots/` +
-      props.img +
-      `-white.png`})
+        process.env.PUBLIC_URL +
+        `/assets/images/pcGamePage/slots/` +
+        props.img +
+        `-white.png`})
       no-repeat;
-      background-position: center;
-      background-size: contain;
+    background-position: center;
+    background-size: contain;
     filter: brightness(500%) grayscale(100%);
     transition: filter 3s;
   }
   &:hover ${GameTabAll} {
-    background: url(${SlotAllInactivePNG})
-      no-repeat;
-      background-position: center;
-      background-size: contain;
+    background: url(${SlotAllInactivePNG}) no-repeat;
+    background-position: center;
+    background-size: contain;
     filter: brightness(500%) grayscale(100%);
     transition: filter 1s;
   }
@@ -449,21 +428,6 @@ const GameListContainer = styled.div`
   padding: 5px;
 `;
 
-const GameHoverSelection = styled.div`
-  width: 165px;
-  height: 205px;
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: none;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 2;
-  color: #fff;
-  font-size: 65px;
-  text-align: center;
-  padding-top: 55px;
-`;
-
 const bounceInAnimation = keyframes`
 0% {
   opacity: 0;
@@ -573,7 +537,7 @@ const GameItemOverlay = styled.div`
     top: 0;
     width: 100%;
 
-    transition: transform .6s .6s,opacity .4s .4s;
+    transition: transform 0.6s 0.6s, opacity 0.4s 0.4s;
   }
 
   ${GameItem}:hover &:before, ${GameItem}:hover &:after {
@@ -581,23 +545,21 @@ const GameItemOverlay = styled.div`
     transform: scaleX(1);
   }
 
-  
-
-  &:after {    
+  &:after {
     content: "";
     height: 100%;
     opacity: 0;
-    transform: scale3d(.25,.25,1);
+    transform: scale3d(0.25, 0.25, 1);
     z-index: -1;
 
-    background-color: rgba(0,0,0,.4);
+    background-color: rgba(0, 0, 0, 0.4);
     border-radius: 8px;
     left: 0;
     position: absolute;
     top: 0;
     width: 100%;
 
-    transition: transform .6s .2s,opacity .4s;
+    transition: transform 0.6s 0.2s, opacity 0.4s;
   }
 
   ${GameItem}:hover & {
@@ -1030,10 +992,10 @@ class Slots extends Component {
       >
         <GameTabContainer>
           <GameTabButton
-            active={this.state.platform == ""}
+            active={this.state.platform === ""}
             onClick={() => this.handleParentClick("")}
           >
-            <GameTabAll active={this.state.platform == ""}></GameTabAll>
+            <GameTabAll active={this.state.platform === ""}></GameTabAll>
           </GameTabButton>
 
           {this.props.game.homePageGameList
@@ -1047,16 +1009,16 @@ class Slots extends Component {
                 <GameTabButton
                   key={index}
                   img={row.abbreviation.toLowerCase()}
-                  active={this.state.platform == row.abbreviation}
+                  active={this.state.platform === row.abbreviation}
                   onClick={() => this.handleParentClick(row.abbreviation)}
-                  maintenance={row.status != 0}
+                  maintenance={row.status !== 0}
                 >
                   <DisabledOverlay>
                     {i18n.t("transfer.maintenance")}
                   </DisabledOverlay>
                   <GameTab
                     img={row.abbreviation.toLowerCase()}
-                    active={this.state.platform == row.abbreviation}
+                    active={this.state.platform === row.abbreviation}
                   ></GameTab>
                 </GameTabButton>
               );

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { withStyles } from "@material-ui/core/styles";
+
 import addDays from "date-fns/addDays";
 import DateSelection from "./DateSelection";
 
@@ -96,8 +96,8 @@ class JoinedPromoReport extends Component {
             page={this.state.page}
             rows={this.props.joinedReport.list}
             total={this.props.joinedReport.count}
-            onhandleChangePage={this.handleChangePage} 
-            />
+            onhandleChangePage={this.handleChangePage}
+          />
           {/* <JoinedReportList
             page={this.state.page}
             rows={this.props.joinedReport.list}

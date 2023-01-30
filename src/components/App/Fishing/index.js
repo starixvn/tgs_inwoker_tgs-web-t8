@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import styled, { css, keyframes } from "styled-components";
+import styled from "styled-components";
 import { AppHistory } from "../../../history/History";
 
 import { GameService } from "../../../api-services/services/GameService";
 import { SHOW_LOGIN } from "../../../api-services/constant/actionType";
-import { GameTypeEnum, GameEnum } from "../../../api-services/utils/Enum";
+import { GameTypeEnum } from "../../../api-services/utils/Enum";
 
 import SlotAllPNG from "../../../assets/images/slot-all.png";
 import SlotAllInactivePNG from "../../../assets/images/slot-all-inactive.png";
@@ -27,26 +27,6 @@ const Container = styled.div`
     no-repeat;
   background-attachment: fixed;
   background-size: cover;
-`;
-
-const NoContentText = styled.div`
-  color: #000;
-  font-size: ${(props) =>
-    props.lang === "zh-CN" || props.lang === "zh-TW" ? `3.2em` : `2.3em`};
-  text-shadow: 0 0 18px #ffe14e;
-  -webkit-text-stroke: 0.5px white;
-  font-weight: bold;
-  width: 450px;
-  height: auto;
-  margin-left: 180px;
-  overflow: visible;
-  font-family: "微軟正黑粗";
-  &:first-child {
-    margin-top: 210px;
-  }
-  &:last-child {
-    ${(props) => (props.lang === "en-US" ? `font-size: 3.2em;` : ``)}
-  }
 `;
 
 const GameTabContainer = styled.div`
@@ -111,7 +91,7 @@ const DisabledOverlay = styled.div`
 const GameTabButton = styled.div`
   width: 141px;
   height: 95px;
-  background-color: #B2B2B2;
+  background-color: #b2b2b2;
   position: relative;
   float: left;
   z-index: 1;
@@ -121,18 +101,18 @@ const GameTabButton = styled.div`
   }
 
   &:hover:after {
-    background-color: #0091FE;
+    background-color: #0091fe;
     transform: scaleY(1);
   }
 
-  &:after { 
+  &:after {
     content: "";
     height: 100%;
     left: 0;
     position: absolute;
     top: 0;
     transform: scaleY(0);
-    transition: transform .4s;
+    transition: transform 0.4s;
     width: 100%;
     z-index: -1;
   }
@@ -169,21 +149,20 @@ const GameTabButton = styled.div`
 
   &:hover ${GameTab} {
     background: url(${(props) =>
-      process.env.PUBLIC_URL +
-      `/assets/images/pcGamePage/slots/` +
-      props.img +
-      `-white.png`})
+        process.env.PUBLIC_URL +
+        `/assets/images/pcGamePage/slots/` +
+        props.img +
+        `-white.png`})
       no-repeat;
-      background-position: center;
-      background-size: contain;
+    background-position: center;
+    background-size: contain;
     filter: brightness(500%) grayscale(100%);
     transition: filter 3s;
   }
   &:hover ${GameTabAll} {
-    background: url(${SlotAllInactivePNG})
-      no-repeat;
-      background-position: center;
-      background-size: contain;
+    background: url(${SlotAllInactivePNG}) no-repeat;
+    background-position: center;
+    background-size: contain;
     filter: brightness(500%) grayscale(100%);
     transition: filter 1s;
   }
@@ -314,7 +293,6 @@ class Fishing extends Component {
   handleJoinGameClick = (gpcode, gpid) => {
     if (this.props.token) {
       Common.closePreviousPopup();
-      // this.props.performBalanceRefresh();
       this.props.history.push(`/${i18n.language}/fish/play/${gpcode}/${gpid}`);
     } else {
       this.props.showLogin(true);
@@ -331,24 +309,6 @@ class Fishing extends Component {
     AppHistory.push(`/${i18n.language}/${type}/${platform}`);
   };
 
-  // handleJoinGameClick = (gid) => {
-  //   if (this.props.token) {
-  //     Common.PopupCenter(
-  //       "/" +
-  //         i18n.language +
-  //         "/joingame/" +
-  //         GameTypeEnum.FISH +
-  //         "/" +
-  //         GameEnum.JDB +
-  //         "/" +
-  //         gid,
-  //       1280,
-  //       720
-  //     );
-  //   } else {
-  //     this.props.showLogin(true);
-  //   }
-  // };
   getGameList(
     page = this.state.page,
     platform = this.state.platform,
@@ -430,10 +390,10 @@ class Fishing extends Component {
       <Container>
         <GameTabContainer>
           <GameTabButton
-            active={this.state.platform == ""}
+            active={this.state.platform === ""}
             onClick={() => this.handleParentClick("")}
           >
-            <GameTabAll active={this.state.platform == ""}></GameTabAll>
+            <GameTabAll active={this.state.platform === ""}></GameTabAll>
           </GameTabButton>
 
           {this.props.game.homePageGameList
@@ -447,16 +407,16 @@ class Fishing extends Component {
                 <GameTabButton
                   key={index}
                   img={row.abbreviation.toLowerCase()}
-                  active={this.state.platform == row.abbreviation}
+                  active={this.state.platform === row.abbreviation}
                   onClick={() => this.handleParentClick(row.abbreviation)}
-                  maintenance={row.status != 0}
+                  maintenance={row.status !== 0}
                 >
                   <DisabledOverlay>
                     {i18n.t("transfer.maintenance")}
                   </DisabledOverlay>
                   <GameTab
                     img={row.abbreviation.toLowerCase()}
-                    active={this.state.platform == row.abbreviation}
+                    active={this.state.platform === row.abbreviation}
                   ></GameTab>
                 </GameTabButton>
               );

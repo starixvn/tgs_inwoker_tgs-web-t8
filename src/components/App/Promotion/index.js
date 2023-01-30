@@ -14,10 +14,6 @@ import { generalAction } from "../../../api-services/actions/generalAction";
 import { SHOW_LOGIN } from "../../../api-services/constant/actionType";
 import { Grid, Container as MContainer } from "@material-ui/core";
 
-import PromoEmpty from "../../../assets/images/promo-empty.png";
-
-const moment = require("moment");
-
 const Container = styled.div`
   width: 100%;
   background: #000; //url(${BGPromotionJPG}) no-repeat top center #fff;
@@ -31,78 +27,6 @@ const Wrap = styled.div`
 
 const ThePromotion = styled(Grid)`
   margin: 70px 0;
-`;
-
-const ThePromotionContainer = styled(Grid)`
-  background: #fff;
-  width: 100%;
-  border-radius: 20px;
-  padding: 25px 18px;
-  flex-direction: column;
-  box-shadow: 5px 5px 8px rgba(32, 0, 0, 0.7);
-  height: 539px;
-  position: relative;
-`;
-
-const PromoImages = styled.div`
-  width: 550px;
-  height: 222px;
-  position: relative;
-  margin-bottom: 12px;
-  background: url(${(props) => props.img}) no-repeat;
-  background-size: 100% 100%;
-`;
-
-const EventTitle = styled.div`
-  color: #7e0000;
-  margin-bottom: 10px;
-  font-size: 19px;
-  font-family: Arial;
-  margin-left: -8px;
-`;
-const EventLabel = styled.div`
-  font-size: 15px;
-  color: #4f4f4f;
-  font-family: Arial;
-  line-height: 16px;
-  margin-bottom: 6px;
-  font-weight: bold;
-`;
-const EventText = styled.div`
-  font-size: 15px;
-  color: #4f4f4f;
-  font-family: Arial;
-  line-height: 16px;
-  margin-bottom: 12px;
-`;
-
-const PromoButtonContainer = styled(Grid)`
-  cursor: pointer;
-  user-select: none;
-  position: relative;
-`;
-
-const PromoButtonImg = styled.div`
-  width: 100%;
-  border-radius: 5px;
-  height: 62px;
-  background-image: linear-gradient(
-    to top,
-    ${({ theme }) => theme.primaryGradient},
-    ${({ theme }) => theme.primary}
-  );
-`;
-
-const PromoButtonText = styled.div`
-  position: absolute;
-  left: calc(50% - 32px);
-  bottom: 20px;
-  color: white;
-  font-size: 20px;
-`;
-
-const ContainerForPromoList = styled(Grid)`
-  padding: 14px;
 `;
 
 const PromotionBannerContainer = styled.div`
@@ -223,9 +147,13 @@ class Promotion extends Component {
     else {
       this.props.joinPromotion(id);
       if (
-        ["FirstDeposit", "DailySecondDeposit", "DailyFirstDeposit", "DepositReward", "DepositAccumulateRoulette"].indexOf(
-          promotionType
-        ) >= 0
+        [
+          "FirstDeposit",
+          "DailySecondDeposit",
+          "DailyFirstDeposit",
+          "DepositReward",
+          "DepositAccumulateRoulette",
+        ].indexOf(promotionType) >= 0
       ) {
         AppHistory.push({
           pathname: "/" + i18n.language + "/account/deposit/" + id,
@@ -273,12 +201,6 @@ class Promotion extends Component {
                         }
                         alt={data.name}
                       ></img>
-                      {/* <img
-                     src={
-                        process.env.PUBLIC_URL +
-                        `/assets/images/promotion/${i18n.language}/BN-${index}.jpg`
-                      } alt={data.name}>
-                    </img> */}
                     </PromotionBannerContainer>
                   );
                 })}

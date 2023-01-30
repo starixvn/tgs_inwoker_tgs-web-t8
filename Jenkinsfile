@@ -7,7 +7,7 @@ pipeline {
 	environment {
         TAG = sh(script: "echo `date +%Y-%m%d-%H%M`", returnStdout: true).trim()
         Registry = "pgtgs/"
-        GitUrl = "gitlab.com/cjennhong/tgs-web-t8.git"
+        GitUrl = "gitlab.com/cjennhong/tgs-web.git"
         dockerhub = credentials('dockerhub')
         Image = "lobby-t8"
     }

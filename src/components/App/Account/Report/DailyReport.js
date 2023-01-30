@@ -33,7 +33,7 @@ const Label = styled.span`
   float: left;
   margin: 20px 5px 0 0;
 `;
-const CustomFormControl = withStyles(theme => ({
+const CustomFormControl = withStyles((theme) => ({
   root: {
     width: "135px",
     height: "40px",
@@ -50,29 +50,29 @@ const CustomFormControl = withStyles(theme => ({
       right: "36px",
       zIndex: " 2",
       display: "block",
-      height: "100%"
+      height: "100%",
     },
     "& label.Mui-focused": {
-      color: "#b6b6b6"
+      color: "#b6b6b6",
     },
     "& .MuiInput-underline:after": {
-      borderBottomColor: "#b6b6b6"
+      borderBottomColor: "#b6b6b6",
     },
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
         borderColor: "#b6b6b6",
-        marginTop: "1px"
+        marginTop: "1px",
       },
       "&:hover fieldset": {
         borderColor: "#b6b6b6",
-        marginTop: "1px"
+        marginTop: "1px",
       },
       "&.Mui-focused fieldset": {
         borderColor: "#b6b6b6",
-        marginTop: "1px"
-      }
-    }
-  }
+        marginTop: "1px",
+      },
+    },
+  },
 }))(FormControl);
 
 class DailyReport extends Component {
@@ -82,19 +82,19 @@ class DailyReport extends Component {
     type2: 0,
     dateRange: {
       dateFrom: moment(addDays(new Date(), -7)).format("YYYY-MM-DD"),
-      dateTo: moment(new Date()).format("YYYY-MM-DD")
-    }
+      dateTo: moment(new Date()).format("YYYY-MM-DD"),
+    },
   };
-  onhandleDateChange = dateRange => {
+  onhandleDateChange = (dateRange) => {
     this.props.onhandleGetReportTrigger(dateRange.dateFrom, dateRange.dateTo);
     this.setState({ ...this.state, dateRange: dateRange });
   };
-  onhandleTypeChange = e => {
+  onhandleTypeChange = (e) => {
     this.setState({
       ...this.state,
       type: parseInt(e.target.value),
       type2: 0,
-      page: 1
+      page: 1,
     });
     this.props.onhandleGetReportTrigger(
       this.state.dateRange.dateFrom,
@@ -103,7 +103,7 @@ class DailyReport extends Component {
       0
     );
   };
-  onhandleType2Change = e => {
+  onhandleType2Change = (e) => {
     this.setState({ ...this.state, type2: e.target.value });
     this.props.onhandleGetReportTrigger(
       this.state.dateRange.dateFrom,
@@ -173,18 +173,18 @@ class DailyReport extends Component {
 
                 if (this.state.type === 0) {
                   gameList = this.props.gameList.filter(
-                    game => game.purse_type !== 0 && game.parent_id == 0
+                    (game) => game.purse_type !== 0 && game.parent_id == 0
                   );
                 } else {
                   gameList = this.props.gameList.filter(
-                    game =>
+                    (game) =>
                       game.purse_type !== 0 &&
                       game.type == this.state.type &&
                       game.parent_id !== 0
                   );
                 }
 
-                return gameList.map(row => {
+                return gameList.map((row) => {
                   return (
                     <option value={row.id} key={row.id}>
                       {/* {name} */}

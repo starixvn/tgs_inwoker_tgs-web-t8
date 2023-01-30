@@ -3,18 +3,11 @@ import { connect } from "react-redux";
 import styled, { keyframes } from "styled-components";
 import DynamicFont from "react-dynamic-font";
 import { withSnackbar } from "notistack";
-import IconTransferRedPNG from "../../../../assets/images/icon-transfer.png";
-import TransferMWalletPNG from "../../../../assets/images/transfer-mwallet.png";
-import TransferTWalletPNG from "../../../../assets/images/transfer-twallet.png";
-import TransferTotalPNG from "../../../../assets/images/transfer-total.png";
 import ArrowRightPNG from "../../../../assets/images/arrow-right.png";
 import { withStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import Switch from "@material-ui/core/Switch";
 import Select from "@material-ui/core/Select";
-
-import CurrencyTextField from "@unicef/material-ui-currency-textfield";
-
 import { walletAction } from "../../../../api-services/actions/walletAction";
 import { RESET_WALLETRESULT } from "../../../../api-services/constant/actionType";
 import IconRefreshPNG from "../../../../assets/images/icon-refresh.png";
@@ -400,10 +393,20 @@ const CustomSwitch = withStyles((theme) => ({
   );
 });
 
-const SubtitleContent = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+const CurrencyTextFieldReplacement = styled.input`
+  height: 35px;
+  width: 154px;
+  border-radius: 4px;
+  border: solid 1px #b6b6b6;
+  padding: 0px 10px;
+
+  ::placeholder {
+    color: #818181;
+  }
+
+  :focus {
+    outline: none;
+  }
 `;
 
 const CustomSwitchContainer = styled.div`
@@ -422,53 +425,13 @@ class Transfer extends Component {
     loading: false,
     transferFrom: "",
     transferTo: 0,
-    transferAmount: "0.00",
+    transferAmount: "",
     showMessagebox: false,
     messageboxText: "",
     mainAccountId: "0",
     disabled: false,
   };
 
-  // mainAccountId = 0;
-  // bindData() {
-  //   let singleWalletGameName = "";
-  //   let transferWalletAmount = 0;
-  //   let mainWalletAmount = 0;
-  //   let totalAmount = 0;
-  //   let transferWalletList = [];
-  //   for (let wallet of this.props.wallet.balanceList) {
-  //     if (wallet.purse_type === WalletType.MainWallet) {
-  //       mainWalletAmount = parseFloat(wallet.balance);
-  //       transferWalletList.push(wallet);
-  //       this.mainAccountId = wallet.id;
-  //     } else if (wallet.purse_type === WalletType.SingleWallet) {
-  //       singleWalletGameName += wallet.name + "、";
-  //     } else if (wallet.purse_type === WalletType.TransferWallet) {
-  //       transferWalletAmount += parseFloat(wallet.balance);
-  //       transferWalletList.push(wallet);
-  //     }
-  //     totalAmount += parseFloat(wallet.balance);
-  //   }
-  //   if (singleWalletGameName.length > 1) {
-  //     singleWalletGameName = singleWalletGameName.substring(
-  //       0,
-  //       singleWalletGameName.length - 1
-  //     );
-  //   }
-  //   this.setState({
-  //     ...this.state,
-  //     mainWalletAmount: Common.formatNumberWithCommas(mainWalletAmount),
-  //     singleWalletGameName,
-  //     transferWalletAmount: Common.formatNumberWithCommas(transferWalletAmount),
-  //     totalAmount: Common.formatNumberWithCommas(totalAmount),
-  //   });
-  // }
-
-  componentDidMount() {
-    // if (this.props.wallet.balanceList.length > 0) {
-    //   this.bindData();
-    // }
-  }
   componentDidUpdate(preProps) {
     if (
       preProps.wallet.transferResult !== this.props.wallet.transferResult &&
@@ -498,18 +461,6 @@ class Transfer extends Component {
           ...this.state,
           disabled: false,
         });
-        // if (
-        //   this.props.wallet.transferResult.code === 208 ||
-        //   this.props.wallet.transferResult.code === 209
-        // ) {
-        //   this.props.enqueueSnackbar(i18n.t("transfer.msgFailedTransfer"), {
-        //     variant: "error",
-        //   });
-        // } else {
-        //   this.props.enqueueSnackbar(this.props.wallet.transferResult.info, {
-        //     variant: "error",
-        //   });
-        // }
       }
     }
 
@@ -545,7 +496,7 @@ class Transfer extends Component {
 
   handleTransferFromChange = (e) => {
     const fromWallet = e.target.value;
-    if (fromWallet != this.state.mainAccountId) {
+    if (fromWallet !== this.state.mainAccountId) {
       this.setState({
         ...this.state,
         transferFrom: fromWallet,
@@ -561,7 +512,7 @@ class Transfer extends Component {
   };
   handleTransferToChange = (e) => {
     const toWallet = e.target.value;
-    if (toWallet != this.state.mainAccountId) {
+    if (toWallet !== this.state.mainAccountId) {
       this.setState({
         ...this.state,
         transferFrom: this.state.mainAccountId,
@@ -615,8 +566,8 @@ class Transfer extends Component {
     this.props.doTransfer(
       transferAmount,
       this.state.mainAccountId,
-      transferTo == this.state.mainAccountId ? transferFrom : transferTo,
-      transferFrom == this.state.mainAccountId ? 1 : 2
+      transferTo === this.state.mainAccountId ? transferFrom : transferTo,
+      transferFrom === this.state.mainAccountId ? 1 : 2
     );
   };
   handleWithdrawAllClick = (e) => {
@@ -624,18 +575,6 @@ class Transfer extends Component {
   };
   handleTranferIn = (gpcode) => {
     this.props.doTransfer(gpcode, this.props.wallet.mainBalance);
-    // if (item.maintenance !== 1) {
-    //   const transferFrom = this.props.wallet.mainId; //main account
-    //   const transferTo = item.parent_id;
-    //   const transferAmount = parseInt(this.props.wallet.mainBalance);
-    //   if (parseFloat(transferAmount) > 0) {
-    //     this.transfer(transferFrom, transferTo, transferAmount);
-    //   } else {
-    //     this.props.enqueueSnackbar(i18n.t("transfer.insufficient"), {
-    //       variant: "error",
-    //     });
-    //   }
-    // }
   };
 
   handleSwitchAutoTransfer = () => {
@@ -728,12 +667,6 @@ class Transfer extends Component {
           </Title>
         </Header>
 
-        {/* <SubTitle>
-            <SubtitleContent>
-              <div>{i18n.t("transfer.quickTransfer")}</div>
-            </SubtitleContent>
-          </SubTitle> */}
-
         <QuickTransferWrap>
           <QuickTransferContainer>
             <CustomFormControl>
@@ -802,30 +735,21 @@ class Transfer extends Component {
             </CustomFormControl>
 
             <QuickTransferLabel>{i18n.t("common.amount")}</QuickTransferLabel>
-            <CurrencyTextField
-              style={{
-                height: "38px",
-                width: "154px",
-                float: "left",
-                backgroundColor: "#fff",
-              }}
+            <CurrencyTextFieldReplacement
               value={this.state.transferAmount}
-              placeholder={i18n.t("transfer.msgEnterAmount")}
+              placeholder="0.00"
               onChange={(e) => {
                 this.setState({
                   ...this.state,
                   transferAmount: e.target.value,
                 });
               }}
-              variant="outlined"
               autoComplete="off"
               minimumValue="0"
               inputProps={{
                 maxLength: 15,
               }}
-              currencySymbol=""
-              decimalPlaces="0"
-            ></CurrencyTextField>
+            ></CurrencyTextFieldReplacement>
             <QuickTransferButton
               disabled={
                 this.state.transferFrom === "" ||

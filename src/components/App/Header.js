@@ -13,33 +13,13 @@ import { SHOWING_DIALOG } from "../../api-services/constant/actionType";
 import { SHOW_LOGIN } from "../../api-services/constant/actionType";
 import { GameTypeEnum } from "../../api-services/utils/Enum";
 
-import BtnCSPNG from "../../assets/images/btn-cs.png";
-
-import BtnCSHoverPNG from "../../assets/images/btn-cs-hover.png";
-
 import { Link } from "react-router-dom";
 import GuestContainer from "./GuestContainer";
 import MemberContainer from "./MemberContainer";
 
-import TopMenuLivePNG from "../../assets/images/top-menu-live.png";
-import TopMenuQipaiPNG from "../../assets/images/top-menu-qipai.png";
-import TopMenuSportsPNG from "../../assets/images/top-menu-sports.png";
-import TopMenuLotteryPNG from "../../assets/images/top-menu-lottery.png";
-import TopMenueSportsPNG from "../../assets/images/top-menu-gun.png";
-import TopMenuTigerPNG from "../../assets/images/top-menu-tiger.png";
-import TopMenuFishPNG from "../../assets/images/top-menu-fish.png";
 import TopMenuPromoPNG from "../../assets/images/top-menu-promo.png";
-import TopMenuSlotPNG from "../../assets/images/top-menu-slot.png";
 
-import TopMenuLiveHoverPNG from "../../assets/images/top-menu-live-hover.png";
-import TopMenuQipaiHoverPNG from "../../assets/images/top-menu-qipai-hover.png";
-import TopMenuSportsHoverPNG from "../../assets/images/top-menu-sports-hover.png";
-import TopMenuLotteryHoverPNG from "../../assets/images/top-menu-lottery-hover.png";
-import TopMenueSportsHoverPNG from "../../assets/images/top-menu-gun-hover.png";
-import TopMenuTigerHoverPNG from "../../assets/images/top-menu-tiger-hover.png";
-import TopMenuFishHoverPNG from "../../assets/images/top-menu-fish-hover.png";
 import TopMenuPromoHoverPNG from "../../assets/images/top-menu-promo-hover.png";
-import TopMenuSlotHoverPNG from "../../assets/images/top-menu-slot-hover.png";
 
 import IconPhonePNG from "../../assets/images/icon-mobile.png";
 
@@ -55,6 +35,7 @@ import { GeneralService } from "../../api-services/services/GeneralService";
 import ErrorSwitcher from "../../utils/ErrorSwitcher";
 import { AppHistory } from "../../history/History";
 import { SortedMenuList } from "../../utils/HeaderSorting";
+import { GameService } from "../../api-services/services/GameService";
 
 const moment = require("moment");
 
@@ -124,11 +105,6 @@ const CustomLink = styled(Link)`
     color: #fde73f;
     text-decoration: underline;
   }
-`;
-
-const RightContainer = styled.div`
-  float: right;
-  padding-top: 5px;
 `;
 
 const BtnAppsAndCS = styled.div`
@@ -808,8 +784,8 @@ class Header extends Component {
         AppHistory.goBack();
       }
       // this.handleRefreshBalanceClick();
-      var win = Common.PopupCenter(url, gameCode, 1280, 720);
-      var timer = setInterval(function () {
+      win = Common.PopupCenter(url, gameCode, 1280, 720);
+      timer = setInterval(function () {
         if (win.closed) {
           clearInterval(timer);
           if (document.getElementById("audio") != null)
@@ -842,7 +818,7 @@ class Header extends Component {
 
           alert(
             i18n.t("web.header.plsClick") +
-              (navigator.userAgent.toLowerCase().indexOf("mac") != -1
+              (navigator.userAgent.toLowerCase().indexOf("mac") !== -1
                 ? "Cmd"
                 : "Ctrl") +
               "+D" +
@@ -864,8 +840,48 @@ class Header extends Component {
       }
     });
   };
+  handleCockfight = (item) => {
+    if (!this.props.account.token) {
+      this.props.showLogin(true);
+    } else {
+      if (item.include.indexOf("SM01") >= 0) {
+        this.popup = window.open("", "Cockfight");
+        GameService.GetCockfight()
+          .then((e) => {
+            this.popup.document.write(e.data);
+            this.popup.document.close();
+            this.popup.focus();
+          })
+          .catch((e) => {
+            this.popup.close();
+          });
+      }
+    }
+  };
+
+  handleOtherCockfightGame = (game) => {
+    if (!this.props.account.token) {
+      this.props.showLogin(true);
+    } else {
+      AppHistory.push(
+        "/" +
+          i18n.language +
+          "/sports/play/" +
+          game.name +
+          "/" +
+          GameTypeEnum.SPORTS
+      );
+    }
+  };
+
   consolidateJoinGame = (game, item) => {
-    if (
+    if (game.type === GameTypeEnum.COCKFIGHT) {
+      if (game.name === "SM01") {
+        this.handleCockfight(item);
+      } else {
+        this.handleOtherCockfightGame(game);
+      }
+    } else if (
       game.type === GameTypeEnum.LOTTERYLOBBY ||
       game.type === GameTypeEnum.LOBBY
     ) {
@@ -878,6 +894,21 @@ class Header extends Component {
         "/" + i18n.language + "/joingame/" + game.type + "/" + game.gpcode
       );
     }
+  };
+
+  filterGameList = (item) => {
+    if (item.include && item.include !== undefined) {
+      this.props.game.homePageGameList.map((game) => {
+        if (item.include.indexOf(game.game_platform_name) >= 0) {
+          game.type = item.gameType[0];
+        }
+        return item;
+      });
+    }
+
+    return this.props.game.homePageGameList.filter((game) => {
+      return item.gameType.indexOf(game.type) >= 0;
+    });
   };
 
   render() {
@@ -980,33 +1011,16 @@ class Header extends Component {
                     : classes.minMenu
                 }`}
               >
-                {SortedMenuList.sort((a, b) => {
-                  if (config.features.MenuItem_Sorting_HK28) {
-                    return a.sortingHK28 > b.sortingHK28 ? 1 : -1;
-                  } else if (config.features.MenuItem_Sorting_WLGHK) {
-                    return a.sortingWLGHK > b.sortingWLGHK ? 1 : -1;
-                  } else if (config.features.MenuItem_Sorting_SKY) {
-                    return a.sortingSKY > b.sortingSKY ? 1 : -1;
-                  } else if (config.features.MenuItem_Sorting_PB) {
-                    return a.sortingPB > b.sortingPB ? 1 : -1;
-                  } else if (config.features.MenuItem_Sorting_GMO) {
-                    return a.sortingGMO > b.sortingGMO ? 1 : -1;
-                  } else {
-                    return a.sorting > b.sorting ? 1 : -1;
-                  }
-                }).map((item, index) => {
-                  var list = this.props.game.homePageGameList
-                    .filter((game) => item.gameType.indexOf(game.type) >= 0)
-
-                    .sort((a, b) => {
-                      if (config.features.LiveGame_Sorting_SKY) {
-                        var sortDGFirst = ["DG"];
-                        return (
-                          sortDGFirst.indexOf(b.abbreviation) -
-                          sortDGFirst.indexOf(a.abbreviation)
-                        );
-                      } else return b - a;
-                    });
+                {SortedMenuList.map((item, index) => {
+                  var list = this.filterGameList(item).sort((a, b) => {
+                    if (config.features.LiveGame_Sorting_SKY) {
+                      var sortDGFirst = ["DG"];
+                      return (
+                        sortDGFirst.indexOf(b.abbreviation) -
+                        sortDGFirst.indexOf(a.abbreviation)
+                      );
+                    } else return b - a;
+                  });
 
                   if (list.length > 0) {
                     return (
@@ -1059,7 +1073,8 @@ class Header extends Component {
                                             {i18n.t("transfer.maintenance")}
                                           </Maintenance>
                                           {(() => {
-                                            var gameCode = game.abbreviation.toLowerCase();
+                                            var gameCode =
+                                              game.abbreviation.toLowerCase();
                                             // check if gamecode is "pptf" and  game.abbreviation is sports then change  game.abbreviation to "customsports"
                                             if (
                                               config.features
@@ -1069,6 +1084,13 @@ class Header extends Component {
                                                 gameCode === "pptf" &&
                                                 item.path === "sports"
                                               ) {
+                                                usecustom = true;
+                                              }
+                                            }
+                                            if(config.features.BC_CustomTranslation)
+                                            {
+                                              if(gameCode === "bc" && item.path ==="sports")
+                                              {
                                                 usecustom = true;
                                               }
                                             }
@@ -1179,7 +1201,8 @@ class Header extends Component {
                                               {i18n.t("transfer.maintenance")}
                                             </Maintenance>
                                             {(() => {
-                                              var gameCode = game.abbreviation.toLowerCase();
+                                              var gameCode =
+                                                game.abbreviation.toLowerCase();
 
                                               if (
                                                 config.features
@@ -1189,6 +1212,14 @@ class Header extends Component {
                                                   gameCode === "pptf" &&
                                                   item.path === "sports"
                                                 ) {
+                                                  usecustom = true;
+                                                }
+                                              }
+
+                                              if(config.features.BC_CustomTranslation)
+                                              {
+                                                if(gameCode === "bc" && item.path ==="sports")
+                                                {
                                                   usecustom = true;
                                                 }
                                               }

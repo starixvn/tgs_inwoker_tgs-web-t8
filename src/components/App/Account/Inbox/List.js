@@ -7,11 +7,6 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TablePagination from "@material-ui/core/TablePagination";
-
-import { makeStyles } from "@material-ui/core/styles";
-
-import IconInboxSelectedPNG from "../../../../assets/images/icon-inbox-selected.png";
-import IconInboxCheckPNG from "../../../../assets/images/icon-inbox-check.png";
 import i18n from "../../../../utils/i18n";
 import moment from "moment";
 const StyledTableCell = withStyles((theme) => ({
@@ -134,26 +129,7 @@ function List(props) {
                       ? { fontWeight: "bold" }
                       : { fontWeight: "normal" }
                   }
-                >
-                  {
-                    //  (() => {
-                    //    var arr = [];
-                    //    Object.keys(row.content_text).forEach((key) => {
-                    //      arr.push({
-                    //        label: key,
-                    //        value: row.content_text[key],
-                    //      });
-                    //    });
-                    //    return arr.map((item) => {
-                    //      return (
-                    //        <div>
-                    //          {item.label}: {item.value}
-                    //        </div>
-                    //      );
-                    //    });
-                    //  })()
-                  }
-                </StyledTableCell>
+                ></StyledTableCell>
               </StyledTableRow>
             );
           })}
