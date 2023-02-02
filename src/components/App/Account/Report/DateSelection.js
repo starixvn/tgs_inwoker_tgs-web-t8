@@ -124,9 +124,11 @@ class DateSelection extends Component {
           onhandleDateChange={this.handleDateFromChange}
           selectedDate={this.state.dateFrom}
           maxDate={this.state.dateTo}
+          minDate={this.props.minDate}
         ></DatePicker>
         <LabelDash>-</LabelDash>
         <DatePicker
+          maxDate={this.props.maxDate}
           minDate={this.state.dateFrom}
           onhandleDateChange={this.handleDateToChange}
           selectedDate={this.state.dateTo}
