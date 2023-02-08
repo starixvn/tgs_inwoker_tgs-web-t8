@@ -15,6 +15,7 @@ import { AppHistory } from "../../../../history/History";
 import config from "../../../../config/config";
 import ErrorSwitcher from "../../../../utils/ErrorSwitcher";
 import { utility } from "../../../../utils/utility";
+import Common from "../../../../utils/Common";
 const moment = require("moment");
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -306,7 +307,7 @@ function TableList(props) {
                     }}
                   >
                     <StyledTableCell>{date}</StyledTableCell>
-                    <StyledTableCell>{row.id}</StyledTableCell>
+                    <StyledTableCell>{Common.truncateString(row.id,10)}</StyledTableCell>
                     <StyledTableCell>
                       {gpNameSwitcher(row, "gp")}-{row.gameName}
                     </StyledTableCell>
