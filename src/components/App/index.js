@@ -590,11 +590,13 @@ class App extends Component {
                           />
                         )}
                       />
-                      <Route
-                        exact
-                        path={baseRouteUrl + "/download"}
-                        component={Download}
-                      />
+                      {config.features.HaveDownloadFeature && (
+                        <Route
+                          exact
+                          path={baseRouteUrl + "/download"}
+                          component={Download}
+                        />
+                      )}
                       <Route
                         exact
                         path={baseRouteUrl + "/cockfight"}
