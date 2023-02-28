@@ -249,7 +249,7 @@ function Header(props) {
     {
       path: "affiliate",
       title: i18n.t("web.account.affiliate"),
-      canDisplay: config.features.HaveAffiliateFeature,
+      canDisplay: props.general.haveAffiliate,
       img: IconBonusPNG,
     },
     {
