@@ -449,7 +449,7 @@ class Account extends Component {
                   />
                 )}
 
-                {config.features.HaveAffiliateFeature && (
+                {this.props.general.haveAffiliate && (
                   <Route
                     exact
                     path={baseRouteUrl + "/account/affiliate"}
