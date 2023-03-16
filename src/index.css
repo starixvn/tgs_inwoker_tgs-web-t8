@@ -472,6 +472,10 @@ body.cke_editable p {
   font-family: "CenturyGothic" !important;
 }
 
+.fix-text-cut.MuiSelect-outlined.MuiSelect-outlined {
+  height: 25px;
+}
+
 /*
 
 div[class^="SnackbarItem-variantError-"],
