@@ -199,6 +199,7 @@ class Affiliate extends Component {
                 <CustomSelect
                   variant="outlined"
                   displayEmpty
+                  className="fix-text-cut"
                   native
                   value={this.state.rebateType}
                   onChange={(e) => {
