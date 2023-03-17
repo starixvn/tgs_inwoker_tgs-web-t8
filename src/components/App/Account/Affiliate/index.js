@@ -172,7 +172,7 @@ class Affiliate extends Component {
     const type = [
       { value: 1, title: "sport" },
       { value: 2, title: "virtualsports" },
-      { value: 5, title: "live" },
+      { value: 5, title: "livedealer" },
       { value: 7, title: "chess" },
       { value: 13, title: "lottery" },
       { value: 15, title: "egame" },
