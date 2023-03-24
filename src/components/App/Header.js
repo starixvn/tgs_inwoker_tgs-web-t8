@@ -1142,50 +1142,7 @@ class Header extends Component {
                                             }}
                                           ></GameImg>
                                           <GameTitle index={index}>
-                                            {game.abbreviation.toLowerCase() ===
-                                              "imes" && item.path === "esports"
-                                              ? i18n.t(
-                                                  `${game.abbreviation}.${
-                                                    usecustom ? "custom" : ""
-                                                  }sports`
-                                                )
-                                              : game.abbreviation.toLowerCase() ===
-                                                  "sbotf" &&
-                                                item.path === "sports"
-                                              ? i18n.t(`SBO.sports`)
-                                              : i18n.exists(
-                                                  `${game.abbreviation}.${
-                                                    config.brand
-                                                  }.${
-                                                    usecustom ? "custom" : ""
-                                                  }${item.path}`
-                                                )
-                                              ? i18n.t(
-                                                  `${game.abbreviation}.${
-                                                    config.brand
-                                                  }.${
-                                                    usecustom ? "custom" : ""
-                                                  }${item.path}`
-                                                )
-                                              : i18n.exists(
-                                                  `${game.abbreviation}.${
-                                                    config.brandName
-                                                  }.${
-                                                    usecustom ? "custom" : ""
-                                                  }${item.path}`
-                                                )
-                                              ? i18n.t(
-                                                  `${game.abbreviation}.${
-                                                    config.brandName
-                                                  }.${
-                                                    usecustom ? "custom" : ""
-                                                  }${item.path}`
-                                                )
-                                              : i18n.t(
-                                                  `${game.abbreviation}.${
-                                                    usecustom ? "custom" : ""
-                                                  }${item.path}`
-                                                )}
+                                            {game.name}
                                           </GameTitle>
                                         </GameFrameWrapper>
                                       </GameFrame>
@@ -1282,51 +1239,7 @@ class Header extends Component {
                                               }}
                                             ></GameImg>
                                             <GameTitle index={index}>
-                                              {game.abbreviation.toLowerCase() ===
-                                                "imes" &&
-                                              item.path === "esports"
-                                                ? i18n.t(
-                                                    `${game.abbreviation}.${
-                                                      usecustom ? "custom" : ""
-                                                    }sports`
-                                                  )
-                                                : game.abbreviation.toLowerCase() ===
-                                                    "sbotf" &&
-                                                  item.path === "sports"
-                                                ? i18n.t(`SBO.sports`)
-                                                : i18n.exists(
-                                                    `${game.abbreviation}.${
-                                                      config.brand
-                                                    }.${
-                                                      usecustom ? "custom" : ""
-                                                    }${item.path}`
-                                                  )
-                                                ? i18n.t(
-                                                    `${game.abbreviation}.${
-                                                      config.brand
-                                                    }.${
-                                                      usecustom ? "custom" : ""
-                                                    }${item.path}`
-                                                  )
-                                                : i18n.exists(
-                                                    `${game.abbreviation}.${
-                                                      config.brandName
-                                                    }.${
-                                                      usecustom ? "custom" : ""
-                                                    }${item.path}`
-                                                  )
-                                                ? i18n.t(
-                                                    `${game.abbreviation}.${
-                                                      config.brandName
-                                                    }.${
-                                                      usecustom ? "custom" : ""
-                                                    }${item.path}`
-                                                  )
-                                                : i18n.t(
-                                                    `${game.abbreviation}.${
-                                                      usecustom ? "custom" : ""
-                                                    }${item.path}`
-                                                  )}
+                                              {game.name}
                                             </GameTitle>
                                           </GameFrameWrapper>
                                         </GameFrame>

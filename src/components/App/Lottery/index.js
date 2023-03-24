@@ -226,7 +226,7 @@ class Lottery extends Component {
                         }
                       ></GameImage>
                       <GameTitle>
-                        {i18n.t(`${data.abbreviation}.lottery`)}
+                        {data.name}
                       </GameTitle>
                     </RightNavItem>
                   );

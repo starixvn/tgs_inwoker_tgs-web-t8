@@ -235,33 +235,7 @@ class Sports extends Component {
                         }
                       ></GameImage>
                       <GameTitle>
-                        {data.abbreviation.toLowerCase() === "sbotf"
-                          ? i18n.t(`SBO.sports`)
-                          : i18n.exists(
-                              `${data.abbreviation}.${config.brand}.${
-                                customtranslation ? "custom" : ""
-                              }sports`
-                            )
-                          ? i18n.t(
-                              `${data.abbreviation}.${config.brand}.${
-                                customtranslation ? "custom" : ""
-                              }sports`
-                            )
-                          : i18n.exists(
-                              `${data.abbreviation}.${config.brandName}.${
-                                customtranslation ? "custom" : ""
-                              }sports`
-                            )
-                          ? i18n.t(
-                              `${data.abbreviation}.${config.brandName}.${
-                                customtranslation ? "custom" : ""
-                              }sports`
-                            )
-                          : i18n.t(
-                              `${data.abbreviation}.${
-                                customtranslation ? "custom" : ""
-                              }sports`
-                            )}
+                        {data.name}
                       </GameTitle>
                     </LeftNavItem>
                   );
