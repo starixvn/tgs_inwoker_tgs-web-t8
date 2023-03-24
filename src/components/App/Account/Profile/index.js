@@ -1082,7 +1082,7 @@ class Profile extends Component {
                 .map((item, key) => (
                   <WalletItem key={item.id}>
                     <WalletItemTitle>
-                      {this.gpNameSwitcher(item)}
+                      {item.name}
                     </WalletItemTitle>
                     <WalletItemInfo>
                       <DynamicFont
