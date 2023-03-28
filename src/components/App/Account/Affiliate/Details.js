@@ -87,6 +87,10 @@ const Button = styled.div`
   }
 `;
 
+const DownloadButton = styled(Button)`
+  padding: 5px 5px 0 5px;
+`;
+
 class Affiliate extends Component {
   constructor(props) {
     super(props);
@@ -161,9 +165,9 @@ class Affiliate extends Component {
           <Button onClick={() => this.handleQrAction("copy")}>
             {i18n.t("common.copy")}
           </Button>
-          <Button onClick={() => this.handleQrAction("download")}>
+          <DownloadButton onClick={() => this.handleQrAction("download")}>
             {i18n.t("common.download")}
-          </Button>
+          </DownloadButton>
         </QRCodeActionContainer>
         <CustomText>
           <CustomLabel>{i18n.t("affiliate.promoId")}</CustomLabel>
