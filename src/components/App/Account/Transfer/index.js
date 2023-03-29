@@ -827,7 +827,7 @@ class Transfer extends Component {
                       ></GameIcon>
                       <GameName>
                         <DynamicFont
-                          content={this.gpNameSwitcher(item)}
+                          content={item.name}
                         ></DynamicFont>
                       </GameName>
                     </GameTranferLeftWrap>

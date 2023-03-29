@@ -188,7 +188,7 @@ class ESports extends Component {
                           `/assets/images/pcGamePage/esports/${data.abbreviation.toLowerCase()}.png`
                         }
                       ></GameImage>
-                      <GameTitle>{data.abbreviation}</GameTitle>
+                      <GameTitle>{data.name}</GameTitle>
                     </LeftNavItem>
                   );
                 })}
