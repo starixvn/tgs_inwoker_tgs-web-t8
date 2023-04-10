@@ -155,8 +155,8 @@ const BottomNavItem = styled.li`
     `}
 
     ${({ maintenance }) => {
-    return maintenance
-      ? `
+      return maintenance
+        ? `
       ${Maintenance}{
         display: flex;
       }
@@ -164,8 +164,8 @@ const BottomNavItem = styled.li`
         filter: brightness(40%) grayscale(200%);
       }
       `
-      : ``;
-  }}
+        : ``;
+    }}
 `;
 class LiveGame extends Component {
   constructor(props) {
@@ -209,12 +209,7 @@ class LiveGame extends Component {
       Common.closePreviousPopup();
       // this.props.performBalanceRefresh();
       var win = Common.PopupCenter(
-        "/" +
-          i18n.language +
-          "/joingame/" +
-          GameTypeEnum.LIVELOBBY +
-          "/" +
-          params.toUpperCase(),
+        "/joingame/" + GameTypeEnum.LIVELOBBY + "/" + params.toUpperCase(),
         params.toUpperCase(),
         1280,
         720

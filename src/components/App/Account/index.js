@@ -42,7 +42,7 @@ import Affiliate from "./Affiliate";
 import VIP from "./Vip/index";
 import config from "../../../config/config";
 import CardManagement from "./Profile/CardManagement";
-const baseRouteUrl = Common.baseRouteUrl;
+
 const Container = styled.div`
   width: 100%;
   background: #e7e7e7; //url(${BGJPG});
@@ -182,7 +182,7 @@ class Account extends Component {
     if (this.props.account.token === null) {
       await this.timeout(1000);
       if (this.props.account.token === null) {
-        AppHistory.replace(`/${i18n.language}/`);
+        AppHistory.replace(`/`);
       }
       this.getAllGameBalance();
     }
@@ -222,7 +222,7 @@ class Account extends Component {
       prevProps.account.token !== this.props.account.token &&
       this.props.account.token === null
     ) {
-      AppHistory.replace(`/${i18n.language}/`);
+      AppHistory.replace(`/`);
     }
     if (prevProps.match.params.tab !== this.props.match.params.tab) {
       this.setState({ ...this.state, activePage: this.props.match.params.tab });
@@ -236,34 +236,28 @@ class Account extends Component {
     ) {
       return;
     }
-    this.props.history.push("/" + i18n.language + "/account/" + link);
+    this.props.history.push("/account/" + link);
   };
   handleMoreBenefitClick = (viptitle) => {
-    this.props.history.push("/" + i18n.language + "/vip");
+    this.props.history.push("/vip");
   };
   handleIDVerifyClick = () => {
-    this.props.history.push(
-      "/" + i18n.language + "/account/profile/popup/member_name"
-    );
+    this.props.history.push("/account/profile/popup/member_name");
   };
   handlePhoneVerifyClick = () => {
-    this.props.history.push(
-      "/" + i18n.language + "/account/profile/popup/member_phone"
-    );
+    this.props.history.push("/account/profile/popup/member_phone");
   };
   handleEmailVerifyClick = () => {
-    this.props.history.push(
-      "/" + i18n.language + "/account/profile/popup/member_email"
-    );
+    this.props.history.push("/account/profile/popup/member_email");
   };
 
   handleAddCardClick = () => {
-    this.props.history.push("/" + i18n.language + "/account/bankcard/add");
+    this.props.history.push("/account/bankcard/add");
   };
 
   handleManageCardClick = (cardId) => {
     this.props.history.push({
-      pathname: "/" + i18n.language + "/account/bankcard/edit",
+      pathname: "/account/bankcard/edit",
       state: { cardId: cardId },
     });
   };
@@ -356,7 +350,7 @@ class Account extends Component {
               <Switch>
                 <Route
                   exact
-                  path={baseRouteUrl + "/account/deposit/:promotionid?"}
+                  path={"/account/deposit/:promotionid?"}
                   render={(props) => (
                     <Deposit
                       token={this.props.account.token}
@@ -366,7 +360,7 @@ class Account extends Component {
                 />
                 <Route
                   exact
-                  path={baseRouteUrl + "/account/manual/:paymentId"}
+                  path={"/account/manual/:paymentId"}
                   render={(props) => (
                     <Deposit
                       setActivePage={this.setActivePage}
@@ -377,7 +371,7 @@ class Account extends Component {
                 />
                 <Route
                   exact
-                  path={baseRouteUrl + "/account/withdrawal"}
+                  path={"/account/withdrawal"}
                   render={(props) => (
                     <Withdrawal
                       token={this.props.account.token}
@@ -391,12 +385,12 @@ class Account extends Component {
 
                 <Route
                   exact
-                  path={baseRouteUrl + "/account/inbox"}
+                  path={"/account/inbox"}
                   render={(props) => <Inbox token={this.props.account.token} />}
                 />
                 <Route
                   exact
-                  path={baseRouteUrl + "/account/report"}
+                  path={"/account/report"}
                   render={(props) => (
                     <Report
                       token={this.props.account.token}
@@ -408,7 +402,7 @@ class Account extends Component {
                   !config.features.NewTransferUI && (
                     <Route
                       exact
-                      path={baseRouteUrl + "/account/transfer"}
+                      path={"/account/transfer"}
                       render={(props) => (
                         <Transfer
                           token={this.props.account.token}
@@ -419,7 +413,7 @@ class Account extends Component {
                   )}
                 <Route
                   exact
-                  path={baseRouteUrl + "/account/profile/:popup?"}
+                  path={"/account/profile/:popup?"}
                   render={(props) => (
                     <Profile
                       account={this.props.account}
@@ -432,7 +426,7 @@ class Account extends Component {
                 />
                 <Route
                   exact
-                  path={baseRouteUrl + "/account/bankcard/:type"}
+                  path={"/account/bankcard/:type"}
                   render={(props) => (
                     <CardManagement
                       account={this.props.account}
@@ -444,7 +438,7 @@ class Account extends Component {
                 {config.features.HaveVIPFeature && (
                   <Route
                     exact
-                    path={baseRouteUrl + "/account/vip"}
+                    path={"/account/vip"}
                     render={(props) => <VIP token={this.props.account.token} />}
                   />
                 )}
@@ -452,7 +446,7 @@ class Account extends Component {
                 {this.props.general.haveAffiliate && (
                   <Route
                     exact
-                    path={baseRouteUrl + "/account/affiliate"}
+                    path={"/account/affiliate"}
                     render={(props) => (
                       <Affiliate
                         token={this.props.account.token}
@@ -464,9 +458,7 @@ class Account extends Component {
                   />
                 )}
 
-                <Redirect
-                  to={"/" + i18n.language + "/account/profile"}
-                ></Redirect>
+                <Redirect to={"/account/profile"}></Redirect>
               </Switch>
             </Router>
           </Main>
