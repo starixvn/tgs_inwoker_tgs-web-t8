@@ -171,7 +171,7 @@ class CardManagement extends Component {
   }
 
   handleBacktoProfile = () => {
-    this.props.history.push("/" + i18n.language + "/account/profile");
+    this.props.history.push("/account/profile");
   };
 
   handleBindCardClick = () => {

@@ -148,9 +148,7 @@ class ESports extends Component {
     } else {
       Common.closePreviousPopup();
       // this.props.performBalanceRefresh();
-      this.props.history.push(
-        "/" + i18n.language + "/sports/play/" + params + "/" + type
-      );
+      this.props.history.push("/sports/play/" + params + "/" + type);
     }
   };
   render() {

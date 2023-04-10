@@ -254,9 +254,7 @@ class PhoneVerification extends Component {
                     response.data.email === null &&
                     !response.data.registercompleted
                   ) {
-                    AppHistory.push(
-                      "/" + i18n.language + "/account/profile/member_email"
-                    );
+                    AppHistory.push("/account/profile/member_email");
                   }
                 });
               });

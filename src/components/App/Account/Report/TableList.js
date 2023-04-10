@@ -195,15 +195,15 @@ const headerLists = {
   ],
   balanceChanges: [
     {
-      title: `report.dateTime`
+      title: `report.dateTime`,
     },
     {
-      title: `report.balanceChanges.type`
+      title: `report.balanceChanges.type`,
     },
     {
-      title: `report.balanceChanges.amount`
-    }
-  ]
+      title: `report.balanceChanges.amount`,
+    },
+  ],
 };
 
 function TableList(props) {
@@ -222,7 +222,7 @@ function TableList(props) {
 
   const handleManualDeposit = (id) => {
     AppHistory.push({
-      pathname: "/" + i18n.language + "/account/manual/" + id,
+      pathname: "/account/manual/" + id,
     });
   };
   const gpNameSwitcher = (
@@ -307,7 +307,9 @@ function TableList(props) {
                     }}
                   >
                     <StyledTableCell>{date}</StyledTableCell>
-                    <StyledTableCell>{Common.truncateString(row.id,10)}</StyledTableCell>
+                    <StyledTableCell>
+                      {Common.truncateString(row.id, 10)}
+                    </StyledTableCell>
                     <StyledTableCell>
                       {gpNameSwitcher(row, "gp")}-{row.gameName}
                     </StyledTableCell>
@@ -425,7 +427,9 @@ function TableList(props) {
           return (
             <StyledTableRow hover role="checkbox" tabIndex={-1} key={index}>
               <StyledTableCell>{date}</StyledTableCell>
-              <StyledTableCell>{ErrorSwitcher.getTranslation(row.type)}</StyledTableCell>
+              <StyledTableCell>
+                {ErrorSwitcher.getTranslation(row.type)}
+              </StyledTableCell>
               <StyledTableCell>{row.amount}</StyledTableCell>
             </StyledTableRow>
           );

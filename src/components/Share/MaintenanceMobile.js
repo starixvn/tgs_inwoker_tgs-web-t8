@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import i18n from "../../utils/i18n";
 import { connect } from "react-redux";
-import {generalAction} from "../../api-services/actions/generalAction";
+import { generalAction } from "../../api-services/actions/generalAction";
 import Common from "../../utils/Common";
 import { AppHistory } from "../../history/History";
 import { withSnackbar } from "notistack";
@@ -175,7 +175,7 @@ const MaintenanceMobile = (props) => {
 
   useEffect(() => {
     if (!props.general.isMaintenance && props.isGameMaintenance !== true) {
-      AppHistory.push("/" + i18n.language);
+      AppHistory.push("/");
     }
   });
 
