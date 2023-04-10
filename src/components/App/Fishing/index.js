@@ -149,10 +149,10 @@ const GameTabButton = styled.div`
 
   &:hover ${GameTab} {
     background: url(${(props) =>
-        process.env.PUBLIC_URL +
-        `/assets/images/pcGamePage/slots/` +
-        props.img +
-        `-white.png`})
+      process.env.PUBLIC_URL +
+      `/assets/images/pcGamePage/slots/` +
+      props.img +
+      `-white.png`})
       no-repeat;
     background-position: center;
     background-size: contain;
@@ -293,7 +293,7 @@ class Fishing extends Component {
   handleJoinGameClick = (gpcode, gpid) => {
     if (this.props.token) {
       Common.closePreviousPopup();
-      this.props.history.push(`/${i18n.language}/fish/play/${gpcode}/${gpid}`);
+      this.props.history.push(`/fish/play/${gpcode}/${gpid}`);
     } else {
       this.props.showLogin(true);
     }
@@ -306,7 +306,7 @@ class Fishing extends Component {
         : this.props.match.url.indexOf("slots") >= 0
         ? "slots"
         : "electron";
-    AppHistory.push(`/${i18n.language}/${type}/${platform}`);
+    AppHistory.push(`/${type}/${platform}`);
   };
 
   getGameList(

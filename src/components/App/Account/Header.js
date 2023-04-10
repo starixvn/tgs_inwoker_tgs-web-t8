@@ -285,7 +285,7 @@ function Header(props) {
 
   const onhandleLogoClick = () => {
     props.setActivePage("/");
-    props.history.push("/" + i18n.language + "/");
+    props.history.push("/");
   };
 
   return (

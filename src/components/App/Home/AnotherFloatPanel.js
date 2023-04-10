@@ -346,7 +346,7 @@ const AnotherFloatPanel = (props) => {
           <SidePanel
             active={supportModal}
             onClick={() => {
-              AppHistory.replace("/" + i18n.language + "/download");
+              AppHistory.replace("/download");
             }}
             src2={PanelDownloadPNG2}
           >

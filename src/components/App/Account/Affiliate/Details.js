@@ -97,14 +97,14 @@ class Affiliate extends Component {
       variant: "success",
     });
     utility.copy(
-      `${window.location.hostname}/${i18n.language}/p/${this.props.account.info.playercode}?do=register`
+      `${window.location.hostname}/p/${this.props.account.info.playercode}?do=register`
     );
   };
   handleClickAway = () => {
     this.setState({ ...this.state, copyTooltips: false });
   };
   render() {
-    var affiliateLink = `https://${window.location.hostname}/${i18n.language}/p/${this.props.account.info.playercode}?do=register`;
+    var affiliateLink = `https://${window.location.hostname}/p/${this.props.account.info.playercode}?do=register`;
     return (
       <>
         <QRCodeLabel>{i18n.t("affiliate.qrCode")}</QRCodeLabel>
