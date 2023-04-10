@@ -449,7 +449,7 @@ class Transfer extends Component {
           open: false,
           disabled: false,
         });
-        // AppHistory.replace("/" + i18n.language + "/withdrawal");
+        // AppHistory.replace( "/withdrawal");
       } else {
         this.props.enqueueSnackbar(
           ErrorSwitcher.getTranslation(this.props.wallet.transferResult.info),
@@ -480,7 +480,7 @@ class Transfer extends Component {
           loading: false,
           open: false,
         });
-        // AppHistory.replace("/" + i18n.language + "/withdrawal");
+        // AppHistory.replace( "/withdrawal");
       } else {
         this.props.enqueueSnackbar(
           ErrorSwitcher.getTranslation(

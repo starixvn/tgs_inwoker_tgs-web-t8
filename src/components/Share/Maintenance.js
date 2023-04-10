@@ -184,7 +184,7 @@ const Maintenance = (props) => {
 
   useEffect(() => {
     if (!props.general.isMaintenance && props.isGameMaintenance !== true) {
-      AppHistory.push("/" + i18n.language);
+      AppHistory.push("/");
     }
   });
   const handleCSClick = (userid, name = "", question, email = "") => {

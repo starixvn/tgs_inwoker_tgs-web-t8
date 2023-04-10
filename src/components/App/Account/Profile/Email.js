@@ -220,9 +220,7 @@ class Address extends Component {
                       !response.data.bankinfoauthentication &&
                       !response.data.registercompleted
                     ) {
-                      AppHistory.push(
-                        "/" + i18n.language + "/account/bankcard/add"
-                      );
+                      AppHistory.push("/account/bankcard/add");
                     }
                   });
                 } else {
