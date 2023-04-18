@@ -93,7 +93,7 @@ function DepositReportList(props) {
 
   const handleManualDeposit = (id) => {
     AppHistory.push({
-      pathname: "/" + i18n.language + "/account/manual/" + id,
+      pathname: "/account/manual/" + id,
     });
   };
 

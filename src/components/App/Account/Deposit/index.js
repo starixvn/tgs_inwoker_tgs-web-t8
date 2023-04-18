@@ -210,8 +210,9 @@ class Deposit extends Component {
     ) {
       if (this.props.wallet.depositResult.IsSuccess) {
         const response = this.props.wallet.depositResult;
-        var payment =
-          this.props.wallet.depositTypeList[this.state.selectedPaymentIndex];
+        var payment = this.props.wallet.depositTypeList[
+          this.state.selectedPaymentIndex
+        ];
         if (config.features.Deposit_DualPage) {
           this.setState({
             ...this.state,
@@ -287,9 +288,7 @@ class Deposit extends Component {
           ].paymentcode.toUpperCase() === "WANDAPAY"
         ) {
           if (!this.props.account.info.member_name) {
-            this.props.history.push(
-              "/" + i18n.language + "/account/profile/member_name"
-            );
+            this.props.history.push("/account/profile/member_name");
           }
         }
       }
@@ -425,8 +424,9 @@ class Deposit extends Component {
       var depositResult = JSON.parse(ev.newValue);
 
       if (depositResult !== null && depositResult.IsSuccess) {
-        var payment =
-          this.props.wallet.depositTypeList[this.state.selectedPaymentIndex];
+        var payment = this.props.wallet.depositTypeList[
+          this.state.selectedPaymentIndex
+        ];
         // var paymenturl = "";
         // if (payment.paymentcode.toUpperCase() !== "MANUAL") {
         //   paymenturl = response.data.paymenturl;
@@ -540,8 +540,9 @@ class Deposit extends Component {
   handleNextClick = (e) => {
     this.setState({ ...this.state, loading: true });
 
-    var payment =
-      this.props.wallet.depositTypeList[this.state.selectedPaymentIndex];
+    var payment = this.props.wallet.depositTypeList[
+      this.state.selectedPaymentIndex
+    ];
     var method = payment.method[this.state.selectedMethodIndex];
 
     var channel = method.channel[this.state.selectedChannelIndex];
@@ -562,8 +563,12 @@ class Deposit extends Component {
       }
     };
 
-    if ((config.features.Deposit_SplitUsdt && payment.alteredpaymentcode &&
-      payment.alteredpaymentcode.toUpperCase() === "MANUAL") || payment.paymentcode.toUpperCase() === "MANUAL" ) {
+    if (
+      (config.features.Deposit_SplitUsdt &&
+        payment.alteredpaymentcode &&
+        payment.alteredpaymentcode.toUpperCase() === "MANUAL") ||
+      payment.paymentcode.toUpperCase() === "MANUAL"
+    ) {
       // handle manual deposit
       if (method.methodcode === "BankTransfer") {
         if (config.features.Deposit_AddCard) {
@@ -625,8 +630,8 @@ class Deposit extends Component {
         );
       } else if (method.methodcode === "Pulsa") {
         let phone = this.props.wallet.bankCardList[bankCardIndex]
-        ? this.props.wallet.bankCardList[bankCardIndex].detail.phone
-        : "";
+          ? this.props.wallet.bankCardList[bankCardIndex].detail.phone
+          : "";
         if (config.features.Deposit_AddCard) {
           this.props.doPulsaDepositWithDetail(
             this.state.amount.replace(/,/g, ""),
@@ -853,10 +858,10 @@ class Deposit extends Component {
     );
   };
   handleAmountChange = (e) => {
-    var max =
-      this.props.wallet.depositTypeList[this.state.selectedPaymentIndex].method[
-        this.state.selectedMethodIndex
-      ].channel[this.state.selectedChannelIndex].transferlimit.to;
+    var max = this.props.wallet.depositTypeList[this.state.selectedPaymentIndex]
+      .method[this.state.selectedMethodIndex].channel[
+      this.state.selectedChannelIndex
+    ].transferlimit.to;
 
     this.setState({
       ...this.state,
@@ -1215,7 +1220,7 @@ class Deposit extends Component {
                   ) : (
                     <></>
                   )}
-             
+
                   {(() => {
                     if (this.props.wallet.depositTypeList.length <= 0)
                       return null;

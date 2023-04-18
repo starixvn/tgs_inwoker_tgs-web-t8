@@ -80,10 +80,7 @@ const GameSection = (props) => {
 const ThirdSection = (props) => {
   const GetUrl = (item) => {
     return (
-      process.env.PUBLIC_URL +
-      "/assets/images/" +
-      i18n.language +
-      `/ky-hotgame${item}.png`
+      process.env.PUBLIC_URL + "/assets/images/" + `/ky-hotgame${item}.png`
     );
   };
 
@@ -120,9 +117,7 @@ const ThirdSection = (props) => {
                             GameTypeEnum.QIPAILOBBY,
                             "",
                             GameEnum.KY,
-                            "/" +
-                              i18n.language +
-                              "/joingame/" +
+                            "/joingame/" +
                               GameTypeEnum.QIPAILOBBY +
                               "/" +
                               GameEnum.KY
@@ -139,7 +134,6 @@ const ThirdSection = (props) => {
                             "",
                             GameEnum.KY,
                             "/" +
-                              i18n.language +
                               "/joingame/" +
                               GameTypeEnum.QIPAILOBBY +
                               "/" +
@@ -157,7 +151,6 @@ const ThirdSection = (props) => {
                             "",
                             GameEnum.KY,
                             "/" +
-                              i18n.language +
                               "/joingame/" +
                               GameTypeEnum.QIPAILOBBY +
                               "/" +
@@ -184,7 +177,6 @@ const ThirdSection = (props) => {
                             "",
                             GameEnum.KY,
                             "/" +
-                              i18n.language +
                               "/joingame/" +
                               GameTypeEnum.QIPAILOBBY +
                               "/" +
@@ -202,7 +194,6 @@ const ThirdSection = (props) => {
                             "",
                             GameEnum.KY,
                             "/" +
-                              i18n.language +
                               "/joingame/" +
                               GameTypeEnum.QIPAILOBBY +
                               "/" +
@@ -220,7 +211,6 @@ const ThirdSection = (props) => {
                             "",
                             GameEnum.KY,
                             "/" +
-                              i18n.language +
                               "/joingame/" +
                               GameTypeEnum.QIPAILOBBY +
                               "/" +
@@ -241,12 +231,7 @@ const ThirdSection = (props) => {
                 GameTypeEnum.QIPAILOBBY,
                 "",
                 GameEnum.KY,
-                "/" +
-                  i18n.language +
-                  "/joingame/" +
-                  GameTypeEnum.QIPAILOBBY +
-                  "/" +
-                  GameEnum.KY
+                "/joingame/" + GameTypeEnum.QIPAILOBBY + "/" + GameEnum.KY
               )
             }
           >

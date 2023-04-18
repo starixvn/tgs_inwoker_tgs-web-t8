@@ -27,7 +27,7 @@ const ButtonContainer = styled.div`
 `;
 class Success extends Component {
   gotoVerify = () => {
-    AppHistory.push("/" + i18n.language + "/account/profile/member_name");
+    AppHistory.push("/account/profile/member_name");
   };
   render() {
     return (

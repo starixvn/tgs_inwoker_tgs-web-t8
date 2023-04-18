@@ -130,7 +130,7 @@ class EmailVerification extends Component {
               member_email: this.state.email,
             },
           });
-          AppHistory.replace("/" + i18n.language + "/account/withdrawal");
+          AppHistory.replace("/account/withdrawal");
           this.setState({
             ...this.state,
             code: "",

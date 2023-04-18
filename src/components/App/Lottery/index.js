@@ -166,12 +166,7 @@ class Lottery extends Component {
         document.getElementById("audio").volume = 0.0;
       Common.closePreviousPopup();
       // this.props.performBalanceRefresh();
-      var win = Common.PopupCenter(
-        "/" + i18n.language + "/joinlottery/" + name,
-        name,
-        1280,
-        720
-      );
+      var win = Common.PopupCenter("/joinlottery/" + name, name, 1280, 720);
       var timer = setInterval(function () {
         if (win.closed) {
           clearInterval(timer);
@@ -225,9 +220,7 @@ class Lottery extends Component {
                           `/assets/images/pcGamePage/lottery/${data.abbreviation.toLowerCase()}.png`
                         }
                       ></GameImage>
-                      <GameTitle>
-                        {data.name}
-                      </GameTitle>
+                      <GameTitle>{data.name}</GameTitle>
                     </RightNavItem>
                   );
                 })}
