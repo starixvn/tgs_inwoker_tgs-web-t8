@@ -541,7 +541,7 @@ class Withdrawal extends Component {
               //   ) {
               //     return (
               //       <Redirect
-              //         to={`/${i18n.language}/account/profile/member_email`}
+              //         to={`/account/profile/member_email`}
               //       ></Redirect>
               //     );
 

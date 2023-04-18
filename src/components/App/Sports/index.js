@@ -157,7 +157,7 @@ class Sports extends Component {
     } else {
       Common.closePreviousPopup();
       if (type === GameTypeEnum.RNGSPORTS) {
-        this.props.history.push("/" + i18n.language + "/sports/" + params);
+        this.props.history.push("/sports/" + params);
       } else if (
         (params === "WGFM" && !config.features.WGSports_UseIframe) ||
         params === "WGVIA"
@@ -165,7 +165,7 @@ class Sports extends Component {
         if (document.getElementById("audio") != null)
           document.getElementById("audio").volume = 0.0;
         var win = Common.PopupCenter(
-          `/${i18n.language}/joinlobbygame/${type}/${params}`,
+          `/joinlobbygame/${type}/${params}`,
           params,
           1280,
           720
@@ -184,9 +184,7 @@ class Sports extends Component {
         }, 1000);
       } else {
         // this.props.performBalanceRefresh();
-        this.props.history.push(
-          "/" + i18n.language + "/sports/play/" + params + "/" + type
-        );
+        this.props.history.push("/sports/play/" + params + "/" + type);
       }
     }
   };
@@ -234,9 +232,7 @@ class Sports extends Component {
                           `/assets/images/pcGamePage/sports/${data.abbreviation.toLowerCase()}.png`
                         }
                       ></GameImage>
-                      <GameTitle>
-                        {data.name}
-                      </GameTitle>
+                      <GameTitle>{data.name}</GameTitle>
                     </LeftNavItem>
                   );
                 })}

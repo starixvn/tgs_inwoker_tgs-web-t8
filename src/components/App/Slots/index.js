@@ -183,10 +183,10 @@ const GameTabButton = styled.div`
 
   &:hover ${GameTab} {
     background: url(${(props) =>
-        process.env.PUBLIC_URL +
-        `/assets/images/pcGamePage/slots/` +
-        props.img +
-        `-white.png`})
+      process.env.PUBLIC_URL +
+      `/assets/images/pcGamePage/slots/` +
+      props.img +
+      `-white.png`})
       no-repeat;
     background-position: center;
     background-size: contain;
@@ -778,7 +778,7 @@ class Slots extends Component {
         : this.props.match.url.indexOf("slots") >= 0
         ? "slots"
         : "electron";
-    AppHistory.push(`/${i18n.language}/${type}/${platform}`);
+    AppHistory.push(`/${type}/${platform}`);
   };
   handleFilterGameClick = (filterType) => {
     this.setState({ ...this.state, filterGame: filterType, page: 1 });
@@ -851,9 +851,7 @@ class Slots extends Component {
     if (this.props.token) {
       Common.closePreviousPopup();
       // this.props.performBalanceRefresh();
-      this.props.history.push(
-        `/${i18n.language}/${type}/play/${gpcode}/${gpid}`
-      );
+      this.props.history.push(`/${type}/play/${gpcode}/${gpid}`);
     } else {
       this.props.showLogin(true);
     }

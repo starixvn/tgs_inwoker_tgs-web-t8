@@ -242,7 +242,7 @@ const SecondSection = (props) => {
                   <SliderImgButton
                     onClick={() => {
                       window.scrollTo({ top: 0, behavior: "smooth" });
-                      props.navigate(`/${i18n.language}/${item.path}`);
+                      props.navigate(`/${item.path}`);
                     }}
                   >
                     {i18n.t("withdrawal.checkDetails")}

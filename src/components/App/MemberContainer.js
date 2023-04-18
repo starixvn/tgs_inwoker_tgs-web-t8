@@ -279,7 +279,7 @@ const MemberContainer = (props) => {
       </BtnLogout>
 
       <WelcomeContainer>
-        <CustomLink to={"/" + i18n.language + "/account/profile"}>
+        <CustomLink to={"/account/profile"}>
           {/* {i18n.t("web.header.welcomBack")}{" "} */}
           <MemberUserName>
             {props.account.info.member_username}
