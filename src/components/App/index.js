@@ -173,6 +173,14 @@ class App extends Component {
       //  this.props.getWalletBalance();
     }
   }
+
+  matchingLanguage = (language) => {
+    const languageList = ["zh-CN", "zh-TW", "en-US", "th-TH", "vi-VN", "id-ID"];
+    if (languageList.includes(language)) {
+      return true;
+    }
+  };
+
   async componentDidUpdate(preProps) {
     if (preProps.general.token !== this.props.general.token) {
       if (
@@ -313,6 +321,11 @@ class App extends Component {
           window.location.reload();
         }
       } else {
+        if (this.matchingLanguage(window.location.pathname.split("/")[1])) {
+          this.props.history.push("/");
+          window.location.reload();
+        }
+
         if (
           this.props.general.brandLanguage.filter(
             (a) => a.culturecode === i18n.language
@@ -328,6 +341,7 @@ class App extends Component {
       }
     }
   }
+
   GetSupportUrl = (userid, name, question, email) => {
     var newURL = this.props.general.livechat
       ? this.props.general.livechat.setting.url
