@@ -2,15 +2,15 @@ import featureList from "./features";
 
 var wapTemplate = window?.env?.wapTemplate || 8; //3 for T3 ,4 for T4 (based on .xd file)
 const config = {
-  baseUrl: window?.env ? "/api/" : "https://stg-t8.rpgp.cc/api/",
+  baseUrl: window.env?.apiUrl || (window?.env ? "/api/" : "https://dev-t1.rpgp.cc/api/"),
   client:
     window?.env?.client ||
-    "I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ",
-  currency: window?.env?.currency || "CNY",
-  brand: window?.env?.brand || process.env.REACT_APP_BRAND || "PGG",
+    "yorAqGm7MHug45YZ0B6umuTaQnYJdawIQQjEUgsDAQeidDl8j4t0uUi",
+  currency: window?.env?.currency || "HKD",
+  brand: window?.env?.brand || process.env.REACT_APP_BRAND || "xxxx",
   brandName: window?.env?.brandName
     ? window?.env?.brandName
-    : window?.env?.brand || "PGG",
+    : window?.env?.brand || "M9THB",
   theme: window?.env?.theme || "GMO",
   wapVersion: wapTemplate,
   sourceUrl: window?.env?.sourceUrl || "https://images.srvptt.com/",
