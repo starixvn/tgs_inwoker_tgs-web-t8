@@ -4,6 +4,7 @@ WORKDIR /src
 COPY . .
 
 RUN npm install
+
 RUN npm run build
 
 FROM caddy:2.1.1-alpine
