@@ -2,7 +2,9 @@ import featureList from "./features";
 
 var wapTemplate = window?.env?.wapTemplate || 8; //3 for T3 ,4 for T4 (based on .xd file)
 const config = {
-  baseUrl: window.env?.apiUrl || (window?.env ? "/api/" : "https://dev-t1.rpgp.cc/api/"),
+  baseUrl:
+    window.env?.apiUrl ||
+    (window?.env ? "/api/" : "https://stg-t1.rpgp.cc/api/"),
   client:
     window?.env?.client ||
     "yorAqGm7MHug45YZ0B6umuTaQnYJdawIQQjEUgsDAQeidDl8j4t0uUi",
