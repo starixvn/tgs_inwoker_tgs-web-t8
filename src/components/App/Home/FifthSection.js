@@ -24,9 +24,14 @@ const ProviderContainer = styled.div`
 const ProviderIMG = styled.div`
   background: url("${process.env.PUBLIC_URL}/assets/images/provider/${(props) =>
       props.provider}.png")
-    no-repeat;
+    no-repeat center;
+  background-size: 90%;
   width: 130px;
   height: 66px;
+`;
+
+const WhiteBackground = styled.div`
+  background: #fff;
 `;
 
 const FifthSection = (props) => {
@@ -49,11 +54,13 @@ const FifthSection = (props) => {
           })
           .map((item, index) => {
             return (
-              <ProviderIMG
-                key={index}
-                provider={item.abbreviation.toLowerCase()}
-                title={item.name}
-              ></ProviderIMG>
+              <WhiteBackground>
+                <ProviderIMG
+                  key={index}
+                  provider={item.abbreviation.toLowerCase()}
+                  title={item.name}
+                ></ProviderIMG>
+              </WhiteBackground>
             );
           })}
       </ProviderContainer>

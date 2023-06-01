@@ -81,19 +81,16 @@ const GameTab = styled.div`
   z-index: 1;
   filter: ${(props) =>
     props.active === true
-      ? `brightness(500%) grayscale(100%);`
+      ? `grayscale(00%);`
       : `brightness(50%) grayscale(100%);`};
   margin: 0 auto;
   background: url(${(props) =>
-      process.env.PUBLIC_URL +
-      `/assets/images/pcGamePage/slots/` +
-      props.img +
-      (props.active === true ? `-white` : `-color`) +
-      `.png`})
+      process.env.PUBLIC_URL + `/assets/images/provider/` + props.img + `.png`})
     no-repeat;
   background-position: center;
   background-size: contain;
-  width: 100px;
+  width: 100%;
+  height: 100%;
 `;
 
 const GameTabAll = styled(GameTab)`
@@ -182,15 +179,7 @@ const GameTabButton = styled.div`
   }}
 
   &:hover ${GameTab} {
-    background: url(${(props) =>
-      process.env.PUBLIC_URL +
-      `/assets/images/pcGamePage/slots/` +
-      props.img +
-      `-white.png`})
-      no-repeat;
-    background-position: center;
-    background-size: contain;
-    filter: brightness(500%) grayscale(100%);
+    filter: grayscale(0%);
     transition: filter 3s;
   }
   &:hover ${GameTabAll} {
