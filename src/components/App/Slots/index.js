@@ -179,6 +179,7 @@ const GameTabButton = styled.div`
   }}
 
   &:hover ${GameTab} {
+    filter: grayscale(0%);
     transition: filter 3s;
   }
   &:hover ${GameTabAll} {
