@@ -9,7 +9,7 @@ const config = {
     window?.env?.client ||
     "yorAqGm7MHug45YZ0B6umuTaQnYJdawIQQjEUgsDAQeidDl8j4t0uUi",
   currency: window?.env?.currency || "HKD",
-  brand: window?.env?.brand || process.env.REACT_APP_BRAND || "xxxx",
+  brand: window?.env?.brand || process.env.REACT_APP_BRAND || "stg_PB",
   brandName: window?.env?.brandName
     ? window?.env?.brandName
     : window?.env?.brand || "M9THB",

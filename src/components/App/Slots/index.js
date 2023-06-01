@@ -85,15 +85,12 @@ const GameTab = styled.div`
       : `brightness(50%) grayscale(100%);`};
   margin: 0 auto;
   background: url(${(props) =>
-      process.env.PUBLIC_URL +
-      `/assets/images/pcGamePage/slots/` +
-      props.img +
-      (props.active === true ? `-white` : `-color`) +
-      `.png`})
+      process.env.PUBLIC_URL + `/assets/images/provider/` + props.img + `.png`})
     no-repeat;
   background-position: center;
   background-size: contain;
-  width: 100px;
+  width: 100%;
+  height: 100%;
 `;
 
 const GameTabAll = styled(GameTab)`
@@ -183,10 +180,10 @@ const GameTabButton = styled.div`
 
   &:hover ${GameTab} {
     background: url(${(props) =>
-      process.env.PUBLIC_URL +
-      `/assets/images/pcGamePage/slots/` +
-      props.img +
-      `-white.png`})
+        process.env.PUBLIC_URL +
+        `/assets/images/pcGamePage/slots/` +
+        props.img +
+        `-white.png`})
       no-repeat;
     background-position: center;
     background-size: contain;
