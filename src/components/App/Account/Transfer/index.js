@@ -242,6 +242,7 @@ const GameIcon = styled.div`
   background-position: center;
   margin: 0 auto;
   display: block;
+  transform: scale(1.5);
 `;
 const GameName = styled.div`
   font-size: 14px;
@@ -583,7 +584,11 @@ class Transfer extends Component {
     });
   };
   gpNameSwitcher = ({ gpcode, name }) => {
-    if (gpcode && gpcode.toLowerCase() === "wgfm" && config.brandName === "TIGER")
+    if (
+      gpcode &&
+      gpcode.toLowerCase() === "wgfm" &&
+      config.brandName === "TIGER"
+    )
       return "Tiger Sports";
     else return name ? name : "";
   };
@@ -686,7 +691,14 @@ class Transfer extends Component {
                   )
                   .filter((e) => {
                     if (config.features.MergeEVORTNT) {
-                      if (!(e.gpcode === "NTTF" || e.gpcode === "RTTF" || e.gpcode === "NLC" || e.gpcode === "BTG")) {
+                      if (
+                        !(
+                          e.gpcode === "NTTF" ||
+                          e.gpcode === "RTTF" ||
+                          e.gpcode === "NLC" ||
+                          e.gpcode === "BTG"
+                        )
+                      ) {
                         return e;
                       }
                     } else {
@@ -719,7 +731,14 @@ class Transfer extends Component {
                   )
                   .filter((e) => {
                     if (config.features.MergeEVORTNT) {
-                      if (!(e.gpcode === "NTTF" || e.gpcode === "RTTF" || e.gpcode === "NLC" || e.gpcode === "BTG")) {
+                      if (
+                        !(
+                          e.gpcode === "NTTF" ||
+                          e.gpcode === "RTTF" ||
+                          e.gpcode === "NLC" ||
+                          e.gpcode === "BTG"
+                        )
+                      ) {
                         return e;
                       }
                     } else {
@@ -798,7 +817,14 @@ class Transfer extends Component {
               )
               .filter((e) => {
                 if (config.features.MergeEVORTNT) {
-                  if (!(e.gpcode === "NTTF" || e.gpcode === "RTTF" || e.gpcode === "NLC" || e.gpcode === "BTG")) {
+                  if (
+                    !(
+                      e.gpcode === "NTTF" ||
+                      e.gpcode === "RTTF" ||
+                      e.gpcode === "NLC" ||
+                      e.gpcode === "BTG"
+                    )
+                  ) {
                     return e;
                   }
                 } else {
@@ -822,13 +848,11 @@ class Transfer extends Component {
                       <GameIcon
                         src={
                           process.env.PUBLIC_URL +
-                          `/assets/images/provider/transfer/${displayLogo()}.png`
+                          `/assets/images/provider/${displayLogo()}.png`
                         }
                       ></GameIcon>
                       <GameName>
-                        <DynamicFont
-                          content={item.name}
-                        ></DynamicFont>
+                        <DynamicFont content={item.name}></DynamicFont>
                       </GameName>
                     </GameTranferLeftWrap>
 
