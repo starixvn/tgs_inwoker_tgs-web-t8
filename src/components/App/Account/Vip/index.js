@@ -22,7 +22,7 @@ const heightSwitcher = (language) => {
 const Container = styled.div`
   padding: 20px 28px;
   box-sizing: border-box
-  background-color: #eaeaea;
+  background-color: ##f7f7f7;
   width: 100%;
   min-height: 611px;
  

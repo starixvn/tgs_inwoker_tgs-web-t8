@@ -42,6 +42,7 @@ import Affiliate from "./Affiliate";
 import VIP from "./Vip/index";
 import config from "../../../config/config";
 import CardManagement from "./Profile/CardManagement";
+import Memo from "./Memo";
 
 const Container = styled.div`
   width: 100%;
@@ -299,6 +300,7 @@ class Account extends Component {
           <MenuBonusImg active={this.state.activePage === link}></MenuBonusImg>
         );
       case "inbox":
+      case "memo":
         return (
           <MenuInboxImg active={this.state.activePage === link}></MenuInboxImg>
         );
@@ -382,11 +384,15 @@ class Account extends Component {
                     />
                   )}
                 />
-
                 <Route
                   exact
                   path={"/account/inbox"}
                   render={(props) => <Inbox token={this.props.account.token} />}
+                />{" "}
+                <Route
+                  exact
+                  path={"/account/memo"}
+                  render={(props) => <Memo token={this.props.account.token} />}
                 />
                 <Route
                   exact
@@ -434,7 +440,6 @@ class Account extends Component {
                     />
                   )}
                 />
-
                 {config.features.HaveVIPFeature && (
                   <Route
                     exact
@@ -442,7 +447,6 @@ class Account extends Component {
                     render={(props) => <VIP token={this.props.account.token} />}
                   />
                 )}
-
                 {this.props.general.haveAffiliate && (
                   <Route
                     exact
@@ -457,7 +461,6 @@ class Account extends Component {
                     )}
                   />
                 )}
-
                 <Redirect to={"/account/profile"}></Redirect>
               </Switch>
             </Router>
