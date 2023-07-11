@@ -422,6 +422,7 @@ class PromotionDetails extends Component {
     var checkLocale = this.state.details.localization[i18n.language];
     if (this.state.details === null) return <></>;
     var isDummy = this.state.details.promotionType.toUpperCase() === "DUMMY";
+    var isPromoteDepositChannel = this.state.details.promotionType.toUpperCase() === "PROMOTEDEPOSITCHANNEL";
     var checkIfLocalizationIsEmpty =
       JSON.stringify(this.state.details.localization) === "{}";
     return (
@@ -513,7 +514,7 @@ class PromotionDetails extends Component {
               </PromoDetailRightContainer>
             </PromoDetailBodyContainer>
             <PromoDetailFooterContainer isToggled={this.state.isToggled}>
-              {!isDummy && (
+              {!(isDummy || isPromoteDepositChannel) && (
                 <PromoDetailJoinButton
                   uiDisabled={this.state.joined}
                   onClick={() =>
