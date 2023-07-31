@@ -186,7 +186,7 @@ const Main = (props) => {
 
   const handleFilterBankNumber = (item) => {
     let last4Digits = "";
-    if (item.banktype === "ThirdParty" || item.banktype === "FPS") {
+    if (item.banktype === "ThirdParty" || item.banktype === "FPS" || item.banktype === "Coinsph") {
       if (item.detail.phone) {
         last4Digits = item.detail.phone.slice(-4);
         return last4Digits.padStart(item.detail.phone.length, "*");
