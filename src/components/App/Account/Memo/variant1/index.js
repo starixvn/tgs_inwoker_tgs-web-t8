@@ -75,6 +75,7 @@ const MemoVariant1 = ({
   sent,
   memo,
   getMemoV2,
+  readMemo,
   deliveryBox,
   performComposeMemo,
   performReplyMemo,
@@ -88,6 +89,7 @@ const MemoVariant1 = ({
       case "memoinbox":
         return (
           <Inbox
+            readMemo={readMemo}
             memo={memo}
             getmemo={getMemoV2}
             performReplyMemo={performReplyMemo}

@@ -110,7 +110,7 @@ const CustomTextfield = styled.input`
   }
 `;
 
-const Inbox = ({ memo, getmemo, performReplyMemo }) => {
+const Inbox = ({ memo, getmemo, performReplyMemo, readMemo }) => {
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState("");
 
@@ -128,6 +128,7 @@ const Inbox = ({ memo, getmemo, performReplyMemo }) => {
   const performReadInbox = (id) => {
     getmemo(id).then((res) => {
       if (res.IsSuccess) {
+        readMemo(id);
         setContent(res.data);
         setOpen(true);
       }
