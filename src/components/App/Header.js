@@ -184,13 +184,22 @@ const RightMenuUL = styled.ul`
 `;
 
 const RightMenuTextSpan = styled.span`
-  font-size: ${(props) => (i18n.language === "vi-VN" ? "15px" : "16px")};
+  font-size: ${(props) => (i18n.language === "vi-VN" ? "15px" : i18n.language === "ta-IN" ? "10px" : "16px")};
 
   margin: 0 auto;
   display: block;
 
   padding-top: 6px;
   text-align: center;
+
+  ${(props) =>
+    i18n.language === "ta-IN"
+      ? `
+    width: 60px;
+    white-space: normal;
+    word-break: break-word;
+  `
+      : ``}
 `;
 
 const MouseOverContainer = styled.div`

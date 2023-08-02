@@ -20,9 +20,9 @@ export const rotateKeyFrame = keyframes`
   }
 `;
 const Container = styled.div`
-  font-size: 14px;
+  font-size: ${(props)=> i18n.language === "ta-IN" ? "12px" : "14px"};
   float: right;
-  width: 650px;
+  width: ${(props)=> i18n.language === "ta-IN" ? "740px" : "650px"};
   display: flex;
   flex-direction: row-reverse;
   line-height: 38px;
