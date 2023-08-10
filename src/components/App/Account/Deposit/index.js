@@ -941,7 +941,6 @@ class Deposit extends Component {
         "DailyFirstDeposit",
         "DepositReward",
         "DepositAccumulateRoulette",
-        "PromoteDepositChannel",
       ].indexOf(item.promotionType) >= 0
     );
   };
@@ -952,23 +951,6 @@ class Deposit extends Component {
       : true;
   };
 
-  hasDepositPaymentChannelPromotion = (item) => {
-    if (item.promotionType === "PromoteDepositChannel") {
-      if (
-        item.campaignDetail.channelIds &&
-        item.campaignDetail.channelIds.length > 0
-      ) {
-        return (
-          item.campaignDetail.channelIds.indexOf(
-            this.props.wallet.depositTypeList[this.state.selectedPaymentIndex]
-              .method[this.state.selectedMethodIndex].channel[
-              this.state.selectedChannelIndex
-            ].channelid
-          ) >= 0
-        );
-      }
-    } else return true;
-  };
 
   switchStep = (steps) => {
     switch (steps) {
@@ -1000,8 +982,7 @@ class Deposit extends Component {
               promotionList={this.props.general.promotionList.items.filter(
                 (item) =>
                   this.hasDepositPromotion(item) &&
-                  this.hasDepositRewardPromotion(item) &&
-                  this.hasDepositPaymentChannelPromotion(item)
+                  this.hasDepositRewardPromotion(item)
               )}
               depositPromotion={this.state.depositPromotion}
               handleDepositPromotionChange={this.handleDepositPromotionChange}
@@ -1039,8 +1020,7 @@ class Deposit extends Component {
               promotionList={this.props.general.promotionList.items.filter(
                 (item) =>
                   this.hasDepositPromotion(item) &&
-                  this.hasDepositRewardPromotion(item) &&
-                  this.hasDepositPaymentChannelPromotion(item)
+                  this.hasDepositRewardPromotion(item)
               )}
               depositPromotion={this.state.depositPromotion}
               handleDepositPromotionChange={this.handleDepositPromotionChange}
