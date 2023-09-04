@@ -99,6 +99,11 @@ const CustomButton = styled.button`
   padding: 10px 20px;
   border-radius: 6px;
   cursor: pointer;
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
 `;
 
 const CustomTextfield = styled.input`
@@ -220,7 +225,10 @@ const Inbox = ({ memo, getmemo, performReplyMemo, readMemo }) => {
             </div>
           </InputRow>
           <InputRow>
-            <div>{i18n.t("memo")}</div>
+            <div>
+              <span style={{ color: "red" }}>*</span>
+              {i18n.t("memo")}
+            </div>
             <div>
               <CustomTextArea
                 rows="7"
@@ -237,6 +245,7 @@ const Inbox = ({ memo, getmemo, performReplyMemo, readMemo }) => {
             <div></div>
             <div>
               <CustomButton
+                disabled={memoContent === ""}
                 onClick={() => {
                   performReplyMemo(replyId, memoContent);
                   performCloseModal();

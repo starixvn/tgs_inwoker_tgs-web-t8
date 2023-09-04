@@ -6,7 +6,7 @@ import i18n from "../../../../../../utils/i18n";
 
 const InputRow = styled.div`
   display: grid;
-  grid-template-columns: 15% 1fr;
+  grid-template-columns: 20% 1fr;
   padding-bottom: 10px;
 `;
 
@@ -14,6 +14,7 @@ const CustomTextArea = styled.textarea`
   outline: none;
   padding: 5px 10px;
   border: solid 1px #b7c7cc;
+  width: -webkit-fill-available;
 `;
 
 const CustomButton = styled.button`
@@ -24,6 +25,10 @@ const CustomButton = styled.button`
   padding: 10px 20px;
   border-radius: 6px;
   cursor: pointer;
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
 `;
 
 const CustomTextfield = styled.input`
@@ -45,7 +50,10 @@ const Compose = ({ composeMemo }) => {
       <TabContentTitle>{i18n.t("compose") + i18n.t("memo")}</TabContentTitle>
       <TabsContent>
         <InputRow>
-          <div>{i18n.t("subject")}</div>
+          <div>
+            <span style={{ color: "red" }}>*</span>
+            {i18n.t("subject")}
+          </div>
           <div>
             <CustomTextfield
               value={memoSubject}
@@ -56,7 +64,10 @@ const Compose = ({ composeMemo }) => {
           </div>
         </InputRow>
         <InputRow>
-          <div>{i18n.t("memo")}</div>
+          <div>
+            <span style={{ color: "red" }}>*</span>
+            {i18n.t("memo")}
+          </div>
           <div>
             <CustomTextArea
               rows="7"
@@ -73,6 +84,7 @@ const Compose = ({ composeMemo }) => {
           <div></div>
           <div>
             <CustomButton
+              disabled={memoContent === "" || memoSubject === ""}
               onClick={() => {
                 composeMemo(memoSubject, memoContent);
               }}
