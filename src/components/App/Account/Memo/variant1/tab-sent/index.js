@@ -32,7 +32,7 @@ const CustomTable = styled.table`
   tbody {
     tr {
       td {
-        padding: 5px 10px;
+        padding: 10px 10px;
       }
       &:last-child {
         border-bottom: none;
@@ -50,21 +50,6 @@ const Content = styled.div`
 
 const UpperSection = styled.div`
   padding: 20px;
-`;
-
-const ContentButton = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 3px 4px;
-  color: #fff;
-  border-radius: 6px;
-  border: solid 1px ${({ theme }) => theme.primary};
-  color: ${({ theme }) => theme.primary};
-  user-select: none;
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 const CustomTableRow = styled.tr`
@@ -124,15 +109,6 @@ const Sent = ({ sent, action }) => {
                       }}
                     >
                       {item.subject}
-                    </td>
-                    <td>
-                      <ContentButton
-                        onClick={() => {
-                          performOpenModal(item.id);
-                        }}
-                      >
-                        🔎︎
-                      </ContentButton>
                     </td>
                   </CustomTableRow>
                 );
