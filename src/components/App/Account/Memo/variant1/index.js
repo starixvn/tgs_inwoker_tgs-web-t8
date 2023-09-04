@@ -79,6 +79,7 @@ const MemoVariant1 = ({
   deliveryBox,
   performComposeMemo,
   performReplyMemo,
+  account,
 }) => {
   const [selected, setSelected] = useState("compose");
 
@@ -96,7 +97,13 @@ const MemoVariant1 = ({
           />
         );
       case "sent":
-        return <Sent sent={sent} action={deliveryBox} />;
+        return (
+          <Sent
+            sent={sent}
+            action={deliveryBox}
+            username={account?.info?.member_username}
+          />
+        );
       default:
         return <Compose />;
     }

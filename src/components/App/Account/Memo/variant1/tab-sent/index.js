@@ -62,7 +62,7 @@ const Title = styled.div`
   font-size: 34px;
   font-weight: 600;
 `;
-const Sent = ({ sent, action }) => {
+const Sent = ({ sent, action, username }) => {
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState("");
 
@@ -76,7 +76,13 @@ const Sent = ({ sent, action }) => {
   const dateTimeFormatter = (date) => {
     const today = moment();
     const diffInDays = today.diff(date, "days");
-    return moment(date).format("YYYY/MM/DD") + " - " + diffInDays + " days ago";
+    return (
+      moment(date).format("YYYY/MM/DD") +
+      " - " +
+      diffInDays +
+      " " +
+      i18n.t("daysago")
+    );
   };
 
   const performCloseModal = () => {
@@ -119,7 +125,7 @@ const Sent = ({ sent, action }) => {
           <UpperSection>
             <Title>{content.subject}</Title>
             <div>
-              {content.sender} - {dateTimeFormatter(content.sentOn)}
+              {i18n.t("sentBy")} {username} {dateTimeFormatter(content.sentOn)}
             </div>
           </UpperSection>
 

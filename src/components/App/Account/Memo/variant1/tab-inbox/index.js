@@ -144,7 +144,13 @@ const Inbox = ({ memo, getmemo, performReplyMemo, readMemo }) => {
   const dateTimeFormatter = (date) => {
     const today = moment();
     const diffInDays = today.diff(date, "days");
-    return moment(date).format("YYYY/MM/DD") + " - " + diffInDays + " days ago";
+    return (
+      moment(date).format("YYYY/MM/DD") +
+      " - " +
+      diffInDays +
+      " " +
+      i18n.t("daysago")
+    );
   };
 
   const [replyModal, setReplyModal] = useState(false);
@@ -201,7 +207,8 @@ const Inbox = ({ memo, getmemo, performReplyMemo, readMemo }) => {
           <UpperSection>
             <Title>{content.subject}</Title>
             <div>
-              {content.sender} - {dateTimeFormatter(content.sentOn)}
+              {i18n.t("sentBy")} {content.sender}{" "}
+              {dateTimeFormatter(content.sentOn)}
             </div>
           </UpperSection>
 

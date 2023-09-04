@@ -70,7 +70,7 @@ const Memo = ({
     replyMemo,
     readMemo,
     deliveryBox,
-
+    account,
     performComposeMemo,
     performReplyMemo,
   };
