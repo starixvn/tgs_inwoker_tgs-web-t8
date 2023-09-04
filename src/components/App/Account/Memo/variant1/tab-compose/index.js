@@ -11,6 +11,8 @@ const InputRow = styled.div`
 `;
 
 const CustomTextArea = styled.textarea`
+  width: 100%;
+  box-sizing: border-box;
   outline: none;
   padding: 5px 10px;
   border: solid 1px #b7c7cc;
@@ -18,6 +20,7 @@ const CustomTextArea = styled.textarea`
 `;
 
 const CustomButton = styled.button`
+  float: right;
   background: ${({ theme }) => theme.primary};
   color: #fff;
   border: none;
@@ -32,6 +35,8 @@ const CustomButton = styled.button`
 `;
 
 const CustomTextfield = styled.input`
+  width: 100%;
+  box-sizing: border-box;
   outline: none;
   padding: 5px 10px;
   border: solid 1px #b7c7cc;
