@@ -74,7 +74,13 @@ const Compose = ({ composeMemo }) => {
               value={memoContent}
               placeholder="Enter your memo here..."
               onChange={(e) => {
-                setMemoContent(e.target.value);
+                const value = e.target.value;
+                const lastChar = value.charAt(value.length - 1);
+                if (lastChar === "\n") {
+                  setMemoContent(value + lastChar);
+                } else {
+                  setMemoContent(value);
+                }
               }}
             />
           </div>
