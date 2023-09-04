@@ -73,6 +73,7 @@ const ContentWrapper = styled.div``;
 
 const Content = styled.div`
   padding: 20px;
+  white-space: pre-wrap;
 `;
 
 const UpperSection = styled.div`
