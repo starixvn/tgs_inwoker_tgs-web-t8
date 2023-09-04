@@ -90,7 +90,6 @@ const Sent = ({ sent, action }) => {
         <CustomTable>
           <thead>
             <tr>
-              <th>{i18n.t("number")}</th>
               <th>{i18n.t("date")}</th>
               <th style={{ width: "60%" }}>{i18n.t("subject")}</th>
               <th></th>
@@ -101,7 +100,6 @@ const Sent = ({ sent, action }) => {
               sent.items.map((item, index) => {
                 return (
                   <CustomTableRow key={index}>
-                    <td>{index + 1}</td>
                     <td>{moment(item.sentOn).format("D MMMM YYYY HH:mm")}</td>
                     <td
                       onClick={() => {
