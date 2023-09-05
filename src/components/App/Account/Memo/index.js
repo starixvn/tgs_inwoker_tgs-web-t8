@@ -28,7 +28,7 @@ const Memo = ({
         });
       }
       if (sent.length === 0) {
-        deliveryBox("get", "", 1, 100).then((result) => {
+        deliveryBox("get", "", 1, 10).then((result) => {
           if (result.IsSuccess) {
             setSent(result.data);
           }
@@ -41,7 +41,7 @@ const Memo = ({
   const performComposeMemo = (subject, content) => {
     composeMemo(subject, content).then((result) => {
       if (result.IsSuccess) {
-        deliveryBox("get", "", 1, 100).then((result) => {
+        deliveryBox("get", "", 1, 10).then((result) => {
           if (result.IsSuccess) {
             setSent(result.data);
           }
@@ -53,7 +53,7 @@ const Memo = ({
   const performReplyMemo = (letterId, content) => {
     replyMemo(letterId, content).then((result) => {
       if (result.IsSuccess) {
-        deliveryBox("get", "", 1, 100).then((result) => {
+        deliveryBox("get", "", 1, 10).then((result) => {
           if (result.IsSuccess) {
             setSent(result.data);
           }
@@ -66,6 +66,7 @@ const Memo = ({
     memo,
     setMemo,
     sent,
+    setSent,
     getMemoV2,
     composeMemo,
     replyMemo,

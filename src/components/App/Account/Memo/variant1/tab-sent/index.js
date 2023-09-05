@@ -5,6 +5,8 @@ import styled from "styled-components";
 import i18n from "../../../../../../utils/i18n";
 import Modal from "../modal";
 import { useState } from "react";
+import { useEffect } from "react";
+import Pagination from "../../component/pagination";
 
 const CustomTable = styled.table`
   width: 100%;
@@ -32,7 +34,7 @@ const CustomTable = styled.table`
   tbody {
     tr {
       td {
-        padding: 10px 10px;
+        padding: 10px;
       }
       &:last-child {
         border-bottom: none;
@@ -54,6 +56,7 @@ const UpperSection = styled.div`
 
 const CustomTableRow = styled.tr`
   cursor: pointer;
+
   &:hover {
     background-color: #f5f5f5;
   }
@@ -62,10 +65,38 @@ const Title = styled.div`
   font-size: 34px;
   font-weight: 600;
 `;
-const Sent = ({ sent, action, username }) => {
+
+const PaginationWrapper = styled.div`
+  padding: 0 10px;
+`;
+const Sent = ({ sent, action, username, setSent }) => {
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState("");
 
+  const [page, setPage] = useState(1);
+  const [row, setRow] = useState(10);
+
+  var maxPage = Math.ceil(sent?.totalcount / row);
+
+  useEffect(() => {
+    action("get", "", page, 10).then((result) => {
+      if (result.IsSuccess) {
+        setSent(result.data);
+      }
+    });
+  }, [page]);
+
+  const nextPage = () => {
+    if (page < maxPage) {
+      setPage(page + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
   const performOpenModal = (id) => {
     action("read", id).then((res) => {
       setContent(res.data);
@@ -84,7 +115,6 @@ const Sent = ({ sent, action, username }) => {
       i18n.t("daysago")
     );
   };
-
   const performCloseModal = () => {
     setOpen(false);
   };
@@ -119,7 +149,15 @@ const Sent = ({ sent, action, username }) => {
               })}
           </tbody>
         </CustomTable>
-      </TabsContent>{" "}
+        <PaginationWrapper>
+          <Pagination
+            next={nextPage}
+            prev={prevPage}
+            page={page}
+            maxPage={maxPage}
+          />
+        </PaginationWrapper>
+      </TabsContent>
       <Modal open={open} handleClose={performCloseModal}>
         <ContentWrapper>
           <UpperSection>
