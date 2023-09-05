@@ -67,15 +67,15 @@ const Title = styled.div`
 
 export const TabsContent = styled.div`
   padding: 15px 25px;
-  width: 100%;
   background: #fff;
 `;
 
 const MemoVariant1 = ({
   sent,
+  setMemo,
   memo,
-  getMemoV2,
   readMemo,
+  getMemoV2,
   deliveryBox,
   performComposeMemo,
   performReplyMemo,
@@ -92,6 +92,7 @@ const MemoVariant1 = ({
           <Inbox
             readMemo={readMemo}
             memo={memo}
+            setMemo={setMemo}
             getmemo={getMemoV2}
             performReplyMemo={performReplyMemo}
           />

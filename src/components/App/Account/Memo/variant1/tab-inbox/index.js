@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { TabContentTitle, TabsContent } from "..";
 
 import styled from "styled-components";
@@ -6,6 +6,7 @@ import moment from "moment";
 import Modal from "../modal";
 import { useState } from "react";
 import i18n from "../../../../../../utils/i18n";
+import Pagination from "../../component/pagination";
 
 const CustomTable = styled.table`
   width: 100%;
@@ -86,7 +87,7 @@ const UpperSection = styled.div`
 
 const InputRow = styled.div`
   display: grid;
-  grid-template-columns: 15% 1fr;
+  grid-template-columns: 20% 1fr;
   padding-bottom: 10px;
 `;
 
@@ -94,6 +95,7 @@ const CustomTextArea = styled.textarea`
   outline: none;
   padding: 5px 10px;
   border: solid 1px #b7c7cc;
+  width: -webkit-fill-available;
 `;
 
 const CustomButton = styled.button`
@@ -104,7 +106,6 @@ const CustomButton = styled.button`
   padding: 10px 20px;
   border-radius: 6px;
   cursor: pointer;
-
   &:disabled {
     background: #ccc;
     cursor: not-allowed;
@@ -120,13 +121,42 @@ const CustomTextfield = styled.input`
   }
 `;
 
-const Inbox = ({ memo, getmemo, performReplyMemo, readMemo }) => {
+const PaginationWrapper = styled.div`
+  padding: 0 10px;
+`;
+
+const Inbox = ({ memo, getmemo, performReplyMemo, readMemo, setMemo }) => {
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState("");
   const [confirmModal, setConfirmModal] = useState(false);
 
   const [memoSubject, setMemoSubject] = useState("");
   const [memoContent, setMemoContent] = useState("");
+
+  const [page, setPage] = useState(1);
+  const [row, setRow] = useState(10);
+
+  var maxPage = Math.ceil(memo?.totalcount / row);
+
+  useEffect(() => {
+    getmemo("", page, row).then((res) => {
+      if (res.IsSuccess) {
+        setMemo(res.data);
+      }
+    });
+  }, [page]);
+
+  const nextPage = () => {
+    if (page < maxPage) {
+      setPage(page + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
 
   const performCloseConfirmation = () => {
     setConfirmModal(false);
@@ -161,7 +191,6 @@ const Inbox = ({ memo, getmemo, performReplyMemo, readMemo }) => {
       i18n.t("daysago")
     );
   };
-
   const [replyModal, setReplyModal] = useState(false);
   const [replyId, setReplyId] = useState("");
 
@@ -210,6 +239,14 @@ const Inbox = ({ memo, getmemo, performReplyMemo, readMemo }) => {
               })}
           </tbody>
         </CustomTable>
+        <PaginationWrapper>
+          <Pagination
+            next={nextPage}
+            prev={prevPage}
+            page={page}
+            maxPage={maxPage}
+          />
+        </PaginationWrapper>
       </TabsContent>
       <Modal open={open} handleClose={performCloseModal}>
         <ContentWrapper>

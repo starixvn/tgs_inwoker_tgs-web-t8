@@ -21,7 +21,7 @@ const Memo = ({
   useEffect(() => {
     if (account.token !== "") {
       if (memo.length === 0) {
-        getMemoV2().then((result) => {
+        getMemoV2("", 1, 10).then((result) => {
           if (result.IsSuccess) {
             setMemo(result.data);
           }
@@ -64,6 +64,7 @@ const Memo = ({
 
   const commonprops = {
     memo,
+    setMemo,
     sent,
     getMemoV2,
     composeMemo,
@@ -95,7 +96,8 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    getMemoV2: (letterId) => dispatch(generalAction.getMemoV2(letterId)),
+    getMemoV2: (letterId, page, row) =>
+      dispatch(generalAction.getMemoV2(letterId, page, row)),
     composeMemo: (subject, content) =>
       dispatch(generalAction.composeMemo(subject, content)),
     replyMemo: (letterId, content) =>
