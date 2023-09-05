@@ -91,6 +91,10 @@ const InputRow = styled.div`
   padding-bottom: 10px;
 `;
 
+const InputLabel = styled.p`
+  margin: 5px;
+`;
+
 const CustomTextArea = styled.textarea`
   outline: none;
   padding: 5px 10px;
@@ -103,16 +107,22 @@ const CustomButton = styled.button`
   color: #fff;
   border: none;
   outline: none;
-  padding: 10px 20px;
+  padding: 10px 32px;
   border-radius: 6px;
   cursor: pointer;
   &:disabled {
     background: #ccc;
     cursor: not-allowed;
   }
+  ${({ className }) => {
+    return className === "right" ? `float: right;` : "";
+  }}
 `;
 
 const CustomTextfield = styled.input`
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
   outline: none;
   padding: 5px 10px;
 
@@ -132,6 +142,7 @@ const Inbox = ({ memo, getmemo, performReplyMemo, readMemo, setMemo }) => {
 
   const [memoSubject, setMemoSubject] = useState("");
   const [memoContent, setMemoContent] = useState("");
+  const [memoOriMsg, setmemoOriMsg] = useState("");
 
   const [page, setPage] = useState(1);
   const [row, setRow] = useState(10);
@@ -194,9 +205,18 @@ const Inbox = ({ memo, getmemo, performReplyMemo, readMemo, setMemo }) => {
   const [replyModal, setReplyModal] = useState(false);
   const [replyId, setReplyId] = useState("");
 
+  const getMemoMsg = (id) => {
+    getmemo(id).then((res) => {
+      if (res.IsSuccess) {
+        setmemoOriMsg(res.data.content);
+      }
+    });
+  };
+
   const performReplyClickAction = (item) => {
     setReplyModal(true);
     setMemoSubject("Re: " + item.subject);
+    getMemoMsg(item.id);
     setReplyId(item.id);
   };
 
@@ -265,7 +285,9 @@ const Inbox = ({ memo, getmemo, performReplyMemo, readMemo, setMemo }) => {
       <Modal open={replyModal} handleClose={performCloseModal}>
         <Content>
           <InputRow>
-            <div>{i18n.t("subject")}</div>
+            <div>
+              <InputLabel>{i18n.t("subject")}</InputLabel>
+            </div>
             <div>
               <CustomTextfield
                 value={memoSubject}
@@ -278,8 +300,10 @@ const Inbox = ({ memo, getmemo, performReplyMemo, readMemo, setMemo }) => {
           </InputRow>
           <InputRow>
             <div>
-              <span style={{ color: "red" }}>*</span>
-              {i18n.t("yourmessage")}
+              <InputLabel>
+                <span style={{ color: "red" }}>*</span>
+                {i18n.t("yourmessage")}
+              </InputLabel>
             </div>
             <div>
               <CustomTextArea
@@ -300,9 +324,25 @@ const Inbox = ({ memo, getmemo, performReplyMemo, readMemo, setMemo }) => {
             </div>
           </InputRow>
           <InputRow>
+            <div>
+              <InputLabel>{i18n.t("originalmessage")}</InputLabel>
+            </div>
+            <div>
+              <CustomTextArea
+                rows="7"
+                cols="50"
+                value={memoOriMsg}
+                readonly
+                disabled
+              />
+            </div>
+          </InputRow>
+
+          <InputRow>
             <div></div>
             <div>
               <CustomButton
+                className={"right"}
                 disabled={memoContent === ""}
                 onClick={() => {
                   setConfirmModal(true);
