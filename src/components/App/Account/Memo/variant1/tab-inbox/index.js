@@ -69,7 +69,11 @@ const Title = styled.div`
   font-weight: 600;
 `;
 
-const ContentWrapper = styled.div``;
+const ContentWrapper = styled.div`
+  ${({ className }) => {
+    return className ? `text-align: center;` : "";
+  }}
+`;
 
 const Content = styled.div`
   padding: 20px;
@@ -119,9 +123,14 @@ const CustomTextfield = styled.input`
 const Inbox = ({ memo, getmemo, performReplyMemo, readMemo }) => {
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState("");
+  const [confirmModal, setConfirmModal] = useState(false);
 
   const [memoSubject, setMemoSubject] = useState("");
   const [memoContent, setMemoContent] = useState("");
+
+  const performCloseConfirmation = () => {
+    setConfirmModal(false);
+  };
 
   const performCloseModal = () => {
     setOpen(false);
@@ -259,8 +268,7 @@ const Inbox = ({ memo, getmemo, performReplyMemo, readMemo }) => {
               <CustomButton
                 disabled={memoContent === ""}
                 onClick={() => {
-                  performReplyMemo(replyId, memoContent);
-                  performCloseModal();
+                  setConfirmModal(true);
                 }}
               >
                 {i18n.t("common.submit")}
@@ -268,6 +276,23 @@ const Inbox = ({ memo, getmemo, performReplyMemo, readMemo }) => {
             </div>
           </InputRow>
         </Content>
+      </Modal>
+
+      <Modal open={confirmModal} handleClose={performCloseConfirmation}>
+        <ContentWrapper className={"confirm-submit"}>
+          <Content>
+            <h3>{i18n.t("confirmSubmit")}?</h3>
+          </Content>
+          <CustomButton
+            onClick={() => {
+              performReplyMemo(replyId, memoContent);
+              performCloseConfirmation();
+              performCloseModal();
+            }}
+          >
+            {i18n.t("common.submit")}
+          </CustomButton>
+        </ContentWrapper>
       </Modal>
     </>
   );
