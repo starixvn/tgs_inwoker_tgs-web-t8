@@ -127,7 +127,7 @@ const MemoVariant1 = ({
     <Container>
       <Header>
         <Title>
-          <h3>{i18n.t("memo")}</h3>
+          <h3>{i18n.t("memoinbox")}</h3>
         </Title>
       </Header>
       <InnerWrap>
