@@ -261,7 +261,7 @@ function Header(props) {
     },
     {
       path: "memo",
-      title: i18n.t("memo"),
+      title: i18n.t("memoinbox"),
       canDisplay: true,
       img: IconInboxPNG,
     },

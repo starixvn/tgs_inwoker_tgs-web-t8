@@ -21,14 +21,14 @@ const Memo = ({
   useEffect(() => {
     if (account.token !== "") {
       if (memo.length === 0) {
-        getMemoV2().then((result) => {
+        getMemoV2("", 1, 10).then((result) => {
           if (result.IsSuccess) {
             setMemo(result.data);
           }
         });
       }
       if (sent.length === 0) {
-        deliveryBox("get", "", 1, 100).then((result) => {
+        deliveryBox("get", "", 1, 10).then((result) => {
           if (result.IsSuccess) {
             setSent(result.data);
           }
@@ -41,7 +41,7 @@ const Memo = ({
   const performComposeMemo = (subject, content) => {
     composeMemo(subject, content).then((result) => {
       if (result.IsSuccess) {
-        deliveryBox("get", "", 1, 100).then((result) => {
+        deliveryBox("get", "", 1, 10).then((result) => {
           if (result.IsSuccess) {
             setSent(result.data);
           }
@@ -53,7 +53,7 @@ const Memo = ({
   const performReplyMemo = (letterId, content) => {
     replyMemo(letterId, content).then((result) => {
       if (result.IsSuccess) {
-        deliveryBox("get", "", 1, 100).then((result) => {
+        deliveryBox("get", "", 1, 10).then((result) => {
           if (result.IsSuccess) {
             setSent(result.data);
           }
@@ -64,13 +64,15 @@ const Memo = ({
 
   const commonprops = {
     memo,
+    setMemo,
     sent,
+    setSent,
     getMemoV2,
     composeMemo,
     replyMemo,
     readMemo,
     deliveryBox,
-
+    account,
     performComposeMemo,
     performReplyMemo,
   };
@@ -95,7 +97,8 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    getMemoV2: (letterId) => dispatch(generalAction.getMemoV2(letterId)),
+    getMemoV2: (letterId, page, row) =>
+      dispatch(generalAction.getMemoV2(letterId, page, row)),
     composeMemo: (subject, content) =>
       dispatch(generalAction.composeMemo(subject, content)),
     replyMemo: (letterId, content) =>

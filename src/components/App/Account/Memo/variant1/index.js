@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+
+import IconInboxRedPNG from "../../../../../assets/images/icon-inbox.png";
 import i18n from "../../../../../utils/i18n";
 import { useState } from "react";
 import Compose from "./tab-compose";
@@ -10,13 +12,15 @@ const Container = styled.div`
   padding: 20px 28px;
   box-sizing: border-box
   width: 100%;
-  min-height: 611px;     
-  font-size: 14px;
-  background-color:#f7f7f7;
+  min-height: 611px;     font-size: 14px;
+  background-color: #fff;
 `;
-
+const Title = styled.div`
+  color: #404040;
+  font-size: 20px;
+`;
 const InnerWrap = styled.div`
-  width: 100%;
+  width: 935px;
   margin-top: 18px;
   box-sizing: border-box;
   background-color: ${({ theme }) => {
@@ -24,8 +28,9 @@ const InnerWrap = styled.div`
   }}
 
   position: relative;
-  
 
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 `;
 
 const Tab = styled.div`
@@ -46,38 +51,32 @@ const TabsButton = styled.div`
   cursor: pointer;
   user-select: none;
 `;
-const Header = styled.div`
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid #ccc;
-  height: 38px;
-  margin-bottom: 10px;
-  padding: 0 10px 10px;
-`;
-const Title = styled.div`
-  align-items: baseline;
-  display: flex;
-  & h3 {
-    color: #676767;
-    font-size: 24px;
-    font-weight: 400;
-  }
-`;
 
 export const TabsContent = styled.div`
   padding: 15px 25px;
-  width: 100%;
   background: #fff;
+`;
+const TitleIcon = styled.div`
+  width: 34px;
+  height: 24px;
+
+  background: url(${IconInboxRedPNG}) no-repeat left center;
+  background-size: 24px 24px;
+
+  float: left;
 `;
 
 const MemoVariant1 = ({
   sent,
+  setMemo,
   memo,
+  readMemo,
   getMemoV2,
   deliveryBox,
   performComposeMemo,
   performReplyMemo,
+  account,
+  setSent,
 }) => {
   const [selected, setSelected] = useState("compose");
 
@@ -88,13 +87,22 @@ const MemoVariant1 = ({
       case "memoinbox":
         return (
           <Inbox
+            readMemo={readMemo}
             memo={memo}
+            setMemo={setMemo}
             getmemo={getMemoV2}
             performReplyMemo={performReplyMemo}
           />
         );
       case "sent":
-        return <Sent sent={sent} action={deliveryBox} />;
+        return (
+          <Sent
+            sent={sent}
+            action={deliveryBox}
+            setSent={setSent}
+            username={account?.info?.member_username}
+          />
+        );
       default:
         return <Compose />;
     }
@@ -116,11 +124,10 @@ const MemoVariant1 = ({
 
   return (
     <Container>
-      <Header>
-        <Title>
-          <h3>{i18n.t("memo")}</h3>
-        </Title>
-      </Header>
+      <Title>
+        <TitleIcon></TitleIcon>
+        {i18n.t("memoinbox")}
+      </Title>
       <InnerWrap>
         <div style={{ width: "inherit" }}>
           <Tab>
