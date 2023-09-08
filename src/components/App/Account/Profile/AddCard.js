@@ -926,11 +926,11 @@ class AddCard extends Component {
                   depositList[this.state.selectedBankTypeIndex].banktype ===
                     "Bank")) && (
                 <>
-                  <TextFieldLabel>{i18n.t("IFSC")}</TextFieldLabel>
+                  <TextFieldLabel>{i18n.t("ifsc")}</TextFieldLabel>
                   <TextFieldContainer>
                     <CustomTextField
                       marginTop={10}
-                      placeholder={i18n.t("IFSC")}
+                      placeholder={i18n.t("ifsc")}
                       width={395}
                       maxLength={11}
                       height={38}
