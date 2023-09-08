@@ -110,6 +110,7 @@ class AddCard extends Component {
       disableBankAccountNameInput: false,
       name: "",
       phone: "",
+      ifsc: "",
     };
   }
 
@@ -285,6 +286,10 @@ class AddCard extends Component {
     this.setState({ ...this.state, phone: e.target.value });
   };
 
+  handleIFSCChange = (e) => {
+    this.setState({ ...this.state, ifsc: e.target.value });
+  };
+
   handleNextClick = (e) => {
     const selected = this.props.isDeposit
       ? this.props.depositList[this.state.selectedBankTypeIndex]
@@ -300,6 +305,7 @@ class AddCard extends Component {
       number,
       name,
       phone,
+      ifsc,
     } = this.state;
 
     const trimAndRemoveSpace = (value) => utility.removeSpace(value.trim());
@@ -345,6 +351,7 @@ class AddCard extends Component {
         bankName: trimAndRemoveSpace(bankNameValue),
         name: trimAndRemoveSpace(bankAccountName),
         bankBranch: trimAndRemoveSpace(bankBranch),
+        IFSCcode: trimAndRemoveSpace(ifsc),
       };
     } else if (
       selected.banktype === "ThirdParty" ||
@@ -908,6 +915,31 @@ class AddCard extends Component {
                 handleTextFieldChange={this.handleNumberChange}
               ></CustomTextField>
             </TextFieldContainer>
+
+            {config.currency === "INR" &&
+              ((!this.props.isDeposit &&
+                withdrawalList.length > 0 &&
+                withdrawalList[this.state.selectedBankTypeIndex].banktype ===
+                  "Bank") ||
+                (this.props.isDeposit &&
+                  depositList.length > 0 &&
+                  depositList[this.state.selectedBankTypeIndex].banktype ===
+                    "Bank")) && (
+                <>
+                  <TextFieldLabel>{i18n.t("IFSC")}</TextFieldLabel>
+                  <TextFieldContainer>
+                    <CustomTextField
+                      marginTop={10}
+                      placeholder={i18n.t("IFSC")}
+                      width={395}
+                      maxLength={11}
+                      height={38}
+                      handleTextFieldChange={this.handleIFSCChange}
+                      value={this.state.ifsc}
+                    ></CustomTextField>
+                  </TextFieldContainer>
+                </>
+              )}
           </TextFieldItem>
         )}
 
