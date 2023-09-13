@@ -79,11 +79,15 @@ function IDVerification(props) {
       return;
     }
 
-    AccountService.UpdateMemberNameAndIC(
-      memberName,
-      memberCard,
-      config.features.ICVerificationUpload ? icUpload[0] : null
-    ).then((response) => {
+    const checkRequireUploadOrNot = config.features.ICVerificationUpload
+      ? AccountService.UpdateMemberNameAndIC(
+          memberName,
+          memberCard,
+          icUpload[0]
+        )
+      : AccountService.AddPlayerIdentity(memberName, memberCard);
+
+    checkRequireUploadOrNot.then((response) => {
       if (response.IsSuccess) {
         props.dispatch({
           type: UPDATE_INFO,
