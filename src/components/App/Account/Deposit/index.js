@@ -525,6 +525,7 @@ class Deposit extends Component {
       ...this.state,
       amount: "",
       selectedChannelIndex: e.target.value,
+      depositPromotion: ""
     });
   };
   handleMethodChange = (e) => {
@@ -969,6 +970,26 @@ class Deposit extends Component {
       }
     }
   };
+  
+  hasDepositPromotion = (item) => {
+    return (
+      [
+        "FirstDeposit",
+        "DailySecondDeposit",
+        "DailyFirstDeposit",
+        "DepositReward",
+        "DepositAccumulateRoulette",
+      ].indexOf(item.promotionType) >= 0
+    );
+  };
+
+  hasDepositRewardPromotion = (item) => {
+    return item.promotionType === "DepositReward"
+      ? this.state.amount >= item.campaignDetail.depositMinimumLimit
+      : true;
+  };
+
+
   switchStep = (steps) => {
     switch (steps) {
       case 0:
@@ -998,17 +1019,8 @@ class Deposit extends Component {
               selectedPaymentIndex={this.state.selectedPaymentIndex}
               promotionList={this.props.general.promotionList.items.filter(
                 (item) =>
-                  [
-                    "FirstDeposit",
-                    "DailySecondDeposit",
-                    "DailyFirstDeposit",
-                    "DepositReward",
-                    "DepositAccumulateRoulette",
-                  ].indexOf(item.promotionType) >= 0 &&
-                  (item.promotionType === "DepositReward"
-                    ? this.state.amount >=
-                      item.campaignDetail.depositMinimumLimit
-                    : true)
+                  this.hasDepositPromotion(item) &&
+                  this.hasDepositRewardPromotion(item)
               )}
               depositPromotion={this.state.depositPromotion}
               handleDepositPromotionChange={this.handleDepositPromotionChange}
@@ -1045,17 +1057,8 @@ class Deposit extends Component {
               onFileChange={this.handleFileChange}
               promotionList={this.props.general.promotionList.items.filter(
                 (item) =>
-                  [
-                    "FirstDeposit",
-                    "DailySecondDeposit",
-                    "DailyFirstDeposit",
-                    "DepositReward",
-                    "DepositAccumulateRoulette",
-                  ].indexOf(item.promotionType) >= 0 &&
-                  (item.promotionType === "DepositReward"
-                    ? this.state.amount >=
-                      item.campaignDetail.depositMinimumLimit
-                    : true)
+                  this.hasDepositPromotion(item) &&
+                  this.hasDepositRewardPromotion(item)
               )}
               depositPromotion={this.state.depositPromotion}
               handleDepositPromotionChange={this.handleDepositPromotionChange}
