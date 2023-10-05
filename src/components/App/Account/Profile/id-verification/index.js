@@ -29,10 +29,13 @@ function IDVerification(props) {
 
   var currentFormStatus = props.account.info.identityformstatus;
   var hasSubmitted = props.account.info.identityformid ? true : false;
+  var realnameIsNotEmpty = props.account.info.member_name;
 
   useEffect(() => {
     if (props.edit) {
       setView("waiting-submit");
+    } else if (realnameIsNotEmpty && config.features.SkipUserVerification) {
+      setView("approved");
     } else {
       if (currentFormStatus === 0 && hasSubmitted === false) {
         //api沒給表單id ，表示可以上傳
