@@ -319,13 +319,13 @@ function GetContentWrap(accountInfo, label, attr, func, edit, disable) {
         <ContentLabel>{label}:</ContentLabel>
         <ContentValue style={isDisable ? { color: "#acacac" } : {}}>
           {attrValue}{" "}
-          {
+          {config.features.ShowVerificationStatus && (
             <VerifiedSpan>
               {isMemberName &&
                 containMemberName &&
                 "(" + i18n.t("verified." + status) + ")"}
             </VerifiedSpan>
-          }
+          )}
         </ContentValue>
       </div>
       <ButtonWrapper>
@@ -846,7 +846,11 @@ class Profile extends Component {
   };
   handleFilterBankNumber = (item) => {
     let last4Digits = "";
-    if (item.banktype === "ThirdParty" || item.banktype === "FPS" || item.banktype === "Coinsph") {
+    if (
+      item.banktype === "ThirdParty" ||
+      item.banktype === "FPS" ||
+      item.banktype === "Coinsph"
+    ) {
       if (item.detail.phone) {
         last4Digits = item.detail.phone.slice(-4);
         return last4Digits.padStart(item.detail.phone.length, "*");
@@ -873,7 +877,11 @@ class Profile extends Component {
     }
   };
   gpNameSwitcher = ({ gpcode, name }) => {
-    if (gpcode && gpcode.toLowerCase() === "wgfm" && config.brandName === "TIGER")
+    if (
+      gpcode &&
+      gpcode.toLowerCase() === "wgfm" &&
+      config.brandName === "TIGER"
+    )
       return "Tiger Sports";
     else return name ? name : "";
   };
@@ -1072,7 +1080,14 @@ class Profile extends Component {
                 )
                 .filter((e) => {
                   if (config.features.MergeEVORTNT) {
-                    if (!(e.gpcode === "NTTF" || e.gpcode === "RTTF" || e.gpcode === "NLC" || e.gpcode === "BTG")) {
+                    if (
+                      !(
+                        e.gpcode === "NTTF" ||
+                        e.gpcode === "RTTF" ||
+                        e.gpcode === "NLC" ||
+                        e.gpcode === "BTG"
+                      )
+                    ) {
                       return e;
                     }
                   } else {
@@ -1081,9 +1096,7 @@ class Profile extends Component {
                 })
                 .map((item, key) => (
                   <WalletItem key={item.id}>
-                    <WalletItemTitle>
-                      {item.name}
-                    </WalletItemTitle>
+                    <WalletItemTitle>{item.name}</WalletItemTitle>
                     <WalletItemInfo>
                       <DynamicFont
                         content={
