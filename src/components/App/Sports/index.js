@@ -160,7 +160,8 @@ class Sports extends Component {
         this.props.history.push("/sports/" + params);
       } else if (
         (params === "WGFM" && !config.features.WGSports_UseIframe) ||
-        params === "WGVIA"
+        params === "WGVIA" ||
+        params === "9WCRICKET"
       ) {
         if (document.getElementById("audio") != null)
           document.getElementById("audio").volume = 0.0;

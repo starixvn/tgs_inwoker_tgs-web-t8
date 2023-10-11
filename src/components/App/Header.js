@@ -735,7 +735,8 @@ class Header extends Component {
             this.props.history.push("/sports/" + gameCode);
           } else if (
             (gameCode === "WGFM" && !config.features.WGSports_UseIframe) ||
-            gameCode === "WGVIA"
+            gameCode === "WGVIA" ||
+            gameCode === "9WCRICKET"
           ) {
             if (document.getElementById("audio") != null)
               document.getElementById("audio").volume = 0;
@@ -1066,7 +1067,8 @@ class Header extends Component {
                                             {i18n.t("transfer.maintenance")}
                                           </Maintenance>
                                           {(() => {
-                                            var gameCode = game.abbreviation.toLowerCase();
+                                            var gameCode =
+                                              game.abbreviation.toLowerCase();
                                             // check if gamecode is "pptf" and  game.abbreviation is sports then change  game.abbreviation to "customsports"
                                             if (
                                               config.features
@@ -1158,7 +1160,8 @@ class Header extends Component {
                                               {i18n.t("transfer.maintenance")}
                                             </Maintenance>
                                             {(() => {
-                                              var gameCode = game.abbreviation.toLowerCase();
+                                              var gameCode =
+                                                game.abbreviation.toLowerCase();
 
                                               if (
                                                 config.features
