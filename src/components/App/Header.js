@@ -744,7 +744,8 @@ class Header extends Component {
             this.props.history.push("/sports/" + gameCode);
           } else if (
             (gameCode === "WGFM" && !config.features.WGSports_UseIframe) ||
-            gameCode === "WGVIA"
+            gameCode === "WGVIA" ||
+            gameCode === "9WCRICKET"
           ) {
             if (document.getElementById("audio") != null)
               document.getElementById("audio").volume = 0;
