@@ -846,7 +846,11 @@ class Profile extends Component {
   };
   handleFilterBankNumber = (item) => {
     let last4Digits = "";
-    if (item.banktype === "ThirdParty" || item.banktype === "FPS" || item.banktype === "Coinsph") {
+    if (
+      item.banktype === "ThirdParty" ||
+      item.banktype === "FPS" ||
+      item.banktype === "Coinsph"
+    ) {
       if (item.detail.phone) {
         last4Digits = item.detail.phone.slice(-4);
         return last4Digits.padStart(item.detail.phone.length, "*");
@@ -873,7 +877,11 @@ class Profile extends Component {
     }
   };
   gpNameSwitcher = ({ gpcode, name }) => {
-    if (gpcode && gpcode.toLowerCase() === "wgfm" && config.brandName === "TIGER")
+    if (
+      gpcode &&
+      gpcode.toLowerCase() === "wgfm" &&
+      config.brandName === "TIGER"
+    )
       return "Tiger Sports";
     else return name ? name : "";
   };
@@ -1004,10 +1012,7 @@ class Profile extends Component {
                   </BankCardItem>
                 );
               })}
-              {console.log(
-                this.props.wallet.bankCardList.length >=
-                  config.features.AddCard_MaximumCardAllowed
-              )}
+
               {!(
                 this.props.wallet.bankCardList.length >=
                 config.features.AddCard_MaximumCardAllowed
@@ -1072,7 +1077,14 @@ class Profile extends Component {
                 )
                 .filter((e) => {
                   if (config.features.MergeEVORTNT) {
-                    if (!(e.gpcode === "NTTF" || e.gpcode === "RTTF" || e.gpcode === "NLC" || e.gpcode === "BTG")) {
+                    if (
+                      !(
+                        e.gpcode === "NTTF" ||
+                        e.gpcode === "RTTF" ||
+                        e.gpcode === "NLC" ||
+                        e.gpcode === "BTG"
+                      )
+                    ) {
                       return e;
                     }
                   } else {
@@ -1081,9 +1093,7 @@ class Profile extends Component {
                 })
                 .map((item, key) => (
                   <WalletItem key={item.id}>
-                    <WalletItemTitle>
-                      {item.name}
-                    </WalletItemTitle>
+                    <WalletItemTitle>{item.name}</WalletItemTitle>
                     <WalletItemInfo>
                       <DynamicFont
                         content={
