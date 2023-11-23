@@ -1022,10 +1022,7 @@ class Profile extends Component {
                   </BankCardItem>
                 );
               })}
-              {console.log(
-                this.props.wallet.bankCardList.length >=
-                  config.features.AddCard_MaximumCardAllowed
-              )}
+
               {!(
                 this.props.wallet.bankCardList.length >=
                 config.features.AddCard_MaximumCardAllowed
