@@ -8,7 +8,10 @@ import i18n from "../../../../utils/i18n";
 import Common from "../../../../utils/Common";
 import { walletAction } from "../../../../api-services/actions/walletAction";
 import { connect } from "react-redux";
+import IconAddCardPNG from "../../../../assets/images/icon-addcard.png";
+
 import config from "../../../../config/config";
+import { AppHistory } from "../../../../history/History";
 const SubHeaderContainer = styled.div``;
 
 const SubTitle = styled.div`
@@ -141,6 +144,27 @@ const GameWalletButton = styled.div`
   }
 `;
 
+const BankCardAdd = styled.div`
+  padding-left: 10px;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+const BankCardAddIcon = styled.div`
+  width: 30px;
+  height: 30px;
+  background: url(${IconAddCardPNG}) no-repeat center;
+  background-size: contain;
+`;
+const BankCardAddText = styled.div`
+  margin-left: 15px;
+  font-size: 20px;
+  font-weight: 500;
+`;
+
 const Main = (props) => {
   const [selectedCardIndex, setSelectedCardIndex] = useState(props.defaultCard);
   const [amount, setAmount] = useState("");
@@ -186,7 +210,11 @@ const Main = (props) => {
 
   const handleFilterBankNumber = (item) => {
     let last4Digits = "";
-    if (item.banktype === "ThirdParty" || item.banktype === "FPS" || item.banktype === "Coinsph") {
+    if (
+      item.banktype === "ThirdParty" ||
+      item.banktype === "FPS" ||
+      item.banktype === "Coinsph"
+    ) {
       if (item.detail.phone) {
         last4Digits = item.detail.phone.slice(-4);
         return last4Digits.padStart(item.detail.phone.length, "*");
@@ -211,6 +239,16 @@ const Main = (props) => {
         last4Digits = item.detail.address.slice(-4);
         return last4Digits.padStart(item.detail.address.length, "*");
       }
+    }
+  };
+
+  const handleAddCard = () => {
+    if (config.features.ChangesNotAllowed) {
+      props.enqueueSnackbar(i18n.t("card.toEdit"), {
+        variant: "error",
+      });
+    } else {
+      AppHistory.push("/account/bankcard/add");
     }
   };
 
@@ -277,6 +315,22 @@ const Main = (props) => {
             </BankCardItem>
           );
         })}
+        {!(
+          props.wallet.bankCardList.length >=
+          config.features.AddCard_MaximumCardAllowed
+        ) && (
+          <BankCardItem>
+            <BankCardTitle>{i18n.t("withdrawal.bankCard")}</BankCardTitle>
+            <BankCardAdd
+              onClick={() => {
+                handleAddCard();
+              }}
+            >
+              <BankCardAddIcon></BankCardAddIcon>
+              <BankCardAddText>{i18n.t("card.msgAddCard")}</BankCardAddText>
+            </BankCardAdd>
+          </BankCardItem>
+        )}
       </BankCardContainer>
 
       {config.features.NewTransferUI && (
