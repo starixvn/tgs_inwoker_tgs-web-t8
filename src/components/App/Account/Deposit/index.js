@@ -525,7 +525,7 @@ class Deposit extends Component {
       ...this.state,
       amount: "",
       selectedChannelIndex: e.target.value,
-      depositPromotion: ""
+      depositPromotion: "",
     });
   };
   handleMethodChange = (e) => {
@@ -970,7 +970,7 @@ class Deposit extends Component {
       }
     }
   };
-  
+
   hasDepositPromotion = (item) => {
     return (
       [
@@ -979,6 +979,7 @@ class Deposit extends Component {
         "DailyFirstDeposit",
         "DepositReward",
         "DepositAccumulateRoulette",
+        "AccountFirstDeposit",
       ].indexOf(item.promotionType) >= 0
     );
   };
@@ -988,7 +989,6 @@ class Deposit extends Component {
       ? this.state.amount >= item.campaignDetail.depositMinimumLimit
       : true;
   };
-
 
   switchStep = (steps) => {
     switch (steps) {
