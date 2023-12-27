@@ -153,6 +153,7 @@ class Promotion extends Component {
           "DailyFirstDeposit",
           "DepositReward",
           "DepositAccumulateRoulette",
+          "AccountFirstDeposit",
         ].indexOf(promotionType) >= 0
       ) {
         AppHistory.push({

@@ -21,7 +21,7 @@ const Container = styled.div`
   padding-top: 20px;
 
   position: relative;
-  background: #000;//url(${BGJPG}) no-repeat top center #19262f;
+  background: #000; //url(${BGJPG}) no-repeat top center #19262f;
   min-height: 800px;
 `;
 
@@ -376,6 +376,7 @@ class PromotionDetails extends Component {
         "DailyFirstDeposit",
         "DepositReward",
         "DepositAccumulateRoulette",
+        "AccountFirstDeposit",
       ].indexOf(promotionType) >= 0
     ) {
       AppHistory.push({
@@ -396,6 +397,7 @@ class PromotionDetails extends Component {
           "DailyFirstDeposit",
           "DepositReward",
           "DepositAccumulateRoulette",
+          "AccountFirstDeposit",
         ].indexOf(promotionType) >= 0
       ) {
         AppHistory.push({
@@ -422,7 +424,9 @@ class PromotionDetails extends Component {
     var checkLocale = this.state.details.localization[i18n.language];
     if (this.state.details === null) return <></>;
     var isDummy = this.state.details.promotionType.toUpperCase() === "DUMMY";
-    var isPromoteDepositChannel = this.state.details.promotionType.toUpperCase() === "PROMOTEDEPOSITCHANNEL";
+    var isPromoteDepositChannel =
+      this.state.details.promotionType.toUpperCase() ===
+      "PROMOTEDEPOSITCHANNEL";
     var checkIfLocalizationIsEmpty =
       JSON.stringify(this.state.details.localization) === "{}";
     return (
