@@ -6,6 +6,7 @@ import { withRouter } from "react-router-dom";
 
 import config from "../../config/config";
 import i18n from "../../utils/i18n";
+import VersionNumber from "../../utils/versionnumber";
 
 const Container = styled.div`
   width: 100%;
@@ -55,7 +56,9 @@ function Footer(props) {
             .t("web.footer.copyrightLine2")
             .replace(/{brand}/g, config.brandName)}
         </CopyRightLine2>
-        <Version>Version {process.env.REACT_APP_VERSION}</Version>
+        <Version>
+          Version <VersionNumber />
+        </Version>
       </BottomContainer>
     </Container>
   );
