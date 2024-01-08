@@ -8,7 +8,7 @@ import { AccountService } from "../../../../api-services/services/AccountService
 import { UPDATE_INFO } from "../../../../api-services/constant/actionType";
 import ErrorSwitcher from "../../../../utils/ErrorSwitcher";
 import { withSnackbar } from "notistack";
-import IconInputReceivePNG from "../../../../assets/images/icon-input-receive-zalo.png";
+import IconInputReceivePNG from "../../../../assets/images/icon-input-receive.png";
 
 import { Link } from "react-router-dom";
 import config from "../../../../config/config";
