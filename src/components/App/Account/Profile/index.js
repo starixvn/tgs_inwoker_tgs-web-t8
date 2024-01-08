@@ -31,6 +31,7 @@ import i18n from "../../../../utils/i18n";
 import config from "../../../../config/config";
 import Common from "../../../../utils/Common";
 import Birthdate from "./Birthdate";
+import Zalo from "./Zalo";
 
 const Container = styled.div`
   padding: 20px 28px;
@@ -151,6 +152,14 @@ function GetContentWrap(accountInfo, label, attr, func, edit, disable) {
     if (attrValue !== "") {
       attrValue = accountInfo["member_telegram"]
         ? accountInfo["member_telegram"].substring(0, 1) + "**"
+        : "";
+    }
+  }
+
+  if (attr === "member_zalo") {
+    if (attrValue !== "") {
+      attrValue = accountInfo["member_zalo"]
+        ? accountInfo["member_zalo"].substring(0, 1) + "**"
         : "";
     }
   }
@@ -666,6 +675,16 @@ class Profile extends Component {
             handleCloseDialog={this.handleCloseDialog}
             account={this.props.account}
           ></Telegram>
+        );
+        break;
+      case "zalo":
+        title = i18n.t("profile.zalo.zaloAccount");
+        component = (
+          <Zalo
+            handleCSClick={this.props.onhandleCSClick}
+            handleCloseDialog={this.handleCloseDialog}
+            account={this.props.account}
+          ></Zalo>
         );
         break;
       case "member_line":
