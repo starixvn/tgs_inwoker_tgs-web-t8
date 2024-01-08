@@ -738,6 +738,17 @@ class Profile extends Component {
         );
         break;
 
+      case "member_zalo":
+        title = i18n.t("profile.zalo.zaloAccount");
+        component = (
+          <Zalo
+            handleCSClick={this.props.onhandleCSClick}
+            handleCloseDialog={this.handleCloseDialog}
+            account={this.props.account}
+          ></Zalo>
+        );
+        break;
+
       case "member_password":
         title = i18n.t("profile.changePassword.title");
         component = (
