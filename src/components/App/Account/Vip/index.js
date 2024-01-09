@@ -164,7 +164,6 @@ const TitleRow = styled(DataRow)`
   color: #404040;
   font-weight: bold;
   align-items: center;
-  text-transform: capitalize;
   height: 55px;
 `;
 
