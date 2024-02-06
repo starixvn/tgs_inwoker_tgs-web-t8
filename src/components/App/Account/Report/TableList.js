@@ -147,9 +147,14 @@ const headerLists = {
       align: "",
       title: `report.NewOrderNumber`,
     },
+
     {
       align: "",
       title: `report.status`,
+    },
+    {
+      align: "",
+      title: `remark`,
     },
     {
       align: "right",
@@ -387,6 +392,7 @@ function TableList(props) {
               <StyledTableCell>
                 {i18n.t(`report.withdrawal.status${row.status}`)}
               </StyledTableCell>
+              <StyledTableCell>{row.remark}</StyledTableCell>
               <StyledTableCell align="right">{row.amount}</StyledTableCell>
             </StyledTableRow>
           );
