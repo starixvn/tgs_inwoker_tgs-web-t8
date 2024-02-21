@@ -135,6 +135,7 @@ class Deposit extends Component {
       showTabContainer: true,
       isAddCardSuccess: false,
       selectedBankCard: "",
+      rate: 0,
     };
     this.state = {
       ...this.initialState,
@@ -326,44 +327,71 @@ class Deposit extends Component {
         this.props.wallet.depositTypeList[this.state.selectedPaymentIndex]
           .method[this.state.selectedMethodIndex].methodcode === "Crypto"
       ) {
+        const singleLevelExchangeRateProvider = ["UBPay"];
+
         if (
-          this.props.wallet.depositTypeList[this.state.selectedPaymentIndex]
-            .paymentcode === "LeePay"
+          singleLevelExchangeRateProvider.includes(
+            this.props.wallet.depositTypeList[this.state.selectedPaymentIndex]
+              .paymentcode
+          )
         ) {
-          WalletService.GetLeePayExchangeRate(
+          WalletService.GetExchangeRate(
+            "ubpay",
+
             this.props.wallet.depositTypeList[this.state.selectedPaymentIndex]
               .method[this.state.selectedMethodIndex].channel[
               this.state.selectedChannelIndex
             ].id
           ).then((response) => {
             if (response.IsSuccess) {
-              this.setState({ ...this.state, exchangeRate: response.data });
+              this.setState({ ...this.state, rate: response.data.rate });
             } else {
               this.setState({
                 ...this.state,
-                exchangeRate: this.initialState.exchangeRate,
+                rate: this.initialState.rate,
               });
             }
           });
         } else {
-          WalletService.GetUmPayExchangeRate(
+          if (
             this.props.wallet.depositTypeList[this.state.selectedPaymentIndex]
-              .method[this.state.selectedMethodIndex].channel[
-              this.state.selectedChannelIndex
-            ].id
-          ).then((response) => {
-            if (response.IsSuccess) {
-              this.setState({
-                ...this.state,
-                exchangeRate: response.data.rate,
-              });
-            } else {
-              this.setState({
-                ...this.state,
-                exchangeRate: this.initialState.exchangeRate,
-              });
-            }
-          });
+              .paymentcode === "LeePay"
+          ) {
+            WalletService.GetLeePayExchangeRate(
+              this.props.wallet.depositTypeList[this.state.selectedPaymentIndex]
+                .method[this.state.selectedMethodIndex].channel[
+                this.state.selectedChannelIndex
+              ].id
+            ).then((response) => {
+              if (response.IsSuccess) {
+                this.setState({ ...this.state, exchangeRate: response.data });
+              } else {
+                this.setState({
+                  ...this.state,
+                  exchangeRate: this.initialState.exchangeRate,
+                });
+              }
+            });
+          } else {
+            WalletService.GetUmPayExchangeRate(
+              this.props.wallet.depositTypeList[this.state.selectedPaymentIndex]
+                .method[this.state.selectedMethodIndex].channel[
+                this.state.selectedChannelIndex
+              ].id
+            ).then((response) => {
+              if (response.IsSuccess) {
+                this.setState({
+                  ...this.state,
+                  exchangeRate: response.data.rate,
+                });
+              } else {
+                this.setState({
+                  ...this.state,
+                  exchangeRate: this.initialState.exchangeRate,
+                });
+              }
+            });
+          }
         }
       } else {
         this.setState({
@@ -1040,6 +1068,7 @@ class Deposit extends Component {
         } else {
           return (
             <NewStepOne
+              rate={this.state.rate}
               amount={this.state.amount}
               onAmountChange={this.handleAmountChange}
               accountList={this.props.wallet.bankCardList}

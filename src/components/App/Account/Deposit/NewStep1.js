@@ -197,6 +197,18 @@ const FeeSpot = styled.div`
   }
 `;
 
+const ExchangeRateCalculation = styled.div`
+  color: #747474;
+  .remark {
+    margin-top: 10px;
+  }
+
+  span {
+    color: ${({ theme }) => theme.primary};
+    font-weight: bold;
+  }
+`;
+
 const NewStepOne = (props) => {
   const {
     amount,
@@ -216,6 +228,7 @@ const NewStepOne = (props) => {
     files,
     playerNote,
     onPlayerNoteChange,
+    rate,
   } = props;
   if (paymentType === null) return <></>;
 
@@ -227,7 +240,8 @@ const NewStepOne = (props) => {
 
   const alteredPaymentCode = (payment) => {
     return (
-      paymentType.alteredpaymentcode && paymentType.alteredpaymentcode.toUpperCase() === payment.toUpperCase()
+      paymentType.alteredpaymentcode &&
+      paymentType.alteredpaymentcode.toUpperCase() === payment.toUpperCase()
     );
   };
 
@@ -436,7 +450,10 @@ const NewStepOne = (props) => {
 
               {(() => {
                 if (
-                  (paymentCode("MANUAL") || paymentCode("USDT") || alteredPaymentCode("USDT") || alteredPaymentCode("MANUAL")) &&
+                  (paymentCode("MANUAL") ||
+                    paymentCode("USDT") ||
+                    alteredPaymentCode("USDT") ||
+                    alteredPaymentCode("MANUAL")) &&
                   !config.features.Deposit_AddCard
                 ) {
                   var channelExtend =
@@ -493,7 +510,9 @@ const NewStepOne = (props) => {
 
               {(() => {
                 if (
-                  (paymentCode("MANUAL") || paymentCode("APPLEPAY") || alteredPaymentCode("MANUAL")) &&
+                  (paymentCode("MANUAL") ||
+                    paymentCode("APPLEPAY") ||
+                    alteredPaymentCode("MANUAL")) &&
                   !config.features.Deposit_ManualApplePayHideBankAcc
                 ) {
                   return (
@@ -723,7 +742,10 @@ const NewStepOne = (props) => {
                             selectedChannelIndex
                           ].extended.rate;
                         if (
-                          paymentType.paymentcode.toUpperCase() === "MANUAL" ||  alteredPaymentCode("USDT") ||  alteredPaymentCode("MANUAL")                        ) {
+                          paymentType.paymentcode.toUpperCase() === "MANUAL" ||
+                          alteredPaymentCode("USDT") ||
+                          alteredPaymentCode("MANUAL")
+                        ) {
                           return (
                             <ExchangeRateContainer style={{ marginTop: "4px" }}>
                               <LimitLabel>
@@ -749,6 +771,23 @@ const NewStepOne = (props) => {
                         }
                       }
                     })()}
+
+                    {methodList[selectedMethodIndex].methodcode === "Crypto" &&
+                      paymentType.paymentcode.toUpperCase() === "UBPAY" &&
+                      config.currency === "VND" &&
+                      rate > 0 && (
+                        <ExchangeRateCalculation>
+                          <div className="remark">
+                            {" "}
+                            1 VND: <span>{rate}</span> (USDT)
+                          </div>
+                          <div>
+                            {i18n.t("deposit.totalAmount")}:{" "}
+                            <span>${amount > 0 ? rate * amount : 0}</span>
+                          </div>
+                        </ExchangeRateCalculation>
+                      )}
+
                     {(() => {
                       if (
                         methodList[selectedMethodIndex].methodcode === "Crypto"
@@ -848,7 +887,11 @@ const NewStepOne = (props) => {
               </FormContainer>
 
               {(() => {
-                if (paymentType.paymentcode.toUpperCase() === "MANUAL" ||  alteredPaymentCode("USDT") || alteredPaymentCode("MANUAL")) {
+                if (
+                  paymentType.paymentcode.toUpperCase() === "MANUAL" ||
+                  alteredPaymentCode("USDT") ||
+                  alteredPaymentCode("MANUAL")
+                ) {
                   return (
                     <React.Fragment>
                       <FormContainer>
