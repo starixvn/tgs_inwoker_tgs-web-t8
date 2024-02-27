@@ -252,17 +252,24 @@ function Header(props) {
       canDisplay: props.general.haveAffiliate,
       img: IconBonusPNG,
     },
+
+    // {
+    //   path: "inbox",
+    //   title: i18n.t("web.account.inbox"),
+    //   canDisplay: true,
+    //   img: IconInboxPNG,
+    // },
+    {
+      path: "memo",
+      title: i18n.t("memoinbox"),
+      canDisplay: true,
+      img: IconInboxPNG,
+    },
     {
       path: "vip",
       title: "VIP",
       canDisplay: config.features.HaveVIPFeature,
       img: IconVIPPNG,
-    },
-    {
-      path: "inbox",
-      title: i18n.t("web.account.inbox"),
-      canDisplay: true,
-      img: IconInboxPNG,
     },
   ];
 

@@ -292,7 +292,7 @@ const MemberContainer = (props) => {
       </WelcomeContainer>
 
       <TabButton onClick={props.onhandleInboxClick}>
-        {i18n.t("web.account.inbox")} ({props.account.info.message_num})
+        {i18n.t("web.account.inbox")}
       </TabButton>
 
       {props.game.containTransferWallet && !config.features.NewTransferUI && (
