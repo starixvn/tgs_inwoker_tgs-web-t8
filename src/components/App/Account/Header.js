@@ -253,12 +253,12 @@ function Header(props) {
       img: IconBonusPNG,
     },
 
-    {
-      path: "inbox",
-      title: i18n.t("web.account.inbox"),
-      canDisplay: true,
-      img: IconInboxPNG,
-    },
+    // {
+    //   path: "inbox",
+    //   title: i18n.t("web.account.inbox"),
+    //   canDisplay: true,
+    //   img: IconInboxPNG,
+    // },
     {
       path: "memo",
       title: i18n.t("memoinbox"),
