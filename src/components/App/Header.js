@@ -1272,7 +1272,7 @@ class Header extends Component {
                 {config.features.HaveVIPFeature &&
                   config.features.HomePage_DisplayVIP &&
                   this.RightMenuItem(
-                    "vip",
+                    "account/vip",
                     TopMenuPromoPNG,
                     "VIP",
                     TopMenuPromoHoverPNG,
