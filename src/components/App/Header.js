@@ -1066,7 +1066,8 @@ class Header extends Component {
                                             {i18n.t("transfer.maintenance")}
                                           </Maintenance>
                                           {(() => {
-                                            var gameCode = game.abbreviation.toLowerCase();
+                                            var gameCode =
+                                              game.abbreviation.toLowerCase();
                                             // check if gamecode is "pptf" and  game.abbreviation is sports then change  game.abbreviation to "customsports"
                                             if (
                                               config.features
@@ -1158,7 +1159,8 @@ class Header extends Component {
                                               {i18n.t("transfer.maintenance")}
                                             </Maintenance>
                                             {(() => {
-                                              var gameCode = game.abbreviation.toLowerCase();
+                                              var gameCode =
+                                                game.abbreviation.toLowerCase();
 
                                               if (
                                                 config.features
@@ -1260,7 +1262,7 @@ class Header extends Component {
                 {config.features.HaveVIPFeature &&
                   config.features.HomePage_DisplayVIP &&
                   this.RightMenuItem(
-                    "vip",
+                    "account/vip",
                     TopMenuPromoPNG,
                     "VIP",
                     TopMenuPromoHoverPNG,
