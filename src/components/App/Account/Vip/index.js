@@ -6,6 +6,7 @@ import i18n from "../../../../utils/i18n";
 
 import config from "../../../../config/config";
 import Common from "../../../../utils/Common";
+import VipWidget from "../widget/vip";
 
 const heightSwitcher = (language) => {
   switch (language) {
@@ -218,14 +219,10 @@ const VIP = (props) => {
     );
   };
 
-  return (
-    <Container>
-      <Header>
-        <Title>
-          <h3>VIP</h3>
-        </Title>
-      </Header>
-      <InnerWrap>
+  const OriginalVip = () => {
+    return (
+      <>
+        {" "}
         {vipBenefit.items && vipBenefit.items.length > 0 && (
           <TableWrapper>
             <VipLevelContainer>
@@ -275,7 +272,6 @@ const VIP = (props) => {
             </VipLevelContainer>
           </TableWrapper>
         )}
-
         {vipBenefit.items && vipBenefit.items.length > 0 && (
           <TableWrapper>
             <VipLevelContainer2>
@@ -314,6 +310,19 @@ const VIP = (props) => {
             </VipLevelContainer2>
           </TableWrapper>
         )}
+      </>
+    );
+  };
+
+  return (
+    <Container>
+      <Header>
+        <Title>
+          <h3>VIP</h3>
+        </Title>
+      </Header>
+      <InnerWrap>
+        <VipWidget vip={vipBenefit.items} />
       </InnerWrap>
     </Container>
   );
