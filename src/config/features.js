@@ -120,6 +120,8 @@ const featureList = {
     Withdrawal_WalletTransfer: false,
     BC_CustomTranslation: false,
     Deposit_ManualDepositPassPhone: false,
+
+    SendCodeInterval: 60
   },
 };
 export default featureList;
