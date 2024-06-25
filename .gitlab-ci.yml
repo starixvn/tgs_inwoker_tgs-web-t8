@@ -2,62 +2,37 @@ include:
   - project: 'inwoker/tgs/tgs-gitlab-ci-jobs'
     ref: main
     file: '/templates/.lobby-deployment.yaml'
-  
+
 variables:
   ImageName: pgtgs/lobby-t8
-  components_dev: lobby-t8
-  components_staging: lobby-gpi-t8,lobby-gmo,lobby-mgm,lobby-sky,lobby-gpi-t9,lobby-demo-t8,lobby-tiger
-  components_prod: lobby-gpi-t8,lobby-gmo,lobby-mgm,lobby-sky,lobby-tiger
-  GIT_STRATEGY: clone
-  GIT_SUBMODULE_STRATEGY: normal
-  GIT_SUBMODULE_UPDATE_FLAGS: "--remote --checkout --no-single-branch"
-  API_BRANCH_VARIABLE: $CI_COMMIT_BRANCH
-
+  
 build:
   extends: .build
-  stage: build
   only:
     - master
     - release/current
     - develop
-  before_script:
-    - |
-      if [ "$CI_COMMIT_BRANCH" == "release/current" ]; then
-        API_BRANCH_VARIABLE="develop"
-      else
-        API_BRANCH_VARIABLE=$CI_COMMIT_BRANCH
-      fi
-    - printenv
-    - echo "branch:$CI_COMMIT_BRANCH api_branch:$API_BRANCH_VARIABLE"
-    - pwd
-    - git submodule sync --recursive
-    - git config --file=.gitmodules submodule.src/api-services.branch $API_BRANCH_VARIABLE
-    - git config --file=.gitmodules submodule.src/components/Wap.branch $CI_COMMIT_BRANCH
-    - git submodule update --init --remote
-
-
-    #- git submodule init
-    #- git submodule update --recursive --remote
-    #- git submodule sync
-    #- git submodule update
-    #- git submodule sync --recursive
-    #- git submodule update --remote
-  script:
-    - export TAG="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d).$CI_PIPELINE_IID"
-    - echo "TAG=${TAG}"
-    - docker build -t ${ImageName}:${TAG} .
-    - docker push ${ImageName}:${TAG}
-  artifacts:
-    name: npm
-    untracked: false
-    expire_in: "7 days"
-
 
 deploy-dev:
-  extends: .deploy-dev
+  extends: .deploy-base
+  variables:
+    namespace: "dev"
+    components: "dev_t8"
+  only:
+    - develop
 
 deploy-staging:
-  extends: .deploy-staging
-      
+  extends: .deploy-base
+  variables:
+    namespace: "staging"
+    components: "staging_t8"
+  only:
+    - release/current
+
 deploy-prod:
-  extends: .deploy-prod
+  extends: .deploy-base
+  variables:
+    namespace: "prod"
+    components: "prod_t8"
+  only:
+    - master
