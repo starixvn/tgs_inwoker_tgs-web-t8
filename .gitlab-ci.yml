@@ -36,7 +36,8 @@ deploy-staging:
     - deploy
   only:
     - release/current
-
+  when: manual
+  
 deploy-prod:
   extends: .deploy-base
   variables:
@@ -47,3 +48,4 @@ deploy-prod:
     - deploy
   only:
     - master
+  when: manual
