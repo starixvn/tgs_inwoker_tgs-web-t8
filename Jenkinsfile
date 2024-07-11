@@ -26,7 +26,7 @@ pipeline {
                             sh "git config --file=.gitmodules submodule.src/components/Wap.branch master";
                             sh "git config --file=.gitmodules submodule.src/components/App/Account.branch master";
                             sh "git config --file=.gitmodules submodule.src/api-services.branch master";
-                            sh "git config —file=.gitmodules submodule.src/components/Common.branch master";
+                            sh "git config --file=.gitmodules submodule.src/components/Common.branch master";
                             sh "git submodule sync";
                             sh "git submodule update --remote";
                             break;
@@ -36,7 +36,7 @@ pipeline {
                             sh "git config --file=.gitmodules submodule.src/components/Wap.branch release/current";
                             sh "git config --file=.gitmodules submodule.src/components/App/Account.branch release/current";
                             sh "git config --file=.gitmodules submodule.src/api-services.branch develop";
-                            sh "git config —file=.gitmodules submodule.src/components/Common.branch release/current";
+                            sh "git config --file=.gitmodules submodule.src/components/Common.branch release/current";
                             sh "git submodule sync";
                             sh "git submodule update --remote";
                             break;
@@ -44,7 +44,7 @@ pipeline {
                             sh "git config --file=.gitmodules submodule.src/components/Wap.branch develop";
                             sh "git config --file=.gitmodules submodule.src/components/App/Account.branch develop";
                             sh "git config --file=.gitmodules submodule.src/api-services.branch develop";
-                            sh "git config —file=.gitmodules submodule.src/components/Common.branch develop";
+                            sh "git config --file=.gitmodules submodule.src/components/Common.branch develop";
                             sh "git submodule sync";
                             sh "git submodule update --remote";
                             env.kube_ns = "dev";
