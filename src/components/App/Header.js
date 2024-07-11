@@ -867,8 +867,6 @@ class Header extends Component {
       this.props.showLogin(true);
     } else {
       AppHistory.push(
-        "/" +
-          i18n.language +
           "/sports/play/" +
           game.name +
           "/" +

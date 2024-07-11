@@ -187,8 +187,6 @@ class Cockfight extends Component {
           });
       } else {
         AppHistory.push(
-          "/" +
-            i18n.language +
             "/sports/play/" +
             params +
             "/" +
