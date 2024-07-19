@@ -203,12 +203,13 @@ class Account extends Component {
     this.props.onloadShowAppBar();
   }
   getAllGameBalance = () => {
-    this.props.game.providerList
+    const requests = this.props.game.providerList
       .filter((item) => item.status === 0 && item.transferwallet === true)
       .filter((item) => item.gpcode !== "NTTF" && item.gpcode !== "RTTF")
       .map((a) => {
-        this.props.getGameBalance(a.gpcode);
+        return this.props.getGameBalance(a.gpcode);
       });
+    return Promise.all(requests)
   };
   handleRefreshClick = () => {
     this.props.updateBalanceList();
