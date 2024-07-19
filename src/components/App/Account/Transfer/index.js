@@ -577,6 +577,7 @@ class Transfer extends Component {
     this.props.doWithdrawAll();
   };
   handleTranferIn = (gpcode) => {
+    this.setState({ ...this.state, loading: true })
     this.props.doTransfer(gpcode, this.props.wallet.mainBalance);
   };
 
@@ -594,6 +595,12 @@ class Transfer extends Component {
       return "Tiger Sports";
     else return name ? name : "";
   };
+  handleOneKeyTransferOut = () => {
+    this.setState({ ...this.state, loading: true })
+    Promise.resolve(this.props.performWithdrawFromEveryBrand()).then(() => {
+      this.setState({ ...this.state, loading: false })
+    })
+  }
   render() {
     return (
       <Container>
