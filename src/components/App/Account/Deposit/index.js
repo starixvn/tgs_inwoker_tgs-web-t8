@@ -1006,6 +1006,7 @@ class Deposit extends Component {
         "DailySecondDeposit",
         "DailyFirstDeposit",
         "DepositReward",
+        "DepositRewardV2",
         "DepositAccumulateRoulette",
         "AccountFirstDeposit",
       ].indexOf(item.promotionType) >= 0
@@ -1013,7 +1014,7 @@ class Deposit extends Component {
   };
 
   hasDepositRewardPromotion = (item) => {
-    return item.promotionType === "DepositReward"
+    return (item.promotionType === "DepositReward" || item.promotionType === "DepositRewardV2")
       ? this.state.amount >= item.campaignDetail.depositMinimumLimit
       : true;
   };

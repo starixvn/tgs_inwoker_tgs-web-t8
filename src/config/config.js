@@ -25,6 +25,7 @@ const config = {
   features: featureList["default"],
   configUrl: window?.env?.configUrl || "https://app12.srvptt.com/",
   version: window?.env?.version,
+  template: 8
 };
 
 export default config;
