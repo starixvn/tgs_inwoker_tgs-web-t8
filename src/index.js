@@ -194,6 +194,7 @@ const muiTheme = createMuiTheme({
     },
   },
 });
+
 const AppWrapper = () => {
   const classes = useStyles();
   const languageDetector =
