@@ -17,6 +17,7 @@ import Messagebox from "../../Messagebox";
 import i18n from "../../../../utils/i18n";
 import ErrorSwitcher from "../../../../utils/ErrorSwitcher";
 import config from "../../../../config/config";
+import {CommonUtil} from "../../../Common/utilc";
 
 export const rotateKeyFrame = keyframes`
   0% {
@@ -874,7 +875,7 @@ class Transfer extends Component {
                     <GameWalletAmount>
                       {item.maintenance === 1
                         ? i18n.t("transfer.maintenance")
-                        : "$" + Common.formatNumberWithCommas(item.balance)}
+                        : "$" + CommonUtil.roundUpToTwoDecimals(item.balance)}
                     </GameWalletAmount>
                   </GameTranferWallet>
                 );
