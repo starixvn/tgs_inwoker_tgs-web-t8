@@ -32,9 +32,11 @@ import config from "../../../../config/config";
 import Common from "../../../../utils/Common";
 import Birthdate from "./Birthdate";
 
+import { useCustomMsg } from "../../../components/Common/hooks/pages/profile"
+
 const Container = styled.div`
   padding: 20px 28px;
-  box-sizing: border-box
+  box-sizing: border-box;
   //background-color: #eaeaea;
   width: 100%;
   min-height: 611px;
@@ -569,6 +571,20 @@ const DialogHeadertitle = styled.div`
   color: #ffffff;
   width: 320px;
 `;
+const CustomMessaging = ({
+  info,handleButtonClick
+}) => {
+  const { list } = useCustomMsg()
+  return list.map(customMsgItem => {
+      return GetContentWrap(
+        info,
+        customMsgItem.label,
+        customMsgItem.attr,
+        handleButtonClick
+      )
+    })
+}
+
 class Profile extends Component {
   state = {
     openDialog: false,
@@ -955,32 +971,9 @@ class Profile extends Component {
                 "member_email",
                 this.handleButtonClick
               )}
-            {config.features.QQWeChat &&
-              GetContentWrap(
-                this.props.account.info,
-                "QQ",
-                "member_qq",
-                this.handleButtonClick
-              )}
 
-            {config.features.QQWeChat &&
-              GetContentWrap(
-                this.props.account.info,
-                i18n.t("common.wechatNumber"),
-                "member_wechat",
-                this.handleButtonClick
-              )}
-
-            {config.features.CustomMessaging.length > 0 &&
-              config.features.CustomMessaging.map((platform) => {
-                return GetContentWrap(
-                  this.props.account.info,
-                  this.getCustomMessagingTranslation(platform),
-                  "member_" + platform,
-                  this.handleButtonClick
-                );
-              })}
-
+            <CustomMessaging info={this.props.account.info} handleButtonClick={this.handleButtonClick}></CustomMessaging>
+            
             {GetContentWrap(
               this.props.account.info,
               i18n.t("profile.password.title"),
