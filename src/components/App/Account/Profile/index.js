@@ -142,65 +142,10 @@ function GetContentWrap(accountInfo, label, attr, func, edit, disable) {
     }
   }
 
-  if (attr === "member_fb") {
+  if (["member_fb", "member_telegram", "member_line", "member_viber", "member_whatsapp", "member_wechat", "member_qq", "member_phone", "member_zalo"].includes(attr)) {
     if (attrValue !== "") {
-      attrValue = accountInfo["member_fb"]
-        ? accountInfo["member_fb"].substring(0, 1) + "**"
-        : "";
-    }
-  }
-
-  if (attr === "member_telegram") {
-    if (attrValue !== "") {
-      attrValue = accountInfo["member_telegram"]
-        ? accountInfo["member_telegram"].substring(0, 1) + "**"
-        : "";
-    }
-  }
-
-  if (attr === "member_line") {
-    if (attrValue !== "") {
-      attrValue = accountInfo["member_line"]
-        ? accountInfo["member_line"].substring(0, 1) + "**"
-        : "";
-    }
-  }
-
-  if (attr === "member_viber") {
-    if (attrValue !== "") {
-      attrValue = accountInfo["member_viber"]
-        ? accountInfo["member_viber"].substring(0, 1) + "**"
-        : "";
-    }
-  }
-
-  if (attr === "member_whatsapp") {
-    if (attrValue !== "") {
-      attrValue = accountInfo["member_whatsapp"]
-        ? accountInfo["member_whatsapp"].substring(0, 1) + "**"
-        : "";
-    }
-  }
-
-  if (attr === "member_wechat") {
-    if (attrValue !== "") {
-      attrValue = accountInfo["member_wechat"]
-        ? accountInfo["member_wechat"].substring(0, 1) + "**"
-        : "";
-    }
-  }
-
-  if (attr === "member_qq") {
-    if (attrValue !== "") {
-      attrValue = accountInfo["member_qq"]
-        ? accountInfo["member_qq"].substring(0, 1) + "**"
-        : "";
-    }
-  }
-  if (attr === "member_phone") {
-    if (attrValue !== "") {
-      attrValue = accountInfo["member_phone"]
-        ? accountInfo["member_phone"].substring(0, 1) + "**"
+      attrValue = accountInfo[attr]
+        ? accountInfo[attr].substring(0, 1) + "**"
         : "";
     }
   }
