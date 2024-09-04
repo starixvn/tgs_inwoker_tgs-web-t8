@@ -31,6 +31,7 @@ import i18n from "../../../../utils/i18n";
 import config from "../../../../config/config";
 import Common from "../../../../utils/Common";
 import Birthdate from "./Birthdate";
+import Zalo from "./Zalo";
 
 import { useCustomMsg } from "../../../Common/hooks/pages/profile"
 
@@ -98,7 +99,7 @@ const ContentValue = styled.div`
 `;
 const ContentButton = styled.div`
   min-width: 89px;
-  padding: 0 10px
+  padding: 0 10px;
   height: 32px;
   border-radius: 3.8px;
   color: #fff;
@@ -734,6 +735,16 @@ class Profile extends Component {
           ></QQ>
         );
         break;
+        case "member_zalo":
+          title = i18n.t("common.zalo");
+          component = (
+            <Zalo
+              handleCSClick={this.props.onhandleCSClick}
+              handleCloseDialog={this.handleCloseDialog}
+              account={this.props.account}
+            ></Zalo>
+          );
+          break;
 
       case "member_password":
         title = i18n.t("profile.changePassword.title");
