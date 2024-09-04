@@ -32,7 +32,7 @@ import config from "../../../../config/config";
 import Common from "../../../../utils/Common";
 import Birthdate from "./Birthdate";
 
-import { useCustomMsg } from "../../../components/Common/hooks/pages/profile"
+import { useCustomMsg } from "../../../Common/hooks/pages/profile"
 
 const Container = styled.div`
   padding: 20px 28px;
