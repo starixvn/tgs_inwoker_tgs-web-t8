@@ -78,7 +78,6 @@ const Viber = (props) => {
           (config.features.ChangesNotAllowed ||
             config.features.Profile_ExistingDetails_ViewOnly)
         }
-        maxLength={15}
       ></CustomTextField>
       {ifNotEmpty &&
         (config.features.ChangesNotAllowed ||
