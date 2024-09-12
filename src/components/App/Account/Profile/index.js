@@ -33,7 +33,7 @@ import Common from "../../../../utils/Common";
 import Birthdate from "./Birthdate";
 import Zalo from "./Zalo";
 
-import { useCustomMsg } from "../../../Common/hooks/pages/profile"
+import { useCustomMsg, useBaseInfo } from "../../../Common/hooks/pages/profile"
 
 const Container = styled.div`
   padding: 20px 28px;
@@ -128,7 +128,7 @@ const ButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-function GetContentWrap(accountInfo, label, attr, func, edit, disable) {
+function GetContentWrap({accountInfo, label, attr, func, edit, disable, playerIdentityAuthenticationEnabled}) {
   let attrValue = accountInfo[attr];
   let isMemberName = false;
   let containMemberName = accountInfo["member_name"];
@@ -168,10 +168,11 @@ function GetContentWrap(accountInfo, label, attr, func, edit, disable) {
 
   let isVerify = false;
   let hide = false;
+  let button2Value = i18n.t("profile.edit")
 
   if (requiredVerify) {
     if (attr === "member_name" || attr === "member_birthday") {
-      isVerify = !config.features.ICVerification
+      isVerify = playerIdentityAuthenticationEnabled
         ? accountInfo.check_pass_account
         : accountInfo.member_name !== "";
     }
@@ -260,6 +261,12 @@ function GetContentWrap(accountInfo, label, attr, func, edit, disable) {
     //有給表單id但狀態沒驗證，不能上傳
     status = "verifying";
   }
+  if (attr ===  "member_name" && status === "verifying") {
+    // 验证中
+    hide = true
+    edit = false
+    button2Value = i18n.t("profile.details")
+  }
 
   return (
     <ContentWrap>
@@ -267,7 +274,7 @@ function GetContentWrap(accountInfo, label, attr, func, edit, disable) {
         <ContentLabel>{label}:</ContentLabel>
         <ContentValue style={isDisable ? { color: "#acacac" } : {}}>
           {attrValue}{" "}
-          {config.features.ShowVerificationStatus && (
+          {playerIdentityAuthenticationEnabled && (
             <VerifiedSpan>
               {isMemberName &&
                 containMemberName &&
@@ -291,7 +298,7 @@ function GetContentWrap(accountInfo, label, attr, func, edit, disable) {
           config.features.Profile_DisplayEditNameButton) ||
           (attr === "member_phone" && isVerify && edit && !disable)) && (
           <ContentButton onClick={() => func(attr, edit)}>
-            <ContentButtonLabel>{i18n.t("profile.edit")}</ContentButtonLabel>
+            <ContentButtonLabel>{button2Value}</ContentButtonLabel>
           </ContentButton>
         )}
       </ButtonWrapper>
@@ -522,13 +529,28 @@ const CustomMessaging = ({
 }) => {
   const { list } = useCustomMsg()
   return list.map(customMsgItem => {
-      return GetContentWrap(
-        info,
-        customMsgItem.label,
-        customMsgItem.attr,
-        handleButtonClick
-      )
-    })
+    return <GetContentWrap
+      index={customMsgItem.attr}
+      accountInfo={info}
+      label={customMsgItem.label}
+      attr={customMsgItem.attr}
+      func={handleButtonClick}
+    ></GetContentWrap>
+  })
+}
+
+const BaseInfo = ({
+  info, handleButtonClick
+}) => {
+  const { baseInfoList } = useBaseInfo()
+  return baseInfoList.filter(infoItem=>infoItem.show).map((item,index) => (
+    <GetContentWrap
+      key={index}
+      accountInfo={info}
+      func={handleButtonClick}
+      {...item.comProps}
+    ></GetContentWrap>
+  ))
 }
 
 class Profile extends Component {
@@ -887,55 +909,57 @@ class Profile extends Component {
             </Title>
           </Header>
           <InnerWrap>
-            {config.features.ICVerification &&
-              GetContentWrap(
-                this.props.account.info,
-                i18n.t("profile.nameVerify.title"),
-                "member_name",
-                this.handleButtonClick,
-                true
-              )}
-            {GetContentWrap(
-              this.props.account.info,
-              i18n.t("profile.birthdate.title"),
-              "member_birthdate",
-              this.handleButtonClick
-            )}
+            {/* {config.features.ICVerification &&
+              <GetContentWrap
+                accountInfo={this.props.account.info}
+                label={i18n.t("profile.nameVerify.title")}
+                attr="member_name"
+                func={this.handleButtonClick}
+                edit
+              ></GetContentWrap>}
+            { <GetContentWrap
+              accountInfo={this.props.account.info}
+              label={i18n.t("profile.birthdate.title")}
+              attr="member_birthdate"
+              func={this.handleButtonClick}
+            ></GetContentWrap>}
             {/* {GetContentWrap(
             this.props.account.info,
             i18n.t("profile.phone.title"),
             "member_phone",
             this.handleButtonClick
           )} */}
-            {(config.features.SMSVerification ||
+            {/* {(config.features.SMSVerification ||
               config.features.PromoRoulette_SMSVerification ||
               config.features.Register_ShowPhone) &&
-              GetContentWrap(
-                this.props.account.info,
-                i18n.t("common.phoneNumber"),
-                "member_phone",
-                this.handleButtonClick,
-                !config.features.Profile_DisableEditPhone,
-                config.features.Profile_DisableVerifyPhone
-              )}
+              <GetContentWrap
+                accountInfo={this.props.account.info}
+                label={i18n.t("common.phoneNumber")}
+                attr="member_phone"
+                func={this.handleButtonClick}
+                edit={!config.features.Profile_DisableEditPhone}
+                disable={config.features.Profile_DisableVerifyPhone}
+              >
+              </GetContentWrap>} */}
 
-            {(config.features.EmailVerification ||
+            {/* {(config.features.EmailVerification ||
               config.features.Register_ShowEmail) &&
-              GetContentWrap(
-                this.props.account.info,
-                i18n.t("common.emailAddress"),
-                "member_email",
-                this.handleButtonClick
-              )}
+              <GetContentWrap
+                accountInfo={this.props.account.info}
+                label={i18n.t("common.emailAddress")}
+                attr="member_email"
+                func={this.handleButtonClick}
+              ></GetContentWrap>} */}
 
+            <BaseInfo info={this.props.account.info} handleButtonClick={this.handleButtonClick}></BaseInfo>
             <CustomMessaging info={this.props.account.info} handleButtonClick={this.handleButtonClick}></CustomMessaging>
             
-            {GetContentWrap(
-              this.props.account.info,
-              i18n.t("profile.password.title"),
-              "member_password",
-              this.handleButtonClick
-            )}
+            <GetContentWrap
+              accountInfo={this.props.account.info}
+              label={i18n.t("profile.password.title")}
+              attr="member_password"
+              func={this.handleButtonClick}
+            ></GetContentWrap>
           </InnerWrap>
           <InnerWrap>
             <BankCardContainer>
