@@ -31,10 +31,13 @@ import i18n from "../../../../utils/i18n";
 import config from "../../../../config/config";
 import Common from "../../../../utils/Common";
 import Birthdate from "./Birthdate";
+import Zalo from "./Zalo";
+
+import { useCustomMsg } from "../../../Common/hooks/pages/profile"
 
 const Container = styled.div`
   padding: 20px 28px;
-  box-sizing: border-box
+  box-sizing: border-box;
   //background-color: #eaeaea;
   width: 100%;
   min-height: 611px;
@@ -96,7 +99,7 @@ const ContentValue = styled.div`
 `;
 const ContentButton = styled.div`
   min-width: 89px;
-  padding: 0 10px
+  padding: 0 10px;
   height: 32px;
   border-radius: 3.8px;
   color: #fff;
@@ -139,65 +142,10 @@ function GetContentWrap(accountInfo, label, attr, func, edit, disable) {
     }
   }
 
-  if (attr === "member_fb") {
+  if (["member_fb", "member_telegram", "member_line", "member_viber", "member_whatsapp", "member_wechat", "member_qq", "member_phone", "member_zalo"].includes(attr)) {
     if (attrValue !== "") {
-      attrValue = accountInfo["member_fb"]
-        ? accountInfo["member_fb"].substring(0, 1) + "**"
-        : "";
-    }
-  }
-
-  if (attr === "member_telegram") {
-    if (attrValue !== "") {
-      attrValue = accountInfo["member_telegram"]
-        ? accountInfo["member_telegram"].substring(0, 1) + "**"
-        : "";
-    }
-  }
-
-  if (attr === "member_line") {
-    if (attrValue !== "") {
-      attrValue = accountInfo["member_line"]
-        ? accountInfo["member_line"].substring(0, 1) + "**"
-        : "";
-    }
-  }
-
-  if (attr === "member_viber") {
-    if (attrValue !== "") {
-      attrValue = accountInfo["member_viber"]
-        ? accountInfo["member_viber"].substring(0, 1) + "**"
-        : "";
-    }
-  }
-
-  if (attr === "member_whatsapp") {
-    if (attrValue !== "") {
-      attrValue = accountInfo["member_whatsapp"]
-        ? accountInfo["member_whatsapp"].substring(0, 1) + "**"
-        : "";
-    }
-  }
-
-  if (attr === "member_wechat") {
-    if (attrValue !== "") {
-      attrValue = accountInfo["member_wechat"]
-        ? accountInfo["member_wechat"].substring(0, 1) + "**"
-        : "";
-    }
-  }
-
-  if (attr === "member_qq") {
-    if (attrValue !== "") {
-      attrValue = accountInfo["member_qq"]
-        ? accountInfo["member_qq"].substring(0, 1) + "**"
-        : "";
-    }
-  }
-  if (attr === "member_phone") {
-    if (attrValue !== "") {
-      attrValue = accountInfo["member_phone"]
-        ? accountInfo["member_phone"].substring(0, 1) + "**"
+      attrValue = accountInfo[attr]
+        ? accountInfo[attr].substring(0, 1) + "**"
         : "";
     }
   }
@@ -569,6 +517,20 @@ const DialogHeadertitle = styled.div`
   color: #ffffff;
   width: 320px;
 `;
+const CustomMessaging = ({
+  info,handleButtonClick
+}) => {
+  const { list } = useCustomMsg()
+  return list.map(customMsgItem => {
+      return GetContentWrap(
+        info,
+        customMsgItem.label,
+        customMsgItem.attr,
+        handleButtonClick
+      )
+    })
+}
+
 class Profile extends Component {
   state = {
     openDialog: false,
@@ -718,6 +680,16 @@ class Profile extends Component {
           ></QQ>
         );
         break;
+        case "member_zalo":
+          title = i18n.t("common.zalo");
+          component = (
+            <Zalo
+              handleCSClick={this.props.onhandleCSClick}
+              handleCloseDialog={this.handleCloseDialog}
+              account={this.props.account}
+            ></Zalo>
+          );
+          break;
 
       case "member_password":
         title = i18n.t("profile.changePassword.title");
@@ -955,32 +927,9 @@ class Profile extends Component {
                 "member_email",
                 this.handleButtonClick
               )}
-            {config.features.QQWeChat &&
-              GetContentWrap(
-                this.props.account.info,
-                "QQ",
-                "member_qq",
-                this.handleButtonClick
-              )}
 
-            {config.features.QQWeChat &&
-              GetContentWrap(
-                this.props.account.info,
-                i18n.t("common.wechatNumber"),
-                "member_wechat",
-                this.handleButtonClick
-              )}
-
-            {config.features.CustomMessaging.length > 0 &&
-              config.features.CustomMessaging.map((platform) => {
-                return GetContentWrap(
-                  this.props.account.info,
-                  this.getCustomMessagingTranslation(platform),
-                  "member_" + platform,
-                  this.handleButtonClick
-                );
-              })}
-
+            <CustomMessaging info={this.props.account.info} handleButtonClick={this.handleButtonClick}></CustomMessaging>
+            
             {GetContentWrap(
               this.props.account.info,
               i18n.t("profile.password.title"),

@@ -17,6 +17,7 @@ import Messagebox from "../../Messagebox";
 import i18n from "../../../../utils/i18n";
 import ErrorSwitcher from "../../../../utils/ErrorSwitcher";
 import config from "../../../../config/config";
+import {CommonUtil} from "../../../Common/utilc";
 
 export const rotateKeyFrame = keyframes`
   0% {
@@ -28,7 +29,7 @@ export const rotateKeyFrame = keyframes`
 `;
 const Container = styled.div`
   padding: 20px 28px;
-  box-sizing: border-box
+  box-sizing: border-box;
 
   width: 100%;
   min-height: 611px;
@@ -441,15 +442,17 @@ class Transfer extends Component {
       if (this.props.wallet.transferResult.IsSuccess) {
         this.props.resetResult();
         this.props.getBalanceList();
-        this.props.getAllGameBalance();
-        this.setState({
-          ...this.state,
-          fromWallet: "",
-          toWallet: "",
-          loading: false,
-          open: false,
-          disabled: false,
+        this.props.getAllGameBalance().then(() => {
+          this.setState({
+            ...this.state,
+            fromWallet: "",
+            toWallet: "",
+            loading: false,
+            open: false,
+            disabled: false,
+          });
         });
+       
         // AppHistory.replace( "/withdrawal");
       } else {
         this.props.enqueueSnackbar(
@@ -529,7 +532,7 @@ class Transfer extends Component {
   };
   handleTransferAmountChange = (e) => {};
   handleTranferClick = (e) => {
-    this.setState({ ...this.state, disabled: true });
+    this.setState({ ...this.state, disabled: true, loading: true });
     const transferFrom = this.state.transferFrom;
     const transferTo = this.state.transferTo;
     const transferAmount = parseFloat(
@@ -540,7 +543,7 @@ class Transfer extends Component {
       this.props.enqueueSnackbar(i18n.t("transfer.invalidAmount"), {
         variant: "error",
       });
-      this.setState({ ...this.state, disabled: false });
+      this.setState({ ...this.state, disabled: false, loading: false });
       return;
     }
     if (
@@ -556,7 +559,7 @@ class Transfer extends Component {
           variant: "error",
         });
       }
-      this.setState({ ...this.state, disabled: false });
+      this.setState({ ...this.state, disabled: false, loading: false });
     } else {
       if (transferFrom === this.state.mainAccountId)
         this.props.doTransfer(transferTo, transferAmount);
@@ -575,6 +578,7 @@ class Transfer extends Component {
     this.props.doWithdrawAll();
   };
   handleTranferIn = (gpcode) => {
+    this.setState({ ...this.state, loading: true })
     this.props.doTransfer(gpcode, this.props.wallet.mainBalance);
   };
 
@@ -592,6 +596,12 @@ class Transfer extends Component {
       return "Tiger Sports";
     else return name ? name : "";
   };
+  handleOneKeyTransferOut = () => {
+    this.setState({ ...this.state, loading: true })
+    Promise.resolve(this.props.performWithdrawFromEveryBrand()).then(() => {
+      this.setState({ ...this.state, loading: false })
+    })
+  }
   render() {
     return (
       <Container>
@@ -607,7 +617,7 @@ class Transfer extends Component {
             <AllWalletInfo>
               <WalletNumber>
                 <DynamicFont
-                  content={Common.formatNumberWithThousand(
+                  content={this.state.loading ? '-' : Common.formatNumberWithThousand(
                     this.props.wallet.mainBalance
                   ).toString()}
                 />
@@ -631,7 +641,7 @@ class Transfer extends Component {
               <AllWalletInfo>
                 <WalletNumber>
                   <DynamicFont
-                    content={Common.formatNumberWithThousand(
+                    content={this.state.loading ? '-' : Common.formatNumberWithThousand(
                       this.props.game.providerList.reduce(
                         (total, item) =>
                           item.transferwallet === true
@@ -651,7 +661,7 @@ class Transfer extends Component {
             <AllWalletInfo>
               <WalletNumber>
                 <DynamicFont
-                  content={Common.formatNumberWithThousand(
+                  content={this.state.loading ? '-' : Common.formatNumberWithThousand(
                     this.props.game.providerList.reduce(
                       (total, item) =>
                         item.transferwallet === true
@@ -865,7 +875,7 @@ class Transfer extends Component {
                     <GameWalletAmount>
                       {item.maintenance === 1
                         ? i18n.t("transfer.maintenance")
-                        : "$" + Common.formatNumberWithCommas(item.balance)}
+                        : "$" + CommonUtil.roundUpToTwoDecimals(item.balance)}
                     </GameWalletAmount>
                   </GameTranferWallet>
                 );
